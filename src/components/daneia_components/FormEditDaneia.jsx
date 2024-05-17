@@ -4,8 +4,9 @@ import { useNavigate,useParams } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
 const FormEditDaneia= () => {
-    const [loan_type, setLoan_Type] = useState("");
-    const [timologia_id, setTimologia_Id] = useState("");
+    const [name, setName] = useState("");
+    const [ammount, setAmmount] = useState("");
+    const [status, setStatus] = useState("");
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
@@ -14,11 +15,13 @@ const FormEditDaneia= () => {
 
     useEffect(()=>{
         const getDaneiaById = async()=>{
+            const response=await axios.get(`${apiBaseUrl}/daneia/${id}`);
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/daneia/${id}`);
-                setLoan_Type(response.data.loan_type);
-                setTimologia_Id(response.timologia_id);
+                setName(response.data.name);
+                setAmmount(response.data.ammount);
+                setStatus(response.data.status);
             }
             catch(error)
             {
@@ -34,11 +37,12 @@ const FormEditDaneia= () => {
         e.preventDefault();
         try{
             await axios.patch(`${apiBaseUrl}/daneia/${id}`, {
-                loan_type:loan_type,
-                timologia_id:timologia_id
+                name:name,
+                ammount:ammount,
+                status:status,
             });
 
-            navigate("/daneia")
+            navigate("/daneia");
         }
         catch(error){
             if(error.response){
@@ -58,15 +62,23 @@ const FormEditDaneia= () => {
                 <div className="field">
                         <label  className="label">ΤΥΠΟΣ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
-                            <input type="text" className="input" value={loan_type} onChange={(e)=> setLoan_Type(e.target.value)} placeholder='ΤΥΠΟΣ ΔΑΝΕΙΟΥ'/>
+                            <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΤΥΠΟΣ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
                     <div className="field">
-                        <label  className="label">ΤΙΜΟΛΟΓΙΑ ID</label>
+                        <label  className="label">ΠΟΣΟ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
-                            <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΑ ID'/>
+                            <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
+
+                    <div className="field">
+                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
+                        </div>
+                    </div>
+
                     
                     <div className="field">
                         <div className="control">

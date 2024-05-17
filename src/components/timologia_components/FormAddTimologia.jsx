@@ -5,16 +5,12 @@ import apiBaseUrl from '../../apiConfig'
 
 const FormAddTimologia = () => {
     const[invoice_date,setInvoice_date]=useState("");
-    const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
-    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
-    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
     const[ammount_no_tax,setAmmount_no_tax]=useState("");
     const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
-    const[estimate_tax,setEstimate_Tax]=useState("");
     const[actual_payment_date,setActual_Payment_Date]=useState("");
     const[ammount_of_income_tax_incl,setAmmount_Of_Income_Tax_Incl]=useState("");
     const[comments,setComments]=useState("");
-    const[verified,setVerified]=useState("");
+    const[invoice_number,setInvoice_Number]=useState("");
 
     const[msg,setMsg]=useState("");
 
@@ -25,16 +21,13 @@ const FormAddTimologia = () => {
         try{
             await axios.post(`${apiBaseUrl}/timologia`, {
             invoice_date:invoice_date,
-            estimate_payment_date:estimate_payment_date,
-            estimate_payment_date_2:estimate_payment_date_2,
-            estimate_payment_date_3:estimate_payment_date_3,
+
             ammount_no_tax:ammount_no_tax,
             ammount_tax_incl:ammount_tax_incl,
-            estimate_tax: estimate_tax,
             actual_payment_date: actual_payment_date,
             ammount_of_income_tax_incl: ammount_of_income_tax_incl,
             comments: comments,
-            verified: verified
+            invoice_number: invoice_number
             });
             navigate("/timologia");
         }catch(error){
@@ -58,25 +51,7 @@ const FormAddTimologia = () => {
                             <input type="text" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
                         </div>
                     </div>
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ σενάριο 2</label>
-                        <div className="control">
-                            <input type="text" className="input" value={estimate_payment_date_2} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ σενάριο 2'/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ σενάριο 3</label>
-                        <div className="control">
-                            <input type="text" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ σενάριο 3'/>
-                        </div>
-                    </div>
+        
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α</label>
                         <div className="control">
@@ -88,13 +63,6 @@ const FormAddTimologia = () => {
                         <label  className="label">ΠΟΣΟ ΜΕ Φ.Π.Α</label>
                         <div className="control">
                             <input type="text" className="input" value={ammount_tax_incl} onChange={(e)=> setAmmount_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΜΕ Φ.Π.Α'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΟ ΦΠΑ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={estimate_tax} onChange={(e)=> setEstimate_Tax(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΟ ΦΠΑ'/>
                         </div>
                     </div>
 
@@ -120,9 +88,9 @@ const FormAddTimologia = () => {
                     </div>
 
                     <div className="field">
-                        <label  className="label">ΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</label>
+                        <label  className="label">ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={verified} onChange={(e)=> setVerified(e.target.value)} placeholder='ΕΝΕΡΓΟΠΟΙΗΜΕΝΟ'/>
+                            <input type="text" className="input" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} placeholder='ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ'/>
                         </div>
                     </div>
 

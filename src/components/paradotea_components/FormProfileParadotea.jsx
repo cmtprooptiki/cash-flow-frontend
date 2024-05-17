@@ -23,6 +23,12 @@ const FormProfileParadotea=() =>{
     const[percentage,setPercentage]=useState("");
     const[erga_id,setErga_id]=useState("");
     const[timologia_id,setTimologia_id]=useState("");
+    const[ammount,setAmmount]=useState("");
+    const[ammount_vat,setAmmount_Vat]=useState("");
+    const[ammount_total,setAmmount_Total]=useState("");
+    const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
+    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
+    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
 
     const[msg,setMsg]=useState("");
 
@@ -41,6 +47,12 @@ const FormProfileParadotea=() =>{
                 setPercentage(response.data.percentage);
                 setErga_id(response.data.erga_id);
                 setTimologia_id(response.data.timologia_id);
+                setAmmount(response.data.ammount);
+                setAmmount_Vat(response.data.ammount_vat);
+                setAmmount_Total(response.data.ammount_total);
+                setEstimate_Payment_Date(response.data.estimate_payment_date);
+                setEstimate_Payment_Date_2(response.data.estimate_payment_date_2);
+                setEstimate_Payment_Date_3(response.data.estimate_payment_date_3);
             }
             catch(error)
             {
@@ -99,6 +111,36 @@ const FormProfileParadotea=() =>{
             <li className="media">
               <span className="w-5 text-black font-weight-normal">ΤΙΜΟΛΟΓΙΟ id: &nbsp;</span>
               <label className="media-body"> {timologia_id}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΑΡΧΙΚΟ ΠΟΣΟ: &nbsp;</span>
+              <label className="media-body"> {ammount}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΦΠΑ: &nbsp;</span>
+              <label className="media-body"> {ammount_vat}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΣΥΝΟΛΙΚΟ ΠΟΣΟ: &nbsp;</span>
+              <label className="media-body"> {ammount_total}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1 : &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2 : &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date_2}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3 : &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date_3}</label>
             </li>
            
             

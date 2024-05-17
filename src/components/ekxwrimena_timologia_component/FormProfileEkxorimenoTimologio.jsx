@@ -17,37 +17,36 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const FormProfileDaneia = () => {
-    const [name, setName] = useState("");
-    const [ammount, setAmmount] = useState("");
-
-    const [status, setStatus] = useState("");
-
-
+const FormProfileEkxorimenoTimologio = () =>
+{
+    const[timologia_id,setTimologia_Id]=useState("");
+    const[bank_ammount,setBank_Ammount]=useState("");
+    const[bank_date,setBank_Date]=useState("");
+    const[customer_ammount,setCustomer_Ammount]=useState("");
+    const[cust_date,setCust_Date]=useState("");
     const[msg,setMsg]=useState("");
-
     const navigate = useNavigate();
-
     const{id} = useParams();
 
     useEffect(()=>{
-        const getDaneioById = async()=>{
+        const getEkxorimenoTimologioById = async() =>{
+            const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/daneia/${id}`);
-                setName(response.data.name);
-                setAmmount(response.data.ammount);
-                setStatus(response.data.status);
+                const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
+                setTimologia_Id(response.data.timologia_id);
+                setBank_Ammount(response.data.bank_ammount);
+                setBank_Date(response.data.bank_date);
+                setCustomer_Ammount(response.data.customer_ammount);
+                setCust_Date(response.data.cust_date);
             }
             catch(error)
             {
-                if(error.response){
-                    setMsg(error.response.data.msg);
-                }
+                setMsg(error.response.data.msg);
             }
         };
-        getDaneioById();
-    }, [id]);
+        getEkxorimenoTimologioById();
+    },[id]);
 
     return(
         <div>
@@ -70,7 +69,7 @@ const FormProfileDaneia = () => {
         
         <div className='box'>
           <div className="mb-2 d-flex">
-            <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >ΤΥΠΟΣ ΔΑΝΕΙΟΥ: {name}</h2>
+            <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >ΕΚΧΩΡΗΜΕΝΟ ΤΙΜΟΛΟΓΙΟ</h2>
             
           </div>
         
@@ -78,14 +77,29 @@ const FormProfileDaneia = () => {
           
           <ul className="list-unstyled">
             <li className="media">
-              <span className="w-5 text-black font-weight-normal"> ΠΟΣΟ ΔΑΝΕΙΟΥ: &nbsp;</span><label className="media-body"> {ammount}</label>
+              <span className="w-5 text-black font-weight-normal">ΤΙΜΟΛΟΓΙΟ ID:  &nbsp;</span><label className="media-body"> {timologia_id}</label>
+            </li>
+          
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
+              <label className="media-body"> {bank_ammount}</label>
+            </li>
+           
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
+              <label className="media-body"> {bank_date}</label>
+            </li>
+
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΠΕΛΑΤΗ: &nbsp;</span>
+              <label className="media-body"> {customer_ammount}</label>
             </li>
 
             <li className="media">
-              <span className="w-5 text-black font-weight-normal"> ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ: &nbsp;</span><label className="media-body"> {status}</label>
+              <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ: &nbsp;</span>
+              <label className="media-body"> {cust_date}</label>
             </li>
-            
-           
 
           </ul>
         </div>
@@ -104,5 +118,4 @@ const FormProfileDaneia = () => {
 		</div>
     )
 }
-
-export default FormProfileDaneia
+export default FormProfileEkxorimenoTimologio;
