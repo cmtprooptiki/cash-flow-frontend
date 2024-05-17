@@ -35,18 +35,22 @@ const DaneiaList = () => {
                     <th>#</th>
 
                     <th>ΤΥΠΟΣ ΔΑΝΕΙΟΥ</th>
-                    <th>ID ΤΙΜΟΛΟΓΙΟΥ</th>
+                    <th>ΠΟΣΟ ΔΑΝΕΙΟΥ</th>
+                    <th>ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</th>
                 </tr>
             </thead>
             <tbody>
                 {daneia.map((daneia,index)=>(
                     <tr key={daneia.id}>
                         <td>{index+1}</td>
-                        <td>{daneia.loan_type}</td>
-                        <td>{daneia.timologia_id}</td>
+                        <td>{daneia.name}</td>
+                        <td>{daneia.ammount}</td>
+                        <td>{daneia.status}</td>
+
 
 
                         <td>
+                            {console.log(daneia.id)}
                             <Link to={`/daneia/profile/${daneia.id}`} className='button is-small is-info'>Προφίλ Δανείου</Link>
                             {user && user.role ==="admin" && (
                             <div>

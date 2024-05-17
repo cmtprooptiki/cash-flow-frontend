@@ -25,17 +25,25 @@ const FormProfileErgo= () => {
   const[estimate_start_date,setEstimateStartDate]=useState("");
   const[project_manager,setProjectManager]=useState("")
   const[customer_id,setCustomerId]=useState("")
+  const[shortname,setShortName]=useState("")
+  const[ammount,setAmmount]=useState("")
+  const[ammount_vat,setAmmount_Vat]=useState("")
+  const[ammount_total,setAmmount_Total]=useState("")
+  const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
+  const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
+  const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
 
-    const[msg,setMsg]=useState("");
 
-    const navigate = useNavigate();
+  const[msg,setMsg]=useState("");
 
-    const{id} = useParams();
+  const navigate = useNavigate();
+
+  const{id} = useParams();
 
 
 
 
-    useEffect(()=>{
+  useEffect(()=>{
       const getErgoById = async()=>{
         try {
             const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
@@ -47,6 +55,13 @@ const FormProfileErgo= () => {
             setEstimateStartDate(response.data.estimate_start_date);
             setProjectManager(response.data.project_manager);
             setCustomerId(response.data.customer_id);
+            setShortName(response.data.shortname)
+            setAmmount(response.data.ammount)
+            setAmmount_Vat(response.data.ammount_vat)
+            setAmmount_Total(response.data.ammount_total)
+            setEstimate_Payment_Date(response.data.estimate_payment_date)
+            setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
+            setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -111,8 +126,42 @@ const FormProfileErgo= () => {
               <span className="w-5 text-black font-weight-normal">ID ΠΕΛΑΤΗ: &nbsp;</span>
               <label className="media-body"> {customer_id}</label>
             </li>
-           
 
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΣΥΝΤΟΜΟΠΓΡΑΦΙΑ ΟΝΟΜΑΤΟΣ: &nbsp;</span>
+              <label className="media-body"> {shortname}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΑΡΧΙΚΟ ΠΟΣΟ: &nbsp;</span>
+              <label className="media-body"> {ammount}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΦΠΑ: &nbsp;</span>
+              <label className="media-body"> {ammount_vat}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΣΥΝΟΛΙΚΟ ΠΟΣΟ: &nbsp;</span>
+              <label className="media-body"> {ammount_total}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ: &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2: &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date_2}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3: &nbsp;</span>
+              <label className="media-body"> {estimate_payment_date_3}</label>
+            </li>
+           
           </ul>
         </div>
         

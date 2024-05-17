@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
 const FormAddDaneia = () => {
-    const [loan_type, setLoan_Type] = useState("");
-    const [timologia_id, setTimologia_Id] = useState("");
+    const [name, setName] = useState("");
+    const [ammount, setAmmount] = useState("");
+    const [status, setStatus] = useState("");
+
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
@@ -14,8 +16,9 @@ const FormAddDaneia = () => {
         e.preventDefault();
         try{
             await axios.post(`${apiBaseUrl}/daneia`, {
-            loan_type:loan_type,
-            timologia_id:timologia_id,
+            name:name,
+            ammount:ammount,
+            status:status
             });
             navigate("/daneia");
         }catch(error){
@@ -36,13 +39,20 @@ const FormAddDaneia = () => {
                 <div className="field">
                         <label  className="label">ΤΥΠΟΣ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
-                            <input type="text" className="input" value={loan_type} onChange={(e)=> setLoan_Type(e.target.value)} placeholder='ΤΥΠΟΣ ΔΑΝΕΙΟΥ'/>
+                            <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΤΥΠΟΣ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
                     <div className="field">
-                        <label  className="label">ΤΙΜΟΛΟΓΙΑ ID</label>
+                        <label  className="label">ΠΟΣΟ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
-                            <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΑ ID'/>
+                            <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΔΑΝΕΙΟΥ'/>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
 

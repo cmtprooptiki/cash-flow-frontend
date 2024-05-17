@@ -23,7 +23,7 @@ const ErgaList = () => {
     }
 
   return (
-    <div>
+    <div style={{ overflowX: 'auto', maxWidth: '800px'}}>
         <h1 className='title'>Εργα</h1>
         {user && user.role ==="admin" && (
         <Link to={"/erga/add"} className='button is-primary mb-2'>Προσθήκη Νέου</Link>
@@ -41,6 +41,13 @@ const ErgaList = () => {
                     <th>ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)</th>
                     <th>PROJECT MANAGER</th>
                     <th>ID ΠΕΛΑΤΗ</th>
+                    <th>ΣΥΝΤΟΜΟΓΡΑΦΙΑ</th>
+                    <th>ΑΡΧΙΚΟ ΠΟΣΟ</th>
+                    <th>ΠΟΣΟ ΜΕ ΦΠΑ</th>
+                    <th>ΣΥΝΟΛΙΚΟ ΠΟΣΟ</th>
+                    <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1</th>
+                    <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2</th>
+                    <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +61,13 @@ const ErgaList = () => {
                         <td>{ergo.estimate_start_date}</td>
                         <td>{ergo.project_manager }</td>
                         <td>{ergo.customer_id}</td>
+                        <td>{ergo.shortname}</td>
+                        <td>{ergo.ammount}</td>
+                        <td>{ergo.ammount_vat}</td>
+                        <td>{ergo.ammount_total}</td>
+                        <td>{ergo.estimate_payment_date}</td>
+                        <td>{ergo.estimate_payment_date_2}</td>
+                        <td>{ergo.estimate_payment_date_3}</td>
 
 
                         <td>

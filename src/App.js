@@ -25,6 +25,12 @@ import AddTimologio from "./pages/timologia_pages/AddTimologio";
 import EditTimologio from "./pages/timologia_pages/EditTimologio";
 import ProfileTimologio from "./pages/timologia_pages/ProfileTimologio";
 
+import Ekxorimena_Timologia from "./pages/ekxwrimeno_timologio_pages/Ekxorimena_Timologia";
+import AddEkxorimeno_Timologio from "./pages/ekxwrimeno_timologio_pages/AddEkxorimeno_Timologio";
+import EditEkxorimeno_Timologio from "./pages/ekxwrimeno_timologio_pages/EditEkxorimeno_Timologio";
+import ProfileEkxorimenoTimologio from "./pages/ekxwrimeno_timologio_pages/ProfileEkxorimeno_Timologio";
+
+
 import Paradotea from "./pages/paradotea_pages/Paradotea";
 import AddParadoteo from "./pages/paradotea_pages/AddParadoteo";
 import EditParadoteo from "./pages/paradotea_pages/EditParadoteo";
@@ -67,6 +73,18 @@ function App() {
           <Route path="/timologia/edit/:id" element={<EditTimologio/>}></Route>
 
           <Route path="/timologia/profile/:id" element={<ProfileTimologio/>}></Route>
+
+
+          <Route path="/ek_tim" element={<Ekxorimena_Timologia/>}></Route>
+
+          <Route path="/ek_tim/add" element={<AddEkxorimeno_Timologio/>}></Route>
+          <Route path="/ek_tim/edit/:id" element={<EditEkxorimeno_Timologio/>}></Route>
+
+
+
+          <Route path="/ek_tim/profile/:id" element={<ProfileEkxorimenoTimologio/>}></Route>
+
+
 
           <Route path="/paradotea" element={<Paradotea/>}></Route>
 
