@@ -34,3 +34,29 @@
         flex-direction: column;
     
 }
+
+
+.list-item{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+}
+
+.circle{
+    width: 15px; /* Adjust size as needed */
+    height: 15px; /* Adjust size as needed */
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px; /* Adjust spacing between circle and text */}
+
+.led {
+    width: 20px; /* Adjust size as needed */
+    height: 20px; /* Adjust size as needed */
+    border-radius: 50%;
+    background-color: green; /* Initial color */
+    box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green, 0 0 20px green; /* Glow effect */
+    display: inline-block; /* Ensures it behaves like an inline element */
+    margin-right: 10px; /* Space between LED and text */
+    }
