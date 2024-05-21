@@ -21,6 +21,7 @@ const FormAddErga = () => {
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
+    const[erga_cat_id,setErga_cat_id]=useState("")
     const[msg,setMsg]=useState("");
 
     const handleColorChange = (color) => {
@@ -48,7 +49,8 @@ const FormAddErga = () => {
             ammount_total: ammount_total,
             estimate_payment_date: estimate_payment_date,
             estimate_payment_date_2: estimate_payment_date_2,
-            estimate_payment_date_3: estimate_payment_date_3
+            estimate_payment_date_3: estimate_payment_date_3,
+            erga_cat_id:erga_cat_id
             });
             navigate("/erga");
         }catch(error){
@@ -169,6 +171,12 @@ const FormAddErga = () => {
                         </div>
                     </div>
                     
+                    <div className="field">
+                        <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={erga_cat_id} onChange={(e)=> setErga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
+                        </div>
+                    </div>
                     
                     <div className="field">
                         <div className="control">

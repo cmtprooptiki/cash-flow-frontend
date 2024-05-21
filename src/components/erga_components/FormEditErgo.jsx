@@ -21,6 +21,7 @@ const FormEditErgo= () => {
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
+    const[erga_cat_id,set_erga_cat_id]=useState("")
     const[msg,setMsg]=useState("");
 
 
@@ -52,6 +53,7 @@ const FormEditErgo= () => {
                 setEstimate_Payment_Date(response.data.estimate_payment_date)
                 setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
                 setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
+                set_erga_cat_id(erga_cat_id)
             } catch (error) {
                 if(error.response){
                     setMsg(error.response.data.msg);
@@ -83,7 +85,8 @@ const FormEditErgo= () => {
                 ammount_total: ammount_total,
                 estimate_payment_date: estimate_payment_date,
                 estimate_payment_date_2: estimate_payment_date_2,
-                estimate_payment_date_3: estimate_payment_date_3
+                estimate_payment_date_3: estimate_payment_date_3,
+                erga_cat_id:erga_cat_id
             });
 
             navigate("/erga");
@@ -202,6 +205,13 @@ const FormEditErgo= () => {
                         <label  className="label">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3</label>
                         <div className="control">
                             <input type="date" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={erga_cat_id} onChange={(e)=> set_erga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
                         </div>
                     </div>
                     

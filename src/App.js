@@ -13,6 +13,9 @@ import AddErga from "./pages/erga_pages/AddErga";
 import ProfileErgo from "./pages/erga_pages/ProfileErgo";
 import EditErgo from "./pages/erga_pages/EditErgo";
 
+import ErgaCat from "./pages/erga_cat_pages/ErgaCat";
+import AddErgaCat from "./pages/erga_cat_pages/AddErgaCat";
+import EditErgoCat from "./pages/erga_cat_pages/EditErgoCat";
 
 
 import Customer from "./pages/customer_pages/Customer";
@@ -59,6 +62,11 @@ function App() {
           <Route path="/erga/add" element={<AddErga/>}></Route>
           <Route path="/erga/edit/:id" element={<EditErgo/>}></Route>
           <Route path="/erga/profile/:id" element={<ProfileErgo/>}></Route>
+
+          <Route path="/ergacat" element={<ErgaCat/>}></Route>
+          <Route path="/ergacat/add" element={<AddErgaCat/>}></Route>
+          <Route path="/ergacat/edit/:id" element={<EditErgoCat/>}></Route>
+          
 
           <Route path="/customer" element={<Customer/>}></Route>
 

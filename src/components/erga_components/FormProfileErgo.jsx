@@ -33,7 +33,7 @@ const FormProfileErgo= () => {
   const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
   const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
   const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
-
+  const[erga_cat_id,setErga_cat_id]=useState("")
 
   const[msg,setMsg]=useState("");
 
@@ -64,6 +64,7 @@ const FormProfileErgo= () => {
             setEstimate_Payment_Date(response.data.estimate_payment_date)
             setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
             setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
+            setErga_cat_id(erga_cat_id)
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -165,6 +166,10 @@ const FormProfileErgo= () => {
             <li className="media">
               <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3: &nbsp;</span>
               <label className="media-body"> {estimate_payment_date_3}</label>
+            </li>
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ: &nbsp;</span>
+              <label className="media-body"> {erga_cat_id}</label>
             </li>
            
           </ul>
