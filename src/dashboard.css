@@ -60,3 +60,14 @@
     display: inline-block; /* Ensures it behaves like an inline element */
     margin-right: 10px; /* Space between LED and text */
     }
+
+.Filters
+{
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+    border-radius: 15px;
+    background-color: #0090FE;
+    color: #EFEFEF;
+}

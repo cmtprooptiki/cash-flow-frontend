@@ -389,16 +389,16 @@ return (
         </div>
         <div className="col-md-8">
           <div className="calendar-container">
-            <button style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>Previous Year</button>
-            <button style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>Next Year</button>
-            <button style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
-              Show Original Dates
+            <button className = "Filters" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>Previous Year</button>
+            <button className = "Filters" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>Next Year</button>
+            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
+              Best-Case
             </button>
-            <button style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
-              Show Date 2
+            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
+              Medium-Case
             </button>
-            <button style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
-              Show Date 3
+            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
+              Worst-Case
             </button>
             <DragAndDropCalendar
               localizer={localizer}
