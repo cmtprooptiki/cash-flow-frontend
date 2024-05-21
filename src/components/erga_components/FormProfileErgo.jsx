@@ -19,6 +19,7 @@ import Col from 'react-bootstrap/Col';
 
 const FormProfileErgo= () => {
   const[name,setName]=useState("");
+  const [color, setColor] = useState("white");
   const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
   const[sign_date,setSignDate]=useState("");
   const[status,setStatus]=useState("");
@@ -48,6 +49,7 @@ const FormProfileErgo= () => {
         try {
             const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
             setName(response.data.name);
+            setColor(response.data.color);
             setSignAmmountNoTax(response.data.sign_ammount_no_tax);
             setSignDate(response.data.sign_date);
 
@@ -101,6 +103,9 @@ const FormProfileErgo= () => {
         <div className="mb-2 d-flex">
           
           <ul className="list-unstyled">
+          <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΧΡΩΜΑ: &nbsp;</span><label className="media-body"> {color}</label>
+            </li>
             <li className="media">
               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.: &nbsp;</span><label className="media-body"> {sign_ammount_no_tax}</label>
             </li>

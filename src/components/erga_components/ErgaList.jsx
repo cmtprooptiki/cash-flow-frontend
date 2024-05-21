@@ -35,6 +35,7 @@ const ErgaList = () => {
                     <th>#</th>
 
                     <th>ΟΝΟΜΑ ΕΡΓΟΥ</th>
+                    <th>ΧΡΩΜΑ</th>
                     <th>ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.</th>
                     <th>ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ</th>
                     <th>ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ</th>
@@ -55,6 +56,7 @@ const ErgaList = () => {
                     <tr key={ergo.id}>
                         <td>{index+1}</td>
                         <td>{ergo.name}</td>
+                        <td>{ergo.color}</td>
                         <td>{ergo.sign_ammount_no_tax}</td>
                         <td>{ergo.sign_date}</td>
                         <td>{ergo.status}</td>
