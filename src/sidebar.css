@@ -106,27 +106,27 @@
 } */
 
 .sidebar{
-    background-color: #06603a;
+    background-color: #61a4bf;
     padding-top: 22px;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 .ps-menu-button{
-    background:#06603a !important;
+    background:#61a4bf !important;
     color:#bedfd1 !important;
 }
 .ps-menu-button:hover{
-    background:#2b7858 !important;
+    background:#a6bfc9 !important;
     color:white !important;
     border-radius: 10px;
 }
 .ps-submenu-content{
-    background:#06603a !important;
+    background:#61a4bf !important;
 
 }
 .css-1wvake5 {
     
-    border-color: #06603a !important;
+    border-color: #61a4bf !important;
     
 }
