@@ -39,6 +39,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { isError } = useSelector(state => state.auth);
 
+  const [calendarDate, setCalendarDate] = useState(new Date());
+
+  const handleYearChange = (increment) => {
+    const newDate = new Date(calendarDate);
+    newDate.setFullYear(calendarDate.getFullYear() + increment);
+    setCalendarDate(newDate);
+  };
+
   useEffect(() => {
     dispatch(getMe());
     // fetchData(); // Fetch data from the database
@@ -216,16 +224,20 @@ const Dashboard = () => {
 
                 }}
               /> */}
+                  <button style = {{marginRight: 20}} onClick={() => handleYearChange(-1)}>Previous Year</button>
+                  <button onClick={() => handleYearChange(1)}>Next Year</button>
                  <DragAndDropCalendar
                 localizer={localizer}
+                date={calendarDate} // Set the current date for the calendar
+                onNavigate={(date) => setCalendarDate(date)} // Update the state when navigation happens
                 events={paradotea.map(item => ({
                   id: item.id,
                   title: <div><div className="circle" style={{ backgroundColor: item.erga.color,boxShadow: "0px 0px 4px 2px "+ item.erga.color }}></div>{item.ammount_total} €</div>,
                   start: new Date(item.estimate_payment_date),
                   end: new Date(item.estimate_payment_date),
-                  item: item // Include the entire item object here
+                  item: item, // Include the entire item object here
 
-                }))}
+                })) || []}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 500 }}
