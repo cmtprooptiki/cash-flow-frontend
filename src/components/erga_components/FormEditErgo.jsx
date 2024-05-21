@@ -6,6 +6,7 @@ import apiBaseUrl from '../../apiConfig'
 
 const FormEditErgo= () => {
     const[name,setName]=useState("");
+    const [color, setColor] = useState("white");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
     const[sign_date,setSignDate]=useState("");
     const[status,setStatus]=useState("");
@@ -32,6 +33,7 @@ const FormEditErgo= () => {
             try {
                 const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
                 setName(response.data.name);
+                setColor(response.data.color);
                 setSignAmmountNoTax(response.data.sign_ammount_no_tax);
                 setSignDate(response.data.sign_date);
 
@@ -64,6 +66,7 @@ const FormEditErgo= () => {
                 // lon:lon,
                 // category:category
                 name:name,
+                color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
                 sign_date:sign_date,
                 status:status,
@@ -101,6 +104,14 @@ const FormEditErgo= () => {
                             <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'/>
                         </div>
                     </div>
+
+                    <div className="field">
+                        <label  className="label">ΧΡΩΜΑ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={color} onChange={(e)=> setColor(e.target.value)} placeholder='ΧΡΩΜΑ'/>
+                        </div>
+                    </div>
+                
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.</label>
                         <div className="control">
