@@ -49,63 +49,63 @@ const Dashboard = () => {
   }, [isError, navigate]);
 
 //Kodikas ippo
-  const [events, setEvents] = useState([]);
+  //const [events, setEvents] = useState([]);
  
-  const [selectedEvent, setSelectedEvent] = useState(null); // State variable to store selected event
-  const [selectedSlot, setSelectedSlot] = useState(null); // State variable to store selected slot
+  //const [selectedEvent, setSelectedEvent] = useState(null); // State variable to store selected event
+  //const [selectedSlot, setSelectedSlot] = useState(null); // State variable to store selected slot
  
   ///test
-  const [showModal, setShowModal] = useState(false);
+  //const [showModal, setShowModal] = useState(false);
 
-  const [newDate, setNewDate] = useState(null);
+  //const [newDate, setNewDate] = useState(null);
  
   const [eventClickedFirst, setEventClickedFirst] = useState(false); // Flag to track if an event was clicked first
-  const [details,setDetails]=useState(false)
+  //const [details,setDetails]=useState(false)
   const [box_data,setBoxData]=useState([])
 
   
-  function details_scene(){
-    setDetails(true)
-    setEventClickedFirst(false)
-  }
+  // function details_scene(){
+  //   setDetails(true)
+  //   setEventClickedFirst(false)
+  // }
 
   
   const handleEventClick = (event,item) => {
-    setSelectedEvent(event); // Store selected event in state variable
+    //setSelectedEvent(event); // Store selected event in state variable
     setEventClickedFirst(true); // Set flag indicating event was clicked first
-    setDetails(true)
+    //setDetails(true)
     console.log(item)
     setBoxData(item)
     console.log(event)
     //test
-    setShowModal(true);
+    //setShowModal(true);
   };
  
-  const handleSlotSelect = async slotInfo => {
-    if (eventClickedFirst && selectedEvent) {
-      try {
-        const updatedDate = moment.utc(slotInfo.end).startOf('day').toDate();
-        const response = await axios.patch(`${apiBaseUrl}/paradotea/${selectedEvent.id}`, {
-          estimate_payment_date: updatedDate
-        });
+  // const handleSlotSelect = async slotInfo => {
+  //   if (eventClickedFirst && selectedEvent) {
+  //     try {
+  //       const updatedDate = moment.utc(slotInfo.end).startOf('day').toDate();
+  //       const response = await axios.patch(`${apiBaseUrl}/paradotea/${selectedEvent.id}`, {
+  //         estimate_payment_date: updatedDate
+  //       });
         
  
-        if (response.status === 200) {
-          setParadotea(prev => prev.map(item =>
-            item.id === selectedEvent.id ? { ...item, estimate_payment_date: updatedDate } : item
-          ));
-          setSelectedEvent(null);
-          setEventClickedFirst(false);
-          /////test
-          setShowModal(false);
-        }
-      } catch (error) {
-        console.error('Failed to update event', error);
-      }
-    } else {
-      console.log("Slot selected without clicking event first");
-    }
-  };
+  //       if (response.status === 200) {
+  //         setParadotea(prev => prev.map(item =>
+  //           item.id === selectedEvent.id ? { ...item, estimate_payment_date: updatedDate } : item
+  //         ));
+  //         setSelectedEvent(null);
+  //         setEventClickedFirst(false);
+  //         /////test
+  //         setShowModal(false);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to update event', error);
+  //     }
+  //   } else {
+  //     console.log("Slot selected without clicking event first");
+  //   }
+  // };
 
 
 //telos ippo code
@@ -150,7 +150,7 @@ const Dashboard = () => {
     
 }
 //test
-const handleClose = () => setShowModal(false);
+//const handleClose = () => setShowModal(false);
 
   // Function to fetch data from the database
 
