@@ -28,6 +28,8 @@ import { Modal, Button } from 'react-bootstrap';
 
 import InfoBox from '../components/InfoBox';
 
+import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
+
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -243,6 +245,14 @@ const Dashboard = () => {
         
           
         )}
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <WeeksTable paradotea={paradotea}/> {/* Use the WeeksTable component */}
+          </div>
         </div>
       </div>
       {/* Modal for event details 
