@@ -2,11 +2,12 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+import { SketchPicker } from 'react-color';
 
 
 const FormEditErgo= () => {
     const[name,setName]=useState("");
-    const [color, setColor] = useState("white");
+    const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
     const[sign_date,setSignDate]=useState("");
     const[status,setStatus]=useState("");
@@ -23,6 +24,9 @@ const FormEditErgo= () => {
     const[msg,setMsg]=useState("");
 
 
+    const handleColorChange = (color) => {
+        setColor(color.hex);
+    };
 
     const navigate = useNavigate();
 
@@ -108,7 +112,7 @@ const FormEditErgo= () => {
                     <div className="field">
                         <label  className="label">ΧΡΩΜΑ</label>
                         <div className="control">
-                            <input type="text" className="input" value={color} onChange={(e)=> setColor(e.target.value)} placeholder='ΧΡΩΜΑ'/>
+                        <SketchPicker color={color} onChange={handleColorChange} />
                         </div>
                     </div>
                 

@@ -2,10 +2,12 @@ import React,{useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+import { SketchPicker } from 'react-color';
+
 
 const FormAddErga = () => {
     const[name,setName]=useState("");
-    const [color, setColor] = useState("white");
+    const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
     const[sign_date,setSignDate]=useState("");
     const[status,setStatus]=useState("");
@@ -20,6 +22,10 @@ const FormAddErga = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
     const[msg,setMsg]=useState("");
+
+    const handleColorChange = (color) => {
+        setColor(color.hex);
+    };
 
 
     const navigate = useNavigate();
@@ -70,7 +76,7 @@ const FormAddErga = () => {
                     <div className="field">
                         <label  className="label">ΧΡΩΜΑ</label>
                         <div className="control">
-                            <input type="text" className="input" value={color} onChange={(e)=> setColor(e.target.value)} placeholder='ΧΡΩΜΑ'/>
+                        <SketchPicker color={color} onChange={handleColorChange} />
                         </div>
                     </div>
 
