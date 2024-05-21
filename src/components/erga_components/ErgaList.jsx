@@ -49,6 +49,7 @@ const ErgaList = () => {
                     <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1</th>
                     <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2</th>
                     <th>ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3</th>
+                    <th>Κατηγορία Εργου</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,6 +71,7 @@ const ErgaList = () => {
                         <td>{ergo.estimate_payment_date}</td>
                         <td>{ergo.estimate_payment_date_2}</td>
                         <td>{ergo.estimate_payment_date_3}</td>
+                        <td>{ergo.erga_cat_id}</td>
 
 
                         <td>
