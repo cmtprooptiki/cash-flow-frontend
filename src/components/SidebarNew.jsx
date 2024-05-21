@@ -50,8 +50,8 @@ export const SidebarNew = () => {
                 <aside className="menu pl-2 has-shadow">
 
         {/* <div style={{ display: "block", height: "100vh" }}> */}
-      <Sidebar className="app" backgroundColor="#06603a">
-        <Menu backgroundColor="#06603a" renderMenuItemStyles={() => ({
+      <Sidebar className="app" backgroundColor="#61a4bf">
+        <Menu backgroundColor="#61a4bf" renderMenuItemStyles={() => ({
       '.menu-anchor': {
             backgroundColor: 'red',
             '&:hover': {
