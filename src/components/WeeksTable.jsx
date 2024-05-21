@@ -5,7 +5,7 @@ import 'moment/locale/en-gb'; // Adjust locale as necessary
 import axios from 'axios';
 import apiBaseUrl from '../apiConfig'
 
-const WeeksTable = ({ paradotea }) => {
+const WeeksTable = ({ paradotea, selectedDateType }) => {
  
   const [year, setYear] = useState(2024);
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -27,7 +27,7 @@ const WeeksTable = ({ paradotea }) => {
       const weekEnd = weekStart.clone().endOf('week');
 
       const itemsInWeek = paradotea.filter(item =>
-        moment(item.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+        moment(getDateBySelectedType(item)).isBetween(weekStart, weekEnd, 'day', '[]')
       );
 
       const weekAmount = itemsInWeek.reduce((sum, item) => sum + item.ammount_total, 0);
@@ -54,6 +54,19 @@ const WeeksTable = ({ paradotea }) => {
   // Handler for changing the selected month
   const handleMonthChange = (selectedOption) => {
     setSelectedMonth(selectedOption);
+  };
+
+  const getDateBySelectedType = (item) => {
+    switch (selectedDateType) {
+      case 'estimate_payment_date':
+      return new Date(item.estimate_payment_date);
+      case 'estimate_payment_date_2':
+        return new Date(item.estimate_payment_date_2);
+      case 'estimate_payment_date_3':
+        return new Date(item.estimate_payment_date_3);
+      default:
+        return new Date(item.estimate_payment_date);
+    }
   };
 
   return (
