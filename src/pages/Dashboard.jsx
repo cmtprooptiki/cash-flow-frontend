@@ -179,6 +179,10 @@ const Dashboard = () => {
   const [boxData, setBoxData] = useState([]);
   const [paradotea, setParadotea] = useState([]);
   const [erganames, setErgaListNames] = useState([]);
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [prevSelectedButton, setPrevSelectedButton] = useState(null);
+
+  
   
 
   useEffect(() => {
@@ -246,6 +250,8 @@ const Dashboard = () => {
 
   const handleDateTypeChange = (dateType) => {
     setSelectedDateType(dateType);
+    
+    setSelectedButton(dateType);
   };
 
   const getDateBySelectedType = (item) => {
@@ -282,19 +288,19 @@ const Dashboard = () => {
           </div>
           <div className="col-md-8">
             <div className="calendar-container">
-              <button className="Filters" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>
+              <button className="FiltersYear" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>
                 Previous Year
               </button>
-              <button className="Filters" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>
+              <button className="FiltersYear" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>
                 Next Year
               </button>
-              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
+              <button className={`Filters ${selectedButton === 'estimate_payment_date' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
                 Best-Case
               </button>
-              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
+              <button className={`Filters ${selectedButton === 'estimate_payment_date_2' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
                 Medium-Case
               </button>
-              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
+              <button className={`Filters ${selectedButton === 'estimate_payment_date_3' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
                 Worst-Case
               </button>
               <DragAndDropCalendar
