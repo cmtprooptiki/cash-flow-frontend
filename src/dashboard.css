@@ -71,3 +71,18 @@
     background-color: #0090FE;
     color: #EFEFEF;
 }
+
+.FiltersYear
+{
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+    border-radius: 15px;
+    background-color: #0090FE;
+    color: #EFEFEF;
+}
+
+.Filters.selected {
+    background-color: green;
+  }
