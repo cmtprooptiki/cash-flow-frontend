@@ -5,10 +5,15 @@ import 'moment/locale/en-gb'; // Adjust locale as necessary
 import axios from 'axios';
 import apiBaseUrl from '../apiConfig'
 
-const WeeksTable = ({ paradotea, selectedDateType }) => {
+const WeeksTable = ({ paradotea, selectedDateType, calendarDate, onDateChange  }) => {
  
-  const [year, setYear] = useState(2024);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [year, setYear] = useState(calendarDate.getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(calendarDate.getMonth());
+
+  useEffect(() => {
+    setYear(calendarDate.getFullYear());
+    setSelectedMonth(calendarDate.getMonth());
+  }, [calendarDate]);
 
   const monthsOptions = moment.months().map((month, index) => ({
     value: index,
@@ -27,11 +32,10 @@ const WeeksTable = ({ paradotea, selectedDateType }) => {
       const weekEnd = weekStart.clone().endOf('week');
 
       const itemsInWeek = paradotea.filter(item =>
-        moment(getDateBySelectedType(item)).isBetween(weekStart, weekEnd, 'day', '[]')
+        moment(item[selectedDateType]).isBetween(weekStart, weekEnd, 'day', '[]')
       );
 
       const weekAmount = itemsInWeek.reduce((sum, item) => sum + item.ammount_total, 0);
-      //const weekErganames = itemsInWeek.map(item => item.erga.name).join(', ');
       const uniqueErganames = [...new Set(itemsInWeek.map(item => item.erga.name))].join(', ');
 
       weeks.push({
@@ -49,24 +53,14 @@ const WeeksTable = ({ paradotea, selectedDateType }) => {
   // Handler for changing the year
   const handleYearChange = (event) => {
     setYear(event.target.value);
+    const newDate = moment([event.target.value, selectedMonth]);
+    onDateChange(newDate.toDate());
   };
-
   // Handler for changing the selected month
   const handleMonthChange = (selectedOption) => {
-    setSelectedMonth(selectedOption);
-  };
-
-  const getDateBySelectedType = (item) => {
-    switch (selectedDateType) {
-      case 'estimate_payment_date':
-      return new Date(item.estimate_payment_date);
-      case 'estimate_payment_date_2':
-        return new Date(item.estimate_payment_date_2);
-      case 'estimate_payment_date_3':
-        return new Date(item.estimate_payment_date_3);
-      default:
-        return new Date(item.estimate_payment_date);
-    }
+    setSelectedMonth(selectedOption.value);
+    const newDate = moment([year, selectedOption.value]);
+    onDateChange(newDate.toDate());
   };
 
   return (
@@ -90,45 +84,44 @@ const WeeksTable = ({ paradotea, selectedDateType }) => {
             options={monthsOptions}
             className="basic-single-select"
             classNamePrefix="select"
+            value={monthsOptions.find(option => option.value === selectedMonth)}
             onChange={handleMonthChange}
           />
         </div>
       </div>
-      {selectedMonth && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Week</th>
-              <th>Amount Total</th>
-              <th>Projects</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getWeeksInMonth(year, selectedMonth.value).map((week, weekIndex) => (
-              <tr key={weekIndex}>
-                <td>
-                  {week.start} - {week.end}
-                </td>
-                <td>
-                  {week.amount}€
-                </td>
-                <td>
-                  {week.erganames}
-                </td>
-              </tr>
-            ))}
-            <tr>
-              <td><strong>Total Amount</strong></td>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Amount Total</th>
+            <th>Projects</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getWeeksInMonth(year, selectedMonth).map((week, weekIndex) => (
+            <tr key={weekIndex}>
               <td>
-                <strong>
-                  {getWeeksInMonth(year, selectedMonth.value).reduce((sum, week) => sum + week.amount, 0)}€
-                </strong>
+                {week.start} - {week.end}
               </td>
-              <td></td>
+              <td>
+                {week.amount}€
+              </td>
+              <td>
+                {week.erganames}
+              </td>
             </tr>
-          </tbody>
-        </table>
-      )}
+          ))}
+          <tr>
+            <td><strong>Total Amount</strong></td>
+            <td>
+              <strong>
+                {getWeeksInMonth(year, selectedMonth).reduce((sum, week) => sum + week.amount, 0)}€
+              </strong>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 
