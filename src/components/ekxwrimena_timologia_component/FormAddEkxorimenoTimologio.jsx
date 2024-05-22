@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -7,12 +7,45 @@ const FormAddEkxorimenoTimologio = () =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState("");
-    const[bank_date,setBank_Date]=useState("");
+    const[bank_date,setBank_Date]=useState(null);
     const[customer_ammount,setCustomer_Ammount]=useState("");
-    const[cust_date,setCust_Date]=useState("");
+    const[cust_date,setCust_Date]=useState(null);
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
+
+
+    const [timologia,setTimologia]=useState([]);
+
+    useEffect(()=>{
+        getTimologia()
+    },[]);
+
+    const getTimologia = async() =>{
+        const response = await axios.get(`${apiBaseUrl}/timologia`);
+        setTimologia(response.data);
+    }
+
+    const handleTimologiaChange = async (e) => {
+        const selectedId = e.target.value;
+        setTimologia_Id(selectedId);
+
+        if (selectedId) {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`);
+                const timologio = response.data;
+                console.log(timologio)
+
+                setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
+                setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
+            } catch (error) {
+                console.error("Error fetching timologio data:", error);
+            }
+        }
+    }
+
+
+
 
     const saveEkxorimena_Timologia = async (e) =>{
         e.preventDefault();
@@ -40,17 +73,37 @@ const FormAddEkxorimenoTimologio = () =>
                 <div className="content">
                 <form onSubmit={saveEkxorimena_Timologia}>
                 <p className='has-text-centered'>{msg}</p>
-                <div className="field">
+
+
+
+                {/* <div className="field">
                         <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
                         <div className="control">
                             <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
                         </div>
+                    </div> */}
+
+                <div className="field">
+                        <label className="label">Τιμολόγιο</label>
+                        <div className="control">
+                            <select className='input' onChange={handleTimologiaChange} value={timologia_id}>
+                                <option value="" disabled selected>Επιλέξτε Τιμολόγιο</option>
+                                {timologia.map((timologio, index) => (
+                                    <option key={timologio.id} value={timologio.id}>{timologio.id}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
+
+
+
+
+
         
                     <div className="field">
-                        <label  className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
+                        <label className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={bank_ammount} onChange={(e)=> setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ'/>
+                            <input type="text" className="input" value={bank_ammount} onChange={(e) => setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ' />
                         </div>
                     </div>
 
