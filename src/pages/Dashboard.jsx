@@ -35,407 +35,315 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const Dashboard = () => {
 
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const { isError } = useSelector(state => state.auth);
-
-//   const [calendarDate, setCalendarDate] = useState(new Date());
-
-//   const handleYearChange = (increment) => {
-//     const newDate = new Date(calendarDate);
-//     newDate.setFullYear(calendarDate.getFullYear() + increment);
-//     setCalendarDate(newDate);
-//   };
-
-//   useEffect(() => {
-//     dispatch(getMe());
-//     // fetchData(); // Fetch data from the database
-//   }, [dispatch]);
-
-//   useEffect(() => {
-//     if (isError) {
-//       navigate("/");
-//     }
-//   }, [isError, navigate]);
-
-// //Kodikas ippo
-//   //const [events, setEvents] = useState([]);
  
-//   //const [selectedEvent, setSelectedEvent] = useState(null); // State variable to store selected event
-//   //const [selectedSlot, setSelectedSlot] = useState(null); // State variable to store selected slot
- 
-//   ///test
-//   //const [showModal, setShowModal] = useState(false);
 
-//   //const [newDate, setNewDate] = useState(null);
+//Kodikas ippo
+  //const [events, setEvents] = useState([]);
  
-//   const [eventClickedFirst, setEventClickedFirst] = useState(false); // Flag to track if an event was clicked first
-//   //const [details,setDetails]=useState(false)
-//   const [box_data,setBoxData]=useState([])
+  //const [selectedEvent, setSelectedEvent] = useState(null); // State variable to store selected event
+  //const [selectedSlot, setSelectedSlot] = useState(null); // State variable to store selected slot
+ 
+  ///test
+  //const [showModal, setShowModal] = useState(false);
+
+  //const [newDate, setNewDate] = useState(null);
+ 
+ 
+  
+  // function details_scene(){
+  //   setDetails(true)
+  //   setEventClickedFirst(false)
+  // }
 
   
-//   // function details_scene(){
-//   //   setDetails(true)
-//   //   setEventClickedFirst(false)
-//   // }
-
   
-//   const handleEventClick = (event,item) => {
-//     //setSelectedEvent(event); // Store selected event in state variable
-//     setEventClickedFirst(true); // Set flag indicating event was clicked first
-//     //setDetails(true)
-//     console.log(item)
-//     setBoxData(item)
-//     console.log(event)
-//     //test
-//     //setShowModal(true);
-//   };
  
-//   // const handleSlotSelect = async slotInfo => {
-//   //   if (eventClickedFirst && selectedEvent) {
-//   //     try {
-//   //       const updatedDate = moment.utc(slotInfo.end).startOf('day').toDate();
-//   //       const response = await axios.patch(`${apiBaseUrl}/paradotea/${selectedEvent.id}`, {
-//   //         estimate_payment_date: updatedDate
-//   //       });
+  // const handleSlotSelect = async slotInfo => {
+  //   if (eventClickedFirst && selectedEvent) {
+  //     try {
+  //       const updatedDate = moment.utc(slotInfo.end).startOf('day').toDate();
+  //       const response = await axios.patch(`${apiBaseUrl}/paradotea/${selectedEvent.id}`, {
+  //         estimate_payment_date: updatedDate
+  //       });
         
  
-//   //       if (response.status === 200) {
-//   //         setParadotea(prev => prev.map(item =>
-//   //           item.id === selectedEvent.id ? { ...item, estimate_payment_date: updatedDate } : item
-//   //         ));
-//   //         setSelectedEvent(null);
-//   //         setEventClickedFirst(false);
-//   //         /////test
-//   //         setShowModal(false);
-//   //       }
-//   //     } catch (error) {
-//   //       console.error('Failed to update event', error);
-//   //     }
-//   //   } else {
-//   //     console.log("Slot selected without clicking event first");
-//   //   }
-//   // };
+  //       if (response.status === 200) {
+  //         setParadotea(prev => prev.map(item =>
+  //           item.id === selectedEvent.id ? { ...item, estimate_payment_date: updatedDate } : item
+  //         ));
+  //         setSelectedEvent(null);
+  //         setEventClickedFirst(false);
+  //         /////test
+  //         setShowModal(false);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to update event', error);
+  //     }
+  //   } else {
+  //     console.log("Slot selected without clicking event first");
+  //   }
+  // };
 
 
-// //telos ippo code
+//telos ippo code
 
 
-//   const [paradotea, setParadotea] = useState([]);
-//   const [erganames, setErgaListNames] = useState([]);
-//   // const [events, setEvents] = useState([]);
+ 
 
-//   useEffect(()=>{
-//       getParadotea()
-//       getErgaListNames()
-//   },[]);
+      // const testData = [
+      //   {
+      //     id: 1,
+      //     title: 'Event 1',
+      //     start: new Date(2024, 4, 15, 10, 0), // Year, Month (0-based), Day, Hour, Minute
+      //     end: new Date(2024, 4, 15, 12, 0)
+      //   },
 
-//   const getParadotea = async() =>{
-//       const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
-//       setParadotea(response.data);
+      //   {
+      //     id: 2,
+      //     title: 'Event 2',
+      //     start: new Date(2024, 4, 16, 14, 0),
+      //     end: new Date(2024, 4, 16, 16, 0)
+      //   }
+      // ];
 
-//       // const testData = [
-//       //   {
-//       //     id: 1,
-//       //     title: 'Event 1',
-//       //     start: new Date(2024, 4, 15, 10, 0), // Year, Month (0-based), Day, Hour, Minute
-//       //     end: new Date(2024, 4, 15, 12, 0)
-//       //   },
-
-//       //   {
-//       //     id: 2,
-//       //     title: 'Event 2',
-//       //     start: new Date(2024, 4, 16, 14, 0),
-//       //     end: new Date(2024, 4, 16, 16, 0)
-//       //   }
-//       // ];
-
-//       // setEvents(testData); // Set test data as events
+      // setEvents(testData); // Set test data as events
 //   }
-
-//   const getErgaListNames = async() =>{
-//     const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
-//     setErgaListNames(response.data);
-
     
 // }
-// //test
-// //const handleClose = () => setShowModal(false);
+//test
+//const handleClose = () => setShowModal(false);
 
-//   // Function to fetch data from the database
+ 
 
-//   const handleEventDrop = async ({ event, start, end }) => {
-//     const updatedDate = moment.utc(start).startOf('day').toDate();
-//     try {
-//       const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.id}`, {
-//         estimate_payment_date: updatedDate
-//       });
-//       if (response.status === 200) {
-//         setParadotea(prev => prev.map(item =>
-//           item.id === event.id ? { ...item, estimate_payment_date: updatedDate } : item
-//         ));
-//       }
-//     } catch (error) {
-//       console.error('Failed to update event', error);
-//     }
-//   }
-
-//   return (
-//     <Layout>
-//       <Welcome />
-//       <div className="container">
-//         <div className="row">
-//           <div className="col-md-4">
-//             <div className="scrollable-list">
-//             {erganames.map((item, index) => (
-//               <div key={index} className="list-item">
-//                 <div className="circle" style={{ backgroundColor: item.erga.color ,boxShadow: "0px 0px 4px 2px "+ item.erga.color}}></div>
-//                 <h4>{item.erga.name}</h4>
-//               </div>
-//             ))}
-//             </div>
-//           </div>
-//           <div className="col-md-8">
-//             <div className="calendar-container">
-//               {/* <Calendar
-//                 localizer={localizer}
-//                 events={paradotea.map(item => ({
-//                   id: item.id,
-//                   title: <div><div className="circle" style={{ backgroundColor: item.erga.color }}></div>{item.ammount_total} €</div>,
-//                   //title:<div><div className="circle" style={{ backgroundColor: 'green' }}></div><h2 style={{fontSize:"18px",backgroundColor:"green"}}>{item.ammount_total},HELLO</h2></div>,
-//                   //title:newhtml,
-//                   start: new Date(item.estimate_payment_date),
-//                   end: new Date(item.estimate_payment_date) // You may need to adjust this based on your data
+              {/* <Calendar
+                localizer={localizer}
+                events={paradotea.map(item => ({
+                  id: item.id,
+                  title: <div><div className="circle" style={{ backgroundColor: item.erga.color }}></div>{item.ammount_total} €</div>,
+                  //title:<div><div className="circle" style={{ backgroundColor: 'green' }}></div><h2 style={{fontSize:"18px",backgroundColor:"green"}}>{item.ammount_total},HELLO</h2></div>,
+                  //title:newhtml,
+                  start: new Date(item.estimate_payment_date),
+                  end: new Date(item.estimate_payment_date) // You may need to adjust this based on your data
                  
-//                 }))}
-//                 startAccessor="start"
-//                 endAccessor="end"
-//                 BackgroundWrapper= "red"
-//                 style={{ height: 500 }}
-//                 onSelectEvent={handleEventClick}
-//                 onSelectSlot={handleSlotSelect}
-//                 selectable={true}
-//                 popup
-//                 resizable
-//                 eventPropGetter={(myEventsList) => {
-//                   const backgroundColor = myEventsList.colorEvento ? myEventsList.colorEvento : 'lightgray';
-//                   const color = myEventsList.color ? myEventsList.color : 'white';
-//                   return { style: { backgroundColor ,color} }
+                }))}
+                startAccessor="start"
+                endAccessor="end"
+                BackgroundWrapper= "red"
+                style={{ height: 500 }}
+                onSelectEvent={handleEventClick}
+                onSelectSlot={handleSlotSelect}
+                selectable={true}
+                popup
+                resizable
+                eventPropGetter={(myEventsList) => {
+                  const backgroundColor = myEventsList.colorEvento ? myEventsList.colorEvento : 'lightgray';
+                  const color = myEventsList.color ? myEventsList.color : 'white';
+                  return { style: { backgroundColor ,color} }
 
-//                 }}
-//               /> */}
-//                   <button style = {{marginRight: 20, marginBottom: 20}} onClick={() => handleYearChange(-1)}>Previous Year</button>
-//                   <button style = {{marginBottom: 20}} onClick={() => handleYearChange(1)}>Next Year</button>
-//                  <DragAndDropCalendar
-//                 localizer={localizer}
-//                 date={calendarDate} // Set the current date for the calendar
-//                 onNavigate={(date) => setCalendarDate(date)} // Update the state when navigation happens
-//                 events={paradotea.map(item => ({
-//                   id: item.id,
-//                   title: <div><div className="circle" style={{ backgroundColor: item.erga.color,boxShadow: "0px 0px 4px 2px "+ item.erga.color }}></div>{item.ammount_total} €</div>,
-//                   start: new Date(item.estimate_payment_date),
-//                   end: new Date(item.estimate_payment_date),
-//                   item: item, // Include the entire item object here
-
-//                 })) || []}
-//                 startAccessor="start"
-//                 endAccessor="end"
-//                 style={{ height: 500 }}
-//                 onEventDrop={handleEventDrop}
-//                 //onSelectEvent={handleEventClick}
-                
-//                 onSelectEvent={(event) => handleEventClick(event, event.item )}
-//                 popup
-//                 resizable
-//                 draggableAccessor={() => true}
-//               />
-//             </div>
-//           </div>
-//         </div>
-//         <div className='row'>
-//         {eventClickedFirst===true  && (<InfoBox item={box_data} />
-        
-          
-//         )}
-//         </div>
-//       </div>
-
-//       <div className="container">
-//         <div className="row">
-//           <div className="col-md-12">
-//             <WeeksTable paradotea={paradotea}/> {/* Use the WeeksTable component */}
-//           </div>
-//         </div>
-//       </div>
-//       {/* Modal for event details 
-//       <Modal show={showModal} onHide={handleClose}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Event Details</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>
-//           {selectedEvent ? (
-//             <>
-//               <p>ID: {selectedEvent.id}</p>
-//               <p>Title: {selectedEvent.title}</p>
-//               <p>Start: {selectedEvent.start.toString()}</p>
-//               <p>End: {selectedEvent.end.toString()}</p>
-//             </>
-//           ) : (
-//             <p>No event selected</p>
-//           )}
-//         </Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={handleClose}>
-//             Close
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>*/}
-//     </Layout>
+                }}
+              /> */}
+      {/* Modal for event details 
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Event Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedEvent ? (
+            <>
+              <p>ID: {selectedEvent.id}</p>
+              <p>Title: {selectedEvent.title}</p>
+              <p>Start: {selectedEvent.start.toString()}</p>
+              <p>End: {selectedEvent.end.toString()}</p>
+            </>
+          ) : (
+            <p>No event selected</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>*/}
+  //   </Layout>
     
-//   );
+  // );
 
-const dispatch = useDispatch();
-const navigate = useNavigate();
-const { isError } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isError } = useSelector((state) => state.auth);
 
-const [calendarDate, setCalendarDate] = useState(new Date());
-const [selectedDateType, setSelectedDateType] = useState('estimate_payment_date');
-const [eventClickedFirst, setEventClickedFirst] = useState(false);
-const [boxData, setBoxData] = useState([]);
-const [paradotea, setParadotea] = useState([]);
-const [erganames, setErgaListNames] = useState([]);
+  const [calendarDate, setCalendarDate] = useState(new Date());
+  const [selectedDateType, setSelectedDateType] = useState('estimate_payment_date');
+  const [eventClickedFirst, setEventClickedFirst] = useState(false);
+  const [boxData, setBoxData] = useState([]);
+  const [paradotea, setParadotea] = useState([]);
+  const [erganames, setErgaListNames] = useState([]);
+  
 
-const handleYearChange = (increment) => {
-  const newDate = new Date(calendarDate);
-  newDate.setFullYear(calendarDate.getFullYear() + increment);
-  setCalendarDate(newDate);
-};
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
 
-useEffect(() => {
-  dispatch(getMe());
-}, [dispatch]);
-
-useEffect(() => {
-  if (isError) {
-    navigate("/");
-  }
-}, [isError, navigate]);
-
-useEffect(() => {
-  getParadotea();
-  getErgaListNames();
-}, []);
-
-const getParadotea = async () => {
-  const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
-  setParadotea(response.data);
-};
-
-const getErgaListNames = async () => {
-  const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
-  setErgaListNames(response.data);
-};
-
-const handleEventClick = (event, item) => {
-  setEventClickedFirst(true);
-  setBoxData(item);
-};
-
-const handleEventDrop = async ({ event, start, end }) => {
-  const updatedDate = moment.utc(start).startOf('day').toDate();
-  try {
-    const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.id}`, {
-      estimate_payment_date: updatedDate
-    });
-    if (response.status === 200) {
-      setParadotea(prev => prev.map(item =>
-        item.id === event.id ? { ...item, estimate_payment_date: updatedDate } : item
-      ));
+  useEffect(() => {
+    if (isError) {
+      navigate('/');
     }
-  } catch (error) {
-    console.error('Failed to update event', error);
-  }
-};
+  }, [isError, navigate]);
 
-const handleDateTypeChange = (dateType) => {
-  setSelectedDateType(dateType);
-};
+  useEffect(() => {
+    getParadotea();
+    getErgaListNames();
+  }, []);
 
-const getDateBySelectedType = (item) => {
-  switch (selectedDateType) {
-    case 'estimate_payment_date_2':
-      return new Date(item.estimate_payment_date_2);
-    case 'estimate_payment_date_3':
-      return new Date(item.estimate_payment_date_3);
-    default:
-      return new Date(item.estimate_payment_date);
-  }
-};
+  const getParadotea = async () => {
+    const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
+    setParadotea(response.data);
+  };
 
-return (
-  <Layout>
-    <Welcome />
-    <div className="container">
-      <div className="row">
-        <div className="col-md-4">
-          <div className="scrollable-list">
-            {erganames.map((item, index) => (
-              <div key={index} className="list-item">
-                <div className="circle" style={{ backgroundColor: item.erga.color, boxShadow: "0px 0px 4px 2px " + item.erga.color }}></div>
-                <h4>{item.erga.name}</h4>
-              </div>
-            ))}
+  const getErgaListNames = async () => {
+    const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
+    setErgaListNames(response.data);
+  };
+
+  const handleYearChange = (increment) => {
+    const newDate = new Date(calendarDate);
+    newDate.setFullYear(calendarDate.getFullYear() + increment);
+    setCalendarDate(newDate);
+
+  };
+
+  const handleDateChange = (newDate) => {
+    setCalendarDate(newDate);
+  };
+
+  
+
+  const handleEventClick = (event, item) => {
+    setEventClickedFirst(true);
+    setBoxData(item);
+  };
+
+  const handleEventDrop = async ({ event, start, end }) => {
+    const updatedDate = moment.utc(start).startOf('day').toDate();
+    const dateTypeKey = selectedDateType;
+
+    try {
+      const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.id}`, {
+        [dateTypeKey]: updatedDate
+      });
+      if (response.status === 200) {
+        setParadotea((prev) =>
+          prev.map((item) =>
+            item.id === event.id ? { ...item, [dateTypeKey]: updatedDate } : item
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Failed to update event', error);
+    }
+  };
+
+  const handleDateTypeChange = (dateType) => {
+    setSelectedDateType(dateType);
+  };
+
+  const getDateBySelectedType = (item) => {
+    switch (selectedDateType) {
+      case 'estimate_payment_date_2':
+        return new Date(item.estimate_payment_date_2);
+      case 'estimate_payment_date_3':
+        return new Date(item.estimate_payment_date_3);
+      default:
+        return new Date(item.estimate_payment_date);
+    }
+  };
+
+  return (
+    <Layout>
+      <Welcome />
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4">
+            <div className="scrollable-list">
+              {erganames.map((item, index) => (
+                <div key={index} className="list-item">
+                  <div
+                    className="circle"
+                    style={{
+                      backgroundColor: item.erga.color,
+                      boxShadow: '0px 0px 4px 2px ' + item.erga.color,
+                    }}
+                  ></div>
+                  <h4>{item.erga.name}</h4>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="col-md-8">
+            <div className="calendar-container">
+              <button className="Filters" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>
+                Previous Year
+              </button>
+              <button className="Filters" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>
+                Next Year
+              </button>
+              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
+                Best-Case
+              </button>
+              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
+                Medium-Case
+              </button>
+              <button className="Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
+                Worst-Case
+              </button>
+              <DragAndDropCalendar
+                localizer={localizer}
+                date={calendarDate}
+                onNavigate={(date) => setCalendarDate(date)}
+                events={paradotea.map((item) => ({
+                  id: item.id,
+                  title: (
+                    <div>
+                      <div
+                        className="circle"
+                        style={{
+                          backgroundColor: item.erga.color,
+                          boxShadow: '0px 0px 4px 2px ' + item.erga.color,
+                        }}
+                      ></div>
+                      {item.ammount_total} €
+                    </div>
+                  ),
+                  start: getDateBySelectedType(item),
+                  end: getDateBySelectedType(item),
+                  item: item,
+                }))}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 500 }}
+                onEventDrop={handleEventDrop}
+                onSelectEvent={(event) => handleEventClick(event, event.item)}
+                popup
+                resizable
+                draggableAccessor={() => true}
+              />
+            </div>
           </div>
         </div>
-        <div className="col-md-8">
-          <div className="calendar-container">
-            <button className = "Filters" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>Previous Year</button>
-            <button className = "Filters" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>Next Year</button>
-            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
-              Best-Case
-            </button>
-            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
-              Medium-Case
-            </button>
-            <button className = "Filters" style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
-              Worst-Case
-            </button>
-            <DragAndDropCalendar
-              localizer={localizer}
-              date={calendarDate}
-              onNavigate={(date) => setCalendarDate(date)}
-              events={paradotea.map(item => ({
-                id: item.id,
-                title: <div><div className="circle" style={{ backgroundColor: item.erga.color, boxShadow: "0px 0px 4px 2px " + item.erga.color }}></div>{item.ammount_total} €</div>,
-                start: getDateBySelectedType(item),
-                end: getDateBySelectedType(item),
-                item: item,
-              }))}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 500 }}
-              onEventDrop={handleEventDrop}
-              onSelectEvent={(event) => handleEventClick(event, event.item)}
-              popup
-              resizable
-              draggableAccessor={() => true}
-            />
+        <div className="row">
+          {eventClickedFirst === true && <InfoBox item={boxData} />}
+        </div>
+      </div>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <WeeksTable paradotea={paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/>
           </div>
         </div>
       </div>
-      <div className='row'>
-        {eventClickedFirst === true && <InfoBox item={boxData} />}
-      </div>
-    </div>
-    <div className="container">
-      <div className="row">
-        <div className="col-md-12">
-          <WeeksTable paradotea={paradotea} selectedDateType={selectedDateType}/> {/* Use the WeeksTable component */}
-        </div>
-      </div>
-    </div>
-  </Layout>
-);
+    </Layout>
+  );
   
 };
 
