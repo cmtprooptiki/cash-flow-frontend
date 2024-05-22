@@ -1,9 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
 const FormAddTimologia = () => {
+
+    const[tempErga,setTempErga]=useState("");
+
     const[invoice_date,setInvoice_date]=useState("");
     const[ammount_no_tax,setAmmount_no_tax]=useState("");
     const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
@@ -15,6 +18,54 @@ const FormAddTimologia = () => {
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
+
+    const [erga,setErga]=useState([]);
+    const [paradotea,setParadoteaByErgo]=useState([]);
+    useEffect(()=>{
+        getErga()
+    },[]);
+
+    const getErga = async() =>{
+        const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
+        console.log(response.data)
+        setErga(response.data);
+    }
+    const handleErgaChange = async (e) => {
+        const selectedId = e.target.value;
+        setTempErga(selectedId);
+        console.log(selectedId)
+        if (selectedId) {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
+                const paradoteaByErgoId = response.data;
+                console.log(paradoteaByErgoId)
+                setParadoteaByErgo(paradoteaByErgoId)
+                // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
+                // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
+            } catch (error) {
+                console.error("Error fetching timologio data:", error);
+            }
+        }
+    }
+    
+    const handleParadoteaChange = async (e) => {
+        // const selectedId = e.target.value;
+        // setTempErga(selectedId);
+        console.log("work")
+        // if (selectedId) {
+        //     try {
+        //         const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
+        //         const paradoteaByErgoId = response.data;
+        //         console.log(paradoteaByErgoId)
+        //         setParadoteaByErgo(paradoteaByErgoId)
+        //         // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
+        //         // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
+        //     } catch (error) {
+        //         console.error("Error fetching timologio data:", error);
+        //     }
+        // }
+    }
+
 
     const saveTimologia = async (e) =>{
         e.preventDefault();
@@ -45,6 +96,33 @@ const FormAddTimologia = () => {
                 <div className="content">
                 <form onSubmit={saveTimologia}>
                 <p className='has-text-centered'>{msg}</p>
+
+
+                <div className="field">
+    <label className="label">Εργα</label>
+    <div className="control">
+        <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+            <option value="" disabled>Επιλέξτε Εργο</option>
+            {erga.map((ergo, index) => (
+                <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
+            ))}
+        </select>
+    </div>
+</div>
+
+<div className="field">
+    <label className="label">Παραδοτεα</label>
+    <div className="control">
+        <select className="input" onChange={(e) => handleParadoteaChange(e)} defaultValue="">
+            <option value="" disabled>Επιλέξτε Παραδοτεο</option>
+            {paradotea.map((paradoteo, index) => (
+                <option key={index} value={paradoteo.id}>{paradoteo.title}</option>
+            ))}
+        </select>
+    </div>
+</div>
+
+
                 <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
                         <div className="control">
