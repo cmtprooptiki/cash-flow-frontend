@@ -3,6 +3,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
+import Select from 'react-select';
+// import 'react-select/dist/react-select.css'; 
+
 const FormAddTimologia = () => {
 
     const[tempErga,setTempErga]=useState("");
@@ -21,6 +24,11 @@ const FormAddTimologia = () => {
 
     const [erga,setErga]=useState([]);
     const [paradotea,setParadoteaByErgo]=useState([]);
+
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+
     useEffect(()=>{
         getErga()
     },[]);
@@ -48,24 +56,35 @@ const FormAddTimologia = () => {
         }
     }
     
-    const handleParadoteaChange = async (e) => {
-        // const selectedId = e.target.value;
-        // setTempErga(selectedId);
-        console.log("work")
-        // if (selectedId) {
-        //     try {
-        //         const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
-        //         const paradoteaByErgoId = response.data;
-        //         console.log(paradoteaByErgoId)
-        //         setParadoteaByErgo(paradoteaByErgoId)
-        //         // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
-        //         // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
-        //     } catch (error) {
-        //         console.error("Error fetching timologio data:", error);
-        //     }
-        // }
-    }
 
+    
+  const handleParadoteaChange = (selectedOptions) => {
+    setSelectedOptions(selectedOptions);
+    // Additional logic to handle change
+  };
+
+    // const handleParadoteaChange = async (e) => {
+    //     // const selectedId = e.target.value;
+    //     // setTempErga(selectedId);
+    //     console.log("work")
+    //     // if (selectedId) {
+    //     //     try {
+    //     //         const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
+    //     //         const paradoteaByErgoId = response.data;
+    //     //         console.log(paradoteaByErgoId)
+    //     //         setParadoteaByErgo(paradoteaByErgoId)
+    //     //         // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
+    //     //         // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
+    //     //     } catch (error) {
+    //     //         console.error("Error fetching timologio data:", error);
+    //     //     }
+    //     // }
+    // }
+
+    const options = paradotea.map(paradoteo => ({
+        value: paradoteo.id,
+        label: paradoteo.title
+      }));
 
     const saveTimologia = async (e) =>{
         e.preventDefault();
@@ -111,16 +130,30 @@ const FormAddTimologia = () => {
 </div>
 
 <div className="field">
+      <label className="label">Παραδοτεα</label>
+      <div className="control">
+        <Select
+          isMulti
+          value={selectedOptions}
+          onChange={handleParadoteaChange}
+          options={options}
+          placeholder="Επιλέξτε Παραδοτεα"
+          classNamePrefix="react-select"
+        />
+      </div>
+    </div>
+
+{/* <div className="field">
     <label className="label">Παραδοτεα</label>
     <div className="control">
-        <select className="input" onChange={(e) => handleParadoteaChange(e)} defaultValue="">
+        <select isMulti className="input" onChange={(e) => handleParadoteaChange(e)} defaultValue="">
             <option value="" disabled>Επιλέξτε Παραδοτεο</option>
             {paradotea.map((paradoteo, index) => (
                 <option key={index} value={paradoteo.id}>{paradoteo.title}</option>
             ))}
         </select>
     </div>
-</div>
+</div> */}
 
 
                 <div className="field">
