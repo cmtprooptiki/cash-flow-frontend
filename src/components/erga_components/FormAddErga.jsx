@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -14,6 +14,7 @@ const FormAddErga = () => {
     const[estimate_start_date,setEstimateStartDate]=useState("");
     const[project_manager,setProjectManager]=useState("")
     const[customer_id,setCustomerId]=useState("")
+    const[customer,setCustomer]=useState([])
     const[shortname,setShortName]=useState("")
     const[ammount,setAmmount]=useState("")
     const[ammount_vat,setAmmount_Vat]=useState("")
@@ -21,12 +22,29 @@ const FormAddErga = () => {
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
-    const[erga_cat_id,setErga_cat_id]=useState("")
+    const[erga_cat_id,setErga_cat_id]=useState(null)
     const[msg,setMsg]=useState("");
 
     const handleColorChange = (color) => {
         setColor(color.hex);
     };
+
+    useEffect(()=>{
+        getCustomer()
+    },[]);
+
+    const getCustomer = async() =>{
+        const response = await axios.get(`${apiBaseUrl}/customer`);
+        console.log(response.data)
+        setCustomer(response.data);
+    }
+
+    const handleCustomerChange = async (e) => {
+        const selectedId = e.target.value;
+        //set(selectedId);
+        console.log(selectedId)
+        setCustomerId(selectedId)
+    }
 
 
     const navigate = useNavigate();
@@ -116,10 +134,15 @@ const FormAddErga = () => {
                     </div>
 
                     <div className="field">
-                        <label  className="label">ID ΠΕΛΑΤΗ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={customer_id} onChange={(e)=> setCustomerId(e.target.value)} placeholder='ID ΠΕΛΑΤΗ'/>
-                        </div>
+                    <label className="label">Πελατης</label>
+                            <div className="control">
+                                <select className="input" onChange={(e) => handleCustomerChange(e)} defaultValue="">
+                                    <option value="" disabled>Επιλέξτε ΠΕΛΑΤΗ</option>
+                                        {customer.map((specific_customer, index) => (
+                                            <option key={index} value={specific_customer.id}>{specific_customer.name}</option>
+                                        ))}
+                                </select>
+                            </div>
                     </div>
 
                     <div className="field">

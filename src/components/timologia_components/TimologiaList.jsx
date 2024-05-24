@@ -25,6 +25,7 @@ const TimologiaList = () => {
     }
 
     return(
+        <div style={{ overflowX: 'auto', maxWidth: '800px'}}>
         <div>
         <h1 className='title'>ΤΙΜΟΛΟΓΙΑ</h1>
         {user && user.role ==="admin" && (
@@ -78,6 +79,7 @@ const TimologiaList = () => {
             </tbody>
         </table>
         </div>
+    </div>
     </div>
     )
 }

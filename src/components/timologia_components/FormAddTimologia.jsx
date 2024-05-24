@@ -27,6 +27,7 @@ const FormAddTimologia = () => {
 
 
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
 
 
     useEffect(()=>{
@@ -35,18 +36,18 @@ const FormAddTimologia = () => {
 
     const getErga = async() =>{
         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
-        console.log(response.data)
+        //console.log(response.data)
         setErga(response.data);
     }
     const handleErgaChange = async (e) => {
         const selectedId = e.target.value;
         setTempErga(selectedId);
-        console.log(selectedId)
+        //console.log(selectedId)
         if (selectedId) {
             try {
                 const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
                 const paradoteaByErgoId = response.data;
-                console.log(paradoteaByErgoId)
+                //console.log(paradoteaByErgoId)
                 setParadoteaByErgo(paradoteaByErgoId)
                 // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
                 // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
@@ -60,6 +61,11 @@ const FormAddTimologia = () => {
     
   const handleParadoteaChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
+    console.log(selectedOptions)
+
+    const selectedIds = selectedOptions.map(option => option.value);
+    const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
+    setSelectedParadoteaDetails(selectedDetails);
     // Additional logic to handle change
   };
 
@@ -86,19 +92,52 @@ const FormAddTimologia = () => {
         label: paradoteo.title
       }));
 
+      const calculateTotalAmounts = () => {
+        let totalAmmount = 0;
+        let totalAmmountVat = 0;
+        let totalAmmountTotal = 0;
+
+        selectedParadoteaDetails.forEach(item => {
+            totalAmmount += item.ammount;
+            totalAmmountVat += item.ammount_vat;
+            totalAmmountTotal += item.ammount_total;
+        });
+
+
+        return {
+            totalAmmount,
+            totalAmmountVat,
+            totalAmmountTotal
+        };
+    };
+
+    const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts(selectedParadoteaDetails);
+
     const saveTimologia = async (e) =>{
         e.preventDefault();
         try{
-            await axios.post(`${apiBaseUrl}/timologia`, {
+            const response = await axios.post(`${apiBaseUrl}/timologia`, {
             invoice_date:invoice_date,
 
-            ammount_no_tax:ammount_no_tax,
-            ammount_tax_incl:ammount_tax_incl,
+            ammount_no_tax:totalAmmount,
+            ammount_tax_incl:totalAmmountVat,
             actual_payment_date: actual_payment_date,
-            ammount_of_income_tax_incl: ammount_of_income_tax_incl,
+            ammount_of_income_tax_incl: totalAmmountTotal,
             comments: comments,
             invoice_number: invoice_number
             });
+
+            const timologiaId = response.data.id; // Get the ID of the newly added timologio
+            console.log("The response: ", response)
+            await Promise.all(selectedParadoteaDetails.map(async (paradoteo) => {
+                console.log(paradoteo.id)
+                await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
+                    "timologia_id": timologiaId
+                });
+            }));
+
+            console.log("Done")
+            
             navigate("/timologia");
         }catch(error){
             if(error.response){
@@ -156,13 +195,41 @@ const FormAddTimologia = () => {
 </div> */}
 
 
+
+
+{/* Ippos experiment */}
+
+                                <div className="field">
+                                <label className="label">Σύνολο Ποσό</label>
+                                <div className="control">
+                                    <input type="text" className="input" value={totalAmmount}  readOnly />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σύνολο Φ.Π.Α.</label>
+                                <div className="control">
+                                    <input type="text" className="input" value={totalAmmountVat}  readOnly />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σύνολο Ποσό με Φ.Π.Α.</label>
+                                <div className="control">
+                                    <input type="text" className="input" value={totalAmmountTotal}  readOnly />
+                                </div>
+                            </div>
+
+            {/*End of ippos experiment */}
+
+
                 <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
+                            <input type="date" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
                         </div>
                     </div>
-        
+                {/*
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α</label>
                         <div className="control">
@@ -176,20 +243,21 @@ const FormAddTimologia = () => {
                             <input type="text" className="input" value={ammount_tax_incl} onChange={(e)=> setAmmount_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΜΕ Φ.Π.Α'/>
                         </div>
                     </div>
-
+                    */}
                     <div className="field">
                         <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
+                            <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
                         </div>
                     </div>
-
+                    {/*
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α</label>
                         <div className="control">
                             <input type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α'/>
                         </div>
                     </div>
+                */}
 
                     <div className="field">
                         <label  className="label">ΠΑΡΑΤΗΡΗΣΕΙΣ</label>

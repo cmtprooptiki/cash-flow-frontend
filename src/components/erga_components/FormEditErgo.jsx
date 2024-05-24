@@ -21,7 +21,7 @@ const FormEditErgo= () => {
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
-    const[erga_cat_id,set_erga_cat_id]=useState("")
+    const[erga_cat_id,set_erga_cat_id]=useState(null)
     const[msg,setMsg]=useState("");
 
 
