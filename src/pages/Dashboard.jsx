@@ -33,6 +33,8 @@ import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable comp
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
+
+
 const Dashboard = () => {
 
  
@@ -181,7 +183,8 @@ const Dashboard = () => {
   const [erganames, setErgaListNames] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
   const [prevSelectedButton, setPrevSelectedButton] = useState(null);
-
+  const [income_paradotea,setIncome_paradotea]=useState([])
+  const [income_ekx,setIncome_ekx]=useState([])
   
   
 
@@ -198,12 +201,25 @@ const Dashboard = () => {
   useEffect(() => {
     getParadotea();
     getErgaListNames();
+    getIncome_paradotea();
+    getIncome_ekx();
   }, []);
 
   const getParadotea = async () => {
     const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
     setParadotea(response.data);
   };
+
+  const getIncome_paradotea=async () =>{
+    const response = await axios.get(`${apiBaseUrl}/CheckParadotea`);
+    setIncome_paradotea(response.data);
+    //console.log(response.data)
+  }
+  const getIncome_ekx=async () =>{
+    const response = await axios.get(`${apiBaseUrl}/ParadoteaNotEk`);
+    setIncome_ekx(response.data);
+    //console.log(response.data)
+  }
 
   const getErgaListNames = async () => {
     const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
@@ -264,6 +280,51 @@ const Dashboard = () => {
         return new Date(item.estimate_payment_date);
     }
   };
+  //console.log(income_paradotea)
+  const MyEvents=income_paradotea.map((item) => ({
+    id: item.ekxorimena_timologia_id,
+    title: (
+      <div>
+        <div
+          className="circle"
+          style={{
+            backgroundColor: item.paradotea.erga.color,
+            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+          }}
+        ></div>
+        {item.paradotea.ammount_total} €
+      </div>
+    ),
+    start: getDateBySelectedType(item.paradotea),
+    end: getDateBySelectedType(item.paradotea),
+    item: item,
+  }));
+  //console.log(MyEvents)
+   const ekx=(income_ekx.map((item) => ({
+    id: item.ekxorimena_timologia_id,
+    title: (
+      <div>
+        <div
+          className="circle"
+          style={{
+            backgroundColor: item.paradotea.erga.color,
+            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+          }}
+        ></div>
+        {console.log(item.Ekxorimena_Timologium.bank_ammount)}
+        {item.Ekxorimena_Timologium.bank_ammount} €
+      </div>
+    ),
+    start: getDateBySelectedType(item.Ekxorimena_Timologium.bank_date),
+    end: getDateBySelectedType(item.Ekxorimena_Timologium.bank_date),
+    item: item,
+  })));
+  function joinjson(items){
+    MyEvents.push(items)
+  }
+  ekx.forEach(joinjson)
+  console.log(ekx)
+  //console.log(MyEvents)
 
   return (
     <Layout>
@@ -307,28 +368,13 @@ const Dashboard = () => {
               <button className={`Filters ${selectedButton === 'estimate_payment_date_3' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
                 Worst-Case
               </button>
+              
               <DragAndDropCalendar
                 localizer={localizer}
                 date={calendarDate}
                 onNavigate={(date) => setCalendarDate(date)}
-                events={paradotea.map((item) => ({
-                  id: item.id,
-                  title: (
-                    <div>
-                      <div
-                        className="circle"
-                        style={{
-                          backgroundColor: item.erga.color,
-                          boxShadow: '0px 0px 4px 2px ' + item.erga.color,
-                        }}
-                      ></div>
-                      {item.ammount_total} €
-                    </div>
-                  ),
-                  start: getDateBySelectedType(item),
-                  end: getDateBySelectedType(item),
-                  item: item,
-                }))}
+                
+                events={MyEvents}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 500 }}
