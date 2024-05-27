@@ -86,3 +86,9 @@
 .Filters.selected {
     background-color: green;
   }
+
+.Scenario
+{
+    font-size: 30px;
+    font-weight: bold;
+}

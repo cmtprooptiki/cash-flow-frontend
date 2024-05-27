@@ -46,39 +46,39 @@ const FormAddCustomer = () => {
                 <div className="field">
                         <label  className="label">ΕΠΩΝΥΜΙΑ</label>
                         <div className="control">
-                            <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'/>
+                            <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΕΠΩΝΥΜΙΑ'/>
                         </div>
                     </div>
                     <div className="field">
                         <label  className="label">Α.Φ.Μ.</label>
                         <div className="control">
-                            <input type="text" className="input" value={afm} onChange={(e)=> setAfm(e.target.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/>
+                            <input type="text" className="input" value={afm} onChange={(e)=> setAfm(e.target.value)} placeholder='Α.Φ.Μ.'/>
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">ΤΗΛΕΦΩΝΟ</label>
                         <div className="control">
-                            <input type="text" className="input" value={phone} onChange={(e)=> setPhone(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
+                            <input type="text" className="input" value={phone} onChange={(e)=> setPhone(e.target.value)} placeholder='ΤΗΛΕΦΩΝΟ'/>
                         </div>
                     </div>
                     <div className="field">
                         <label  className="label">EMAIL</label>
                         <div className="control">
-                            <input type="text" className="input" value={email} onChange={(e)=> setEmail(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/>
+                            <input type="text" className="input" value={email} onChange={(e)=> setEmail(e.target.value)} placeholder='EMAIL'/>
                         </div>
                     </div>
                     <div className="field">
                         <label  className="label">ΔΙΕΥΘΗΝΣΗ</label>
                         <div className="control">
-                            <input type="text" className="input" value={address} onChange={(e)=> setAddress(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/>
+                            <input type="text" className="input" value={address} onChange={(e)=> setAddress(e.target.value)} placeholder='ΔΙΕΥΘΗΝΣΗ'/>
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">Τ.Κ.</label>
                         <div className="control">
-                            <input type="text" className="input" value={postal_code} onChange={(e)=> setPostalCode(e.target.value)} placeholder='PROJECT MANAGER'/>
+                            <input type="text" className="input" value={postal_code} onChange={(e)=> setPostalCode(e.target.value)} placeholder='Τ.Κ.'/>
                         </div>
                     </div>
 

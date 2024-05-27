@@ -268,7 +268,11 @@ const Dashboard = () => {
   return (
     <Layout>
       <Welcome />
+      <h1 className = "Scenario" style = {{textAlign: "center", marginBottom: 20}}>{selectedButton === 'estimate_payment_date' ? 'Best-Case Scenario' :
+         selectedButton === 'estimate_payment_date_2' ? 'Medium-Case Scenario' :
+         selectedButton === 'estimate_payment_date_3' ? 'Worst-Case Scenario' : ''}</h1>
       <div className="container">
+        
         <div className="row">
           <div className="col-md-4">
             <div className="scrollable-list">
