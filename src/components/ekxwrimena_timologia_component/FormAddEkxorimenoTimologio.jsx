@@ -89,7 +89,7 @@ const FormAddEkxorimenoTimologio = () =>
                             <select className='input' onChange={handleTimologiaChange} value={timologia_id}>
                                 <option value="" disabled selected>Επιλέξτε Τιμολόγιο</option>
                                 {timologia.map((timologio, index) => (
-                                    <option key={timologio.id} value={timologio.id}>{timologio.id}</option>
+                                    <option key={timologio.id} value={timologio.id}>{timologio.invoice_number}</option>
                                 ))}
                             </select>
                         </div>

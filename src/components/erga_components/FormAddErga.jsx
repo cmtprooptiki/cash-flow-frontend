@@ -23,6 +23,7 @@ const FormAddErga = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
     const[erga_cat_id,setErga_cat_id]=useState(null)
+    const[erga_cat,setErga_Cat]=useState([])
     const[msg,setMsg]=useState("");
 
     const handleColorChange = (color) => {
@@ -31,6 +32,7 @@ const FormAddErga = () => {
 
     useEffect(()=>{
         getCustomer()
+        getErga_Cat()
     },[]);
 
     const getCustomer = async() =>{
@@ -39,11 +41,25 @@ const FormAddErga = () => {
         setCustomer(response.data);
     }
 
+    const getErga_Cat = async() => 
+        {
+            const response = await axios.get(`${apiBaseUrl}/ergacat`);
+            console.log(response.data)
+            setErga_Cat(response.data);
+        }
+
     const handleCustomerChange = async (e) => {
         const selectedId = e.target.value;
         //set(selectedId);
         console.log(selectedId)
         setCustomerId(selectedId)
+    }
+
+    const handleCategoryChange = async (e) => {
+        const selectedId = e.target.value;
+        //set(selectedId);
+        console.log(selectedId)
+        setErga_cat_id(selectedId)
     }
 
 
@@ -194,11 +210,23 @@ const FormAddErga = () => {
                         </div>
                     </div>
                     
-                    <div className="field">
+                    {/* <div className="field">
                         <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
                         <div className="control">
                             <input type="text" className="input" value={erga_cat_id} onChange={(e)=> setErga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
                         </div>
+                    </div> */}
+
+                    <div className="field">
+                        <label className="label">Κατηγορία Έργου</label>
+                            <div className="control">
+                                <select className="input" onChange={(e) => handleCategoryChange(e)} defaultValue="">
+                                    <option value="" disabled>Επιλέξτε Κατηγορία</option>
+                                        {erga_cat.map((ergo_cat, index) => (
+                                            <option key={index} value={ergo_cat.id}>{ergo_cat.name}</option>
+                                        ))}
+                                </select>
+                            </div>
                     </div>
                     
                     <div className="field">

@@ -22,11 +22,16 @@ const FormEditErgo= () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
     const[erga_cat_id,set_erga_cat_id]=useState(null)
+    const [customers, setCustomers] = useState([]);
     const[msg,setMsg]=useState("");
 
 
     const handleColorChange = (color) => {
         setColor(color.hex);
+    };
+
+    const handleCustomerChange = (e) => {
+        setCustomerId(e.target.value);
     };
 
     const navigate = useNavigate();
@@ -61,7 +66,20 @@ const FormEditErgo= () => {
             }
         };
         getErgoById();
-    },[id]);
+
+        const getCustomers = async () => {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/customer`);
+                setCustomers(response.data);
+            } catch (error) {
+                if (error.response) {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getCustomers();
+    }, [id]);
+    // },[id]);
 
     const updateErgo = async (e) =>{
         e.preventDefault();
@@ -152,12 +170,24 @@ const FormEditErgo= () => {
                         </div>
                     </div>
                     
-                    <div className="field">
+                    {/* <div className="field">
                         <label  className="label">ID ΠΕΛΑΤΗ</label>
                         <div className="control">
                             <input type="text" className="input" value={customer_id} onChange={(e)=> setCustomerId(e.target.value)} placeholder='ID ΠΕΛΑΤΗ'/>
                         </div>
-                    </div>
+                    </div> */}
+
+                                <div className="field">
+                                    <label className="label">Πελατης</label>
+                                    <div className="control">
+                                        <select className="input" onChange={handleCustomerChange} value={customer_id}>
+                                            <option value="" disabled>Επιλέξτε ΠΕΛΑΤΗ</option>
+                                            {customers.map((specific_customer, index) => (
+                                                <option key={index} value={specific_customer.id}>{specific_customer.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
 
                     <div className="field">
                         <label  className="label">ΣΥΝΤΟΜΟΓΡΑΦΙΑ</label>
