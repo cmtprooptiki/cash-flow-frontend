@@ -333,7 +333,7 @@ const Dashboard = () => {
    const ekx=(income_ekx.map((item) => ({
     id: item.ekxorimena_timologia_id,
     title: (
-      <div>
+      <div style = {{backgroundColor: "green"}}>
         <div
           className="circle"
           style={{
@@ -353,7 +353,7 @@ const Dashboard = () => {
   const ekx_cust=(income_ekx_cust.map((item) => ({
     id: item.ekxorimena_timologia_id,
     title: (
-      <div>
+      <div style = {{backgroundColor: "green"}}>
         <div
           className="circle"
           style={{
