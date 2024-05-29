@@ -477,6 +477,7 @@ const Dashboard = () => {
   <WeeksTable
     income_paradotea={newparat}
     income_ekx={income_ekx}
+    income_ekx_cust={income_ekx_cust}
     selectedDateType={selectedDateType}
     calendarDate={calendarDate}
     onDateChange={handleDateChange}
