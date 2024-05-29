@@ -72,7 +72,7 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
       const weekAmountParadotea = itemsInWeekParadotea.reduce((sum, item) => sum + item.ammount_total, 0);
       // const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => sum + (item.Ekxorimena_Timologium.bank_ammount / countOfIdsInIncomeEkx), 0);
       // Calculate weekAmountEkx by filtering items with the same ID and then dividing the sum by the count of IDs
-const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
+      const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
   // Assuming item.Ekxorimena_Timologium.id is the ID you want to match
   const foundId = item.Ekxorimena_Timologium.id;
 
@@ -85,8 +85,10 @@ const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
   // Calculate the average bank amount for items with the same ID
   const averageBankAmount = sumOfBankAmounts / itemsWithSameId.length;
 
+  console.log("HHHHH",averageBankAmount)
+
   // Add the average bank amount to the sum
-  return sum + averageBankAmount;
+  return sum + (averageBankAmount / itemsWithSameId.length);
 }, 0);
       
       const weekAmmountEkxCust = itemsInWeekEkx_Cust.reduce((sum, item) => {
@@ -101,10 +103,15 @@ const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
       
         // Calculate the average bank amount for items with the same ID
         const averageBankAmount = sumOfCustAmounts / itemsWithSameId.length;
+
+        console.log("EEEEEEEEEEEEEE",averageBankAmount)
+
       
         // Add the average bank amount to the sum
-        return sum + averageBankAmount;
+        return sum + (averageBankAmount / itemsWithSameId.length);
       }, 0);
+
+      console.log("Giatiiii",weekAmmountEkxCust)
 
       const uniqueErganamesParadotea = [...new Set(itemsInWeekParadotea.map(item => item.erga.name))];
       const uniqueErganamesEkx = [...new Set(itemsInWeekEkx.map(item => item.paradotea.erga.name))];
