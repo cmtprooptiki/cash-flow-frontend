@@ -6,6 +6,26 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
   const [year, setYear] = useState(calendarDate.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(calendarDate.getMonth());
 
+  // console.log("Income_ekx: ", income_ekx.Ekxorimena_Timologium.bank_ammount)
+
+  // Function to count occurrences of each ID in income_ekx
+  const countIdsInIncomeEkx = () => {
+    const idCounts = {};
+    income_ekx.forEach(item => {
+      const id = item.Ekxorimena_Timologium.id;
+      if (idCounts[id]) {
+        idCounts[id]++;
+      } else {
+        idCounts[id] = 1;
+      }
+    });
+    return idCounts;
+  };
+
+
+  // const idCounts = countIdsInIncomeEkx();
+  // console.log("Found Ids: ", idCounts)
+
   useEffect(() => {
     setYear(calendarDate.getFullYear());
     setSelectedMonth(calendarDate.getMonth());
@@ -35,13 +55,63 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
         moment(item.Ekxorimena_Timologium["bank_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
       );
 
-      const itemsInWeekEkx_Cust = income_ekx.filter(item =>
+      const itemsInWeekEkx_Cust = income_ekx_cust.filter(item =>
         moment(item.Ekxorimena_Timologium["cust_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
       );
 
+      const getCountOfIdsInIncomeEkx = () => {
+        const idCounts = countIdsInIncomeEkx();
+        return Object.keys(idCounts).length; // Count the number of unique IDs
+      };
+      
+      // Calculate the count of IDs in income_ekx
+      const countOfIdsInIncomeEkx = getCountOfIdsInIncomeEkx();
+
+      
+
       const weekAmountParadotea = itemsInWeekParadotea.reduce((sum, item) => sum + item.ammount_total, 0);
-      const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => sum + item.Ekxorimena_Timologium.bank_ammount, 0);
-      const weekAmmountEkxCust = itemsInWeekEkx_Cust.reduce((sum, item) => sum + item.Ekxorimena_Timologium.customer_ammount, 0);
+      // const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => sum + (item.Ekxorimena_Timologium.bank_ammount / countOfIdsInIncomeEkx), 0);
+      // Calculate weekAmountEkx by filtering items with the same ID and then dividing the sum by the count of IDs
+      const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
+  // Assuming item.Ekxorimena_Timologium.id is the ID you want to match
+  const foundId = item.Ekxorimena_Timologium.id;
+
+  // Filter items in income_ekx with the same ID as foundId
+  const itemsWithSameId = income_ekx.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
+
+  // Calculate the sum of bank amounts for items with the same ID
+  const sumOfBankAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.bank_ammount, 0);
+
+  // Calculate the average bank amount for items with the same ID
+  const averageBankAmount = sumOfBankAmounts / itemsWithSameId.length;
+
+  console.log("HHHHH",averageBankAmount)
+
+  // Add the average bank amount to the sum
+  return sum + (averageBankAmount / itemsWithSameId.length);
+}, 0);
+      
+      const weekAmmountEkxCust = itemsInWeekEkx_Cust.reduce((sum, item) => {
+        // Assuming item.Ekxorimena_Timologium.id is the ID you want to match
+        const foundId = item.Ekxorimena_Timologium.id;
+      
+        // Filter items in income_ekx with the same ID as foundId
+        const itemsWithSameId = income_ekx_cust.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
+      
+        // Calculate the sum of bank amounts for items with the same ID
+        const sumOfCustAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.customer_ammount, 0);
+      
+        // Calculate the average bank amount for items with the same ID
+        const averageBankAmount = sumOfCustAmounts / itemsWithSameId.length;
+
+        console.log("EEEEEEEEEEEEEE",averageBankAmount)
+
+      
+        // Add the average bank amount to the sum
+        return sum + (averageBankAmount / itemsWithSameId.length);
+      }, 0);
+
+      console.log("Giatiiii",weekAmmountEkxCust)
 
       const uniqueErganamesParadotea = [...new Set(itemsInWeekParadotea.map(item => item.erga.name))];
       const uniqueErganamesEkx = [...new Set(itemsInWeekEkx.map(item => item.paradotea.erga.name))];

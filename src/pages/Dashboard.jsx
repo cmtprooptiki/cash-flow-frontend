@@ -373,11 +373,25 @@ const Dashboard = () => {
   function joinjson(items){
     MyEvents.push(items)
   }
-  ekx.forEach(joinjson)
-  ekx_cust.forEach(joinjson)
 
-  console.log("Ekxkxkxkx",ekx)
+  const uniqueekx = [
+    ...ekx
+  ].filter((event, index, self) =>
+    index === self.findIndex((e) => e.id === event.id)
+  );
+
+  const uniqueekx_cust = [
+    ...ekx_cust
+  ].filter((event, index, self) =>
+    index === self.findIndex((e) => e.id === event.id)
+  );
+  uniqueekx.forEach(joinjson)
+  uniqueekx_cust.forEach(joinjson)
+
+  // console.log("Ekxkxkxkx",ekx)
   //console.log(MyEvents)
+
+  
 
   const newparat = income_paradotea.map(item => ({
     id: item.paradotea.id,
@@ -472,7 +486,9 @@ const Dashboard = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            {/* {console.log("JJJJJ: ", income_paradotea)} */}
+            {uniqueekx.forEach(item => {
+  console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
+})}
             {income_paradotea.length > 0 && (
   <WeeksTable
     income_paradotea={newparat}
