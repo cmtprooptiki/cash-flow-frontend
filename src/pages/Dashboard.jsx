@@ -36,10 +36,7 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 
 const Dashboard = () => {
-
- 
-
-//Kodikas ippo
+  //Kodikas ippo
   //const [events, setEvents] = useState([]);
  
   //const [selectedEvent, setSelectedEvent] = useState(null); // State variable to store selected event
@@ -185,6 +182,7 @@ const Dashboard = () => {
   const [prevSelectedButton, setPrevSelectedButton] = useState(null);
   const [income_paradotea,setIncome_paradotea]=useState([])
   const [income_ekx,setIncome_ekx]=useState([])
+  const [income_ekx_cust, setIncome_Ekx_Cust] = useState([])
   
   
 
@@ -203,6 +201,7 @@ const Dashboard = () => {
     getErgaListNames();
     getIncome_paradotea();
     getIncome_ekx();
+    getIncome_ekx_cust_date();
   }, []);
 
   const getParadotea = async () => {
@@ -216,7 +215,7 @@ const Dashboard = () => {
     //console.log(response.data)
   }
   const getIncome_ekx=async () =>{
-    const response = await axios.get(`${apiBaseUrl}/ParadoteaNotEk`);
+    const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`);
     setIncome_ekx(response.data);
     //console.log(response.data)
   }
@@ -225,6 +224,13 @@ const Dashboard = () => {
     const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
     setErgaListNames(response.data);
   };
+
+
+  const getIncome_ekx_cust_date = async () =>
+    {
+      const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`);
+      setIncome_Ekx_Cust(response.data);
+    }
 
   const handleYearChange = (increment) => {
     const newDate = new Date(calendarDate);
@@ -249,13 +255,14 @@ const Dashboard = () => {
     const dateTypeKey = selectedDateType;
 
     try {
-      const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.id}`, {
+      console.log(event.item.id)
+      const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.item.id}`, {
         [dateTypeKey]: updatedDate
       });
       if (response.status === 200) {
-        setParadotea((prev) =>
+        setIncome_paradotea((prev) =>
           prev.map((item) =>
-            item.id === event.id ? { ...item, [dateTypeKey]: updatedDate } : item
+            item.paradotea.id === event.item.id ? { ...item, paradotea: { ...item.paradotea, [dateTypeKey]: updatedDate } } : item
           )
         );
       }
@@ -281,25 +288,48 @@ const Dashboard = () => {
     }
   };
   //console.log(income_paradotea)
-  const MyEvents=income_paradotea.map((item) => ({
-    id: item.ekxorimena_timologia_id,
-    title: (
-      <div>
-        <div
-          className="circle"
-          style={{
-            backgroundColor: item.paradotea.erga.color,
-            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
-          }}
-        ></div>
-        {item.paradotea.ammount_total} €
-      </div>
-    ),
-    start: getDateBySelectedType(item.paradotea),
-    end: getDateBySelectedType(item.paradotea),
-    item: item,
-  }));
+  // const MyEvents=paradotea.map((item) => ({
+  //   id: item.ekxorimena_timologia_id,
+  //   title: (
+  //     <div>
+  //       <div
+  //         className="circle"
+  //         style={{
+  //           backgroundColor: item.erga.color,
+  //           boxShadow: '0px 0px 4px 2px ' + item.erga.color,
+  //         }}
+  //       ></div>
+  //       {item.ammount_total} €
+  //     </div>
+  //   ),
+  //   start: getDateBySelectedType(item),
+  //   end: getDateBySelectedType(item),
+  //   item: item,
+  // }));
   //console.log(MyEvents)
+
+  const MyEvents=income_paradotea.map((item) => ({
+      id: item.ekxorimena_timologia_id,
+      title: (
+        <div>
+          <div
+            className="circle"
+            style={{
+              backgroundColor: item.paradotea.erga.color,
+              boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+            }}
+          ></div>
+          {item.paradotea.ammount_total} €
+        </div>
+      ),
+      start: getDateBySelectedType(item.paradotea),
+      end: getDateBySelectedType(item.paradotea),
+      item: item.paradotea,
+    }));
+    console.log("My Event : ",MyEvents)
+
+
+
    const ekx=(income_ekx.map((item) => ({
     id: item.ekxorimena_timologia_id,
     title: (
@@ -311,20 +341,68 @@ const Dashboard = () => {
             boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
           }}
         ></div>
-        {console.log(item.Ekxorimena_Timologium.bank_ammount)}
+        {/* {console.log(item.Ekxorimena_Timologium.bank_ammount)} */}
         {item.Ekxorimena_Timologium.bank_ammount} €
       </div>
     ),
-    start: getDateBySelectedType(item.Ekxorimena_Timologium.bank_date),
-    end: getDateBySelectedType(item.Ekxorimena_Timologium.bank_date),
+    start: item.Ekxorimena_Timologium.bank_date,
+    end: item.Ekxorimena_Timologium.bank_date,
     item: item,
   })));
+
+  const ekx_cust=(income_ekx_cust.map((item) => ({
+    id: item.ekxorimena_timologia_id,
+    title: (
+      <div>
+        <div
+          className="circle"
+          style={{
+            backgroundColor: item.paradotea.erga.color,
+            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+          }}
+        ></div>
+        {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
+        {item.Ekxorimena_Timologium.customer_ammount} €
+      </div>
+    ),
+    start: item.Ekxorimena_Timologium.cust_date,
+    end: item.Ekxorimena_Timologium.cust_date,
+    item: item,
+  })));
+
   function joinjson(items){
     MyEvents.push(items)
   }
   ekx.forEach(joinjson)
-  console.log(ekx)
+  ekx_cust.forEach(joinjson)
+
+  console.log("Ekxkxkxkx",ekx)
   //console.log(MyEvents)
+
+  const newparat = income_paradotea.map(item => ({
+    id: item.paradotea.id,
+    part_number: item.paradotea.part_number,
+    title: item.paradotea.title,
+    delivery_date: item.paradotea.delivery_date,
+    percentage: item.paradotea.percentage,
+    ammount: item.paradotea.ammount,
+    ammount_vat: item.paradotea.ammount_vat,
+    ammount_total: item.paradotea.ammount_total,
+    estimate_payment_date: item.paradotea.estimate_payment_date,
+    estimate_payment_date_2: item.paradotea.estimate_payment_date_2,
+    estimate_payment_date_3: item.paradotea.estimate_payment_date_3,
+    createdAt: item.paradotea.createdAt,
+    updatedAt: item.paradotea.updatedAt,
+    erga_id: item.paradotea.erga_id,
+    timologia_id: item.paradotea.timologia_id,
+    erga: {
+      name: item.paradotea.erga.name,
+      id: item.paradotea.erga.id,
+      color: item.paradotea.erga.color
+    }
+  }));
+  
+ 
 
   return (
     <Layout>
@@ -394,7 +472,18 @@ const Dashboard = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <WeeksTable paradotea={paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/>
+            {/* {console.log("JJJJJ: ", income_paradotea)} */}
+            {income_paradotea.length > 0 && (
+  <WeeksTable
+    income_paradotea={newparat}
+    income_ekx={income_ekx}
+    income_ekx_cust={income_ekx_cust}
+    selectedDateType={selectedDateType}
+    calendarDate={calendarDate}
+    onDateChange={handleDateChange}
+  />
+)}
+            {/* <WeeksTable income_paradotea={income_paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/> */}
           </div>
         </div>
       </div>
