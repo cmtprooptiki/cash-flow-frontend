@@ -22,7 +22,7 @@ const FormAddEkxorimenoTimologio = () =>
     },[]);
 
     const getTimologia = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/timologia`);
+        const response = await axios.get(`${apiBaseUrl}/getTim_From_Income`);
         setTimologia(response.data);
     }
 

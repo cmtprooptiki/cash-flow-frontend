@@ -42,6 +42,7 @@ const FormAddTimologia = () => {
     const handleErgaChange = async (e) => {
         const selectedId = e.target.value;
         setTempErga(selectedId);
+        clearFormFields();
         //console.log(selectedId)
         if (selectedId) {
             try {
@@ -55,6 +56,18 @@ const FormAddTimologia = () => {
                 console.error("Error fetching timologio data:", error);
             }
         }
+    }
+
+    const clearFormFields = () => {
+        // setInvoice_date("");
+        // setAmmount_no_tax("");
+        // setAmmount_Tax_Incl("");
+        // setActual_Payment_Date("");
+        // setAmmount_Of_Income_Tax_Incl("");
+        // setComments("");
+        // setInvoice_Number("");
+        setSelectedOptions([]);
+        setSelectedParadoteaDetails([]);
     }
     
 

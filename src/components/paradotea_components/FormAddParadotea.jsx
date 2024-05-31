@@ -13,9 +13,9 @@ const FormAddParadotea = () => {
     const[ammount,setAmmount]=useState("");
     const[ammount_vat,setAmmount_Vat]=useState("");
     const[ammount_total,setAmmount_Total]=useState("");
-    const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
-    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
-    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
+    const[estimate_payment_date,setEstimate_Payment_Date]=useState(null);
+    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null);
+    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null);
 
     const [percentage_vat, setPercentage_Vat] = useState(0.24); // Default percentage_vat
 

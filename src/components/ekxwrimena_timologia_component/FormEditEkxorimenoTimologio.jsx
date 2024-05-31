@@ -10,13 +10,31 @@ const FormEditEkxorimenoTimologio = () =>
     const[bank_date,setBank_Date]=useState("");
     const[customer_ammount,setCustomer_Ammount]=useState("");
     const[cust_date,setCust_Date]=useState("");
+    const [timologia, setTimologia] = useState([])
     const[msg,setMsg]=useState("");
     const navigate = useNavigate();
     const{id} = useParams();
 
+    const handleTimologiaChange = async (e) => {
+        const selectedId = e.target.value;
+        setTimologia_Id(selectedId);
+
+        if (selectedId) {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`);
+                const timologio = response.data;
+                console.log(timologio)
+
+                setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
+                setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
+            } catch (error) {
+                console.error("Error fetching timologio data:", error);
+            }
+        }
+    };
+
     useEffect(()=>{
         const getEkxorimenoTimologioById = async() =>{
-            const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
@@ -32,7 +50,20 @@ const FormEditEkxorimenoTimologio = () =>
             }
         };
         getEkxorimenoTimologioById();
-    },[id]);
+        
+        const getTimologia = async () => {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/timologia`);
+                setTimologia(response.data);
+            } catch (error) {
+                if (error.response) {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getTimologia();
+    }, [id]);
+
 
     const UpdateEkxorimenoTimologio = async (e) =>
     {
@@ -67,24 +98,37 @@ const FormEditEkxorimenoTimologio = () =>
                 <div className="content">
                 <form onSubmit={UpdateEkxorimenoTimologio}>
                     <p className='has-text-centered'>{msg}</p>
-                <div className="field">
+                {/* <div className="field">
                         <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
                         <div className="control">
                             <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
                         </div>
+                    </div> */}
+
+                        <div className="field">
+                            <label className="label">ΤΙΜΟΛΟΓΙΑ</label>
+                            <div className="control">
+                                <select className="input" onChange={handleTimologiaChange} value={timologia_id}>
+                                    <option value= "" disabled>Επιλέξτε ΤΙΜΟΛΟΓΙΟ</option>
+                                {timologia.map((timologio, index) => (
+                                <option key={index} value={timologio.id}>{timologio.invoice_number}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
+
 
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={bank_ammount} onChange={(e)=> setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ'/>
+                            <input type="text" className="input" value={bank_ammount} onChange={(e)=> setBank_Ammount(e.target.value)} readOnly placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ'/>
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                            <input type="date" className="input" value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
                         </div>
                     </div>
 
@@ -92,14 +136,14 @@ const FormEditEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <input type="text" className="input" value={customer_ammount} onChange={(e)=> setCustomer_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΠΕΛΑΤΗ'/>
+                            <input type="text" className="input" value={customer_ammount} onChange={(e)=> setCustomer_Ammount(e.target.value)} readOnly placeholder='ΠΟΣΟ ΠΕΛΑΤΗ'/>
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <input type="text" className="input" value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                            <input type="date" className="input" value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
                         </div>
                     </div>
                     
