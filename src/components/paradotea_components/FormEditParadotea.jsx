@@ -10,7 +10,7 @@ const FormEditParadotea = () => {
     const[percentage,setPercentage]=useState("");
     const[erga_id,setErga_id]=useState("");
     const[timologia_id,setTimologia_id]=useState("");
-
+    const [percentage_vat, setPercentage_Vat] = useState(0.24); // Default percentage_vat
     const[ammount,setAmmount]=useState("");
     const[ammount_vat,setAmmount_Vat]=useState("");
     const[ammount_total,setAmmount_Total]=useState("");
@@ -18,9 +18,13 @@ const FormEditParadotea = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
 
+    const [erga, setErga] = useState([])
+
     const[msg,setMsg]=useState("");
 
-
+    const handleErgaChange = (e) => {
+        setErga_id(e.target.value);
+    };
 
     const navigate = useNavigate();
 
@@ -53,7 +57,41 @@ const FormEditParadotea = () => {
             }
         };
         getParadoteaById();
+
+        const getErga = async () => {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/erga`);
+                setErga(response.data);
+            } catch (error) {
+                if (error.response) {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getErga();
     }, [id]);
+
+    useEffect(() => {
+        // Recalculate VAT whenever the percentage or ammount changes
+        const vat = parseFloat(ammount) * parseFloat(percentage_vat);
+        setAmmount_Vat(vat.toFixed(2));
+    }, [ammount, percentage, percentage_vat]);
+
+    const handlePercentageChange = (e) => {
+        const newPercentage = e.target.value;
+        setPercentage_Vat(newPercentage);
+        const vat = parseFloat(ammount) * parseFloat(newPercentage);
+        setAmmount_Vat(vat.toFixed(2));
+        setAmmount_Total((parseFloat(ammount) + vat).toFixed(2));
+    };
+
+    const handleAmmountChange = (e) => {
+        const newAmmount = e.target.value;
+        setAmmount(newAmmount);
+        const vat = parseFloat(newAmmount) * parseFloat(percentage_vat);
+        setAmmount_Vat(vat.toFixed(2));
+        setAmmount_Total((parseFloat(newAmmount) + vat).toFixed(2));
+    };
 
     const updateParadotea = async(e) =>{
         e.preventDefault();
@@ -108,7 +146,7 @@ const FormEditParadotea = () => {
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={delivery_date} onChange={(e)=> setDelivery_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ'/>
+                            <input type="date" className="input" value={delivery_date} onChange={(e)=> setDelivery_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ'/>
                         </div>
                     </div>
                     <div className="field">
@@ -119,37 +157,59 @@ const FormEditParadotea = () => {
                     </div>
 
                     <div className="field">
+                        <label className="label">Ποσοστό ΦΠΑ</label>
+                                <div className="control">
+                                    <input type="text" className="input" value={percentage_vat} onChange={handlePercentageChange} placeholder='Ποσοστό ΦΠΑ' />
+                                </div>
+                        </div>
+
+                    {/* <div className="field">
                         <label  className="label">ΕΡΓΟ ID</label>
                         <div className="control">
                             <input type="text" className="input" value={erga_id} onChange={(e)=> setErga_id(e.target.value)} placeholder='ΕΡΓΟ ID'/>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="field">
+                        <label className="label">ΕΡΓΟ</label>
+                        <div className="control">
+                            <select className="input" onChange={handleErgaChange} value={erga_id}>
+                                <option value="" disabled>Επιλέξτε ΕΡΓΟ</option>
+                                {erga.map((ergo, index) => (
+                                <option key={index} value={ergo.id}>{ergo.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    {/* <div className="field">
                         <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
                         <div className="control">
                             <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
                         </div>
-                    </div>
+                    </div> */}
+
+
 
                     <div className="field">
                             <label  className="label">ΑΡΧΙΚΟ ΠΟΣΟ</label>
                             <div className="control">
-                                <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΑΡΧΙΚΟ ΠΟΣΟ'/>
+                                <input type="text" className="input" value={ammount} onChange= {handleAmmountChange} placeholder='ΑΡΧΙΚΟ ΠΟΣΟ'/>
                             </div>
                         </div>
 
                         <div className="field">
                             <label  className="label">ΠΟΣΟ ΦΠΑ</label>
                             <div className="control">
-                                <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/>
+                                <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} readOnly placeholder='ΠΟΣΟ ΦΠΑ'/>
                             </div>
                         </div>
 
                         <div className="field">
                             <label  className="label">ΣΥΝΟΛΙΚΟ ΠΟΣΟ</label>
                             <div className="control">
-                                <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΣΥΝΟΛΙΚΟ ΠΟΣΟ'/>
+                                <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} readOnly placeholder='ΣΥΝΟΛΙΚΟ ΠΟΣΟ'/>
                             </div>
                         </div>
 

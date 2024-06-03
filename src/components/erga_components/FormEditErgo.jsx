@@ -23,6 +23,7 @@ const FormEditErgo= () => {
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
     const[erga_cat_id,set_erga_cat_id]=useState(null)
     const [customers, setCustomers] = useState([]);
+    const [ergo_cat, setErgo_Cat] = useState([]);
     const[msg,setMsg]=useState("");
 
 
@@ -32,6 +33,10 @@ const FormEditErgo= () => {
 
     const handleCustomerChange = (e) => {
         setCustomerId(e.target.value);
+    };
+
+    const handleErgo_Cat = (e) => {
+        set_erga_cat_id(e.target.value);
     };
 
     const navigate = useNavigate();
@@ -58,7 +63,7 @@ const FormEditErgo= () => {
                 setEstimate_Payment_Date(response.data.estimate_payment_date)
                 setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
                 setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
-                set_erga_cat_id(erga_cat_id)
+                set_erga_cat_id(response.data.erga_cat_id)
             } catch (error) {
                 if(error.response){
                     setMsg(error.response.data.msg);
@@ -78,6 +83,19 @@ const FormEditErgo= () => {
             }
         };
         getCustomers();
+
+        const getErga_Cat = async () => {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/ergacat`);
+                setErgo_Cat(response.data);
+            } catch (error) {
+                if (error.response) {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getErga_Cat();
+
     }, [id]);
     // },[id]);
 
@@ -238,13 +256,26 @@ const FormEditErgo= () => {
                         </div>
                     </div>
 
-                    <div className="field">
+                    {/* <div className="field">
                         <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
                         <div className="control">
                             <input type="text" className="input" value={erga_cat_id} onChange={(e)=> set_erga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
                         </div>
                     </div>
-                    
+                     */}
+
+                    <div className="field">
+                        <label className="label">ΚΑΤΗΓΟΡΙΑ</label>
+                            <div className="control">
+                                <select className="input" onChange={handleErgo_Cat} value={erga_cat_id}>
+                                    <option value="" disabled>Επιλέξτε ΚΑΤΗΓΟΡΙΑ ΕΡΓΩΝ</option>
+                                    {ergo_cat.map((specific_ergo_cat, index) => (
+                                    <option key={index} value={specific_ergo_cat.id}>{specific_ergo_cat.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                    </div>
+
                     <div className="field">
                         <div className="control">
                             <button type="submit" className="button is-success is-fullwidth">Ενημέρωση</button>
