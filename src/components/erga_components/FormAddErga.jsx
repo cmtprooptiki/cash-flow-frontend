@@ -37,28 +37,22 @@ const FormAddErga = () => {
 
     const getCustomer = async() =>{
         const response = await axios.get(`${apiBaseUrl}/customer`);
-        console.log(response.data)
         setCustomer(response.data);
     }
 
     const getErga_Cat = async() => 
         {
             const response = await axios.get(`${apiBaseUrl}/ergacat`);
-            console.log(response.data)
             setErga_Cat(response.data);
         }
 
     const handleCustomerChange = async (e) => {
         const selectedId = e.target.value;
-        //set(selectedId);
-        console.log(selectedId)
         setCustomerId(selectedId)
     }
 
     const handleCategoryChange = async (e) => {
         const selectedId = e.target.value;
-        //set(selectedId);
-        console.log(selectedId)
         setErga_cat_id(selectedId)
     }
 
@@ -210,12 +204,6 @@ const FormAddErga = () => {
                         </div>
                     </div>
                     
-                    {/* <div className="field">
-                        <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={erga_cat_id} onChange={(e)=> setErga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
-                        </div>
-                    </div> */}
 
                     <div className="field">
                         <label className="label">Κατηγορία Έργου</label>

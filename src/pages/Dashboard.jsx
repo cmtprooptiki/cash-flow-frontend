@@ -345,8 +345,8 @@ const Dashboard = () => {
         {item.Ekxorimena_Timologium.bank_ammount} €
       </div>
     ),
-    start: item.Ekxorimena_Timologium.bank_date,
-    end: item.Ekxorimena_Timologium.bank_date,
+    start: new Date(item.Ekxorimena_Timologium.bank_date),
+    end: new Date(item.Ekxorimena_Timologium.bank_date),
     item: item,
   })));
 
@@ -365,8 +365,8 @@ const Dashboard = () => {
         {item.Ekxorimena_Timologium.customer_ammount} €
       </div>
     ),
-    start: item.Ekxorimena_Timologium.cust_date,
-    end: item.Ekxorimena_Timologium.cust_date,
+    start: new Date(item.Ekxorimena_Timologium.cust_date),
+    end: new Date(item.Ekxorimena_Timologium.cust_date),
     item: item,
   })));
 

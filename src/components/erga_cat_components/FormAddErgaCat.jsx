@@ -2,16 +2,12 @@ import React,{useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
-import { SketchPicker } from 'react-color';
 
 
 const FormAddErgaCat = () => {
     const[name,setName]=useState("");
     const[msg,setMsg]=useState("");
 
-    // const handleColorChange = (color) => {
-    //     setColor(color.hex);
-    // };
 
 
     const navigate = useNavigate();

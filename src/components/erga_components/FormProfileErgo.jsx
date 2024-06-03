@@ -2,20 +2,11 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import '../../custom.css';
-import ApexCharts from 'react-apexcharts';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import ProfileMap from './ProfileMap';
-// import WeatherComponent from './WeatherComponent';
 import apiBaseUrl from '../../apiConfig';
-import Select from 'react-select';
-import { v4 as uuidv4 } from 'uuid';
-import {getLimitAnnotation,getbarcolor,showcol} from '../HelperComponent';
-// import ProgressBar from 'react-bootstrap/ProgressBar';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 
 const FormProfileErgo= () => {
   const[name,setName]=useState("");
@@ -37,7 +28,6 @@ const FormProfileErgo= () => {
 
   const[msg,setMsg]=useState("");
 
-  const navigate = useNavigate();
 
   const{id} = useParams();
 
@@ -64,7 +54,7 @@ const FormProfileErgo= () => {
             setEstimate_Payment_Date(response.data.estimate_payment_date)
             setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
             setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
-            setErga_cat_id(erga_cat_id)
+            setErga_cat_id(response.data.erga_cat_id)
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -83,10 +73,8 @@ const FormProfileErgo= () => {
     <div className="row">
       <div className="col-lg-5 col-md-6">
         <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-          {/* <img className="w-25" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""/> */}
         </div>
         <div className="mb-2 d-flex">
-          {/* <img className="w-25" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""/> */}
 
         </div>
 

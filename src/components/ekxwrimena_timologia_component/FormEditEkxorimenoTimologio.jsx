@@ -98,13 +98,7 @@ const FormEditEkxorimenoTimologio = () =>
                 <div className="content">
                 <form onSubmit={UpdateEkxorimenoTimologio}>
                     <p className='has-text-centered'>{msg}</p>
-                {/* <div className="field">
-                        <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
-                        <div className="control">
-                            <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
-                        </div>
-                    </div> */}
-
+                
                         <div className="field">
                             <label className="label">ΤΙΜΟΛΟΓΙΑ</label>
                             <div className="control">

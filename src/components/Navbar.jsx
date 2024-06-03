@@ -36,9 +36,6 @@ const Navbar =()=>{
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    // const handleChange = (event) => {
-    //   setAuth(event.target.checked);
-    // };
   
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
@@ -51,37 +48,7 @@ const Navbar =()=>{
     return(
         <div>
             <nav className="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
-              {/* <div className="navbar-brand">
-                <NavLink className="navbar-item" to="/dashboard">
-                    <img 
-                        src={logo}
-                        width="220" 
-                        height="80"
-                        alt="logo"
-                    />
-                </NavLink>
-            
-                <a href='!#' role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
-                </a>
-              </div>
-            
-              <div id="navbarBasicExample" className="navbar-menu">
-                
-            
-                <div className="navbar-end">
-                  <div className="navbar-item">
-                    <div className="buttons">
-                      
-                      <button onClick={logout} className="button is-light">
-                        Αποσύνδεση
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+              
             <Box sx={{ flexGrow: 1 }}>
      
 
@@ -90,12 +57,7 @@ const Navbar =()=>{
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                       
                     <NavLink className="navbar-item" to="/dashboard">
-                              {/* <img 
-                                  src={logo}
-                                  width="220" 
-                                  height="80"
-                                  alt="logo"
-                              /> */}
+                              
                           </NavLink>
                     </Typography>
                     

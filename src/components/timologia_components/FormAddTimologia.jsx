@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
 import Select from 'react-select';
-// import 'react-select/dist/react-select.css'; 
 
 const FormAddTimologia = () => {
 
@@ -36,22 +35,17 @@ const FormAddTimologia = () => {
 
     const getErga = async() =>{
         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
-        //console.log(response.data)
         setErga(response.data);
     }
     const handleErgaChange = async (e) => {
         const selectedId = e.target.value;
         setTempErga(selectedId);
         clearFormFields();
-        //console.log(selectedId)
         if (selectedId) {
             try {
                 const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
                 const paradoteaByErgoId = response.data;
-                //console.log(paradoteaByErgoId)
                 setParadoteaByErgo(paradoteaByErgoId)
-                // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
-                // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
             } catch (error) {
                 console.error("Error fetching timologio data:", error);
             }
@@ -59,13 +53,6 @@ const FormAddTimologia = () => {
     }
 
     const clearFormFields = () => {
-        // setInvoice_date("");
-        // setAmmount_no_tax("");
-        // setAmmount_Tax_Incl("");
-        // setActual_Payment_Date("");
-        // setAmmount_Of_Income_Tax_Incl("");
-        // setComments("");
-        // setInvoice_Number("");
         setSelectedOptions([]);
         setSelectedParadoteaDetails([]);
     }
@@ -79,26 +66,8 @@ const FormAddTimologia = () => {
     const selectedIds = selectedOptions.map(option => option.value);
     const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
     setSelectedParadoteaDetails(selectedDetails);
-    // Additional logic to handle change
   };
 
-    // const handleParadoteaChange = async (e) => {
-    //     // const selectedId = e.target.value;
-    //     // setTempErga(selectedId);
-    //     console.log("work")
-    //     // if (selectedId) {
-    //     //     try {
-    //     //         const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
-    //     //         const paradoteaByErgoId = response.data;
-    //     //         console.log(paradoteaByErgoId)
-    //     //         setParadoteaByErgo(paradoteaByErgoId)
-    //     //         // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
-    //     //         // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
-    //     //     } catch (error) {
-    //     //         console.error("Error fetching timologio data:", error);
-    //     //     }
-    //     // }
-    // }
 
     const options = paradotea.map(paradoteo => ({
         value: paradoteo.id,
@@ -195,23 +164,6 @@ const FormAddTimologia = () => {
       </div>
     </div>
 
-{/* <div className="field">
-    <label className="label">Παραδοτεα</label>
-    <div className="control">
-        <select isMulti className="input" onChange={(e) => handleParadoteaChange(e)} defaultValue="">
-            <option value="" disabled>Επιλέξτε Παραδοτεο</option>
-            {paradotea.map((paradoteo, index) => (
-                <option key={index} value={paradoteo.id}>{paradoteo.title}</option>
-            ))}
-        </select>
-    </div>
-</div> */}
-
-
-
-
-{/* Ippos experiment */}
-
                                 <div className="field">
                                 <label className="label">Σύνολο Ποσό</label>
                                 <div className="control">
@@ -233,7 +185,6 @@ const FormAddTimologia = () => {
                                 </div>
                             </div>
 
-            {/*End of ippos experiment */}
 
 
                 <div className="field">
@@ -242,35 +193,12 @@ const FormAddTimologia = () => {
                             <input type="date" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
                         </div>
                     </div>
-                {/*
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={ammount_no_tax} onChange={(e)=> setAmmount_no_tax(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΜΕ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={ammount_tax_incl} onChange={(e)=> setAmmount_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΜΕ Φ.Π.Α'/>
-                        </div>
-                    </div>
-                    */}
                     <div className="field">
                         <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
                         <div className="control">
                             <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
                         </div>
                     </div>
-                    {/*
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α'/>
-                        </div>
-                    </div>
-                */}
 
                     <div className="field">
                         <label  className="label">ΠΑΡΑΤΗΡΗΣΕΙΣ</label>

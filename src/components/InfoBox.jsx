@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Col from 'react-bootstrap/Col';
 import moment from 'moment';
 const InfoBox = (props) => {
     const item = props.item; 
     const date = moment(props.item.estimate_payment_date).format("YYYY/MM/DD");
     if(item.erga?.name)
       {
-    //const dateString = date.toLocaleDateString();
 
     return(
         <div className='box'>
@@ -23,7 +21,6 @@ const InfoBox = (props) => {
   }
   else
   {
-      // console.log("Heyyushfajfo")
       const bank_date = moment(props.item.Ekxorimena_Timologium.bank_date).format("YYYY/MM/DD");
       const cust_date = moment(props.item.Ekxorimena_Timologium.cust_date).format("YYYY/MM/DD");
       return(
@@ -37,7 +34,6 @@ const InfoBox = (props) => {
                 <strong> Ημερομηνία Πληρωμής Τράπεζας:</strong>{bank_date}<br/> 
                 <strong> Συνολικό Ποσό Πελάτη:</strong>{props.item.Ekxorimena_Timologium.customer_ammount} €<br/>
                 <strong> Ημερομηνία Πληρωμής Πελάτη:</strong>{cust_date}  <br/>
-                {/* <strong> Ποσο VAT:</strong>{props.item.ammount_vat} € <br/> */}
           </div>
     )
   }

@@ -45,16 +45,12 @@ const FormEditCustomer= () => {
         e.preventDefault();
         try{
             await axios.patch(`${apiBaseUrl}/customer/${id}`, {
-                // name:name,
-                // lat:lat,
-                // lon:lon,
-                // category:category
                 name:name,
-            afm:afm,
-            phone:phone,
-            email:email,
-            address:address,
-            postal_code:postal_code
+                afm:afm,
+                phone:phone,
+                email:email,
+                address:address,
+                postal_code:postal_code
             });
 
             navigate("/customer");

@@ -2,19 +2,9 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import '../../custom.css';
-import ApexCharts from 'react-apexcharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// import ProfileMap from './ProfileMap';
-// import WeatherComponent from './WeatherComponent';
 import apiBaseUrl from '../../apiConfig';
-import Select from 'react-select';
-import { v4 as uuidv4 } from 'uuid';
-import {getLimitAnnotation,getbarcolor,showcol} from '../HelperComponent';
-// import ProgressBar from 'react-bootstrap/ProgressBar';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 
 const FormProfileParadotea=() =>{
     const[part_number,setPart_Number]=useState("");
@@ -71,10 +61,8 @@ const FormProfileParadotea=() =>{
     <div className="row">
       <div className="col-lg-5 col-md-6">
         <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-          {/* <img className="w-25" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""/> */}
         </div>
         <div className="mb-2 d-flex">
-          {/* <img className="w-25" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""/> */}
 
         </div>
 
