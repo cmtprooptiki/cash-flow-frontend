@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useSelector } from 'react-redux';
 import '../../buildinglist.css';
 import apiBaseUrl from '../../apiConfig';
-//import { DeleteTimologio } from '../../../../cash-flow-Backend/controllers/Timologia';
 
 const TimologiaList = () => {
     const [Timologia, setTimologia] = useState([]);

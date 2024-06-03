@@ -26,15 +26,11 @@ const FormEditTimologia = () =>{
         const selectedId = e.target.value;
         setErga_id(selectedId);
         clearFormFields();
-        //console.log(selectedId)
         if (selectedId) {
             try {
                 const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`);
                 const paradoteaByErgoId = response.data;
-                //console.log(paradoteaByErgoId)
                 setParadoteaByErgo(paradoteaByErgoId)
-                // setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
-                // setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
             } catch (error) {
                 console.error("Error fetching timologio data:", error);
             }
@@ -42,13 +38,6 @@ const FormEditTimologia = () =>{
     };
 
     const clearFormFields = () => {
-        // setInvoice_date("");
-        // setAmmount_no_tax("");
-        // setAmmount_Tax_Incl("");
-        // setActual_Payment_Date("");
-        // setAmmount_Of_Income_Tax_Incl("");
-        // setComments("");
-        // setInvoice_Number("");
         setSelectedOptions([]);
         setSelectedParadoteaDetails([]);
     }
@@ -60,7 +49,6 @@ const FormEditTimologia = () =>{
         const selectedIds = selectedOptions.map(option => option.value);
         const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
         setSelectedParadoteaDetails(selectedDetails);
-        // Additional logic to handle change
       };
 
       const options = paradotea.map(paradoteo => ({
@@ -97,56 +85,15 @@ const FormEditTimologia = () =>{
     const{id} = useParams();
 
     useEffect(()=>{
-        // const getTimologioById = async() =>{
-        //     const response=await axios.get(`${apiBaseUrl}/timologia/${id}`);
-        //     try
-        //     {
-        //         const response=await axios.get(`${apiBaseUrl}/timologia/${id}`);
-        //         setInvoice_date(response.data.invoice_date);
-        //         setAmmount_no_tax(response.data.ammount_no_tax);
-        //         setAmmount_Tax_Incl(response.data.ammount_tax_incl);
-        //         setActual_Payment_Date(response.data.actual_payment_date);
-        //         setAmmount_Of_Income_Tax_Incl(response.data.ammount_of_income_tax_incl);
-        //         setComments(response.data.comments);
-        //         setInvoice_Number(response.data.invoice_number);
-
-                
-        //     }
-        //     catch(error)
-        //     {
-        //         setMsg(error.response.data.msg);
-        //     }
-        // };
-        // getTimologioById();
-
-        // const getErga = async () => {
-        //     try {
-        //         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
-        //         setErga(response.data);
-        //     } catch (error) {
-        //         if (error.response) {
-        //             setMsg(error.response.data.msg);
-        //         }
-        //     }
-        // };
-        // getErga();
 
             const fetchData = async () => {
                 try {
                     const timologioResponse = await axios.get(`${apiBaseUrl}/timologia/${id}`);
                     const timologioData = timologioResponse.data;
-        
-                    // Fetch paradotea and erga based on timologio_id
-                    //const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteaByTimologioId/${id}`);
-                    //const paradoteaData1 = paradoteaResponse.data;
 
                     const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`); 
                     const paradoteaData = paradoteaResponse.data
-
                     
-        
-                    // const ergaResponse = await axios.get(`${apiBaseUrl}/getErgaByTimologioId/${id}`);
-                    // const ergaData1 = ergaResponse.data;
                     const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
                     const ergaData = ergaResponse.data
 

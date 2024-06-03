@@ -34,7 +34,6 @@ const FormAddEkxorimenoTimologio = () =>
             try {
                 const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`);
                 const timologio = response.data;
-                console.log(timologio)
 
                 setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data
                 setCustomer_Ammount((timologio[0].totalek)*0.2 || "")
@@ -73,15 +72,6 @@ const FormAddEkxorimenoTimologio = () =>
                 <div className="content">
                 <form onSubmit={saveEkxorimena_Timologia}>
                 <p className='has-text-centered'>{msg}</p>
-
-
-
-                {/* <div className="field">
-                        <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
-                        <div className="control">
-                            <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_Id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
-                        </div>
-                    </div> */}
 
                 <div className="field">
                         <label className="label">Τιμολόγιο</label>

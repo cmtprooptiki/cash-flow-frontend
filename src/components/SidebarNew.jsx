@@ -49,7 +49,6 @@ export const SidebarNew = () => {
       <div className="sidebar">
                 <aside className="menu pl-2 has-shadow">
 
-        {/* <div style={{ display: "block", height: "100vh" }}> */}
       <Sidebar className="app" backgroundColor="#61a4bf">
         <Menu backgroundColor="#61a4bf" renderMenuItemStyles={() => ({
       '.menu-anchor': {
@@ -94,14 +93,10 @@ export const SidebarNew = () => {
 
             </SubMenu>
             )}
-          
-          {/* <MenuItem> <button onClick={logout} className='button-logout'><IoLogOut/> Αποσύνδεση</button></MenuItem> */}
-          {/* <MenuItem> <NavLink  onClick={logout}><AiFillDashboard/> Dashboard</NavLink></MenuItem> */}
           <MenuItem onClick={logout} ><IoLogOut/> Αποσύνδεση</MenuItem>
         </Menu>
       </Sidebar>
       
-    {/* </div> */}
     </aside>
     </div>
     );

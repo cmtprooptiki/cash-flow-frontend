@@ -70,20 +70,6 @@ const FormAddParadotea = () => {
         e.preventDefault();
         try
         {
-            console.log({
-                part_number,
-                title,
-                delivery_date,
-                percentage,
-                erga_id,
-                timologia_id,
-                ammount,
-                ammount_vat,
-                ammount_total,
-                estimate_payment_date,
-                estimate_payment_date_2,
-                estimate_payment_date_3
-            });
             await axios.post(`${apiBaseUrl}/paradotea`, {
                 part_number:part_number,
                 title:title,
@@ -159,15 +145,6 @@ const FormAddParadotea = () => {
                                 </select>
                             </div>
                         </div>
-                    {/*
-                        <div className="field">
-                            <label  className="label">ΤΙΜΟΛΟΓΙΑ ID</label>
-                            <div className="control">
-                                <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΑ ID'/>
-                            </div>
-                        </div>
-
-                    */}
 
                         <div className="field">
                             <label  className="label">ΑΡΧΙΚΟ ΠΟΣΟ</label>

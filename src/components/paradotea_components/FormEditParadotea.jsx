@@ -163,13 +163,6 @@ const FormEditParadotea = () => {
                                 </div>
                         </div>
 
-                    {/* <div className="field">
-                        <label  className="label">ΕΡΓΟ ID</label>
-                        <div className="control">
-                            <input type="text" className="input" value={erga_id} onChange={(e)=> setErga_id(e.target.value)} placeholder='ΕΡΓΟ ID'/>
-                        </div>
-                    </div> */}
-
                     <div className="field">
                         <label className="label">ΕΡΓΟ</label>
                         <div className="control">
@@ -181,14 +174,6 @@ const FormEditParadotea = () => {
                             </select>
                         </div>
                     </div>
-
-
-                    {/* <div className="field">
-                        <label  className="label">ΤΙΜΟΛΟΓΙΟ ID</label>
-                        <div className="control">
-                            <input type="text" className="input" value={timologia_id} onChange={(e)=> setTimologia_id(e.target.value)} placeholder='ΤΙΜΟΛΟΓΙΟ ID'/>
-                        </div>
-                    </div> */}
 
 
 

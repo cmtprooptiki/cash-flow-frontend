@@ -97,16 +97,11 @@ const FormEditErgo= () => {
         getErga_Cat();
 
     }, [id]);
-    // },[id]);
 
     const updateErgo = async (e) =>{
         e.preventDefault();
         try{
             await axios.patch(`${apiBaseUrl}/erga/${id}`, {
-                // name:name,
-                // lat:lat,
-                // lon:lon,
-                // category:category
                 name:name,
                 color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
@@ -188,12 +183,6 @@ const FormEditErgo= () => {
                         </div>
                     </div>
                     
-                    {/* <div className="field">
-                        <label  className="label">ID ΠΕΛΑΤΗ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={customer_id} onChange={(e)=> setCustomerId(e.target.value)} placeholder='ID ΠΕΛΑΤΗ'/>
-                        </div>
-                    </div> */}
 
                                 <div className="field">
                                     <label className="label">Πελατης</label>
@@ -256,13 +245,6 @@ const FormEditErgo= () => {
                         </div>
                     </div>
 
-                    {/* <div className="field">
-                        <label  className="label">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={erga_cat_id} onChange={(e)=> set_erga_cat_id(e.target.value)} placeholder='ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ'/>
-                        </div>
-                    </div>
-                     */}
 
                     <div className="field">
                         <label className="label">ΚΑΤΗΓΟΡΙΑ</label>
