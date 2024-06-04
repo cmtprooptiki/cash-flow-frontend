@@ -37,6 +37,7 @@ const DaneiaList = () => {
                     <th>ΤΥΠΟΣ ΔΑΝΕΙΟΥ</th>
                     <th>ΠΟΣΟ ΔΑΝΕΙΟΥ</th>
                     <th>ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</th>
+                    <th>ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +47,7 @@ const DaneiaList = () => {
                         <td>{daneia.name}</td>
                         <td>{daneia.ammount}</td>
                         <td>{daneia.status}</td>
+                        <td>{daneia.payment_date}</td>
 
 
 

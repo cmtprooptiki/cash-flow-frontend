@@ -7,6 +7,7 @@ const FormAddDaneia = () => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState("");
     const [status, setStatus] = useState("");
+    const [payment_date, setPayment_Date] = useState(null)
 
     const[msg,setMsg]=useState("");
 
@@ -18,7 +19,8 @@ const FormAddDaneia = () => {
             await axios.post(`${apiBaseUrl}/daneia`, {
             name:name,
             ammount:ammount,
-            status:status
+            status:status,
+            payment_date:payment_date
             });
             navigate("/daneia");
         }catch(error){
@@ -53,6 +55,14 @@ const FormAddDaneia = () => {
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
                             <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
+                        </div>
+                    </div>
+
+
+                    <div className="field">
+                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
+                        <div className="control">
+                            <input type="date" className="input" value={payment_date} onChange={(e)=> setPayment_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
 

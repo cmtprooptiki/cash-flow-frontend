@@ -7,6 +7,7 @@ const FormEditDaneia= () => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState("");
     const [status, setStatus] = useState("");
+    const [payment_date, setPayment_Date] = useState("")
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ const FormEditDaneia= () => {
                 setName(response.data.name);
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
+                setPayment_Date(response.data.payment_date)
             }
             catch(error)
             {
@@ -40,6 +42,7 @@ const FormEditDaneia= () => {
                 name:name,
                 ammount:ammount,
                 status:status,
+                payment_date:payment_date,
             });
 
             navigate("/daneia");
@@ -76,6 +79,14 @@ const FormEditDaneia= () => {
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</label>
                         <div className="control">
                             <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
+                        </div>
+                    </div>
+
+
+                    <div className="field">
+                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
+                        <div className="control">
+                            <input type="date" className="input" value={payment_date} onChange={(e)=> setPayment_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ'/>
                         </div>
                     </div>
 

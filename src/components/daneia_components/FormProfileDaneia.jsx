@@ -14,6 +14,8 @@ const FormProfileDaneia = () => {
 
     const [status, setStatus] = useState("");
 
+    const [payment_date, setPayment_Date] = useState(null)
+
 
     const[msg,setMsg]=useState("");
 
@@ -28,6 +30,7 @@ const FormProfileDaneia = () => {
                 setName(response.data.name);
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
+                setPayment_Date(response.data.payment_date)
             }
             catch(error)
             {
@@ -71,6 +74,10 @@ const FormProfileDaneia = () => {
 
             <li className="media">
               <span className="w-5 text-black font-weight-normal"> ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ: &nbsp;</span><label className="media-body"> {status}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal"> ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ: &nbsp;</span><label className="media-body"> {payment_date}</label>
             </li>
             
            
