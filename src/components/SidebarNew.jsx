@@ -91,6 +91,13 @@ export const SidebarNew = () => {
 
                 <MenuItem  onChange={() => setIsSubMenuOpen(true)} component={<Link to="/daneia"/>}> <HiOutlineLocationMarker/> Διαχείριση Δανείων</MenuItem>
 
+                <MenuItem  onChange={() => setIsSubMenuOpen(true)} component={<Link to="/tags"/>}> <HiOutlineLocationMarker/> Διαχείριση Tags</MenuItem>
+
+                <MenuItem  onChange={() => setIsSubMenuOpen(true)} component={<Link to="/doseis"/>}> <HiOutlineLocationMarker/> Διαχείριση Δόσεων</MenuItem>
+
+
+                <MenuItem  onChange={() => setIsSubMenuOpen(true)} component={<Link to="/ypoquery"/>}> <HiOutlineLocationMarker/> Διαχείριση Υποχρεώσεων</MenuItem>
+
             </SubMenu>
             )}
           <MenuItem onClick={logout} ><IoLogOut/> Αποσύνδεση</MenuItem>

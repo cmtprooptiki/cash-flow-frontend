@@ -45,6 +45,22 @@ import EditDaneia from "./pages/daneia_pages/EditDaneia";
 
 import ProfileDaneia from "./pages/daneia_pages/ProfileDaneia";
 
+import Tags from "./pages/tags_pages/Tags";
+import AddTag from "./pages/tags_pages/AddTag"
+import EditTags from "./pages/tags_pages/EditTags";
+import ProfileTags from "./pages/tags_pages/ProfileTags";
+
+
+import Doseis from "./pages/doseis_pages/Doseis";
+import AddDoseis from "./pages/doseis_pages/AddDoseis"
+import EditDoseis from "./pages/doseis_pages/EditDoseis"
+import ProfileDoseis from "./pages/doseis_pages/ProfileDoseis"
+
+import Ypoxreoseis from "./pages/ypoxreoseis_pages/Ypoxreoseis";
+import AddYpoxreoseis from "./pages/ypoxreoseis_pages/AddYpoxreoseis";
+import ProfileYpoxreoseis from "./pages/ypoxreoseis_pages/ProfileYpoxreoseis";
+import EditYpoxreoseis from "./pages/ypoxreoseis_pages/EditYpoxreoseis";
+
 function App() {
   return (
     <div>
@@ -109,6 +125,32 @@ function App() {
           <Route path="/daneia/edit/:id" element={<EditDaneia/>}></Route>
 
           <Route path="/daneia/profile/:id" element={<ProfileDaneia/>}></Route>
+
+          <Route path="/tags" element={<Tags/>}></Route>
+
+          <Route path="/tags/add" element={<AddTag/>}></Route>
+
+          <Route path="/tags/edit/:id" element={<EditTags/>}></Route>
+
+          <Route path="/tags/profile/:id" element={<ProfileTags/>}></Route>
+
+
+
+          <Route path="/doseis" element={<Doseis/>}></Route>
+
+          <Route path="/doseis/add" element={<AddDoseis/>}></Route>
+
+          <Route path="/doseis/edit/:id" element={<EditDoseis/>}></Route>
+
+          <Route path="/doseis/profile/:id" element={<ProfileDoseis/>}></Route>
+
+          <Route path="/ypoquery" element={<Ypoxreoseis/>}></Route>
+
+          <Route path="/ypoquery/add" element={<AddYpoxreoseis/>}></Route>
+
+          <Route path="/ypoquery/profile/:id" element={<ProfileYpoxreoseis/>}></Route>
+
+          <Route path="/ypoquery/edit/:id" element={<EditYpoxreoseis/>}></Route>
 
         </Routes>
       </BrowserRouter>
