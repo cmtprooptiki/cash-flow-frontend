@@ -18,6 +18,8 @@ import '../dashboard.css';
 import { getColorClass2, getLimitAnnotation } from '../components/HelperComponent';
 import apiBaseUrl from '../apiConfig';
 import WeeksTableBudget from '../components/WeeksTableBudget';
+import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
+import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
 
 // Importing calendar library
 import { Calendar, momentLocalizer,DateLocalizer ,DnDCalendar} from 'react-big-calendar';
@@ -37,13 +39,21 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const Dashboard = () => {
  
-
+  const [selectedTable, setSelectedTable] = useState('table1');
   return (
     <Layout>
         <Welcome />
         <Esoda />
         <Eksoda/>
-        <WeeksTableBudget/>
+        <div className="button-group">
+        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table1')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario</button>
+        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table2')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario</button>
+        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table3')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-case Scenario</button>
+      </div>
+
+      {selectedTable === 'table1' && <WeeksTableBudget />}
+      {selectedTable === 'table2' && <WeeksTableBudget_Est2 />}
+      {selectedTable === 'table3' && <WeeksTableBudget_Est3 />}
     </Layout>
   );
   
