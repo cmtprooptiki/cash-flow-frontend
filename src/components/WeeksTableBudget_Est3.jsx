@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 
-
-const WeeksTableBudget = ()=>
+const WeeksTableBudget_Est3 = ()=>
 {
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
     const [doseis, setDoseis] = useState([]);
@@ -108,10 +107,10 @@ const WeeksTableBudget = ()=>
             const weekEnd = weekStart.clone().endOf('week');
 
             console.log("MONTH IOFJDIDF", income_paradotea.filter(item =>
-                moment(item.paradotea.estimate_payment_date)))
+                moment(item.paradotea.estimate_payment_date_3)))
 
             const itemsInWeekParadotea = income_paradotea.filter(item =>
-                moment(item.paradotea.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+                moment(item.paradotea.estimate_payment_date_3).isBetween(weekStart, weekEnd, 'day', '[]')
             );
 
             const itemsInWeekEkx = income_ekx.filter(item =>
@@ -203,7 +202,7 @@ const WeeksTableBudget = ()=>
 
     return (
         <div>
-            <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-Case Scenario</h1>
+            <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-Case Scenario</h1>
             <div className="selectors">
                 <div className="year-selector">
                     <label htmlFor="year">Select Year: </label>
@@ -256,4 +255,4 @@ const WeeksTableBudget = ()=>
         </div>
         );
 }
-export default WeeksTableBudget;
+export default WeeksTableBudget_Est3;
