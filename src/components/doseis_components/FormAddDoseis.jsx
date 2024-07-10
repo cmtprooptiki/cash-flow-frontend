@@ -58,6 +58,19 @@ const FormAddDoseis = ()=>
                 <div className="content">
                 <form onSubmit={saveDoseis}>
                 <p className='has-text-centered'>{msg}</p>
+
+                <div className="field">
+                            <label className="label">Υποχρεώσεις</label>
+                            <div className="control">
+                                <select className="input" onChange={(e) => handleYpoxreoseisChange(e)} defaultValue="">
+                                    <option value="" disabled>Επιλέξτε Υποχρέωση</option>
+                                        {ypoxreoseis.map((ypoxreosh, index) => (
+                                            <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
+                                        ))}
+                                </select>
+                            </div>
+                        </div>
+
                 <div className="field">
                         <label  className="label">ΠΟΣΟ ΔΟΣΗΣ</label>
                         <div className="control">
@@ -87,17 +100,7 @@ const FormAddDoseis = ()=>
                     </div>
 
 
-                    <div className="field">
-                            <label className="label">Υποχρεώσεις</label>
-                            <div className="control">
-                                <select className="input" onChange={(e) => handleYpoxreoseisChange(e)} defaultValue="">
-                                    <option value="" disabled>Επιλέξτε Υποχρέωση</option>
-                                        {ypoxreoseis.map((ypoxreosh, index) => (
-                                            <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
-                                        ))}
-                                </select>
-                            </div>
-                        </div>
+                    
 
                     
                     
