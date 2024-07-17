@@ -242,32 +242,25 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
 
     const projectManagerBodyTemplate = (rowData) => {
-        const representative = rowData.project_manager;
-
+        const project_manager = rowData.project_manager;
+        console.log("rep body template: ",project_manager)
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
-                <span>{representative}</span>
+                <span>{project_manager}</span>
             </div>
         );
     };
 
     const projectManagerFilterTemplate = (options) => {
-        console.log("insiede",project_managers)
+        return (<MultiSelect value={options.value} options={project_managers} itemTemplate={projectManagerItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
 
-        return <MultiSelect 
-        value={options.value} 
-        options={project_managers} 
-        itemTemplate={projectManagerItemTemplate} 
-        onChange={(e) => options.filterCallback(e.value)} 
-        placeholder="Any" 
-        className="p-column-filter" />;
     };
 
     const projectManagerItemTemplate = (option) => {
+        console.log("rep Item template: ",option)
+
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={option.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                 <span>{option}</span>
             </div>
         );
@@ -277,7 +270,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     useEffect(()=>{
         getErga()
         setLoading(false);
-
+        initFilters();
     },[]);
 
     const getErga = async() =>{
@@ -285,7 +278,9 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             const response = await axios.get(`${apiBaseUrl}/erga`);
             const ergaData = response.data;
             // Extract unique statuses
+            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
+            // .map(name => ({ name }));
             setProjectManager(uniqueProjectManager);
             // Convert sign_date to Date object for each item in ergaData
             const ergaDataWithDates = ergaData.map(item => ({
