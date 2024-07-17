@@ -96,6 +96,7 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
     <div>
       <div className="selectors">
         <div className="year-selector">
+          <br></br>
           <label htmlFor="year">Select Year: </label>
           <input
             type="number"
@@ -107,7 +108,9 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
           />
         </div>
         <div className="month-selector">
+        <br></br>
           <label htmlFor="month">Select Month: </label>
+      
           <Select
             name="month"
             options={monthsOptions}
@@ -116,6 +119,7 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
             value={monthsOptions.find(option => option.value === selectedMonth)}
             onChange={handleMonthChange}
           />
+          <br></br>
         </div>
       </div>
       <table className="table">
@@ -158,6 +162,7 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
           </tr>
         </tbody>
       </table>
+      
     </div>
   );
 };

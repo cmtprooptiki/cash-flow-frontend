@@ -41,9 +41,15 @@ const EkxwrimenoTimologioList = () =>
 
                         <th>ΤΙΜΟΛΟΓΙΟ ID</th>
                         <th>ΠΟΣΟ ΤΡΑΠΕΖΑΣ</th>
+                        <th>ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</th>
                         <th>ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</th>
+                        
+
                         <th>ΠΟΣΟ ΠΕΛΑΤΗ</th>
+                        <th>ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</th>
                         <th>ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</th>
+                     
+
                         <th>Ενέργειες</th>
                     </tr>
                 </thead>
@@ -53,9 +59,13 @@ const EkxwrimenoTimologioList = () =>
                             <td>{index+1}</td>
                             <td>{EkxwrimenoTimologio.timologia_id}</td>
                             <td>{EkxwrimenoTimologio.bank_ammount}</td>
+                            <td>{EkxwrimenoTimologio.bank_estimated_date }</td>
                             <td>{EkxwrimenoTimologio.bank_date }</td>
+                           
                             <td>{EkxwrimenoTimologio.customer_ammount }</td>
+                            <td>{EkxwrimenoTimologio.cust_estimated_date }</td>
                             <td>{EkxwrimenoTimologio.cust_date }</td>
+                       
 
 
                             <td>

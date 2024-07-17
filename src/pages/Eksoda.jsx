@@ -208,14 +208,14 @@ const Eksoda = ()=>
 
 
       return (
-        <div>
+        <div className="boxclass">
           {/* <h1 className = "Scenario" style = {{textAlign: "center", marginBottom: 20}}>{selectedButton === 'estimate_payment_date' ? 'Best-Case Scenario' :
              selectedButton === 'estimate_payment_date_2' ? 'Medium-Case Scenario' :
              selectedButton === 'estimate_payment_date_3' ? 'Worst-Case Scenario' : ''}</h1> */}
 
              
           <div className="container">
-          <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "center", marginBottom: "25px", marginTop: "25px"}}>Εξοδα</h1>
+          <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>ΕΞΟΔΑ</h1>
             
             <div className="row">
               <div className="col-md-4">

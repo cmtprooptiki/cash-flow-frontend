@@ -45,6 +45,7 @@ const Dashboard = () => {
         <Welcome />
         <Esoda />
         <Eksoda/>
+        <div className="boxclass">
         <div className="button-group">
         <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table1')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario</button>
         <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table2')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario</button>
@@ -54,6 +55,7 @@ const Dashboard = () => {
       {selectedTable === 'table1' && <WeeksTableBudget />}
       {selectedTable === 'table2' && <WeeksTableBudget_Est2 />}
       {selectedTable === 'table3' && <WeeksTableBudget_Est3 />}
+      </div>
     </Layout>
   );
   

@@ -201,7 +201,7 @@ const WeeksTableBudget_Est3 = ()=>
     };
 
     return (
-        <div>
+        <div className="container">
             <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-Case Scenario</h1>
             <div className="selectors">
                 <div className="year-selector">

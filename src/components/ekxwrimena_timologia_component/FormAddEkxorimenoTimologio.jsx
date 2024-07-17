@@ -8,8 +8,12 @@ const FormAddEkxorimenoTimologio = () =>
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState("");
     const[bank_date,setBank_Date]=useState(null);
+    const[bank_estimated_date,setEstimated_Bank_Date]=useState(null);
+
     const[customer_ammount,setCustomer_Ammount]=useState("");
     const[cust_date,setCust_Date]=useState(null);
+    const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
+
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
@@ -53,8 +57,10 @@ const FormAddEkxorimenoTimologio = () =>
             timologia_id: timologia_id,
             bank_ammount: bank_ammount,
             bank_date: bank_date,
+            bank_estimated_date:bank_estimated_date,
             customer_ammount: customer_ammount,
-            cust_date:cust_date
+            cust_date:cust_date,
+            cust_estimated_date:cust_estimated_date
             });
             navigate("/ek_tim");
         }catch(error){
@@ -98,11 +104,20 @@ const FormAddEkxorimenoTimologio = () =>
                     </div>
 
                     <div className="field">
+                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+                        <div className="control">
+                            <input type="date" className="input" value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                        </div>
+                    </div>
+
+                    <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
                             <input type="date" className="input" value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
                         </div>
                     </div>
+
+               
 
                     <div className="field">
                         <label  className="label">ΠΟΣΟ ΠΕΛΑΤΗ</label>
@@ -112,12 +127,21 @@ const FormAddEkxorimenoTimologio = () =>
                     </div>
 
                     <div className="field">
+                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
+                        <div className="control">
+                            <input type="date" className="input" value={cust_estimated_date} onChange={(e)=> setEstimated_Cust_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                        </div>
+                    </div>
+
+
+                    <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
                             <input type="date" className="input" value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
                         </div>
                     </div>
                     
+                 
                     
                     <div className="field">
                         <div className="control">

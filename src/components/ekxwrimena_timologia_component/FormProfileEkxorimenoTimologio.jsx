@@ -12,11 +12,22 @@ const FormProfileEkxorimenoTimologio = () =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState("");
+    const[bank_estimated_date,setEstimated_Bank_Date]=useState("");
     const[bank_date,setBank_Date]=useState("");
     const[customer_ammount,setCustomer_Ammount]=useState("");
+    const[cust_estimated_date,setEstimated_Cust_Date]=useState("");
     const[cust_date,setCust_Date]=useState("");
     const[msg,setMsg]=useState("");
     const{id} = useParams();
+
+    const formatDateToInput = (dateString) => {
+      if(dateString === null || dateString =="" || dateString === NaN){
+          return ""
+      }
+      dateString=dateString.split('T')[0];
+      const [year, month, day] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+  };
 
     useEffect(()=>{
         const getEkxorimenoTimologioById = async() =>{
@@ -25,9 +36,11 @@ const FormProfileEkxorimenoTimologio = () =>
                 const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
                 setTimologia_Id(response.data.timologia_id);
                 setBank_Ammount(response.data.bank_ammount);
-                setBank_Date(response.data.bank_date);
+                setEstimated_Bank_Date(formatDateToInput(response.data.bank_estimated_date));
+                setBank_Date(formatDateToInput(response.data.bank_date));
                 setCustomer_Ammount(response.data.customer_ammount);
-                setCust_Date(response.data.cust_date);
+                setEstimated_Cust_Date(formatDateToInput(response.data.cust_estimated_date));
+                setCust_Date(formatDateToInput(response.data.cust_date));
             }
             catch(error)
             {
@@ -39,7 +52,7 @@ const FormProfileEkxorimenoTimologio = () =>
 
     return(
         <div>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossOrigin="anonymous" />
 <div className="container">
     <div className="row">
       <div className="col-lg-5 col-md-6">
@@ -71,6 +84,11 @@ const FormProfileEkxorimenoTimologio = () =>
               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
               <label className="media-body"> {bank_ammount}</label>
             </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
+              <label className="media-body"> {bank_estimated_date}</label>
+            </li>
            
             <li className="media">
               <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
@@ -81,6 +99,11 @@ const FormProfileEkxorimenoTimologio = () =>
             <li className="media">
               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΠΕΛΑΤΗ: &nbsp;</span>
               <label className="media-body"> {customer_ammount}</label>
+            </li>
+
+            <li className="media">
+              <span className="w-5 text-black font-weight-normal">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ: &nbsp;</span>
+              <label className="media-body"> {cust_estimated_date}</label>
             </li>
 
             <li className="media">

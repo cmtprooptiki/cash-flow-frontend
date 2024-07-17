@@ -150,7 +150,9 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
   return (
     <div>
       <div className="selectors">
+        
         <div className="year-selector">
+        <br></br>
           <label htmlFor="year">Select Year: </label>
           <input
             type="number"
@@ -160,8 +162,10 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
             min="1900"
             max="2100"
           />
+              <br></br>
         </div>
         <div className="month-selector">
+        <br></br>
           <label htmlFor="month">Select Month: </label>
           <Select
             name="month"
@@ -171,6 +175,7 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
             value={monthsOptions.find(option => option.value === selectedMonth)}
             onChange={handleMonthChange}
           />
+              <br></br>
         </div>
       </div>
       <table className="table">
