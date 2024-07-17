@@ -61,9 +61,25 @@ import AddYpoxreoseis from "./pages/ypoxreoseis_pages/AddYpoxreoseis";
 import ProfileYpoxreoseis from "./pages/ypoxreoseis_pages/ProfileYpoxreoseis";
 import EditYpoxreoseis from "./pages/ypoxreoseis_pages/EditYpoxreoseis";
 
+import PaidView from "./pages/paid_pages/paidView";
+
+
+import { PrimeReactProvider } from 'primereact/api';
+import { Button } from 'primereact/button'; // Importing PrimeReact Button component
+
+//import 'primereact/resources/themes/saga-blue/theme.css';  // theme
+//import 'primereact/resources/primereact.min.css';          // core css
+import 'primeicons/primeicons.css';                        // icons
+import 'primeflex/primeflex.css';   
+import './flags.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
 function App() {
+  
   return (
     <div>
+      <PrimeReactProvider >
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>}></Route>
@@ -152,8 +168,11 @@ function App() {
 
           <Route path="/ypoquery/edit/:id" element={<EditYpoxreoseis/>}></Route>
 
+          <Route path="/paidView" element={<PaidView/>}></Route>
+
         </Routes>
       </BrowserRouter>
+      </PrimeReactProvider>
     </div>
   );
 }

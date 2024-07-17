@@ -68,6 +68,8 @@ export const SidebarNew = () => {
           />
           </div>
           <MenuItem  component={<Link to="/dashboard"/>}><AiFillDashboard/> Επισκόπηση</MenuItem>
+          <MenuItem  component={<Link to="/paidView"/>}><AiFillDashboard/> PAID</MenuItem>
+
           <SubMenu  label="Εργα">
           {erga.map((ergo, index) => (
                      

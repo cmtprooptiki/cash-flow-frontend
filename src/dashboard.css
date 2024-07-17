@@ -92,3 +92,20 @@
     font-size: 30px;
     font-weight: bold;
 }
+
+.col-md-12 {
+    background:#dbdbdb;
+    border-radius: 18px;
+
+}
+
+.row{
+    padding-bottom:15px;
+}
+
+.boxclass {
+    margin-top:32px;
+    border: 1px solid lightgrey;
+    border-radius: 18px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

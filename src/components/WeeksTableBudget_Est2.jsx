@@ -201,10 +201,12 @@ const WeeksTableBudget_Est2 = ()=>
     };
 
     return (
-        <div>
+        <div className="container">
             <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-Case Scenario</h1>
             <div className="selectors">
                 <div className="year-selector">
+                <br></br>
+
                     <label htmlFor="year">Select Year: </label>
                     <input
                         type="number"
@@ -216,6 +218,9 @@ const WeeksTableBudget_Est2 = ()=>
                     />
                 </div>
                 <div className="month-selector">
+                    <br></br>
+                    <br></br>
+
                     <label htmlFor="month">Select Month: </label>
                     <Select
                         name="month"
@@ -225,6 +230,8 @@ const WeeksTableBudget_Est2 = ()=>
                         value={monthsOptions.find(option => option.value === selectedMonth)}
                         onChange={handleMonthChange}
                     />
+                                        <br></br>
+
                 </div>
             </div>
             <table className="table">
