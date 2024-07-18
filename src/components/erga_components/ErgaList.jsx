@@ -311,6 +311,23 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
     const header = renderHeader();
 
+    const actionsBodyTemplate=(rowData)=>{
+        const id=rowData.id
+        return(
+            <div>
+                {id}
+            <Link to={`/erga/profile/${id}`} className='button is-small is-info'>Προφίλ</Link>
+            {user && user.role ==="admin" && (
+            <div>
+                <Link to={`/erga/edit/${id}`} className='button is-small is-info'>Επεξεργασία</Link>
+                <button onClick={()=>deleteErga(id)} className='button is-small is-danger'>Διαγραφή</button>
+            </div>
+            )}
+            </div>
+
+        );
+    }
+
   
 
   return (
@@ -338,6 +355,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column header="estimate_payment_date_3" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
         <Column header="project_manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter filterElement={projectManagerFilterTemplate} />
+        <Column header="actions" field="id" body={actionsBodyTemplate}/>
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
             body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
         {/* <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />

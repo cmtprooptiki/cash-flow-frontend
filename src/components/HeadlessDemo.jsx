@@ -6,7 +6,7 @@ import { Ripple } from 'primereact/ripple';
 import { StyleClass } from 'primereact/styleclass';
 
 export default function HeadlessDemo() {
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
     const btnRef1 = useRef(null);
     const btnRef2 = useRef(null);
     const btnRef3 = useRef(null);
@@ -14,9 +14,12 @@ export default function HeadlessDemo() {
 
     return (
         <div className="card flex justify-content-center">
+            <Button icon="p-button-icon p-c pi pi-bars" onClick={() => setVisible(true)} />
+
             <Sidebar
                 visible={visible}
                 onHide={() => setVisible(false)}
+                
                 content={({ closeIconRef, hide }) => (
                     <div className="min-h-screen flex relative lg:static surface-ground">
                         <div id="app-sidebar-2" className="surface-section h-screen block flex-shrink-0 absolute lg:static left-0 top-0 z-1 border-right-1 surface-border select-none" style={{ width: '280px' }}>
