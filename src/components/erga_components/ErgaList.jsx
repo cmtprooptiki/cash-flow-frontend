@@ -20,6 +20,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
+
 const ErgaList = () => {
     const [erga,setErga]=useState([]);
     const [filters, setFilters] = useState(null);
@@ -107,7 +108,10 @@ const ErgaList = () => {
             estimate_payment_date_2: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             estimate_payment_date_3: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
 
-           
+            customer_id:{operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
+            "customer.name":{operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
+            erga_cat_id:{operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
+            "erga_category.name":{operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]}
         });
         setGlobalFilterValue('');
     };
@@ -266,6 +270,32 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         );
     };
 
+    const categoriesNameTemplate = (rowData) => {
+        const catName = rowData.erga_category.name;
+        console.log("cat body template: ",catName)
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{catName}</span>
+            </div>
+        );
+    };
+
+    const categoriesNameFilterTemplate = (options) => {
+        return (<MultiSelect value={options.value} options={project_managers} itemTemplate={categoriesNameItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+
+    };
+
+    const categoriesNameItemTemplate = (option) => {
+        console.log("rep Item template: ",option)
+
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{option}</span>
+            </div>
+        );
+    };
+
+
 
     useEffect(()=>{
         getErga()
@@ -314,14 +344,21 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     const actionsBodyTemplate=(rowData)=>{
         const id=rowData.id
         return(
-            <div>
-                {id}
-            <Link to={`/erga/profile/${id}`} className='button is-small is-info'>Προφίλ</Link>
+            <div className=" flex flex-wrap justify-content-center gap-3">
+               
+            {user && user.role!=="admin" &&(
+                <div>
+                    <Link to={`/erga/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                </div>
+            )}
             {user && user.role ==="admin" && (
-            <div>
-                <Link to={`/erga/edit/${id}`} className='button is-small is-info'>Επεξεργασία</Link>
-                <button onClick={()=>deleteErga(id)} className='button is-small is-danger'>Διαγραφή</button>
-            </div>
+            <span>
+                <Link to={`/erga/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                <Link to={`/erga/edit/${id}`}><Button severity="info" label="Επεξεργασία" text raised /></Link>
+            
+                <Button label="Διαγραφή" severity="danger" onClick={()=>deleteErga(id)} text raised />
+            </span>
+            
             )}
             </div>
 
@@ -333,11 +370,12 @@ const estimatePaymentDateFilterTemplate3= (options) => {
   return (
     <div className="card" >
     <DataTable value={erga} paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
-            filters={filters} globalFilterFields={['name',
-                 'shortname',
-                'sign_ammount_no_tax', 
-                'sign_date', 'status', 'estimate_start_date','project_manager','ammount','ammount_vat','ammount_total'
-                ,'estimate_payment_date','estimate_payment_date_2','estimate_payment_date_3']} header={header}
+            filters={filters} globalFilterFields={['name'
+                ,'shortname','sign_ammount_no_tax'
+                ,'sign_date', 'status', 'estimate_start_date'
+                ,'project_manager','ammount','ammount_vat','ammount_total'
+                ,'estimate_payment_date','estimate_payment_date_2','estimate_payment_date_3'
+                ,'customer_id','customer.name','erga_cat_id','erga_category.name']} header={header}
             emptyMessage="No customers found.">
         <Column field="name" header="name" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
         <Column field="shortname" header="shortname" filter filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
@@ -355,6 +393,11 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column header="estimate_payment_date_3" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
         <Column header="project_manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter filterElement={projectManagerFilterTemplate} />
+        
+        <Column field="customer_id" header="customer_id" filter filterPlaceholder="Search by customer id" style={{ minWidth: '5rem' }}/>
+        <Column field="customer.name" header="customer.name" filter filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
+        <Column field="erga_cat_id" header="erga_cat_id" filter filterPlaceholder="Search by erga tag" style={{ minWidth: '5rem' }}/>
+        <Column field="erga_category.name" header="erga_category" filter filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
         <Column header="actions" field="id" body={actionsBodyTemplate}/>
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
             body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
