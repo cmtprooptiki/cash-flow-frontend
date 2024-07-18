@@ -208,63 +208,63 @@ const Navbar =()=>{
                                                 <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-users mr-2"></i>
-                                                        <span className="font-medium"><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Πελατών</span>
+                                                        <span className="font-medium"><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Πελατών</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Εργων</span>
+                                                        <span className="font-medium"><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Εργων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Κατηγοριών Εργων</span>
+                                                        <span className="font-medium"><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Κατηγοριών Εργων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Εκχωριμένων Τιμολογίων</span>
+                                                        <span className="font-medium"><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Εκχωριμένων Τιμολογίων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Παραδοτέων</span>
+                                                        <span className="font-medium"><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Παραδοτέων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Δανείων</span>
+                                                        <span className="font-medium"><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Δανείων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Tags</span>
+                                                        <span className="font-medium"><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Tags</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Δόσεων</span>
+                                                        <span className="font-medium"><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Δόσεων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}/>Διαχείριση Υποχρεώσεων</span>
+                                                        <span className="font-medium"><Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Υποχρεώσεων</Link></span>
                                                         <Ripple />
                                                     </a>
                                                 </li>
