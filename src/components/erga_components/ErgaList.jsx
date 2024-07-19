@@ -256,6 +256,8 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     };
 
     const projectManagerFilterTemplate = (options) => {
+        console.log('Current projectmanager filter value:', options);
+
         return (<MultiSelect value={options.value} options={project_managers} itemTemplate={projectManagerItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
 
     };
