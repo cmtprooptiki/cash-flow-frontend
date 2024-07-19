@@ -102,12 +102,13 @@ const Navbar =()=>{
                                                 </div>
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
-                                                <li>
-                                                    <a href="/dashboard" className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                <li><Link to="/dashboard"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-home mr-2"></i>
                                                         <span className="font-medium">Dashboard</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
                                                 <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
@@ -205,68 +206,78 @@ const Navbar =()=>{
                                                 </div>
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
-                                                <li>
+                                                <li><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-users mr-2"></i>
-                                                        <span className="font-medium"><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Πελατών</Link></span>
+                                                        <span className="font-medium">Διαχείριση Πελατών</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Εργων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Εργων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Κατηγοριών Εργων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Κατηγοριών Εργων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Εκχωριμένων Τιμολογίων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Εκχωριμένων Τιμολογίων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Παραδοτέων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Παραδοτέων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Δανείων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Δανείων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Tags</Link></span>
+                                                        <span className="font-medium">Διαχείριση Tags</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
-                                                <li>
+                                                <li><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Δόσεων</Link></span>
+                                                        <span className="font-medium">Διαχείριση Δόσεων</span>
                                                         <Ripple />
                                                     </a>
+                                                    </Link>
                                                 </li>
                                                 <li>
-                                                    <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
-                                                        <span className="font-medium"><Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}>Διαχείριση Υποχρεώσεων</Link></span>
-                                                        <Ripple />
-                                                    </a>
+                                                    <Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                            <i className="pi pi-folder mr-2"></i>
+                                                            <span className="font-medium">Διαχείριση Υποχρεώσεων</span>
+                                                            <Ripple />
+                                                        </a>
+                                                    </Link>
                                                 </li>
 
                                                 <li>
