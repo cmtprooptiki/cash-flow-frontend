@@ -1,3 +1,7 @@
 .navbar-item img {
     max-height: 2.75rem !important;
 }
+
+.navbar{
+    background:lightgray;
+}

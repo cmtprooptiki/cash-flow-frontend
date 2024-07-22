@@ -326,11 +326,12 @@ const timologiaItemTemplate = (option) => {
                 </div>
             )}
             {user && user.role ==="admin" && (
-            <span>
-                <Link to={`/paradotea/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-                <Link to={`/paradotea/edit/${id}`}><Button severity="info" label="Επεξεργασία" text raised /></Link>
-           
-                <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised />
+            <span className='flex gap-1'>
+                <Link to={`/paradotea/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+                </Link>
+                <Link to={`/paradotea/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteParadotea(id)} />
+                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
            
             )}
@@ -343,7 +344,7 @@ const timologiaItemTemplate = (option) => {
         <div className="card" >
         <h1 className='title'>Παραδοτέα</h1>
         {user && user.role ==="admin" && (
-        <Link to={"/paradotea/add"} className='button is-primary mb-2'>Προσθήκη Νεου Παραδοτέου</Link>
+        <Link to={"/paradotea/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Παραδοτέου" icon="pi pi-plus-circle"/></Link>
         )}
 
 

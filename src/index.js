@@ -5,8 +5,8 @@ import { store } from './app/store';
 import App from './App';
 // import "bulma/css/bulma.css";
 
-import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
-import 'primereact/resources/primereact.css';   
+// import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
+// import 'primereact/resources/primereact.css';   
 import axios from "axios"
 
 axios.defaults.withCredentials=true;
