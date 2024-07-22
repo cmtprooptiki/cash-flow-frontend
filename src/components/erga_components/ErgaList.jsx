@@ -350,15 +350,15 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                
             {user && user.role!=="admin" &&(
                 <div>
-                    <Link to={`/erga/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                    <Link to={`/erga/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
                 </div>
             )}
             {user && user.role ==="admin" && (
             <span>
-                <Link to={`/erga/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-                <Link to={`/erga/edit/${id}`}><Button severity="info" label="Επεξεργασία" text raised /></Link>
+                <Link to={`/erga/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
+                <Link to={`/erga/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
             
-                <Button label="Διαγραφή" severity="danger" onClick={()=>deleteErga(id)} text raised />
+                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"  onClick={()=>deleteErga(id)} />
             </span>
             
             )}
@@ -371,6 +371,10 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
   return (
     <div className="card" >
+    <h1 className='title'>Εργα</h1>
+    {user && user.role ==="admin" && (
+    <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
+    )}
     <DataTable value={erga} paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'

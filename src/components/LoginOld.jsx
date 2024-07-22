@@ -5,10 +5,6 @@ import {LoginUser,reset} from "../features/authSlice"
 import logo from "../logocmt.png";
 import '../login.css';
 import edsna from "../logo2.svg";
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-        
 
 const Login = () => {
     const [email,setEmail]=useState("");
@@ -39,8 +35,8 @@ const Login = () => {
 
   <div className="column is-4">
 
-  <form onSubmit={Auth} className="card">
-                    <div className="flex flex-wrap align-items-center mb-3 gap-2">
+  <form onSubmit={Auth} className='box'>
+                    <div className="field is-flex is-justify-content-center">
                   <img 
                     src={logo}
                     width="320" 
@@ -48,25 +44,25 @@ const Login = () => {
                     alt="logo"
                   />
                 </div>
-                  <div style={{display:'grid',justifyItems:'center'}}>
+                
                     <h1 style={{color: "black",fontWeight:"bold",textAlign:"center"}}>Cash Flow</h1>
                     <div className="field">
-                        <div><label  className="label">Email</label></div>
+                        <label  className="label">Email</label>
                         <div className="control">
-                            <InputText type="text" className="input" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='email'/>
+                            <input type="text" className="input" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='email'/>
                         </div>
                     </div>
                     <div className="field">
                         <label  className="label">Kωδικός πρόσβασης</label>
                         <div className="control">
-                            <Password type="password" className="input" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="*********" feedback={false} tabIndex={1} />
+                            <input type="password" className="input" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="*********"/>
                         </div>
                     </div>
                     <div className="field mt-5">
-                        <Button type="submit" className="button is-success is-fullwidth">{isLoading ?"Loading..." : "Είσοδος"}</Button>
+                        <button type="submit" className="button is-success is-fullwidth">{isLoading ?"Loading..." : "Είσοδος"}</button>
                     </div>
                     {isError && <p className='has-text-centered alert alert-danger'>{message}</p>}
-                    </div>
+
                 </form>
                 </div>
                 
