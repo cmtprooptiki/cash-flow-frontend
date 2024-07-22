@@ -9,6 +9,9 @@ import { Chip } from 'primereact/chip';
 import { Divider } from 'primereact/divider';
 import { Knob } from 'primereact/knob';
 import { Calendar } from 'primereact/calendar';
+import { TabView, TabPanel } from 'primereact/tabview';
+
+import { Ripple } from 'primereact/ripple';
 
 const FormProfileParadotea=() =>{
     const[part_number,setPart_Number]=useState("");
@@ -16,7 +19,9 @@ const FormProfileParadotea=() =>{
     const[delivery_date,setDelivery_Date]=useState("");
     const[percentage,setPercentage]=useState("");
     const[erga_id,setErga_id]=useState("");
+    const[erga_name,setErga_name]=useState("");
     const[timologia_id,setTimologia_id]=useState("");
+    const[timologia_invoice_number,setTimologia_Invoice_Number]=useState("");
     const[ammount,setAmmount]=useState("");
     const[ammount_vat,setAmmount_Vat]=useState("");
     const[ammount_total,setAmmount_Total]=useState("");
@@ -40,7 +45,14 @@ const FormProfileParadotea=() =>{
                 setDelivery_Date(response.data.delivery_date);
                 setPercentage(response.data.percentage);
                 setErga_id(response.data.erga_id);
+                setErga_name(response.data.erga.name);
                 setTimologia_id(response.data.timologia_id);
+                if(response.data.timologia_id){
+                    setTimologia_Invoice_Number(response.data.timologia.invoice_number);
+                }else{
+                    setTimologia_Invoice_Number(null)
+                }
+                // setTimologia_Invoice_Number(response.data.timologia.invoice_number);
                 setAmmount(response.data.ammount);
                 setAmmount_Vat(response.data.ammount_vat);
                 setAmmount_Total(response.data.ammount_total);
@@ -67,38 +79,61 @@ const FormProfileParadotea=() =>{
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Title</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{title}</div>
-            <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
-            </div>
+           
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Ανήκει στο Εργο:</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                <Chip label={erga_id} className="mr-2" />
+                <Chip label={erga_name} className="mr-2" />
                 
             </div>
-            <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
-            </div>
+          
         </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Αριθμός Τιμολογίου:</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={timologia_invoice_number ? timologia_invoice_number : 'Δεν έχει κοπεί τιμολόγιο για το συγκεκριμένο παραδοτέο'} className="mr-2"   style={{ color: timologia_invoice_number ? '' : 'red' }}  />
+                
+            </div>
+            
+        </li>
+
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Αριθμός Παραδοτέου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{part_number}</div>
-            <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
-            </div>
+          
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Παράδοσης</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(delivery_date)} inline showWeek />
 
 
             </div>
+            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμωμένη Ημερομηνία Πληρωμής</div>
+
             <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
-            </div>
+
+            <TabView>
+                {estimate_payment_date!=null&&(
+                <TabPanel header="Best Case">
+                <Calendar value={new Date(estimate_payment_date)} inline showWeek />
+                </TabPanel>
+                )}
+                {estimate_payment_date_2!=null&&(
+                <TabPanel header="Medium Case">
+                    <Calendar value={new Date(estimate_payment_date_2)} inline showWeek/>
+                </TabPanel>
+                )}
+                {estimate_payment_date_3!=null&&(
+                    <TabPanel header="Worst Case">
+                        <Calendar value={new Date(estimate_payment_date_3)} inline showWeek/>
+                    </TabPanel>
+                )}
+                
+            </TabView>           
+             </div>
         </li>
    
 
@@ -109,9 +144,7 @@ const FormProfileParadotea=() =>{
             <Knob value={percentage}  />
 
              </div>
-            <div className="w-6 md:w-2 flex justify-content-end">
-                <Button label="Edit" icon="pi pi-pencil" className="p-button-text" />
-            </div>
+           
         </li>
     </ul>
 </div>
@@ -168,21 +201,7 @@ const FormProfileParadotea=() =>{
     </div>
 
  
-    <div className="col-12 md:col-6 lg:col-3">
-        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-            <div className="flex justify-content-between mb-3">
-                <div>
-                    <span className="block text-500 font-medium mb-3">Comments</span>
-                    <div className="text-900 font-medium text-xl">152 Unread</div>
-                </div>
-                <div className="flex align-items-center justify-content-center bg-purple-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                    <i className="pi pi-comment text-purple-500 text-xl"></i>
-                </div>
-            </div>
-            <span className="text-green-500 font-medium">85 </span>
-            <span className="text-500">responded</span>
-        </div>
-    </div>
+
 </div>
 </div>
       
