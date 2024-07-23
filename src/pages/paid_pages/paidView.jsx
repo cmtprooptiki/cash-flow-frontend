@@ -21,7 +21,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Tag } from 'primereact/tag';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { CustomerService } from './service/CustomerService';
-        
+import PaidList from '../../components/paid_components/PaidLists'
 import { Ripple } from 'primereact/ripple';
 
 ///////////////////////
@@ -377,18 +377,19 @@ const PaidView = () =>
 
         
     // </Layout>
-    <div className="card">
-            <DataTable value={erga} paginator showGridlines rows={10} loading={loading} dataKey="id" 
-                    filters={filters} 
-                    globalFilterFields={[ 'project_manager']} 
-                    header={header}
-                    emptyMessage="No customers found.">
+    // <div className="card">
+    //         <DataTable value={erga} paginator showGridlines rows={10} loading={loading} dataKey="id" 
+    //                 filters={filters} 
+    //                 globalFilterFields={[ 'project_manager']} 
+    //                 header={header}
+    //                 emptyMessage="No customers found.">
                 
-                <Column header="Agent" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
+    //             <Column header="Agent" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+    //                 body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
                 
-            </DataTable>
-        </div>
+    //         </DataTable>
+    //     </div>
+    <div><Layout><PaidList/></Layout></div>
   )
 }
 
