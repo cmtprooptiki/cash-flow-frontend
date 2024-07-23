@@ -187,11 +187,69 @@ const statusItemTemplate = (option) => {
     }, []);
 
     const handleFilter = (filteredData) => {
+        console.log("filtered data: ",filteredData)
         setTotalIncome(calculateTotalIncome(filteredData));
     };
 
-    console.log(combinedData)
+    //console.log(combinedData)
 
+    const thisYearTotal = (filter) => {
+        console.log("filter data",filter)
+        console.log("filter filters",filter.props.filters)
+        let total2=0;
+        ///check if filters have been applied
+        ///if applied
+        if(filter.props.filters!=null){
+            for(let typeFilter of filter.props.filters.type.constraints){
+                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
+                if(typeFilter.value){
+                    if(typeFilter.matchMode=="equals"){
+                        ///we add all income values only if their column type matches our selected filters
+                        for(let sale of filter.props.value) {
+                            if(sale.type==typeFilter.value){
+                                total2 += sale.income;
+                            }  
+                        }                        
+                    }   
+                }
+            }
+            for(let typeFilter of filter.props.filters.date.constraints){
+                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
+                if(typeFilter.value){ 
+                    if(typeFilter.matchMode=="dateAfter"){
+                        ///we add all income values only if their column type matches our selected filters
+                        for(let sale of filter.props.value) {
+                            if(new Date(sale.date)>=new Date(typeFilter.value)){
+                                total2 += sale.income;
+                            }  
+                        }                        
+                    }  
+                    if(typeFilter.matchMode=="dateBefore"){
+                        ///we add all income values only if their column type matches our selected filters
+                        for(let sale of filter.props.value) {
+                            if(new Date(sale.date)<=new Date(typeFilter.value)){
+                                total2 += sale.income;
+                            }  
+                        }                        
+                    }    
+                }
+            }
+            
+
+            return formatCurrency(total2);
+        }
+        ///if not applied
+        let total = 0;
+        for(let sale of combinedData) {
+            total += sale.income;
+        }
+
+        return formatCurrency(total);
+    }
+
+    const handelAllFilters=(filters)=>{
+        console.log("Type filter: ",filters.type.constraints)
+    }
 
     const header = renderHeader();
 
@@ -203,9 +261,13 @@ const statusItemTemplate = (option) => {
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
             globalFilterFields={['date', 'income', 'type','id']}
-            onFilter={(e) => handleFilter(e.filteredValue)}>
+            // onFilter={(e) => handleFilter(e.filteredValue)}
+            onFilter={(e)=>setFilters(e.filters)}
+            
+            >
                 <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate}></Column>
-                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column>
+                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
+                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={thisYearTotal} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
                 <Column field="id" header="Id" filter sortable></Column>
