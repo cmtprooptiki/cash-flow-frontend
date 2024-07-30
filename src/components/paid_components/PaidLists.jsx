@@ -184,7 +184,7 @@ const statusItemTemplate = (option) => {
 
     useEffect(() => {
         setTotalIncome(calculateTotalIncome(combinedData));
-    }, [combinedData]);
+    }, []);
 
     const handleFilter = (filteredData) => {
         console.log("filtered data: ",filteredData)
