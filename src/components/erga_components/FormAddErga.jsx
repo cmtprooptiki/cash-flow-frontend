@@ -20,7 +20,7 @@ import { Divider } from 'primereact/divider';
 const FormAddErga = () => {
     const[name,setName]=useState("");
     const [color, setColor] = useState("#ffffff");
-    const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
+    const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
     const[status,setStatus]=useState("");
     const[estimate_start_date,setEstimateStartDate]=useState("");
@@ -29,9 +29,9 @@ const FormAddErga = () => {
     const[customer_name,setCustomerName]=useState(null)
     const[customer,setCustomer]=useState([])
     const[shortname,setShortName]=useState("")
-    const[ammount,setAmmount]=useState(null)
-    const[ammount_vat,setAmmount_Vat]=useState(null)
-    const[ammount_total,setAmmount_Total]=useState(null)
+    const[ammount,setAmmount]=useState(0)
+    const[ammount_vat,setAmmount_Vat]=useState(0)
+    const[ammount_total,setAmmount_Total]=useState(0)
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
@@ -142,7 +142,7 @@ const FormAddErga = () => {
                                     <label  className="label "> ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.</label>
                                     <div className="control">
                                         {/* <input type="text" className="input" value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.target.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/> */}
-                                        <InputText keyfilter="num" className="input" value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.target.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/>
+                                        <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/>
 
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@ const FormAddErga = () => {
                             <label  className="label">ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
-                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2} onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/>
+                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
 
                             </div>
                         </div>
