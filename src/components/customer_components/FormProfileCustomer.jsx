@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import '../../custom.css';
 
+import { Divider } from 'primereact/divider';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import apiBaseUrl from '../../apiConfig';
@@ -48,69 +49,53 @@ const FormProfileCustomer= () => {
 
 
     return (
-		<div>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-<div className="container">
-    <div className="row">
-      <div className="col-lg-5 col-md-6">
-        <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-        </div>
-        <div className="mb-2 d-flex">
-
-        </div>
-
-        
-        
-      </div>
-      <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-        <div className='box'>
-          <div className="mb-2 d-flex">
-            <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >{name}</h2>
-            
-          </div>
-        
-        <div className="mb-2 d-flex">
-          
-          <ul className="list-unstyled">
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">Α.Φ.Μ.: &nbsp;</span><label className="media-body"> {afm}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΤΗΛΕΦΩΝΟ: &nbsp; </span>
-              <label className="media-body"> {phone}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">EMAIL: &nbsp;</span>
-              <label className="media-body"> {email}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΔΙΕΥΘΗΝΣΗ: &nbsp;</span>
-              <label className="media-body"> {address}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">Τ.Κ.: &nbsp;</span>
-              <label className="media-body"> {postal_code}</label>
-            </li>
+	
+<div>
+<div className="surface-0">
+    <div className="font-medium text-3xl text-900 mb-3">Πελάτης</div>
+    <div className="text-500 mb-5">Στοιχεία</div>
+    <ul className="list-none p-0 m-0">
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Επωνυμία</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
-            
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Α.Φ.Μ:</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{afm}</div>
 
-          </ul>
-        </div>
-        
-       
           
+        </li>
+ 
 
-          </div>
-    
-      </div>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Τηλέφωνο</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{phone}</div>
+          
+        </li>
+  
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Email</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{email}</div>
+          
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Διεύθυνση</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{address}</div>
+          
+        </li>
+   
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Τ.Κ.</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{postal_code}</div>
+          
+        </li>
+       
+    </ul>
+</div>
+<Divider />
 
-
-      
-    </div>
-  </div>
-		</div>
+</div>
 	);
 
   
