@@ -4,7 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
 import Select from 'react-select';
-
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Divider } from 'primereact/divider';
 const FormAddTimologia = () => {
 
     const[tempErga,setTempErga]=useState("");
@@ -16,6 +22,7 @@ const FormAddTimologia = () => {
     const[ammount_of_income_tax_incl,setAmmount_Of_Income_Tax_Incl]=useState("");
     const[comments,setComments]=useState("");
     const[invoice_number,setInvoice_Number]=useState("");
+    const[status_paid,setStatus_Paid]=useState("");
 
     const[msg,setMsg]=useState("");
 
@@ -106,7 +113,9 @@ const FormAddTimologia = () => {
             actual_payment_date: actual_payment_date,
             ammount_of_income_tax_incl: totalAmmountTotal,
             comments: comments,
-            invoice_number: invoice_number
+            invoice_number: invoice_number,
+            status_paid:status_paid
+
             });
 
             const timologiaId = response.data.id; // Get the ID of the newly added timologio
@@ -129,103 +138,232 @@ const FormAddTimologia = () => {
     }
 
     return(
-        <div>
+
+        <div >
         <h1 className='title'>Προσθήκη Τιμολογίου</h1>
-        <div className="card is-shadowless">
-            <div className="card-content">
-                <div className="content">
-                <form onSubmit={saveTimologia}>
-                <p className='has-text-centered'>{msg}</p>
+      <form onSubmit={saveTimologia}>
+      <div className="grid">
+      <div className="col-12 md:col-6">
+          <div className="card p-fluid">
+          <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Τιμολογίου</span></Divider></div>
 
+              <div className="field">
+                  <label htmlFor="name1">Κωδικός Τιμολογίου</label>
+                  <div className="control">
 
-                <div className="field">
-    <label className="label">Εργα</label>
-    <div className="control">
-        <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
-            <option value="" disabled>Επιλέξτε Εργο</option>
-            {erga.map((ergo, index) => (
-                <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
-            ))}
-        </select>
-    </div>
-</div>
+                  <InputText id="invoice_number" type="text" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} />
+                  </div>
+              </div>
 
-<div className="field">
-      <label className="label">Παραδοτεα</label>
-      <div className="control">
-        <Select
-          isMulti
-          value={selectedOptions}
-          onChange={handleParadoteaChange}
-          options={options}
-          placeholder="Επιλέξτε Παραδοτεα"
-          classNamePrefix="react-select"
-        />
-      </div>
-    </div>
-
-                                <div className="field">
-                                <label className="label">Σύνολο Ποσό</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={totalAmmount}  readOnly />
-                                </div>
-                            </div>
-
-                            <div className="field">
-                                <label className="label">Σύνολο Φ.Π.Α.</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={totalAmmountVat}  readOnly />
-                                </div>
-                            </div>
-
-                            <div className="field">
-                                <label className="label">Σύνολο Ποσό με Φ.Π.Α.</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={totalAmmountTotal}  readOnly />
-                                </div>
-                            </div>
-
-
-
-                <div className="field">
-                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
-                        </div>
+              <div className="field">
+                    <label className="label">Εργα</label>
+                <div className="control">
+                    <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+                            <option value="" disabled>Επιλέξτε Εργο</option>
+                            {erga.map((ergo, index) => (
+                                <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
+                            ))}
+                        </select>
                     </div>
-                    <div className="field">
-                        <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
-                        </div>
-                    </div>
+              </div>
 
-                    <div className="field">
-                        <label  className="label">ΠΑΡΑΤΗΡΗΣΕΙΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={comments} onChange={(e)=> setComments(e.target.value)} placeholder='ΠΑΡΑΤΗΡΗΣΕΙΣ'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} placeholder='ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ'/>
-                        </div>
-                    </div>
-
-                    
-                    
-                    <div className="field">
-                        <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
-                        </div>
-                    </div>
-                </form>
+              <div className="field">
+                <label className="label">Παραδοτεα</label>
+                <div className="control">
+                    <Select
+                    isMulti
+                    value={selectedOptions}
+                    onChange={handleParadoteaChange}
+                    options={options}
+                    placeholder="Επιλέξτε Παραδοτεα"
+                    classNamePrefix="react-select"
+                    />
                 </div>
-            </div>
-        </div>
-    </div>
+             </div>
+
+
+              <div className="field">
+                    <label className="label">Σύνολο Ποσό</label>
+                    <div className="control">
+                        <InputText  type="text" className="input" value={totalAmmount}  readOnly />
+                    </div>
+              </div>
+
+              <div className="field">
+                    <label className="label">Σύνολο Φ.Π.Α.</label>
+                    <div className="control">
+                        <InputText type="text" className="input" value={totalAmmountVat}  readOnly />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Σύνολο Ποσό με Φ.Π.Α.</label>
+                    <div className="control">
+                        <InputText type="text" className="input" value={totalAmmountTotal}  readOnly />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label htmlFor="invoice_date">Ημερομηνία Τιμολόγισης</label>
+                    <div className="control">
+
+                    <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} inline showWeek />
+                        </div>
+                </div>
+
+
+                <div className="field">
+                    <label htmlFor="actual_payment_date">Ημερομηνία Εξόφλισης</label>
+                    <div className="control">
+
+                    <Calendar id="actual_payment_date"  value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
+                        </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Παρατηρήσεις</label>
+                    <div className="control">
+                    <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
+
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Κατασταση Τιμολογίου</label>
+                    <div className="control">
+                    <InputText id="comments" type="text" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} />
+
+                    </div>
+                </div>
+
+
+           
+
+           
+          </div>
+
+
+          <div className="field">
+                            <div className="control">
+                                <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
+                            </div>
+                        </div>
+ 
+      </div>
+
+     
+
+     
+  </div>
+  </form>
+
+                                      
+  </div>
+
+
+//         <div>
+//         <h1 className='title'>Προσθήκη Τιμολογίου</h1>
+//         <div className="card is-shadowless">
+//             <div className="card-content">
+//                 <div className="content">
+//                 <form onSubmit={saveTimologia}>
+//                 <p className='has-text-centered'>{msg}</p>
+
+
+//                 <div className="field">
+//     <label className="label">Εργα</label>
+//     <div className="control">
+//         <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+//             <option value="" disabled>Επιλέξτε Εργο</option>
+//             {erga.map((ergo, index) => (
+//                 <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
+//             ))}
+//         </select>
+//     </div>
+// </div>
+
+// <div className="field">
+//       <label className="label">Παραδοτεα</label>
+//       <div className="control">
+//         <Select
+//           isMulti
+//           value={selectedOptions}
+//           onChange={handleParadoteaChange}
+//           options={options}
+//           placeholder="Επιλέξτε Παραδοτεα"
+//           classNamePrefix="react-select"
+//         />
+//       </div>
+//     </div>
+
+                            //     <div className="field">
+                            //     <label className="label">Σύνολο Ποσό</label>
+                            //     <div className="control">
+                            //         <input type="text" className="input" value={totalAmmount}  readOnly />
+                            //     </div>
+                            // </div>
+
+                            // <div className="field">
+                            //     <label className="label">Σύνολο Φ.Π.Α.</label>
+                            //     <div className="control">
+                            //         <input type="text" className="input" value={totalAmmountVat}  readOnly />
+                            //     </div>
+                            // </div>
+
+                            // <div className="field">
+                            //     <label className="label">Σύνολο Ποσό με Φ.Π.Α.</label>
+                            //     <div className="control">
+                            //         <input type="text" className="input" value={totalAmmountTotal}  readOnly />
+                            //     </div>
+                            // </div>
+
+
+
+//                 <div className="field">
+//                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
+//                         <div className="control">
+//                             <input type="date" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
+//                         </div>
+//                     </div>
+//                     <div className="field">
+//                         <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
+//                         <div className="control">
+//                             <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
+//                         </div>
+//                     </div>
+
+//                     <div className="field">
+//                         <label  className="label">ΠΑΡΑΤΗΡΗΣΕΙΣ</label>
+//                         <div className="control">
+//                             <input type="text" className="input" value={comments} onChange={(e)=> setComments(e.target.value)} placeholder='ΠΑΡΑΤΗΡΗΣΕΙΣ'/>
+//                         </div>
+//                     </div>
+
+//                     <div className="field">
+//                         <label  className="label">ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ</label>
+//                         <div className="control">
+//                             <input type="text" className="input" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} placeholder='ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ'/>
+//                         </div>
+//                     </div>
+
+//                     <div className="field">
+//                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ</label>
+//                         <div className="control">
+//                             <input type="text" className="input" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ'/>
+//                         </div>
+//                     </div>
+                    
+                    
+//                     <div className="field">
+//                         <div className="control">
+//                             <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
+//                         </div>
+//                     </div>
+//                 </form>
+//                 </div>
+//             </div>
+//         </div>
+//     </div>
     )
 }
 

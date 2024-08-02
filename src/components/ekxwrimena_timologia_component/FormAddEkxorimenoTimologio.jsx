@@ -13,6 +13,8 @@ const FormAddEkxorimenoTimologio = () =>
     const[customer_ammount,setCustomer_Ammount]=useState("");
     const[cust_date,setCust_Date]=useState(null);
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
+    const[status_bank_paid,setStatusBankPaid]=useState("");
+    const[status_customer_paid,setStatusCustomerPaid]=useState("");
 
     const[msg,setMsg]=useState("");
 
@@ -60,7 +62,9 @@ const FormAddEkxorimenoTimologio = () =>
             bank_estimated_date:bank_estimated_date,
             customer_ammount: customer_ammount,
             cust_date:cust_date,
-            cust_estimated_date:cust_estimated_date
+            cust_estimated_date:cust_estimated_date,
+            status_customer_paid:status_customer_paid,
+            status_bank_paid:status_bank_paid
             });
             navigate("/ek_tim");
         }catch(error){
@@ -140,8 +144,20 @@ const FormAddEkxorimenoTimologio = () =>
                             <input type="date" className="input" value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
                         </div>
                     </div>
+
+                    <div className="field">
+                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={status_customer_paid} onChange={(e)=> setStatusCustomerPaid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                        </div>
+                    </div>
                     
-                 
+                    <div className="field">
+                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={status_bank_paid} onChange={(e)=> setStatusBankPaid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                        </div>
+                    </div>
                     
                     <div className="field">
                         <div className="control">

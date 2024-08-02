@@ -20,7 +20,7 @@ import apiBaseUrl from '../apiConfig';
 import WeeksTableBudget from '../components/WeeksTableBudget';
 import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
 import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
-import PaidView from './paid_pages/paidView';
+
 // Importing calendar library
 import { Calendar, momentLocalizer,DateLocalizer ,DnDCalendar} from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -44,9 +44,8 @@ const Dashboard = () => {
     <Layout>
         <Welcome />
         <Esoda />
-        <PaidView/>
-        {/* <Eksoda/> */}
-        {/* <div className="boxclass">
+        <Eksoda/>
+        <div className="boxclass">
         <div className="button-group">
         <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table1')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario</button>
         <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table2')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario</button>
@@ -56,7 +55,7 @@ const Dashboard = () => {
       {selectedTable === 'table1' && <WeeksTableBudget />}
       {selectedTable === 'table2' && <WeeksTableBudget_Est2 />}
       {selectedTable === 'table3' && <WeeksTableBudget_Est3 />}
-      </div> */}
+      </div>
     </Layout>
   );
   

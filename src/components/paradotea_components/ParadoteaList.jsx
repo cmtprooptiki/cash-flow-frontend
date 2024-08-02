@@ -144,6 +144,7 @@ const ParadoteaList = () => {
         );
     };
    
+    
     const formatDate = (value) => {
         let date = new Date(value);
         if (!isNaN(date)) {
