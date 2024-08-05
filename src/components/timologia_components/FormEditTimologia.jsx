@@ -1,31 +1,54 @@
-import React,{useState,useEffect} from 'react'
-import axios from 'axios'
-import { useNavigate,useParams } from 'react-router-dom'
-import apiBaseUrl from '../../apiConfig'
-import Select from 'react-select'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import apiBaseUrl from '../../apiConfig';
+import Select from 'react-select';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { Divider } from 'primereact/divider';
 
-const FormEditTimologia = () =>{
-    const[invoice_date,setInvoice_date]=useState("");
-    const[ammount_no_tax,setAmmount_no_tax]=useState("");
-    const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
-    const[actual_payment_date,setActual_Payment_Date]=useState("");
-    const[ammount_of_income_tax_incl,setAmmount_Of_Income_Tax_Incl]=useState("");
-    const[comments,setComments]=useState("");
-    const[invoice_number,setInvoice_Number]=useState("");
-    const[status_paid,setStatus_Paid]=useState("");
+const FormEditTimologia = () => {
+    const [invoice_date, setInvoice_date] = useState("");
+    const [ammount_no_tax, setAmmount_no_tax] = useState("");
+    const [ammount_tax_incl, setAmmount_Tax_Incl] = useState("");
+    const [actual_payment_date, setActual_Payment_Date] = useState("");
+    const [ammount_of_income_tax_incl, setAmmount_Of_Income_Tax_Incl] = useState("");
+    const [comments, setComments] = useState("");
+    const [invoice_number, setInvoice_Number] = useState("");
+    const [status_paid, setStatus_Paid] = useState("");
 
-    const [erga_id, setErga_id] = useState(null)
-    const [erga, setErga] = useState([])
-    const [paradotea,setParadoteaByErgo]=useState([]);
+    const [erga_id, setErga_id] = useState(null);
+    const [erga, setErga] = useState([]);
+    const [paradotea, setParadoteaByErgo] = useState([]);
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
 
+    const [filteredErga, setFilteredErga] = useState([]); // State to store unique `erga` data
+    const [uniqueErga2, setUniqueErga2] = useState([]); // State to store unique `erga` data
 
+    const[calcdata,setcalcdata]=useState([])
 
-
-    const handleErgaChange = async (e) => {
-        const selectedId = e.target.value;
+    // const handleErgaChange = async (e) => {
+    //     const selectedId = e.target.value;
+    //     setErga_id(selectedId);
+    //     clearFormFields();
+    //     if (selectedId) {
+    //         try {
+    //             const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`);
+    //             const paradoteaByErgoId = response.data;
+    //             setParadoteaByErgo(paradoteaByErgoId)
+    //         } catch (error) {
+    //             console.error("Error fetching timologio data:", error);
+    //         }
+    //     }
+    // };
+    const handleErgaStart = async(e) => {
+        console.log(e)
+        const selectedId = e.erga.id;
         setErga_id(selectedId);
         clearFormFields();
         if (selectedId) {
@@ -33,32 +56,58 @@ const FormEditTimologia = () =>{
                 const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`);
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId)
+                // Filter by timologia_id and then map over the filtered array
+                const selected = paradoteaByErgoId
+                .filter(paradoteo => paradoteo.timologia_id === selectedId)
+                .map(paradoteo => ({
+                    value: paradoteo.id,
+                    label: paradoteo.title
+                }));
+
+                setSelectedOptions(selected);
+                
+                
+
+                console.log(selected);
             } catch (error) {
                 console.error("Error fetching timologio data:", error);
             }
         }
     };
+    
 
     const clearFormFields = () => {
         setSelectedOptions([]);
         setSelectedParadoteaDetails([]);
     }
 
-    const handleParadoteaChange = (selectedOptions) => {
+    // const handleParadoteaChange = (selectedOptions) => {
+    //     setSelectedOptions(selectedOptions);
+    //     console.log("Selected option paradotea CHANGE", selectedOptions)
+
+    //     const selectedIds = selectedOptions.map(option => option.value);
+    //     const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
+    //     setSelectedParadoteaDetails(selectedDetails);
+    // };
+    const handleParadoteaChange2 = (selectedOptions) => {
         setSelectedOptions(selectedOptions);
-        console.log(selectedOptions)
-    
-        const selectedIds = selectedOptions.map(option => option.value);
+        console.log("Selected option paradotea CHANGE", selectedOptions)
+
+        const selectedIds = selectedOptions.map(options2 => options2.value);
         const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
         setSelectedParadoteaDetails(selectedDetails);
-      };
+    };
 
-      const options = paradotea.map(paradoteo => ({
+    const options = paradotea.map(paradoteo => ({
         value: paradoteo.id,
         label: paradoteo.title
-      }));
+    }));
+    const options2 = paradotea.map(paradoteo => ({
+        value: paradoteo.id,
+        label: paradoteo.title
+    }));
 
-      const calculateTotalAmounts = () => {
+    const calculateTotalAmounts = () => {
         let totalAmmount = 0;
         let totalAmmountVat = 0;
         let totalAmmountTotal = 0;
@@ -69,7 +118,6 @@ const FormEditTimologia = () =>{
             totalAmmountTotal += item.ammount_total;
         });
 
-
         return {
             totalAmmount,
             totalAmmountVat,
@@ -77,197 +125,258 @@ const FormEditTimologia = () =>{
         };
     };
 
-    const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts(selectedParadoteaDetails);
+    const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts();
 
-
-    const[msg,setMsg]=useState("");
+    const [msg, setMsg] = useState("");
 
     const navigate = useNavigate();
 
-    const{id} = useParams();
+    const { id } = useParams();
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const timologioResponse = await axios.get(`${apiBaseUrl}/timologia/${id}`);
+                const timologioData = timologioResponse.data;
+
+                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const paradoteaData = paradoteaResponse.data
+
+                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const ergaData = ergaResponse.data;
+
+                // Set states with fetched data
+                setInvoice_date(timologioData.invoice_date);
+                setAmmount_no_tax(timologioData.ammount_no_tax);
+                setAmmount_Tax_Incl(timologioData.ammount_tax_incl);
+                setActual_Payment_Date(timologioData.actual_payment_date);
+                setAmmount_Of_Income_Tax_Incl(timologioData.ammount_of_income_tax_incl);
+                setComments(timologioData.comments);
+                setInvoice_Number(timologioData.invoice_number);
+                setStatus_Paid(timologioData.status_paid);
+                setSelectedParadoteaDetails(paradoteaData);
+                setErga(ergaData);
+            } catch (error) {
+                setMsg(error.response.data.msg);
+            }
+        };
+
+        fetchData();
+    }, [id]);
     useEffect(()=>{
+        const selectedIds = selectedOptions.map(option => option.value);
+        const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
+        setSelectedParadoteaDetails(selectedDetails);
+    },[selectedOptions,id])
 
-            const fetchData = async () => {
-                try {
-                    const timologioResponse = await axios.get(`${apiBaseUrl}/timologia/${id}`);
-                    const timologioData = timologioResponse.data;
-
-                    const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`); 
-                    const paradoteaData = paradoteaResponse.data
-                    
-                    const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
-                    const ergaData = ergaResponse.data
-
-
-                    console.log(ergaData)
-        
-                    // Set states with fetched data
-                    setInvoice_date(timologioData.invoice_date);
-                    setAmmount_no_tax(timologioData.ammount_no_tax);
-                    setAmmount_Tax_Incl(timologioData.ammount_tax_incl);
-                    setActual_Payment_Date(timologioData.actual_payment_date);
-                    setAmmount_Of_Income_Tax_Incl(timologioData.ammount_of_income_tax_incl);
-                    setComments(timologioData.comments);
-                    setInvoice_Number(timologioData.invoice_number);
-                    setStatus_Paid(timologioData.status_paid);
-                    setSelectedParadoteaDetails(paradoteaData);
-                    setErga(ergaData);
-                } catch (error) {
-                    setMsg(error.response.data.msg);
-                }
-            };
-        
-            fetchData();
-        }, [id]);
-
-        
-
-
-    const updateTimologio = async (e) =>
-    {
+    const updateTimologio = async (e) => {
         e.preventDefault();
-        try
-        {
+        try {
             const response = await axios.patch(`${apiBaseUrl}/timologia/${id}`, {
-                invoice_date:invoice_date,
-                ammount_no_tax:totalAmmount,
-                ammount_tax_incl:totalAmmountVat,
+                invoice_date: invoice_date,
+                ammount_no_tax: totalAmmount,
+                ammount_tax_incl: totalAmmountVat,
                 actual_payment_date: actual_payment_date,
                 ammount_of_income_tax_incl: totalAmmountTotal,
                 comments: comments,
                 invoice_number: invoice_number,
-                status_paid:status_paid
+                status_paid: status_paid
             });
 
             const timologiaId = response.data.id; // Get the ID of the newly added timologio
             console.log("The response: ", response)
+            console.log("show timid",timologiaId)
             await Promise.all(selectedParadoteaDetails.map(async (paradoteo) => {
-                console.log(paradoteo.id)
+                console.log("show par test",paradoteo)
+                console.log("on promise.", paradoteo.id)
                 await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
-                    "timologia_id": timologiaId
+                    "timologia_id": id
                 });
             }));
 
             console.log("Done")
-            
+
             navigate("/timologia");
         }
-        catch(error)
-        {
-            if(error.response)
-            {
+        catch (error) {
+            if (error.response) {
                 setMsg(error.response.data.msg);
             }
         }
     };
-    return(
-        <div>
-        <h1 className='title'>Διαχείριση Τιμολογίων</h1>
-        <h2 className='subtitle'>Επεξεργασία Τιμολογίων</h2>
-        <div className="card is-shadowless">
-            <div className="card-content">
-                <div className="content">
-                <form onSubmit={updateTimologio}>
-                    <p className='has-text-centered'>{msg}</p>
 
-                
-                    <div className="field">
-    <label className="label">Εργα</label>
-    <div className="control">
-        <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue= "">
-            <option value="" disabled>Επιλέξτε Εργο</option>
-            {erga.map((ergo, index) => (
-                <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
-            ))}
-        </select>
-    </div>
-</div>
+    // Remove duplicates from erga
+    // const uniqueErga = Array.from(new Set(erga.map(ergo => ergo.erga.id)))
+    //     .map(id => {
+            
+    //         return erga.find(ergo => ergo.erga.id === id);
+    //     });
 
+    useEffect(() => {
+        if (erga.length > 0) {
+            // Step 1: Filter the rows where timologia_id equals the given id
+            const filteredErga = erga.filter(ergo => ergo.timologia_id === parseInt(id));
+    
+            // Step 2: Create a Set to ensure unique erga names and map the filtered array
+            const uniqueErga = Array.from(new Set(filteredErga.map(ergo => ergo.erga.id)))
+            .map(id => {      
+                return filteredErga.find(ergo => ergo.erga.id === id);
+            });
+    
+            setUniqueErga2(uniqueErga);
+            //console.log(uniqueErga2)
+            
+        }
+        }, [erga, id]);
+    useEffect(()=>{
+        if(uniqueErga2.length>0){
+            handleErgaStart(uniqueErga2[0]);
+        }
+    },[uniqueErga2,id])
+    // handleErgaStart(uniqueErga2[0]);
+        // .map(id2 => {
+        //     return erga.find(ergo => (ergo.erga.id === id2 && ergo.timologia_id === id));
+        // })
+        // .filter(ergo => ergo !== undefined); 
 
-                <div className="field">
-      <label className="label">Παραδοτεα</label>
-      <div className="control">
-        <Select
-          isMulti
-          value={selectedOptions}
-          onChange={handleParadoteaChange}
-          options={options}
-          placeholder="Επιλέξτε Παραδοτεα"
-          classNamePrefix="react-select"
-        />
-      </div>
-    </div>
+    return (
+        <div >
+            <h1 className='title'>Διαχείριση Τιμολογίου</h1>
+            <h2 className='subtitle'>Επεξεργασία Τιμολογίου</h2>
+            <form onSubmit={updateTimologio}>
+                <div className="grid">
+                    <div className="col-12 md:col-6">
+                        <div className="card p-fluid">
+                            <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Τιμολογίου</span></Divider></div>
 
-                <div className="field">
-                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ'/>
+                            <div className="field">
+                                <label htmlFor="name1">Κωδικός Τιμολογίου</label>
+                                <div className="control">
+                                    <InputText id="invoice_number" type="text" value={invoice_number} onChange={(e) => setInvoice_Number(e.target.value)} />
+                                </div>
+                            </div>
+                            {/* <h1>{console.log(selectedParadoteaDetails)}</h1> */}
+                            {/* <div className="field">
+                                <label className="label">Εργα</label>
+                                <div className="control">
+                                    
+                                    <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+                                        <option value="" disabled>Επιλέξτε Εργο</option>
+                                        {uniqueErga.map((ergo, index) => (
+                                            <option key={index} value={ergo.erga.id} disabled>{ergo.erga.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div> */}
+                            <div className="field">
+                                <label className="label">Εργα 2</label>
+                                <div className="control">
+                                    {uniqueErga2.length>0 && <div><InputText id="ergo"className="input" value={uniqueErga2[0].erga.id} readOnly/>
+                                    <label htmlFor="ergo">{uniqueErga2[0].erga.name}</label></div>}
+                                    
+                                    
+                                    {/* <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+                                        <option value="" disabled>Επιλέξτε Εργο</option>
+                                        {uniqueErga.map((ergo, index) => (
+                                            <option key={index} value={ergo.erga.id} disabled>{ergo.erga.name}</option>
+                                        ))}
+                                    </select> */}
+                                </div>
+                            </div>
+
+                            {/* <div className="field">
+                                <label className="label">Παραδοτεα</label>
+                                <div className="control">
+                                    <Select
+                                        isMulti
+                                        value={selectedOptions}
+                                        onChange={handleParadoteaChange}
+                                        options={options}
+                                        placeholder="Επιλέξτε Παραδοτεα"
+                                        classNamePrefix="react-select"
+                                    />
+                                </div>
+                            </div> */}
+                            <div className="field">
+                                <label className="label">Παραδοτεα</label>
+                                <div className="control">
+                                    <Select
+                                        isMulti
+                                        value={selectedOptions}
+                                        onChange={handleParadoteaChange2}
+                                        options={options2}
+                                        placeholder="Επιλέξτε Παραδοτεα"
+                                        classNamePrefix="react-select"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σύνολο Ποσό</label>
+                                <div className="control">
+                                    <InputText type="text" className="input" value={totalAmmount} readOnly />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σύνολο Φ.Π.Α.</label>
+                                <div className="control">
+                                    <InputText type="text" className="input" value={totalAmmountVat} readOnly />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σύνολο Τελικό Ποσό</label>
+                                <div className="control">
+                                    <InputText type="text" className="input" value={totalAmmountTotal} readOnly />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Ημερομηνία Τιμολογίου</label>
+                                <div className="control">
+                                <Calendar id="invoice_date"  value={new Date(invoice_date)} onChange={(e)=> setInvoice_date(e.target.value)}  inline showWeek />
+
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Ημερομηνία Εξόφλισης</label>
+                                <div className="control">
+                                <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Ποσό Φόρου Εισοδήματος</label>
+                                <div className="control">
+                                    <InputText type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e) => setAmmount_Of_Income_Tax_Incl(e.target.value)} />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Σχόλια</label>
+                                <div className="control">
+                                    <InputTextarea value={comments} onChange={(e) => setComments(e.target.value)} />
+                                </div>
+                            </div>
+
+                            <div className="field">
+                                <label className="label">Κατάσταση Πληρωμής</label>
+                                <div className="control">
+                                <InputText type="text" className="input" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ'/>                                </div>
+                            </div>
+
+                            <div className="field">
+                                <Button type="submit" label="Ενημέρωση Τιμολογίου" />
+                            </div>
+
+                            {msg && <div className="notification is-danger">{msg}</div>}
                         </div>
                     </div>
-
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={totalAmmount} onChange={(e)=> setAmmount_no_tax(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΜΕ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={totalAmmountVat} onChange={(e)=> setAmmount_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΜΕ Φ.Π.Α'/>
-                        </div>
-                    </div>
-
-
-                    <div className="field">
-                        <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α</label>
-                        <div className="control">
-                            <input type="text" className="input" value={totalAmmountTotal} onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.target.value)} placeholder='ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΠΑΡΑΤΗΡΗΣΕΙΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={comments} onChange={(e)=> setComments(e.target.value)} placeholder='ΠΑΡΑΤΗΡΗΣΕΙΣ'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} placeholder='ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ'/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ'/>
-                        </div>
-                    </div>
-                    
-                    
-                    <div className="field">
-                        <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Ενημέρωση</button>
-                        </div>
-                    </div>
-                </form>
                 </div>
-            </div>
+            </form>
         </div>
-    </div>
-    )
+    );
+};
 
-}
-
-export default FormEditTimologia
+export default FormEditTimologia;

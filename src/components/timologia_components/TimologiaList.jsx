@@ -178,7 +178,7 @@ const TimologiaList = () => {
     const formatDate = (value) => {
         let date = new Date(value);
         if (!isNaN(date)) {
-            return date.toLocaleDateString('en-US', {
+            return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
@@ -195,9 +195,9 @@ const TimologiaList = () => {
 };
 
 const invoice_dateDateFilterTemplate = (options) => {
-    console.log('Current filter value:', options);
+    // console.log('Current filter value:', options);
 
-    return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+    return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
 };
 
     
@@ -208,9 +208,9 @@ const invoice_dateDateFilterTemplate = (options) => {
     };
     
     const actual_payment_dateDateFilterTemplate = (options) => {
-        console.log('Current filter value:', options);
+        // console.log('Current filter value:', options);
     
-        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
     
 
@@ -310,13 +310,13 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             emptyMessage="No timologia found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column field="invoice_number"  header="invoice_number"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }}></Column>
-                <Column header="invoice_date" filterField="invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
+                <Column header="invoice_date" filterField="invoice_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
                 <Column header="ammount_no_tax" filterField="ammount_no_tax" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_no_taxBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="ammount_tax_incl" filterField="ammount_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="actual_payment_date" filterField="actual_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
+                <Column header="actual_payment_date" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
 
                 <Column header="ammount_of_income_tax_incl" filterField="ammount_of_income_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_of_income_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} />
 
