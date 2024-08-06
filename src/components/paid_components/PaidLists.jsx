@@ -51,7 +51,19 @@ const PaidList = () => {
 
     const getIncomeTim = async () => {
         const response = await axios.get(`${apiBaseUrl}/income_tim`);
-        setIncomeTim(response.data);
+        const data = response.data;
+
+        // Filter to ensure unique timologia.id values
+        const uniqueTimologia = [];
+        const seenTimologiaIds = new Set();
+
+        data.forEach(item => {
+            if (!seenTimologiaIds.has(item.timologia.id)) {
+                seenTimologiaIds.add(item.timologia.id);
+                uniqueTimologia.push(item);
+            }
+        });
+        setIncomeTim(uniqueTimologia);
     };
 
     const clearFilter = () => {
