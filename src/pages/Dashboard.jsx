@@ -21,6 +21,7 @@ import WeeksTableBudget from '../components/WeeksTableBudget';
 import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
 import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
 import PaidView from './paid_pages/paidView';
+import EsodaNew from './EsodaNew';
 // Importing calendar library
 import { Calendar, momentLocalizer,DateLocalizer ,DnDCalendar} from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -44,6 +45,7 @@ const Dashboard = () => {
     <Layout>
         <Welcome />
         <Esoda />
+        <EsodaNew/>
         <PaidView/>
         {/* <Eksoda/> */}
         {/* <div className="boxclass">
