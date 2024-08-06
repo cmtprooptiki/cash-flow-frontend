@@ -2,8 +2,12 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
-const FormEditDoseis = ()=>
+const FormEditDoseis = () =>
 {
     const[ammount,setAmmount]=useState("");
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
@@ -13,7 +17,14 @@ const FormEditDoseis = ()=>
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
     const[msg,setMsg]=useState("");
 
-
+    const formatDateToInput = (dateString) => {
+        if(dateString === null || dateString =="" || dateString === NaN){
+            return ""
+        }
+        dateString=dateString.split('T')[0];
+        const [year, month, day] = dateString.split('-');
+        return `${year}-${month}-${day}`;
+    };
 
     const handleYpoxreoseisChange = async (e) => {
         const selectedId = e.target.value;
@@ -29,11 +40,11 @@ const FormEditDoseis = ()=>
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/doseis/${id}`);
-                setActual_Payment_Date(response.data.actual_payment_date)
+                setActual_Payment_Date(formatDateToInput(response.data.actual_payment_date))
                 setYpoxreoseis_Id(response.data.ypoxreoseis_id);
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
-                setEstimate_Payment_Date(response.data.estimate_payment_date);
+                setEstimate_Payment_Date(formatDateToInput(response.data.estimate_payment_date));
             }
             catch (error)
             {
@@ -80,65 +91,86 @@ const FormEditDoseis = ()=>
             }
         }
     };
-
     return(
         <div>
-        <h1 className='title'>Διαχείριση Δόσης</h1>
-        <h2 className='subtitle'>Επεξεργασία Δόσεων</h2>
+        <h1 className='title'>Διαχείριση Δόσεων</h1>
+        <h2 className='subtitle'>Επεξεργασία Δόσεις</h2>
         <div className="card is-shadowless">
             <div className="card-content">
                 <div className="content">
                 <form onSubmit={updateDoseis}>
                     <p className='has-text-centered'>{msg}</p>
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΔΟΣΗΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΔΑΝΕΙΟΥ'/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} placeholder='ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ'/>
-                        </div>
-                    </div>
-
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
-                        </div>
-                    </div>
-
-
-                    <div className="field">
-                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΟΣΗΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΟΣΗΣ'/>
-                        </div>
-                    </div>
-
-
-                    <div className="field">
-                            <label className="label">Υποχρεώσεις</label>
+                
+                        <div className="field">
+                            <label className="label">Δόσεις</label>
                             <div className="control">
-                                <select className="input" onChange={(e) => handleYpoxreoseisChange(e)} defaultValue="">
-                                    <option value="" disabled>Επιλέξτε Υποχρέωση</option>
-                                        {ypoxreoseis.map((ypoxreosh, index) => (
-                                            <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
-                                        ))}
-                                </select>
+                                <select className="input" onChange={handleYpoxreoseisChange} value={ypoxreoseis_id}>
+                                    <option value= "" disabled>Επιλέξτε ΤΙΜΟΛΟΓΙΟ</option>
+                                {ypoxreoseis.map((ypoxreosh, index) => (
+                                <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    {/* <div className="field">
+                        <label  className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
+                        <div className="control">
+                            <input type="text" className="input" value={bank_ammount} onChange={(e)=> setBank_Ammount(e.target.value)} readOnly placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ'/>
+                        </div>
+                    </div> */}
+
+                    <div className="field">
+                    <label htmlFor="percentage">Ποσό Δόσης</label>
+                    <div className="control">
+
+                    <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2} value={ammount}  onChange={(e)=> setAmmount(e.value)}/>
+             </div>
+                </div>
+
+                    <div className="field">
+                    <label htmlFor="estimate_payment_date">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
+                    <div className="control">
+
+                    <Calendar id="estimate_payment_date"  value={new Date(estimate_payment_date)} onChange={(e)=> setEstimate_Payment_Date(e.target.value)}  inline showWeek />
+                    </div>
+                
+                    </div>
+
+{/* 
+                    <div className="field">
+                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+                        <div className="control">
+                            <input type="date" className="input" value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                        </div>
+                    </div> */}
+
+                    <div className="field">
+                        <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
+                        <div className="control">
+                        <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
+
+                        </div>
+                    </div>
+
+
+                    <div className="field">
+                    <label htmlFor="status">Kατάσταση Δόσης</label>
+                    <div className="control">
+
+                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
+                    </div>
+                </div>
+
+                    
+                    <div className="field">
+                            <div className="control">
+                                <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>
                             </div>
                         </div>
-
                     
-                    
-                    
-                    <div className="field">
-                        <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Ενημέρωση</button>
-                        </div>
-                    </div>
+                 
                 </form>
                 </div>
             </div>
@@ -148,4 +180,4 @@ const FormEditDoseis = ()=>
 
 }
 
-export default FormEditDoseis
+export default FormEditDoseis;
