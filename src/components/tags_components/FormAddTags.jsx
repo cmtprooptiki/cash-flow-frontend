@@ -1,7 +1,16 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+
+import Select from 'react-select';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Divider } from 'primereact/divider';
 
 const FormAddTags = () =>
 {
@@ -24,33 +33,37 @@ const FormAddTags = () =>
         }
     }
 
-    return (
-        <div>
-            <h1 className='title'>Διαχείριση Χρηστών</h1>
-            <h2 className='subtitle'>Προσθήκη νέου χρήστη</h2>
-            <div className="card is-shadowless">
-                <div className="card-content">
-                    <div className="content">
-                    <form onSubmit={saveTags}>
-                    <p className='has-text-centered'>{msg}</p>
-                    <div className="field">
-                            <label  className="label">Όνομα Tag</label>
-                            <div className="control">
-                                <input type="text" className="input" value={name} onChange={(e)=>setName(e.target.value)} placeholder='Όνομα Tag'/>
-                            </div>
-                        </div>
-                        
+    return(
+
+        <div >
+        <h1 className='title'>Προσθήκη Tag</h1>
+        <form onSubmit={saveTags}>
+            <div className="grid">
+                <div className="col-12 md:col-6">
+                    <div className="card p-fluid">
+                        <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Tags</span></Divider></div>
+
                         <div className="field">
+                            <label className="label">Ονομασία Tag</label>
                             <div className="control">
-                                <button type='submit' className="button is-success is-fullwidth">Προσθήκη</button>
+                                <InputText id="name" type="text" value={name} onChange={(e)=> setName(e.target.value)} />
+
                             </div>
                         </div>
-                    </form>
+
+                         <div className="field">
+                            <div className="control">
+                                <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
+                            </div>
+                        </div>
+ 
                     </div>
+
                 </div>
             </div>
+        </form>
         </div>
-      )
+          )
 }
 
 export default FormAddTags;
