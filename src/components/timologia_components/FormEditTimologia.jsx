@@ -58,7 +58,7 @@ const FormEditTimologia = () => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`);
                 const paradoteaByErgoId = response.data;
-                setParadoteaByErgo(paradoteaByErgoId)
+                setParadoteaByErgo(paradoteaByErgoId.filter(paradoteo=>paradoteo.erga.id===selectedId))
                 // Filter by timologia_id and then map over the filtered array
                 console.log(paradoteaByErgoId);
                 const selected = paradoteaByErgoId
@@ -393,7 +393,7 @@ const FormEditTimologia = () => {
                             </div>
 
                             <div className="field">
-                                <Button type="submit" label="Ενημέρωση Τιμολογίου" />
+                                <Button type="submit" label="Ενημέρωση Τιμολογίου" disabled={selectedOptions.length === 0} />
                             </div>
 
                             {msg && <div className="notification is-danger">{msg}</div>}
