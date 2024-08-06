@@ -32,6 +32,8 @@ const FormEditTimologia = () => {
 
     const[calcdata,setcalcdata]=useState([])
 
+    const[fullParadotea,setFullParadotea]=useState([])
+
     // const handleErgaChange = async (e) => {
     //     const selectedId = e.target.value;
     //     setErga_id(selectedId);
@@ -50,15 +52,17 @@ const FormEditTimologia = () => {
         console.log(e)
         const selectedId = e.erga.id;
         setErga_id(selectedId);
+        console.log(selectedId)
         clearFormFields();
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`);
+                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`);
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId)
                 // Filter by timologia_id and then map over the filtered array
+                console.log(paradoteaByErgoId);
                 const selected = paradoteaByErgoId
-                .filter(paradoteo => paradoteo.timologia_id === selectedId)
+                .filter(paradoteo => paradoteo.timologia_id === e.timologia_id)
                 .map(paradoteo => ({
                     value: paradoteo.id,
                     label: paradoteo.title
@@ -145,6 +149,9 @@ const FormEditTimologia = () => {
                 const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
                 const ergaData = ergaResponse.data;
 
+                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`);
+                setFullParadotea(fullParadoteaResponse.data);
+
                 // Set states with fetched data
                 setInvoice_date(timologioData.invoice_date);
                 setAmmount_no_tax(timologioData.ammount_no_tax);
@@ -184,17 +191,36 @@ const FormEditTimologia = () => {
             });
 
             const timologiaId = response.data.id; // Get the ID of the newly added timologio
-            console.log("The response: ", response)
-            console.log("show timid",timologiaId)
+            // console.log("The response: ", response)
+            // console.log("show timid",timologiaId)
             await Promise.all(selectedParadoteaDetails.map(async (paradoteo) => {
-                console.log("show par test",paradoteo)
-                console.log("on promise.", paradoteo.id)
+                // console.log("show par test",paradoteo)
+                // console.log("on promise.", paradoteo.id)
                 await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
                     "timologia_id": id
                 });
             }));
+            console.log(fullParadotea)
+            ///delete all not in bar
 
-            console.log("Done")
+            // Step 1: Filter fullParadotea for items with timologia_id === id
+            const itemsWithTimologiaId = fullParadotea.filter(paradoteo => paradoteo.timologia_id === parseInt(id));
+
+            // Step 2: Identify items not present in selectedParadotea
+            const unselectedParadotea = itemsWithTimologiaId.filter(paradoteo => 
+                !selectedParadoteaDetails.some(selected => selected.id === paradoteo.id)
+            );
+
+            console.log(unselectedParadotea)
+            await Promise.all(unselectedParadotea.map(async (paradoteo) => {
+                // console.log("show par test",paradoteo)
+                // console.log("on promise.", paradoteo.id)
+                await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
+                    "timologia_id": null
+                });
+            }));
+
+            // console.log("Done")
 
             navigate("/timologia");
         }
@@ -224,7 +250,7 @@ const FormEditTimologia = () => {
             });
     
             setUniqueErga2(uniqueErga);
-            //console.log(uniqueErga2)
+            console.log(uniqueErga2)
             
         }
         }, [erga, id]);
@@ -269,7 +295,7 @@ const FormEditTimologia = () => {
                                 </div>
                             </div> */}
                             <div className="field">
-                                <label className="label">Εργα 2</label>
+                                <label className="label">Εργα</label>
                                 <div className="control">
                                     {uniqueErga2.length>0 && <div><InputText id="ergo"className="input" value={uniqueErga2[0].erga.id} readOnly/>
                                     <label htmlFor="ergo">{uniqueErga2[0].erga.name}</label></div>}
