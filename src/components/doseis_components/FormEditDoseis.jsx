@@ -102,10 +102,10 @@ const FormEditDoseis = () =>
                     <p className='has-text-centered'>{msg}</p>
                 
                         <div className="field">
-                            <label className="label">Δόσεις</label>
+                            <label className="label">ΠΑΡΟΧΟΙ</label>
                             <div className="control">
                                 <select className="input" onChange={handleYpoxreoseisChange} value={ypoxreoseis_id}>
-                                    <option value= "" disabled>Επιλέξτε ΤΙΜΟΛΟΓΙΟ</option>
+                                    <option value= "" disabled>Επιλέξτε ΠΑΡΟΧΟ</option>
                                 {ypoxreoseis.map((ypoxreosh, index) => (
                                 <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
                                 ))}

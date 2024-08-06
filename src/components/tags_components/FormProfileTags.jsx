@@ -2,6 +2,9 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import '../../custom.css';
+import { Divider } from 'primereact/divider';
+import { Calendar } from 'primereact/calendar';
+import { Chip } from 'primereact/chip';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -33,52 +36,24 @@ const FormProfileTags = () =>
     }, [id]);
 
     return(
-        <div>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-<div className="container">
-    <div className="row">
-      <div className="col-lg-5 col-md-6">
-        <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-        </div>
-        <div className="mb-2 d-flex">
 
+    <div>
+        <div className="surface-0">
+  
+            <div className="font-medium text-3xl text-900 mb-3">Tags</div>
+            <div className="text-500 mb-5">Στοιχεία</div>
         </div>
-
+        <Divider />
+        <div className="grid">
         
-        
-      </div>
-      <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-        <div className='box'>
-          <div className="mb-2 d-flex">
-            <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >Διαχείριση Tag</h2>
-            
-          </div>
-        
-        <div className="mb-2 d-flex">
-          
-          <ul className="list-unstyled">
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal"> ΟΝΟΜΑ TAG: &nbsp;</span><label className="media-body"> {name}</label>
-            </li>
+            <div className="text-500 w-6 md:w-2 font-medium">Ονομα Tag</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
+            
 
-          </ul>
         </div>
-        
-       
-          
-
-          </div>
-    
-      </div>
-
-
-      
     </div>
-  </div>
-		</div>
     )
 }
 
-export default FormProfileTags
+export default FormProfileTags;

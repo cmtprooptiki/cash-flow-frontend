@@ -17,6 +17,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
+import { Tag } from 'primereact/tag';
 
 const DoseisList = () => {
     const [doseis, setDoseis] = useState([]);
@@ -25,6 +26,7 @@ const DoseisList = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [ypoxreoseis, setYpoxreoseis]=useState([]);
     const {user} = useSelector((state) => state.auth)
+    const [statuses] = useState(['ΠΛΗΡΩΜΕΝΟ', 'ΑΠΛΗΡΩΤΟ']);
     
 
     useEffect(()=>{
@@ -127,6 +129,21 @@ const DoseisList = () => {
         });
         setGlobalFilterValue('');
         }
+
+        
+
+    const statusBodyTemplate = (rowData) => {
+        return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
+    };
+
+    const statusFilterTemplate = (options) => {
+        return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
+    };
+
+    const statusItemTemplate = (option) => {
+        return <Tag value={option} severity={getSeverity(option)} />;
+    };
+
         const ammountBodyTemplate= (rowData) => {
         return formatCurrency(rowData.ammount);
     };
@@ -254,7 +271,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}     
 
-            <Column field="status" header="status"  filter filterPlaceholder="Search by status"  style={{ minWidth: '12rem' }}></Column>
+            <Column field="status" header="status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
             {/* <Column field="status_paid" header="status_paid"  filter filterPlaceholder="Search by status_paid"  style={{ minWidth: '12rem' }}></Column> */}
 
