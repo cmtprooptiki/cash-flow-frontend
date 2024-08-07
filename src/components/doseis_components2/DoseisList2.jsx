@@ -19,7 +19,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
-const DoseisList = () => {
+const DoseisList2 = () => {
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -288,7 +288,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 <div className="card" >
         <h1 className='title'>Δόσεις</h1>
         {user && user.role ==="admin" && (
-        <Link to={"/doseis/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/doseis2/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
         )}
 
 
@@ -330,4 +330,4 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
      )
 }
 
-export default DoseisList;
+export default DoseisList2;
