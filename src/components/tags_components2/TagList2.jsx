@@ -112,9 +112,6 @@ const TagList2 = ()=>
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/tags2/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/tags2/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
                 <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTags(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
@@ -130,6 +127,7 @@ const TagList2 = ()=>
 
 <div className="card" >
         <h1 className='title'>Tags</h1>
+        
         {user && user.role ==="admin" && (
         <Link to={"/tags2/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Tag" icon="pi pi-plus-circle"/></Link>
         )}
@@ -149,6 +147,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 <Column field="name" header="name"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                 <Column header="actions" field="id" body={actionsBodyTemplate}/>
         </DataTable>
+        
         </div>
     )
 }

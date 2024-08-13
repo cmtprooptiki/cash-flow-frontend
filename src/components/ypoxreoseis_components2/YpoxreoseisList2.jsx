@@ -255,9 +255,6 @@ const invoice_dateDateFilterTemplate = (options) => {
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/ypoquery/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/ypoquery/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
                 <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteYpoxreoseis(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>

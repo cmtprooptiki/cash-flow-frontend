@@ -79,11 +79,17 @@ import 'primereact/resources/primereact.css';
 import Tags2 from "./pages/tags_pages2/Tags2";
 import AddTag2 from "./pages/tags_pages2/AddTag2";
 
-import Wizard_Eksoda from "./pages/Wizard_Eksoda";
-import Wizard_Eksoda_Ypo from "./pages/Wizard_Eksoda_Ypo";
 
 import AddYpoxreoseis2 from "./pages/ypoxreoseis_pages2/AddYpoxreoseis2";
 import YpoxreoseisList2 from "./components/ypoxreoseis_components2/YpoxreoseisList2";
+
+import AddDoseis2 from "./pages/doseis_pages2/AddDoseis2"
+import Doseis2 from "./pages/doseis_pages2/Doseis2"
+
+import MyStepper1 from "./pages/MyStepper1";
+import MyStepper2 from "./pages/MyStepper2";
+
+
 function App() {
   const value = {
     ripple: true,
@@ -182,7 +188,7 @@ function App() {
           <Route path="/ypoquery/edit/:id" element={<EditYpoxreoseis/>}></Route>
 
           <Route path="/paidView" element={<PaidView/>}></Route>
-          <Route path="/w_eksoda" element={<Wizard_Eksoda/>}></Route>
+          
 
           <Route path="/tags2" element={<Tags2/>}></Route>
 
@@ -191,11 +197,22 @@ function App() {
           {/* <Route path="/tags/edit/:id" element={<EditTags/>}></Route>
 
           <Route path="/tags/profile/:id" element={<ProfileTags/>}></Route> */}
-          <Route path="/w_eksoda_ypo" element={<Wizard_Eksoda_Ypo/>}></Route>
 
           <Route path="/ypoquery2/add" element={<AddYpoxreoseis2/>}></Route>
 
           <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+
+          <Route path="/doseis2/add" element={<AddDoseis2/>}></Route>
+
+          <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+
+          <Route path="/doseis2" element={<Doseis2/>}></Route>
+
+          <Route path="/step1" element={<MyStepper1/>}></Route>
+
+          <Route path="/step2" element={<MyStepper2/>}></Route>
+
+          
 
 
         </Routes>

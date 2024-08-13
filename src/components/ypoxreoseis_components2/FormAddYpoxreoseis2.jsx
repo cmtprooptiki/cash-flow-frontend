@@ -66,7 +66,7 @@ const FormAddYpoxreoseis2 = () => {
                 ammount_vat,
                 tags_id: tagIds
             });
-            navigate("/w_eksoda_ypo");
+            navigate("/step2");
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);

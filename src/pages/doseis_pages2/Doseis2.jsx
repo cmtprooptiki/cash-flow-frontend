@@ -21,9 +21,7 @@ const Doseis2 = ()=>
       }
   },[isError,navigate]);
   return (
-    <Layout>
-        <Doseislist2/>
-    </Layout>
+    <Doseislist2/>
   )
 }
 

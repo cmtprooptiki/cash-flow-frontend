@@ -26,7 +26,7 @@ const FormAddTags2 = ({ onButtonClick }) =>
             await axios.post(`${apiBaseUrl}/tags`, {
                 name:name,
             });
-            navigate("/w_eksoda");
+            navigate("/step1");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

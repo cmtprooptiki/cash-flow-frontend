@@ -21,9 +21,9 @@ const Ypoxreoseis = () =>
       }
   },[isError,navigate]);
   return (
-    <Layout>
-        <YpoxreoseisList2/>
-    </Layout>
+  
+      <YpoxreoseisList2/>
+    
   )
 }
 

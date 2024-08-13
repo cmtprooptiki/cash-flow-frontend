@@ -21,9 +21,7 @@ const Tags2 = () =>
       }
   },[isError,navigate]);
   return (
-    <Layout>
         <TagList2/>
-    </Layout>
   )
 }
 

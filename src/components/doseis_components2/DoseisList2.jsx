@@ -269,9 +269,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/doseis/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/doseis/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
                 <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
@@ -325,9 +322,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 <Column header="actions" field="id" body={actionsBodyTemplate}/>
 
  </DataTable>
-       
-    </div>
-     )
-}
+</div>
+)}
 
 export default DoseisList2;

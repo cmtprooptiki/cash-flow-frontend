@@ -50,7 +50,7 @@ const FormAddDoseis2 = () => {
             status:status,
             ypoxreoseis_id:ypoxreoseis_id
             });
-            navigate("/doseis2");
+            navigate("/doseis");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);
