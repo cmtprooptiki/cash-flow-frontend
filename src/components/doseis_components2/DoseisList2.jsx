@@ -212,7 +212,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     const ProviderFilterTemplate = (options) => {
         console.log('Current provider filter value:', options.value);
     
-            return (<MultiSelect value={options.value} options={doseis.ypoxreosei} itemTemplate={ProviderItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+            return (<MultiSelect value={options.value} options={ypoxreoseis} itemTemplate={ProviderItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
     
         };
 

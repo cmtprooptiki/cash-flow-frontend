@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 
-
-const WeeksTableBudget = ()=>
-{
+const WeeksTableBudget = ({ budget }) => {
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
     const [doseis, setDoseis] = useState([]);
     const [calendarDate, setCalendarDate] = useState(new Date());
@@ -91,120 +89,93 @@ const WeeksTableBudget = ()=>
 
     const eventsWithActualPaymentDate = doseis.filter(
         (item) => item.actual_payment_date !== null
-      );
-    
-      const eventsWithoutActualPaymentDate = doseis.filter(
+    );
+
+    const eventsWithoutActualPaymentDate = doseis.filter(
         (item) => item.actual_payment_date === null
-      );
+    );
 
     const getWeeksInMonth = (year, month) => {
         const startOfMonth = moment([year, month]);
-        const endOfMonth = startOfMonth.clone().endOf('month');
-        const weeks = [];
+    const endOfMonth = startOfMonth.clone().endOf('month');
+    const weeks = [];
+    const currentDate = moment();
 
-        let current = startOfMonth.clone().startOf('week');
-        while (current.isBefore(endOfMonth) || current.isSame(endOfMonth, 'week')) {
-            const weekStart = current.clone();
-            const weekEnd = weekStart.clone().endOf('week');
+    let current = startOfMonth.clone().startOf('week');
+    while (current.isBefore(endOfMonth) || current.isSame(endOfMonth, 'week')) {
+        const weekStart = current.clone();
+        const weekEnd = weekStart.clone().endOf('week');
 
-            console.log("MONTH IOFJDIDF", income_paradotea.filter(item =>
-                moment(item.paradotea.estimate_payment_date)))
+        const itemsInWeekParadotea = income_paradotea.filter(item =>
+            moment(item.paradotea.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+        );
 
-            const itemsInWeekParadotea = income_paradotea.filter(item =>
-                moment(item.paradotea.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
-            );
+        const itemsInWeekEkx = income_ekx.filter(item =>
+            moment(item.Ekxorimena_Timologium["bank_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
+        );
 
-            const itemsInWeekEkx = income_ekx.filter(item =>
-                moment(item.Ekxorimena_Timologium["bank_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
-            );
+        const itemsInWeekEkx_Cust = income_ekx_cust.filter(item =>
+            moment(item.Ekxorimena_Timologium["cust_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
+        );
 
-            const itemsInWeekEkx_Cust = income_ekx_cust.filter(item =>
-                moment(item.Ekxorimena_Timologium["cust_date"]).isBetween(weekStart, weekEnd, 'day', '[]')
-            );
+        const weekAmountParadotea = itemsInWeekParadotea.reduce((sum, item) => sum + (item.paradotea.ammount_total || 0), 0);
 
-            const countIdsInIncomeEkx = () => {
-                const idCounts = {};
-                income_ekx.forEach(item => {
-                    const id = item.Ekxorimena_Timologium.id;
-                    if (idCounts[id]) {
-                        idCounts[id]++;
-                    } else {
-                        idCounts[id] = 1;
-                    }
-                });
-                return idCounts;
-            };
+        const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
+            const bankDate = moment(item.Ekxorimena_Timologium["bank_date"]);
+            if (bankDate.isBefore(currentDate, 'day')) return sum;
 
-            const getCountOfIdsInIncomeEkx = () => {
-                const idCounts = countIdsInIncomeEkx();
-                return Object.keys(idCounts).length; // Count the number of unique IDs
-            };
+            const foundId = item.Ekxorimena_Timologium.id;
+            const itemsWithSameId = income_ekx.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
+            const sumOfBankAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.bank_ammount, 0);
+            const averageBankAmount = sumOfBankAmounts / itemsWithSameId.length;
+            return sum + (averageBankAmount / itemsWithSameId.length);
+        }, 0);
 
-            const countOfIdsInIncomeEkx = getCountOfIdsInIncomeEkx();
+        const weekAmountEkxCust = itemsInWeekEkx_Cust.reduce((sum, item) => {
+            const custDate = moment(item.Ekxorimena_Timologium["cust_date"]);
+            if (custDate.isBefore(currentDate, 'day')) return sum;
 
-            const weekAmountParadotea = itemsInWeekParadotea.reduce((sum, item) => sum + (item.paradotea.ammount_total || 0), 0);
+            const foundId = item.Ekxorimena_Timologium.id;
+            const itemsWithSameId = income_ekx_cust.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
+            const sumOfCustAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.customer_ammount, 0);
+            const averageCustAmount = sumOfCustAmounts / itemsWithSameId.length;
+            return sum + (averageCustAmount / itemsWithSameId.length);
+        }, 0);
 
-            console.log("Week Start: ", weekStart.format('DD/MM/YYYY'));
-            console.log("Week End: ", weekEnd.format('DD/MM/YYYY'));
-            console.log("Income Paradotea: ", income_paradotea);
-            console.log("Items in Week Paradotea: ", itemsInWeekParadotea);
+        const eventsWithActualPaymentDateInWeek = eventsWithActualPaymentDate
+        .filter(event => event.status !== 'ΠΛΗΡΩΜΕΝΟ')
+        .filter(event =>
+          moment(event.actual_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+        );
 
+      const eventsWithoutActualPaymentDateInWeek = eventsWithoutActualPaymentDate
+        .filter(event => event.status !== 'ΠΛΗΡΩΜΕΝΟ')
+        .filter(event =>
+          moment(event.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+        );
+        const weekAmountWithActualPayment = eventsWithActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
+        const weekAmountWithoutActualPayment = eventsWithoutActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
 
-            const weekAmountEkx = itemsInWeekEkx.reduce((sum, item) => {
-                const foundId = item.Ekxorimena_Timologium.id;
-                const itemsWithSameId = income_ekx.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
-                const sumOfBankAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.bank_ammount, 0);
-                const averageBankAmount = sumOfBankAmounts / itemsWithSameId.length;
-                return sum + (averageBankAmount / itemsWithSameId.length);
-            }, 0);
+        weeks.push({
+            start: weekStart.format('DD/MM/YYYY'),
+            end: weekEnd.format('DD/MM/YYYY'),
+            ammount: weekAmountParadotea + weekAmountEkx + weekAmountEkxCust - (weekAmountWithActualPayment + weekAmountWithoutActualPayment),
+        });
 
-            const weekAmountEkxCust = itemsInWeekEkx_Cust.reduce((sum, item) => {
-                const foundId = item.Ekxorimena_Timologium.id;
-                const itemsWithSameId = income_ekx_cust.filter(ekxItem => ekxItem.Ekxorimena_Timologium.id === foundId);
-                const sumOfCustAmounts = itemsWithSameId.reduce((acc, ekxItem) => acc + ekxItem.Ekxorimena_Timologium.customer_ammount, 0);
-                const averageCustAmount = sumOfCustAmounts / itemsWithSameId.length;
-                return sum + (averageCustAmount / itemsWithSameId.length);
-            }, 0);
+        current.add(1, 'week');
+    }
 
-            
-
-            const uniqueErganamesParadotea = [...new Set(itemsInWeekParadotea.map(item => item.paradotea.erga.name))];
-            const uniqueErganamesEkx = [...new Set(itemsInWeekEkx.map(item => item.paradotea.erga.name))];
-            const uniqueErganamesEkxCust = [...new Set(itemsInWeekEkx_Cust.map(item => item.paradotea.erga.name))];
-
-            const combinedUniqueErganames = [...new Set([...uniqueErganamesParadotea, ...uniqueErganamesEkx, ...uniqueErganamesEkxCust])].join(', ');
-
-
-            const eventsWithActualPaymentDateInWeek = eventsWithActualPaymentDate.filter(event =>
-                moment(event.actual_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
-              );
-        
-              const eventsWithoutActualPaymentDateInWeek = eventsWithoutActualPaymentDate.filter(event =>
-                moment(event.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
-              );
-        
-              const weekAmountWithActualPayment = eventsWithActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
-              const weekAmountWithoutActualPayment = eventsWithoutActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
-        
-              const combinedEvents = [...eventsWithActualPaymentDateInWeek, ...eventsWithoutActualPaymentDateInWeek];
-
-            weeks.push({
-                start: weekStart.format('DD/MM/YYYY'),
-                end: weekEnd.format('DD/MM/YYYY'),
-                ammount: weekAmountParadotea + weekAmountEkx + weekAmountEkxCust - (weekAmountWithActualPayment + weekAmountWithoutActualPayment),
-                erganames: combinedUniqueErganames,
-            });
-
-            current.add(1, 'week');
-        }
-
-        return weeks;
+    return weeks;
     };
+
+    const weeks = getWeeksInMonth(year, selectedMonth);
+    const totalAmount = weeks.reduce((sum, week) => sum + week.ammount, 0);
 
     return (
         <div className="container">
-            
-            <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-Case Scenario</h1>
+            <h1 style={{fontSize: "30px", fontWeight:"bold", textAlign:"center", marginBottom: "20px", marginTop: "20px"}}>
+                ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-Case Scenario
+            </h1>
             <div className="selectors">
                 <div className="year-selector">
                     <label htmlFor="year">Select Year: </label>
@@ -218,10 +189,8 @@ const WeeksTableBudget = ()=>
                     />
                 </div>
                 <div className="month-selector">
-                <br></br>
-
+                    <br></br>
                     <label htmlFor="month">Select Month: </label>
-                    
                     <Select
                         name="month"
                         options={monthsOptions}
@@ -230,8 +199,7 @@ const WeeksTableBudget = ()=>
                         value={monthsOptions.find(option => option.value === selectedMonth)}
                         onChange={handleMonthChange}
                     />
-               <br></br>
-
+                    <br></br>
                 </div>
             </div>
             <table className="table">
@@ -242,7 +210,7 @@ const WeeksTableBudget = ()=>
                     </tr>
                 </thead>
                 <tbody>
-                    {getWeeksInMonth(year, selectedMonth).map((week, weekIndex) => (
+                    {weeks.map((week, weekIndex) => (
                         <tr key={weekIndex}>
                             <td>{week.start} - {week.end}</td>
                             <td>{week.ammount.toFixed(2)}€</td>
@@ -252,14 +220,14 @@ const WeeksTableBudget = ()=>
                         <td><strong>Total Amount</strong></td>
                         <td>
                             <strong>
-                                {getWeeksInMonth(year, selectedMonth).reduce((sum, week) => sum + week.ammount, 0).toFixed(2)}€
+                                {(totalAmount + budget).toFixed(2)}€
                             </strong>
                         </td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        );
-}
+    );
+};
+
 export default WeeksTableBudget;

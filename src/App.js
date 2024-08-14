@@ -89,6 +89,9 @@ import Doseis2 from "./pages/doseis_pages2/Doseis2"
 import MyStepper1 from "./pages/MyStepper1";
 import MyStepper2 from "./pages/MyStepper2";
 
+import Expenses_Display from "./pages/Expenses_Display";
+import BudgetPage from './pages/BudgetPage'
+
 
 function App() {
   const value = {
@@ -212,6 +215,9 @@ function App() {
 
           <Route path="/step2" element={<MyStepper2/>}></Route>
 
+          <Route path="/expen" element={<Expenses_Display/>}></Route>
+
+          <Route path="/budget" element={<BudgetPage/>}></Route>
           
 
 

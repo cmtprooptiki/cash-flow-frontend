@@ -198,45 +198,49 @@ const Esoda_ippos = () =>
 
 
 
-   const ekx=(income_ekx.map((item) => ({
-    id: item.ekxorimena_timologia_id,
-    title: (
-      <div style = {{backgroundColor: "green"}}>
-        <div
-          className="circle"
-          style={{
-            backgroundColor: '#' + item.paradotea.erga.color,
-            boxShadow: '0px 0px 4px 2px ' + '#' + item.paradotea.erga.color,
-          }}
-        ></div>
-        {/* {console.log(item.Ekxorimena_Timologium.bank_ammount)} */}
-        {item.Ekxorimena_Timologium.bank_ammount} €
-      </div>
-    ),
-    start: new Date(item.Ekxorimena_Timologium.bank_date),
-    end: new Date(item.Ekxorimena_Timologium.bank_date),
-    item: item,
-  })));
+    const currentDate = new Date();
 
-  const ekx_cust=(income_ekx_cust.map((item) => ({
-    id: item.ekxorimena_timologia_id,
-    title: (
-      <div style = {{backgroundColor: "green"}}>
-        <div
-          className="circle"
-          style={{
-            backgroundColor: '#' + item.paradotea.erga.color,
-            boxShadow: '0px 0px 4px 2px ' + '#' + item.paradotea.erga.color,
-          }}
-        ></div>
-        {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
-        {item.Ekxorimena_Timologium.customer_ammount} €
-      </div>
-    ),
-    start: new Date(item.Ekxorimena_Timologium.cust_date),
-    end: new Date(item.Ekxorimena_Timologium.cust_date),
-    item: item,
-  })));
+    const ekx = income_ekx
+      .filter((item) => new Date(item.Ekxorimena_Timologium.bank_date) >= currentDate) // Filter out items with bank_date before currentDate
+      .map((item) => ({
+        id: item.ekxorimena_timologia_id,
+        title: (
+          <div style={{ backgroundColor: "green" }}>
+            <div
+              className="circle"
+              style={{
+                backgroundColor: '#' + item.paradotea.erga.color,
+                boxShadow: '0px 0px 4px 2px ' + '#' + item.paradotea.erga.color,
+              }}
+            ></div>
+            {item.Ekxorimena_Timologium.bank_ammount} €
+          </div>
+        ),
+        start: new Date(item.Ekxorimena_Timologium.bank_date),
+        end: new Date(item.Ekxorimena_Timologium.bank_date),
+        item: item,
+      }));
+    
+    const ekx_cust = income_ekx_cust
+      .filter((item) => new Date(item.Ekxorimena_Timologium.cust_date) >= currentDate) // Filter out items with cust_date before currentDate
+      .map((item) => ({
+        id: item.ekxorimena_timologia_id,
+        title: (
+          <div style={{ backgroundColor: "green" }}>
+            <div
+              className="circle"
+              style={{
+                backgroundColor: '#' + item.paradotea.erga.color,
+                boxShadow: '0px 0px 4px 2px ' + '#' + item.paradotea.erga.color,
+              }}
+            ></div>
+            {item.Ekxorimena_Timologium.customer_ammount} €
+          </div>
+        ),
+        start: new Date(item.Ekxorimena_Timologium.cust_date),
+        end: new Date(item.Ekxorimena_Timologium.cust_date),
+        item: item,
+      }));
 
   function joinjson(items){
     MyEvents.push(items)
