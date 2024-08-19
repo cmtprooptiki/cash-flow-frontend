@@ -19,7 +19,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
-const DoseisList = () => {
+const DoseisList2 = () => {
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -269,9 +269,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/doseis/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/doseis/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
                 <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
@@ -288,7 +285,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 <div className="card" >
         <h1 className='title'>Δόσεις</h1>
         {user && user.role ==="admin" && (
-        <Link to={"/doseis/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/doseis2/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
         )}
 
 
@@ -308,7 +305,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No doseis found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column header="ypoxreoseis" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column header="ypoxreoseis" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />  
                <Column header="ammount" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                <Column header="actual_payment_date" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
@@ -325,9 +322,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 <Column header="actions" field="id" body={actionsBodyTemplate}/>
 
  </DataTable>
-       
-    </div>
-     )
-}
+</div>
+)}
 
-export default DoseisList;
+export default DoseisList2;

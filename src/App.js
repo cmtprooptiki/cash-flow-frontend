@@ -75,6 +75,24 @@ import 'primeflex/primeflex.css';
 import './flags.css';
 // import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
+
+import Tags2 from "./pages/tags_pages2/Tags2";
+import AddTag2 from "./pages/tags_pages2/AddTag2";
+
+
+import AddYpoxreoseis2 from "./pages/ypoxreoseis_pages2/AddYpoxreoseis2";
+import YpoxreoseisList2 from "./components/ypoxreoseis_components2/YpoxreoseisList2";
+
+import AddDoseis2 from "./pages/doseis_pages2/AddDoseis2"
+import Doseis2 from "./pages/doseis_pages2/Doseis2"
+
+import MyStepper1 from "./pages/MyStepper1";
+import MyStepper2 from "./pages/MyStepper2";
+
+import Expenses_Display from "./pages/Expenses_Display";
+import BudgetPage from './pages/BudgetPage'
+
+
 function App() {
   const value = {
     ripple: true,
@@ -173,6 +191,35 @@ function App() {
           <Route path="/ypoquery/edit/:id" element={<EditYpoxreoseis/>}></Route>
 
           <Route path="/paidView" element={<PaidView/>}></Route>
+          
+
+          <Route path="/tags2" element={<Tags2/>}></Route>
+
+          <Route path="/tags2/add" element={<AddTag2/>}></Route>
+
+          {/* <Route path="/tags/edit/:id" element={<EditTags/>}></Route>
+
+          <Route path="/tags/profile/:id" element={<ProfileTags/>}></Route> */}
+
+          <Route path="/ypoquery2/add" element={<AddYpoxreoseis2/>}></Route>
+
+          <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+
+          <Route path="/doseis2/add" element={<AddDoseis2/>}></Route>
+
+          <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+
+          <Route path="/doseis2" element={<Doseis2/>}></Route>
+
+          <Route path="/step1" element={<MyStepper1/>}></Route>
+
+          <Route path="/step2" element={<MyStepper2/>}></Route>
+
+          <Route path="/expen" element={<Expenses_Display/>}></Route>
+
+          <Route path="/budget" element={<BudgetPage/>}></Route>
+          
+
 
         </Routes>
       </BrowserRouter>

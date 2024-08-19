@@ -4,7 +4,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import apiBaseUrl from '../apiConfig';
 
-const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaymentDate, calendarDate, onDateChange }) => {
+const WeeksTable_Eksoda_OLD = ({ eventsWithActualPaymentDate, eventsWithoutActualPaymentDate, calendarDate, onDateChange }) => {
   const [year, setYear] = useState(calendarDate.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(calendarDate.getMonth());
   const [providerNames, setProviderNames] = useState({});
@@ -21,11 +21,11 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
 
   const fetchProviderNames = async (providerIds) => {
     const names = {};
-    await Promise.all(providerIds.map(async (providerId) => {
-      const name = await getProviderName(providerId);
-      names[providerId] = name;
-    }));
-    setProviderNames(names);
+  await Promise.all(providerIds.map(async (providerId) => {
+    const name = await getProviderName(providerId);
+    names[providerId] = name;
+  }));
+  setProviderNames(names);
   };
 
   const getProviderName = async (ypoxreoseisId) => {
@@ -53,17 +53,13 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
       const weekStart = current.clone();
       const weekEnd = weekStart.clone().endOf('week');
 
-      const eventsWithActualPaymentDateInWeek = eventsWithActualPaymentDate
-        .filter(event => event.status !== 'ΠΛΗΡΩΜΕΝΟ')
-        .filter(event =>
-          moment(event.actual_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
-        );
+      const eventsWithActualPaymentDateInWeek = eventsWithActualPaymentDate.filter(event =>
+        moment(event.actual_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+      );
 
-      const eventsWithoutActualPaymentDateInWeek = eventsWithoutActualPaymentDate
-        .filter(event => event.status !== 'ΠΛΗΡΩΜΕΝΟ')
-        .filter(event =>
-          moment(event.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
-        );
+      const eventsWithoutActualPaymentDateInWeek = eventsWithoutActualPaymentDate.filter(event =>
+        moment(event.estimate_payment_date).isBetween(weekStart, weekEnd, 'day', '[]')
+      );
 
       const weekAmountWithActualPayment = eventsWithActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
       const weekAmountWithoutActualPayment = eventsWithoutActualPaymentDateInWeek.reduce((sum, event) => sum + event.ammount, 0);
@@ -112,8 +108,9 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
           />
         </div>
         <div className="month-selector">
-          <br></br>
+        <br></br>
           <label htmlFor="month">Select Month: </label>
+      
           <Select
             name="month"
             options={monthsOptions}
@@ -146,11 +143,11 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
                 {week.providers.map((providerId, index) => (
                   <span key={index}>{providerNames[providerId]}</span>
                 )).map((name, index, array) => (
-                  <React.Fragment key={index}>
-                    {name}
-                    {index < array.length - 1 && ", "}
-                  </React.Fragment>
-                ))}
+                    <React.Fragment key={index}>
+                      {name}
+                      {index < array.length - 1 && ", "}
+                    </React.Fragment>
+                  ))}
               </td>
             </tr>
           ))}
@@ -165,8 +162,9 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
           </tr>
         </tbody>
       </table>
+      
     </div>
   );
 };
 
-export default WeeksTableEksoda;
+export default WeeksTable_Eksoda_OLD;

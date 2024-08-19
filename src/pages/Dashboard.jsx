@@ -34,6 +34,7 @@ import { Modal, Button } from 'react-bootstrap';
 import InfoBox from '../components/InfoBox';
 
 import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
+import Esoda_ippos from './Esoda_ippos'
 
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -45,6 +46,7 @@ const Dashboard = () => {
     <Layout>
         <Welcome />
         <Esoda />
+        <Esoda_ippos></Esoda_ippos>
         <EsodaNew/>
         <PaidView/>
         {/* <Eksoda/> */}
