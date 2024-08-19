@@ -85,7 +85,7 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
   // Calculate the average bank amount for items with the same ID
   const averageBankAmount = sumOfBankAmounts / itemsWithSameId.length;
 
-  console.log("HHHHH",averageBankAmount)
+  // console.log("HHHHH",averageBankAmount)
 
   // Add the average bank amount to the sum
   return sum + (averageBankAmount / itemsWithSameId.length);
@@ -104,14 +104,14 @@ const WeeksTable = ({ income_paradotea, income_ekx, income_ekx_cust, selectedDat
         // Calculate the average bank amount for items with the same ID
         const averageBankAmount = sumOfCustAmounts / itemsWithSameId.length;
 
-        console.log("EEEEEEEEEEEEEE",averageBankAmount)
+        // console.log("EEEEEEEEEEEEEE",averageBankAmount)
 
       
         // Add the average bank amount to the sum
         return sum + (averageBankAmount / itemsWithSameId.length);
       }, 0);
 
-      console.log("Giatiiii",weekAmmountEkxCust)
+      // console.log("Giatiiii",weekAmmountEkxCust)
 
       const uniqueErganamesParadotea = [...new Set(itemsInWeekParadotea.map(item => item.erga.name))];
       const uniqueErganamesEkx = [...new Set(itemsInWeekEkx.map(item => item.paradotea.erga.name))];
