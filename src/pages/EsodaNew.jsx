@@ -27,6 +27,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Modal, Button } from 'react-bootstrap';
 
 import InfoBox from '../components/InfoBox';
+import InfoBoxAntonis from '../components/InfoBoxAntonis';
 
 import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
 
@@ -43,6 +44,7 @@ const EsodaNew = () =>
   const [selectedDateType, setSelectedDateType] = useState('estimate_payment_date');
   const [eventClickedFirst, setEventClickedFirst] = useState(false);
   const [boxData, setBoxData] = useState([]);
+  const [second_boxData, setSecondBoxData] = useState([]);
   const [paradotea, setParadotea] = useState([]);
   const [erganames, setErgaListNames] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
@@ -139,29 +141,130 @@ const EsodaNew = () =>
 
   const handleEventClick = (event, item) => {
     setEventClickedFirst(true);
+    // console.log("event here ",event)
+    console.log("type is: ",event.test,"\n event.item here ",item)
+    
     setBoxData(item);
+    setSecondBoxData(event);
   };
 
   const handleEventDrop = async ({ event, start, end }) => {
-    const updatedDate = moment.utc(start).startOf('day').toDate();
-    const dateTypeKey = selectedDateType;
+    //console.log("drag and drop event: ",event)
+    if(event.test==="paradotea"){
+      const updatedDate = moment.utc(start).startOf('day').toDate();
+      const dateTypeKey = selectedDateType;
 
-    try {
-      console.log(event.item.id)
-      const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.item.id}`, {
-        [dateTypeKey]: updatedDate
-      });
-      if (response.status === 200) {
-        setIncome_paradotea((prev) =>
-          prev.map((item) =>
-            item.paradotea.id === event.item.id ? { ...item, paradotea: { ...item.paradotea, [dateTypeKey]: updatedDate } } : item
-          )
-        );
+      try {
+        //console.log(event.item.id)
+        const response = await axios.patch(`${apiBaseUrl}/paradotea/${event.item.id}`, {
+          [dateTypeKey]: updatedDate
+        });
+        if (response.status === 200) {
+          setIncome_paradotea((prev) =>
+            prev.map((item) =>
+              item.paradotea.id === event.item.id ? { ...item, paradotea: { ...item.paradotea, [dateTypeKey]: updatedDate } } : item
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Failed to update event', error);
       }
-    } catch (error) {
-      console.error('Failed to update event', error);
     }
+    else if(event.test==="ekxorimena"){
+      const updatedDate = moment.utc(start).startOf('day').toDate();
+      //console.log(event)
+      try {
+        //console.log(event.item.ekxorimena_timologia_id)
+        const response = await axios.patch(`${apiBaseUrl}/ek_tim/${event.item.ekxorimena_timologia_id}`, {
+          "timologia_id":event.item.Ekxorimena_Timologium.timologia_id,///Δεν ξερω γιατι αλλα χωρις αυτο βγαζει Error 400 bad request
+          "bank_date": new Date(updatedDate)
+        });
+        if (response.status === 200) {
+          setIncome_ekx((prev) =>
+            prev.map((item) =>
+              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "bank_date": updatedDate } } : item
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Failed to update event', error);
+      }
+    }
+    else if(event.test==="ekxorimena_customer"){
+      const updatedDate = moment.utc(start).startOf('day').toDate();
+      //console.log(event)
+      try {
+        //console.log(event.item.ekxorimena_timologia_id)
+        const response = await axios.patch(`${apiBaseUrl}/ek_tim/${event.item.ekxorimena_timologia_id}`, {
+          "timologia_id":event.item.Ekxorimena_Timologium.timologia_id,///Δεν ξερω γιατι αλλα χωρις αυτο βγαζει Error 400 bad request
+          "cust_date": new Date(updatedDate)
+        });
+        if (response.status === 200) {
+          setIncome_Ekx_Cust((prev) =>
+            prev.map((item) =>
+              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "cust_date": updatedDate } } : item
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Failed to update event', error);
+      }
+    }
+    else if(event.test==="timologia"){
+      const updatedDate = moment.utc(start).startOf('day').toDate();
+      //console.log("event: ",event)
+      try {
+        //console.log(event.item.ekxorimena_timologia_id)
+        const response = await axios.patch(`${apiBaseUrl}/timologia/${event.item.id}`, {
+          // "timologia_id":event.item.Ekxorimena_Timologium.timologia_id,///Δεν ξερω γιατι αλλα χωρις αυτο βγαζει Error 400 bad request
+          "actual_payment_date": new Date(updatedDate)
+        });
+        if (response.status === 200) {
+          //console.log("item tim: ",incomeTim)
+          setIncomeTim((prev) =>
+            prev.map((item) =>
+              item.timologia.id === event.item.id ? {...item,timologia:{...item.timologia,"actual_payment_date":new Date(updatedDate)}}:item
+              //item.timologia.id === event.item.id ? { ...item, timologia: { ...item.timologia, "cust_date": updatedDate } } : item
+          )
+          );
+        }
+      } catch (error) {
+        console.error('Failed to update event', error);
+      }
+    }
+    
   };
+  const eventStyleGetter =(event, start, end, isSelected)=> {
+    console.log(event);
+    if (event.test==="timologia"){
+      var backgroundColor = "orange";
+      var color="white";
+    }
+    else if(event.test==="ekxorimena"){
+      var backgroundColor = "red";
+      var color="white";
+    }
+    else if(event.test==="ekxorimena_customer"){
+      var backgroundColor = "pink";
+      var color="black";
+    }
+    else if(event.test==="paradotea"){
+      var backgroundColor = "lightblue";
+      var color="black";
+    }
+    
+    var style = {
+        backgroundColor: backgroundColor,
+        borderRadius: '0px',
+        opacity: 0.8,
+        color: color,
+        border: '0px',
+        display: 'block'
+    };
+    return {
+        style: style
+    };
+}
 
   const handleDateTypeChange = (dateType) => {
     setSelectedDateType(dateType);
@@ -201,7 +304,7 @@ const EsodaNew = () =>
   //console.log(MyEvents)
 
   const MyEvents=income_paradotea.map((item) => ({
-      id: item.ekxorimena_timologia_id,
+      id: item.paradotea.id,//   id: item.ekxorimena_timologia_id, ?δεν ξερω γιατι ηταν ετσι αλλα και ετσι δουλευε
       test:"paradotea",
       title: (
         <div>
@@ -227,7 +330,7 @@ const EsodaNew = () =>
     id: item.ekxorimena_timologia_id,
     test:"ekxorimena",
     title: (
-      <div style = {{backgroundColor: "green"}}>
+      <div >
         <div
           className="circle"
           style={{
@@ -248,7 +351,7 @@ const EsodaNew = () =>
     id: item.ekxorimena_timologia_id,
     test:"ekxorimena_customer",
     title: (
-      <div style = {{backgroundColor: "green"}}>
+      <div >
         <div
           className="circle"
           style={{
@@ -270,12 +373,12 @@ const EsodaNew = () =>
     test:"timologia",
 
     title: (
-      <div style = {{backgroundColor: "green"}}>
+      <div>
         <div
           className="circle"
           style={{
             backgroundColor: "red",
-            boxShadow: '0px 0px 4px 2px ' + "red",
+            boxShadow: '0px 0px 2px 1px ' + "red",
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
@@ -420,12 +523,13 @@ const EsodaNew = () =>
                 popup
                 resizable
                 draggableAccessor={() => true}
+                eventPropGetter={eventStyleGetter}
               />
             </div>
           </div>
         </div>
         <div className="row">
-          {eventClickedFirst === true && <InfoBox item={boxData} />}
+          {eventClickedFirst === true && <InfoBoxAntonis item={boxData} event={second_boxData} />}
         </div>
       </div>
       <div className="container">
