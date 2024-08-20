@@ -92,6 +92,28 @@ import MyStepper2 from "./pages/MyStepper2";
 import Expenses_Display from "./pages/Expenses_Display";
 import BudgetPage from './pages/BudgetPage'
 
+import Customer2 from "./pages/customer_pages2/Customer2";
+import AddCustomer2 from "./pages/customer_pages2/AddCustomer2";
+
+import Erga2 from "./pages/erga_pages2/Erga2";
+import AddErga2 from "./pages/erga_pages2/AddErga2";
+
+import ErgaCat2 from "./pages/erga_cat_pages2/ErgaCat2";
+import AddErgaCat2 from "./pages/erga_cat_pages2/AddErgaCat2";
+
+import Paradotea2 from "./pages/paradotea_pages2/Paradotea2";
+import AddParadoteo2 from "./pages/paradotea_pages2/AddParadoteo2";
+
+import Timologia2 from "./pages/timologia_pages2/Timologia2";
+import AddTimologio2 from "./pages/timologia_pages2/AddTimologio2";
+
+import Ekxorimena_Timologia2 from "./pages/ekxwrimeno_timologio_pages2/Ekxorimena_Timologia2";
+import AddEkxorimeno_Timologio2 from "./pages/ekxwrimeno_timologio_pages2/AddEkxorimeno_Timologio2";
+
+import Stepper_Esoda1 from "./pages/Stepper_Esoda1";
+import Stepper_Esoda2 from "./pages/Stepper_Esoda2";
+import Stepper_Esoda3 from "./pages/Stepper_Esoda3";
+
 
 function App() {
   const value = {
@@ -218,7 +240,33 @@ function App() {
           <Route path="/expen" element={<Expenses_Display/>}></Route>
 
           <Route path="/budget" element={<BudgetPage/>}></Route>
-          
+
+          <Route path="/customer2" element={<Customer2/>}></Route>
+
+          <Route path="/customer2/add" element={<AddCustomer2/>}></Route>
+
+          <Route path="/erga2" element={<Erga2/>}></Route>
+
+          <Route path="/erga2/add" element={<AddErga2/>}></Route>
+
+          <Route path="/ergacat2" element={<ErgaCat2/>}></Route>
+          <Route path="/ergacat2/add" element={<AddErgaCat2/>}></Route>
+
+          <Route path="/paradotea2" element={<Paradotea2/>}></Route>
+
+          <Route path="/paradotea2/add" element={<AddParadoteo2/>}></Route>
+
+          <Route path="/timologia2" element={<Timologia2/>}></Route>
+
+          <Route path="/timologia2/add" element={<AddTimologio2/>}></Route>
+
+          <Route path="/ek_tim2" element={<Ekxorimena_Timologia2/>}></Route>
+
+          <Route path="/ek_tim2/add" element={<AddEkxorimeno_Timologio2/>}></Route>
+
+          <Route path="/esoda_step1" element={<Stepper_Esoda1/>}></Route>
+          <Route path="/esoda_step2" element={<Stepper_Esoda2/>}></Route>
+          <Route path="/esoda_step3" element={<Stepper_Esoda3/>}></Route>
 
 
         </Routes>
