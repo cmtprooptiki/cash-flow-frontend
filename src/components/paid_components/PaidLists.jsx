@@ -24,6 +24,7 @@ const PaidList = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia']);
     const [totalIncome, setTotalIncome] = useState(0);
+    const [filtercalled,setfiltercalled]=useState(false)
 
     const { user } = useSelector((state) => state.auth);
 
@@ -91,7 +92,7 @@ const PaidList = () => {
 
     const formatDate = (value) => {
         let date = new Date(value);
-        
+        console.log("invalid date is: ",date)
         if (!isNaN(date)) {
             console.log("show date ",date.toLocaleDateString('en-US', {
                 day: '2-digit',
@@ -104,12 +105,14 @@ const PaidList = () => {
                 year: 'numeric'
             });
         } else {
+            
             return "Invalid date";
         }
     };
 
   //Sign Date
   const DateBodyTemplate = (rowData) => {
+    console.log("date data: ",rowData)
     return formatDate(rowData.date);
 };
 
@@ -177,26 +180,30 @@ const statusItemTemplate = (option) => {
     };
 
     const calculateTotalIncome = (data) => {
+        
         if (!data || data.length === 0) return 0;
-
         return data.reduce((acc, item) => acc + item.income, 0);
     };
     
 
     const combinedData = [
-        ...ekxorimena.map(item => ({ date: new Date(item.bank_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-        ...ekxorimena.map(item => ({ date: new Date(item.customer_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+        ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+        ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-        ...incomeTim.map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id }))
+        ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id }))
     ];
+    
 
 
 
 
 
     useEffect(() => {
-        setTotalIncome(calculateTotalIncome(combinedData));
-    }, []);
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(combinedData)));
+        }
+        
+    }, [combinedData]);
 
     const handleFilter = (filteredData) => {
         console.log("filtered data: ",filteredData)
@@ -211,6 +218,7 @@ const statusItemTemplate = (option) => {
         let total2=0;
         ///check if filters have been applied
         ///if applied
+        /*
         if(filter.props.filters!=null){
             for(let typeFilter of filter.props.filters.type.constraints){
                 ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
@@ -248,7 +256,7 @@ const statusItemTemplate = (option) => {
             }
             
 
-            return formatCurrency(total2);
+            return formatCurrency(total2); 
         }
         ///if not applied
         let total = 0;
@@ -256,12 +264,24 @@ const statusItemTemplate = (option) => {
             total += sale.income;
         }
 
-        return formatCurrency(total);
+        return formatCurrency(total); */
     }
 
     const handelAllFilters=(filters)=>{
         console.log("Type filter: ",filters.type.constraints)
     }
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + (row.income || 0), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+    };
 
     const header = renderHeader();
 
@@ -275,14 +295,16 @@ const statusItemTemplate = (option) => {
             globalFilterFields={['date', 'income', 'type','id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
+            onValueChange={handleValueChange}
             
             >
-                <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate}></Column>
+                {console.log("combined data: ",combinedData)}
+                <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable></Column>
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
-                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={thisYearTotal} ></Column>
+                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-                <Column field="id" header="Id" filter sortable></Column>
+                <Column field="id" header="Id" filter ></Column>
 
             </DataTable>
         </div>

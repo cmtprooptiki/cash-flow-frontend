@@ -31,6 +31,9 @@ import InfoBoxAntonis from '../components/InfoBoxAntonis';
 
 import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
 
+import PaidList from '../components/paid_components/PaidLists';
+
+
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -53,8 +56,17 @@ const EsodaNew = () =>
   const [income_ekx,setIncome_ekx]=useState([])
   const [income_ekx_cust, setIncome_Ekx_Cust] = useState([])
   const [incomeTim, setIncomeTim] = useState([]);
+
+  var [event_is_dropped,set_event_is_dropped]=useState(false)
+  var [refresh, setRefresh] = useState(false);
   
-  
+  useEffect(() => {
+    // Logic that needs to run when `someState` changes
+    // For example, you might want to fetch new data or trigger a re-render
+    setRefresh(prev => !prev); // Toggle `refresh` state to force a re-render of PaidList
+    console.log("event dropped: ",event_is_dropped)
+    console.log("refresh: ",refresh)
+  }, [event_is_dropped]);
 
   useEffect(() => {
     dispatch(getMe());
@@ -100,13 +112,15 @@ const EsodaNew = () =>
 
     // Filter response (CheckParadotea data) based on the extracted IDs
     const filteredData = checkParadoteaData.filter(item => incomeParIds.includes(item.paradotea_id));
-    console.log("hello ",incomeParData)
+    //console.log("hello ",incomeParData)
     setIncome_paradotea(filteredData);
     //console.log(response.data)
   }
   const getIncome_ekx=async () =>{
     const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`);
-    setIncome_ekx(response.data);
+    const ekx=response.data
+    console.log("ekx data: ",ekx)
+    setIncome_ekx(ekx.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no"));
     //console.log(response.data)
   }
 
@@ -119,7 +133,8 @@ const EsodaNew = () =>
   const getIncome_ekx_cust_date = async () =>
     {
       const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`);
-      setIncome_Ekx_Cust(response.data);
+      const ekx_cust=response.data
+      setIncome_Ekx_Cust(ekx_cust.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no"));
     }
 
   const handleYearChange = (increment) => {
@@ -232,10 +247,15 @@ const EsodaNew = () =>
         console.error('Failed to update event', error);
       }
     }
-    
+    if(event_is_dropped){
+      set_event_is_dropped(false)
+    }else{
+      set_event_is_dropped(true)
+    }
+   
   };
   const eventStyleGetter =(event, start, end, isSelected)=> {
-    console.log(event);
+    //console.log(event);
     if (event.test==="timologia"){
       var backgroundColor = "orange";
       var color="white";
@@ -307,12 +327,12 @@ const EsodaNew = () =>
       id: item.paradotea.id,//   id: item.ekxorimena_timologia_id, ?δεν ξερω γιατι ηταν ετσι αλλα και ετσι δουλευε
       test:"paradotea",
       title: (
-        <div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div
             className="circle"
             style={{
-              backgroundColor: item.paradotea.erga.color,
-              boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+              backgroundColor: "#"+item.paradotea.erga.color,
+              boxShadow: '0px 0px 4px 2px #' + item.paradotea.erga.color,
             }}
           ></div>
           {item.paradotea.ammount_total} €
@@ -322,7 +342,7 @@ const EsodaNew = () =>
       end: getDateBySelectedType(item.paradotea),
       item: item.paradotea,
     }));
-    console.log("My Event : ",MyEvents)
+    //console.log("My Event : ",MyEvents)
 
 
 
@@ -330,12 +350,12 @@ const EsodaNew = () =>
     id: item.ekxorimena_timologia_id,
     test:"ekxorimena",
     title: (
-      <div >
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div
           className="circle"
           style={{
-            backgroundColor: item.paradotea.erga.color,
-            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+            backgroundColor: "#"+item.paradotea.erga.color,
+            boxShadow: '0px 0px 4px 2px #' + item.paradotea.erga.color,
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.bank_ammount)} */}
@@ -351,12 +371,12 @@ const EsodaNew = () =>
     id: item.ekxorimena_timologia_id,
     test:"ekxorimena_customer",
     title: (
-      <div >
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div
           className="circle"
           style={{
-            backgroundColor: item.paradotea.erga.color,
-            boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
+            backgroundColor: "#"+item.paradotea.erga.color,
+            boxShadow: '0px 0px 4px 2px #' + item.paradotea.erga.color,
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
@@ -367,22 +387,23 @@ const EsodaNew = () =>
     end: new Date(item.Ekxorimena_Timologium.cust_date),
     item: item,
   })));
-  console.log("income tim",incomeTim)
+  //console.log("income tim",incomeTim)
   const tim_income_tim=(incomeTim.map((item) => ({
     id: item.timologia.id,
     test:"timologia",
 
     title: (
-      <div>
-        <div
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+        {/* <div
           className="circle"
           style={{
             backgroundColor: "red",
             boxShadow: '0px 0px 2px 1px ' + "red",
           }}
-        ></div>
+        ></div> */}
         {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
         {item.timologia.ammount_of_income_tax_incl} €
+        {/* {console.log("timologia item: ",item)} */}
       </div>
     ),
     start: new Date(item.timologia.actual_payment_date),
@@ -405,17 +426,17 @@ const EsodaNew = () =>
   ].filter((event, index, self) =>
     index === self.findIndex((e) => e.id === event.id)
   );
-  console.log("timologia",tim_income_tim)
+  //console.log("timologia",tim_income_tim)
   const uniqueIncome_tim = [
     ...tim_income_tim
   ].filter((event, index, self) =>
     index === self.findIndex((e) => e.id === event.id)
   );
-  console.log("timologia unique",uniqueIncome_tim)
+  //console.log("timologia unique",uniqueIncome_tim)
   uniqueekx.forEach(joinjson)
   uniqueekx_cust.forEach(joinjson)
   uniqueIncome_tim.forEach(joinjson)
-  console.log("look here",MyEvents)
+  //console.log("look here",MyEvents)
 
   // console.log("Ekxkxkxkx",ekx)
   //console.log(MyEvents)
@@ -463,10 +484,12 @@ const EsodaNew = () =>
 //       color: "ffffff"
 //     }
 //   }));
+
   
  
 
   return (
+    <div>
     <div className="boxclass">
       <h1 className = "Scenario" style = {{textAlign: "center", marginBottom: 20}}>{selectedButton === 'estimate_payment_date' ? 'Best-Case Scenario' :
          selectedButton === 'estimate_payment_date_2' ? 'Medium-Case Scenario' :
@@ -482,8 +505,8 @@ const EsodaNew = () =>
                   <div
                     className="circle"
                     style={{
-                      backgroundColor: item.erga.color,
-                      boxShadow: '0px 0px 4px 2px ' + item.erga.color,
+                      backgroundColor: "#"+item.erga.color,
+                      boxShadow: '0px 0px 4px 2px ' +"#"+ item.erga.color,
                     }}
                   ></div>
                   <h4>{item.erga.name}</h4>
@@ -522,8 +545,10 @@ const EsodaNew = () =>
                 onSelectEvent={(event) => handleEventClick(event, event.item)}
                 popup
                 resizable
+                
                 draggableAccessor={() => true}
                 eventPropGetter={eventStyleGetter}
+                
               />
             </div>
           </div>
@@ -535,26 +560,30 @@ const EsodaNew = () =>
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            {uniqueekx.forEach(item => {
-  console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
-})}
-            {income_paradotea.length > 0 && (
-  <WeeksTable
-    income_paradotea={newparat}
-    income_ekx={income_ekx}
-    income_ekx_cust={income_ekx_cust}
-    selectedDateType={selectedDateType}
-    calendarDate={calendarDate}
-    onDateChange={handleDateChange}
-  />
-  
-
-)}
+            {/* {uniqueekx.forEach(item => {
+              console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
+            })} */}
+            {/* {income_paradotea.length > 0 && (
+              <WeeksTable
+                income_paradotea={newparat}
+                income_ekx={income_ekx}
+                income_ekx_cust={income_ekx_cust}
+                selectedDateType={selectedDateType}
+                calendarDate={calendarDate}
+                onDateChange={handleDateChange}
+              />
+            )} */}
+            
             {/* <WeeksTable income_paradotea={income_paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/> */}
           </div>
         </div>
+        
       </div>
+      
       </div>
+      <PaidList key={refresh}/>
+      </div>
+      
   );
 }
 
