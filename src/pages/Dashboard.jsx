@@ -35,6 +35,7 @@ import InfoBox from '../components/InfoBox';
 
 import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
 import Esoda_ippos from './Esoda_ippos'
+import PaidList from '../components/paid_components/PaidLists';
 
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -45,10 +46,11 @@ const Dashboard = () => {
   return (
     <Layout>
         <Welcome />
-        <Esoda />
-        <Esoda_ippos></Esoda_ippos>
+        {/* <Esoda />
+        <Esoda_ippos></Esoda_ippos> */}
         <EsodaNew/>
-        <PaidView/>
+        
+        
         {/* <Eksoda/> */}
         {/* <div className="boxclass">
         <div className="button-group">
