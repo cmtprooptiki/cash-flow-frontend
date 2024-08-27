@@ -1,7 +1,14 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect,useMemo } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Divider } from 'primereact/divider';
 import Select from 'react-select'
 
 const FormAddYpoxreoseis2 = () => {
@@ -15,6 +22,8 @@ const FormAddYpoxreoseis2 = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [msg, setMsg] = useState("");
     const [tagError, setTagError] = useState("");
+
+
 
     const navigate = useNavigate();
 
@@ -80,43 +89,38 @@ const FormAddYpoxreoseis2 = () => {
     }));
 
     return (
-        <div>
-            <h1 className='title'>Προσθήκη Υποχρέωσεις</h1>
-            <div className="card is-shadowless">
-                <div className="card-content">
-                    <div className="content">
-                        <form onSubmit={saveYpoxreoseis}>
-                            <p className='has-text-centered'>{msg}</p>
-                            <div className="field">
-                                <label className="label">Όνομα Παρόχου</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={provider} onChange={(e) => setProvider(e.target.value)} placeholder='Όνομα Παρόχου' />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <label className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-                                <div className="control">
-                                    <input type="date" className="input" value={invoice_date} onChange={(e) => setInvoice_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ' />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <label className="label">ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.target.value)} placeholder='ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ' />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <label className="label">Εργα</label>
-                                <div className="control">
-                                    <select className="input" onChange={handleErgaChange} defaultValue="">
-                                        <option value="" disabled>Επιλέξτε Εργο</option>
-                                        {erga.map((ergo, index) => (
-                                            <option key={index} value={ergo.id}>{ergo.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="field">
+        <div >
+          <h1 className='title'>Προσθήκη Υποχρέωσεις</h1>
+        <form onSubmit={saveYpoxreoseis}>
+        <div className="grid">
+        <div className="col-12 md:col-6">
+            <div className="card p-fluid">
+            <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Υποχρέωσεις</span></Divider></div>
+            <div className="field">
+                    <label htmlFor="name1">ΟΝΟΜΑ ΠΑΡΟΧΟΥ</label>
+                    <div className="control">
+
+                    <InputText id="name1" type="text" value={provider} onChange={(e)=> setProvider(e.target.value)} />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label htmlFor="percentagevat">ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ</label>
+                    <div className="control">
+
+                    <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.value)} />
+                   </div>
+                </div>
+
+                <div className="field">
+                    <label htmlFor="invoice_date">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
+                    <div className="control">
+
+                    <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)} inline showWeek />
+                        </div>
+                </div>
+
+                <div className="field">
                                 <label className="label">Tags</label>
                                 <div className="control">
                                     <Select
@@ -130,22 +134,78 @@ const FormAddYpoxreoseis2 = () => {
                                     {tagError && <p className="help is-danger">{tagError}</p>}
                                 </div>
                             </div>
-                            <div className="field">
-                                <label className="label">ΠΟΣΟ ΦΠΑ</label>
-                                <div className="control">
-                                    <input type="text" className="input" value={ammount_vat} onChange={(e) => setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ' />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <div className="control">
-                                    <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+
+                <div className="field">
+            <label className="label">Εργα</label>
+            <div className="control">
+                {/* <Dropdown 
+                    value={erga_name} 
+                    options={erga} 
+                    onChange={(e)=> {handleErgaChange(e)}} 
+                    optionLabel="name" 
+                    placeholder="Επιλέξτε Εργο"
+                /> */}
+                  <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
+                                    <option value="" disabled>Επιλέξτε Εργο</option>
+                                        {erga.map((ergo, index) => (
+                                            <option key={index} value={ergo.id}>{ergo.name}</option>
+                                        ))}
+                                </select>
             </div>
+
+            <br />
+            <br />
+
+            <div className="field">
+                    <label htmlFor="percentagevat">Ποσοστό ΦΠΑ</label>
+                    <div className="control">
+
+                    <InputNumber  id="percentagevat" className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)}  />
+                   </div>
+                </div>
+
         </div>
+
+                {/* <div className="field">
+                        <label htmlFor="state">Ανήκει στο Εργο</label>
+                        <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)}
+                        options={dropdownItems} optionLabel="name" placeholder="Select One">
+
+                        </Dropdown>
+
+
+                    </div> */}
+
+                
+            </div>
+
+
+            <div >
+
+            <div className="field">
+                            <div className="control">
+                                <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
+                            </div>
+                        </div>
+
+                
+                {/* <div className="field">
+                <div className="control">
+
+                    <button type="submit" label="Προσθήκη" onSubmit={saveParadotea} className="button is-success is-fullwidth">Προσθήκη</button>
+                    </div>
+                </div> */}
+            </div>
+
+           
+        </div>
+
+       
+    </div>
+    </form>
+
+                                        
+    </div>
     );
 };
 

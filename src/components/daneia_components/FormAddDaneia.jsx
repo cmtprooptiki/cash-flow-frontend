@@ -1,7 +1,16 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
+
+import Select from 'react-select';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Divider } from 'primereact/divider';
 
 const FormAddDaneia = () => {
     const [name, setName] = useState("");
@@ -31,53 +40,54 @@ const FormAddDaneia = () => {
     }
 
     return(
-        <div>
-        <h1 className='title'>Προσθήκη Δανείου</h1>
-        <div className="card is-shadowless">
-            <div className="card-content">
-                <div className="content">
-                <form onSubmit={saveDaneia}>
-                <p className='has-text-centered'>{msg}</p>
-                <div className="field">
-                        <label  className="label">ΤΥΠΟΣ ΔΑΝΕΙΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΤΥΠΟΣ ΔΑΝΕΙΟΥ'/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label  className="label">ΠΟΣΟ ΔΑΝΕΙΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΔΑΝΕΙΟΥ'/>
-                        </div>
-                    </div>
+        <div >
+        <h1 className='title'>ΠΡΟΣΘΗΚΗ ΔΑΝΕΙΟΥ</h1>
+      <form onSubmit={saveDaneia}>
+      <div className="grid">
+      <div className="col-12 md:col-6">
+          <div className="card p-fluid">
+          <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Δανείου</span></Divider></div>
+          <div className="field">
+                  <label htmlFor="name1">ΟΝΟΜΑ ΔΑΝΕΙΟΥ</label>
+                  <div className="control">
 
-                    <div className="field">
-                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΔΑΝΕΙΟΥ'/>
+                  <InputText id="name" type="text" value={name} onChange={(e)=> setName(e.target.value)} />
+                  </div>
+              </div>
+
+              <div className="field">
+                  <label htmlFor="name2">ΠΟΣΟ ΔΑΝΕΙΟΥ</label>
+                  <div className="control">
+
+                  <InputText id="ammount" type="text" value={ammount} onChange={(e)=> setAmmount(e.target.value)} />
+                  </div>
+              </div>
+
+              <div className="field">
+                    <label htmlFor="payment_date">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
+                    <div className="control">
+
+                    <Calendar id="payment_date"  value={payment_date} onChange={(e)=> setPayment_Date(e.target.value)} inline showWeek />
                         </div>
-                    </div>
-
-
-                    <div className="field">
-                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={payment_date} onChange={(e)=> setPayment_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ'/>
-                        </div>
-                    </div>
-
-
-                    
-                    
-                    <div className="field">
-                        <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
-                        </div>
-                    </div>
-                </form>
                 </div>
-            </div>
+
+                <div className="field">
+                    <label className="label">Status</label>
+                    <div className="control">
+                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
+
+                    </div>
+                </div>
+
+          </div>
+          <div className="field">
+                            <div className="control">
+                                <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
+                            </div>
+                        </div>
         </div>
+        </div>
+    </form>
     </div>
     )
 }
