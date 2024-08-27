@@ -151,7 +151,8 @@ const EsodaNew = () =>
 };
 const getDaneia = async () =>{
   const response = await axios.get(`${apiBaseUrl}/daneia`)
-  setDaneia(response.data);
+  const response2 =response.data
+  setDaneia(response2.filter(item=>item.status==="no"));
 }
 
   // const handleDateChange = (newDate) => {
