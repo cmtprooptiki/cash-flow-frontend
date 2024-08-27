@@ -15,11 +15,12 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 
-const PaidList = (props) => {
+const PaidExodaList = () => {
     const [paradotea, setIncomeParadotea] = useState([]);
     const [ekxorimena, setEkxorimena] = useState([]);
     const [incomeTim, setIncomeTim] = useState([]);
     const [daneia,setDaneia]=useState([])
+    const [doseis,setDoseis]=useState([])
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -27,8 +28,6 @@ const PaidList = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
     const [combinedData,setCombinedData]=useState([])
-
-    const scenario =props.scenario
 
     const { user } = useSelector((state) => state.auth);
 
@@ -39,12 +38,17 @@ const PaidList = (props) => {
     }, []);
 
     const fetchData = async () => {
+        await getDoseis();
         await getEkxorimena();
         await getIncomePar();
         await getIncomeTim();
         await getDaneia();
     };
 
+    const getDoseis = async () =>{
+        const response = await axios.get(`${apiBaseUrl}/doseis`)
+        setDoseis(response.data)
+    }
 
     const getEkxorimena = async () => {
         const response = await axios.get(`${apiBaseUrl}/ek_tim`);
@@ -198,36 +202,17 @@ const statusItemTemplate = (option) => {
 
     
     useEffect(()=>{
-        if(scenario==="estimate_payment_date"){
         const combinedData2 = [
-            ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-            ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+            // ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+            // ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+            // ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+            // ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+            // ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id }))
         ];
         setCombinedData(combinedData2)
-        }else if(scenario==="estimate_payment_date_2"){
-            const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-            ];
-            setCombinedData(combinedData2)
-        }else if(scenario==="estimate_payment_date_3"){
-            const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-            ];
-            setCombinedData(combinedData2)
-        }
 
-    },[paradotea,ekxorimena,incomeTim,daneia,scenario])
+    },[paradotea,ekxorimena,incomeTim,daneia,doseis])
     
 
 
@@ -347,4 +332,4 @@ const statusItemTemplate = (option) => {
     );
 };
 
-export default PaidList;
+export default PaidExodaList;

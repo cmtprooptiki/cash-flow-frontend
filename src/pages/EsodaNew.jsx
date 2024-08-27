@@ -198,12 +198,12 @@ const getDaneia = async () =>{
         //console.log(event.item.ekxorimena_timologia_id)
         const response = await axios.patch(`${apiBaseUrl}/ek_tim/${event.item.ekxorimena_timologia_id}`, {
           "timologia_id":event.item.Ekxorimena_Timologium.timologia_id,///Δεν ξερω γιατι αλλα χωρις αυτο βγαζει Error 400 bad request
-          "bank_date": new Date(updatedDate)
+          "bank_estimated_date": new Date(updatedDate)
         });
         if (response.status === 200) {
           setIncome_ekx((prev) =>
             prev.map((item) =>
-              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "bank_date": updatedDate } } : item
+              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "bank_estimated_date": updatedDate } } : item
             )
           );
         }
@@ -218,12 +218,12 @@ const getDaneia = async () =>{
         //console.log(event.item.ekxorimena_timologia_id)
         const response = await axios.patch(`${apiBaseUrl}/ek_tim/${event.item.ekxorimena_timologia_id}`, {
           "timologia_id":event.item.Ekxorimena_Timologium.timologia_id,///Δεν ξερω γιατι αλλα χωρις αυτο βγαζει Error 400 bad request
-          "cust_date": new Date(updatedDate)
+          "cust_estimated_date": new Date(updatedDate)
         });
         if (response.status === 200) {
           setIncome_Ekx_Cust((prev) =>
             prev.map((item) =>
-              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "cust_date": updatedDate } } : item
+              item.Ekxorimena_Timologium.id === event.item.Ekxorimena_Timologium.id ? { ...item, Ekxorimena_Timologium: { ...item.Ekxorimena_Timologium, "cust_estimated_date": updatedDate } } : item
             )
           );
         }
@@ -398,8 +398,8 @@ const getDaneia = async () =>{
         {item.Ekxorimena_Timologium.bank_ammount} €
       </div>
     ),
-    start: new Date(item.Ekxorimena_Timologium.bank_date),
-    end: new Date(item.Ekxorimena_Timologium.bank_date),
+    start: new Date(item.Ekxorimena_Timologium.bank_estimated_date),
+    end: new Date(item.Ekxorimena_Timologium.bank_estimated_date),
     item: item,
   })));
 
@@ -419,8 +419,8 @@ const getDaneia = async () =>{
         {item.Ekxorimena_Timologium.customer_ammount} €
       </div>
     ),
-    start: new Date(item.Ekxorimena_Timologium.cust_date),
-    end: new Date(item.Ekxorimena_Timologium.cust_date),
+    start: new Date(item.Ekxorimena_Timologium.cust_estimated_date),
+    end: new Date(item.Ekxorimena_Timologium.cust_estimated_date),
     item: item,
   })));
   //console.log("income tim",incomeTim)
@@ -646,7 +646,7 @@ const getDaneia = async () =>{
       </div>
       
       </div>
-      <PaidList key={refresh}/>
+      <PaidList key={refresh} scenario={selectedDateType}/>
       </div>
       
   );
