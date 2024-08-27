@@ -153,7 +153,7 @@ const FormAddCustomer2 = () => {
                     
                     <div className="field">
                         <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
+                        <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                         </div>
                     </div>
                </div>
