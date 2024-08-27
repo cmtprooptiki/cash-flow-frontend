@@ -26,7 +26,7 @@ const DoseisList2 = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [ypoxreoseis, setYpoxreoseis]=useState([]);
     const {user} = useSelector((state) => state.auth)
-    const [statuses] = useState(['ΠΛΗΡΩΜΕΝΟ', 'ΑΠΛΗΡΩΤΟ']);
+    const [statuses] = useState(['yes', 'no']);
     
 
     useEffect(()=>{
@@ -243,10 +243,10 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     };
     const getSeverity = (status) => {
         switch (status) {
-            case 'ΠΛΗΡΩΜΕΝΟ':
+            case 'yes':
                 return 'success';
 
-            case 'ΑΠΛΗΡΩΤΟ':
+            case 'no':
                 return 'danger';
 
          
