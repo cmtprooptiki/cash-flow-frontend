@@ -10,8 +10,8 @@ import { Button } from 'primereact/button';
 const FormEditDoseis = () =>
 {
     const[ammount,setAmmount]=useState("");
-    const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
-    const [actual_payment_date, setActual_Payment_Date] = useState("");
+    const[estimate_payment_date,setEstimate_Payment_Date]=useState(null);
+    const [actual_payment_date, setActual_Payment_Date] = useState(null);
     const [status,setStatus] = useState("")
     const[ypoxreoseis_id,setYpoxreoseis_Id] = useState("");
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
@@ -19,7 +19,7 @@ const FormEditDoseis = () =>
 
     const formatDateToInput = (dateString) => {
         if(dateString === null || dateString =="" || dateString === NaN){
-            return ""
+            return null
         }
         dateString=dateString.split('T')[0];
         const [year, month, day] = dateString.split('-');
