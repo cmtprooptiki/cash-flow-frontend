@@ -4,6 +4,8 @@ import WeeksTableBudget from "../components/WeeksTableBudget";
 import WeeksTableBudget_Est2 from "../components/WeeksTableBudget_Est2";
 import WeeksTableBudget_Est3 from "../components/WeeksTableBudget_Est3";
 import Layout from './Layout';
+import PaidBudgetList from './PaidBudgetList';
+
 
 const BudgetPage = () => {
     // State for selected table and input value
@@ -22,7 +24,7 @@ const BudgetPage = () => {
     // Convert the budget to a float for calculations
     const parsedBudget = parseFloat(budget);
     const validBudget = isNaN(parsedBudget) ? 0 : parsedBudget;
-
+    // console.log(parsedBudget)
     return (
         <Layout>
             <div className="boxclass">
@@ -61,10 +63,13 @@ const BudgetPage = () => {
                     </button>
                 </div>
 
-                {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
+                {/* {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
                 {selectedTable === 'table2' && <WeeksTableBudget_Est2  budget={validBudget} />}
-                {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />}
+                {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />} */}
+                {selectedTable}
             </div>
+
+            <PaidBudgetList budget={validBudget} scenario={selectedTable}/>
         </Layout>
     );
 }

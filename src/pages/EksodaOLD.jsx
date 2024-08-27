@@ -48,18 +48,6 @@ const Eksoda = ()=>
   const [eventClickedFirst, setEventClickedFirst] = useState(false);
   const [boxData, setBoxData] = useState([]);
 
-  var [event_is_dropped,set_event_is_dropped]=useState(false)
-  var [refresh, setRefresh] = useState(false);
-
-
-  useEffect(() => {
-    // Logic that needs to run when `someState` changes
-    // For example, you might want to fetch new data or trigger a re-render
-    setRefresh(prev => !prev); // Toggle `refresh` state to force a re-render of PaidList
-    // console.log("event dropped: ",event_is_dropped)
-    // console.log("refresh: ",refresh)
-  }, [event_is_dropped]);
-
 
   useEffect(() => {
     dispatch(getMe());
@@ -95,6 +83,10 @@ const Eksoda = ()=>
     
       };
     
+      const handleDateChange = (newDate) => {
+        setCalendarDate(newDate);
+      };
+    
       
     
       const handleEventClick = (event, item) => {
@@ -120,60 +112,21 @@ const Eksoda = ()=>
         } catch (error) {
           console.error('Failed to update event', error);
         }
-
-        if(event_is_dropped){
-            set_event_is_dropped(false)
-          }else{
-            set_event_is_dropped(true)
-          }
-    }
-    
-    const filteredoseis =doseis.filter((item)=>item.status==="no");
-    //console.log("filtered doseis",filteredoseis)
-
-    const eventStyleGetter =(event, start, end, isSelected)=> {
-        //console.log(event);
-        if (event.test==="timologia"){
-          var backgroundColor = "ForestGreen";
-          var color="white";
-        }
-        else if(event.test==="ekxorimena"){
-          var backgroundColor = "red";
-          var color="white";
-        }
-        else if(event.test==="ekxorimena_customer"){
-          var backgroundColor = "red";
-          var color="white";
-        }
-        else if(event.test==="paradotea"){
-          var backgroundColor = "#0288d1";
-          var color="white";
-        }else if(event.test==="daneia"){
-          var backgroundColor = "orange";
-          var color="black";
-        }else if(event.test==="doseis"){
-          var backgroundColor = "#0288d1";
-          var color="white";
-        }
-        
-        var style = {
-            backgroundColor: backgroundColor,
-            borderRadius: '0px',
-            opacity: 0.8,
-            color: color,
-            border: '0px',
-            display: 'block'
-        };
-        return {
-            style: style
-        };
     }
 
+    const eventsWithActualPaymentDate = doseis.filter(
+      (item) => item.actual_payment_date !== null
+    );
+  
+    const eventsWithoutActualPaymentDate = doseis.filter(
+      (item) => item.actual_payment_date === null
+    );
 
-        const MyEvents=filteredoseis.map((item) => ({
+
+        const MyEvents=eventsWithActualPaymentDate.map((item) => ({
             id: item.id,
             title: (
-              <div >
+              <div style={{backgroundColor: "red"}}>
                 <div
                   className="circle"
                   // style={{
@@ -184,26 +137,25 @@ const Eksoda = ()=>
                 {item.ammount} €
               </div>
             ),
-            start: item.estimate_payment_date,
-            end: item.estimate_payment_date,
+            start: item.actual_payment_date,
+            end: item.actual_payment_date,
             item: item,
             allDay: item.allDay,
           }));
-   // console.log("My events",MyEvents)
 
-        //   const eks = eventsWithoutActualPaymentDate.map((item) => ({
-        //     id: item.id,
-        //     title: (
-        //     <div>
-        //       <div className="circle"></div>
-        //         {item.ammount} €
-        //     </div>
-        //     ),
-        // start: item.estimate_payment_date,
-        // end: item.estimate_payment_date,
-        // item: item,
-        // allDay: item.allDay,
-        //   }))
+          const eks = eventsWithoutActualPaymentDate.map((item) => ({
+            id: item.id,
+            title: (
+            <div>
+              <div className="circle"></div>
+                {item.ammount} €
+            </div>
+            ),
+        start: item.estimate_payment_date,
+        end: item.estimate_payment_date,
+        item: item,
+        allDay: item.allDay,
+          }))
 
 
 
@@ -240,17 +192,17 @@ const Eksoda = ()=>
         //     item: item,
         //   }))
 
-        //   const uniqueeks = [
-        //     ...eks
-        //   ].filter((event, index, self) =>
-        //     index === self.findIndex((e) => e.id === event.id)
-        //   );
+          const uniqueeks = [
+            ...eks
+          ].filter((event, index, self) =>
+            index === self.findIndex((e) => e.id === event.id)
+          );
     
-        //   function joinjson(items){
-        //     MyEvents.push(items)
-        //   }
+          function joinjson(items){
+            MyEvents.push(items)
+          }
     
-        //   uniqueeks.forEach(joinjson)
+          uniqueeks.forEach(joinjson)
 
 
       
@@ -306,7 +258,7 @@ const Eksoda = ()=>
                     popup
                     resizable
                     draggableAccessor={() => true}
-                    eventPropGetter={eventStyleGetter}
+                    // eventPropGetter={eventStyleGetter}
                   />
                 </div>
               </div>
@@ -318,24 +270,24 @@ const Eksoda = ()=>
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                {/* {MyEvents.forEach(item => {
-      console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
-    })} */}
-                {/* {MyEvents.length > 0 && (
+                {MyEvents.forEach(item => {
+    //   console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
+    })}
+                {MyEvents.length > 0 && (
       <WeeksTableEksoda
       eventsWithActualPaymentDate={eventsWithActualPaymentDate}
       eventsWithoutActualPaymentDate={eventsWithoutActualPaymentDate}
         calendarDate={calendarDate}
         onDateChange={handleDateChange}
       />
-    )} */}
+    )}
                 {/* <WeeksTable income_paradotea={income_paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/> */}
               </div>
             </div>
           </div>
-          <PaidExodaList key={refresh}/>
+          <PaidExodaList/>
           </div>
-      ); 
+      );
 
 
 
