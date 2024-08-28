@@ -117,6 +117,26 @@ const Navbar =()=>{
                                                         <Ripple />
                                                     </a>
                                                 </li>
+
+                                                <li>
+                                                <Link to="/step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                        <i className="pi pi-cart-arrow-down"></i>
+                                                            <span className="font-medium">Διαχείριση Εξόδων</span>
+                                                            <Ripple />
+                                                        </a>
+                                                    </Link>
+                                                </li>
+
+                                                <li>
+                                                <Link to="/esoda_step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                        <i className="pi pi-chart-line mr-2"></i>
+                                                            <span className="font-medium">Διαχείριση Εσόδων</span>
+                                                            <Ripple />
+                                                        </a>
+                                                    </Link>
+                                                </li>
                                                 <li>
                                                     <StyleClass nodeRef={btnRef2} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
                                                         <a ref={btnRef2} className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
@@ -304,40 +324,6 @@ const Navbar =()=>{
                                                             <Ripple />
                                                         </a>
                                                     </Link>
-                                                </li>
-                                                <li>
-                                                <Link to="/step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                            <i className="pi pi-folder mr-2"></i>
-                                                            <span className="font-medium">Διαχείριση Εξόδων</span>
-                                                            <Ripple />
-                                                        </a>
-                                                    </Link>
-                                                </li>
-
-                                                <li>
-                                                <Link to="/esoda_step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                            <i className="pi pi-folder mr-2"></i>
-                                                            <span className="font-medium">Διαχείριση Εσόδων</span>
-                                                            <Ripple />
-                                                        </a>
-                                                    </Link>
-                                                </li>
-
-                                                <li>
-                                                    <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-chart-bar mr-2"></i>
-                                                        <span className="font-medium">Performance</span>
-                                                        <Ripple />
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-cog mr-2"></i>
-                                                        <span className="font-medium">Settings</span>
-                                                        <Ripple />
-                                                    </a>
                                                 </li>
                                             </ul>
                                         </li>
