@@ -25,11 +25,12 @@ const InfoBox = (props) => {
   {
     const bank_date = moment(props.item.Ekxorimena_Timologium.bank_date).format("YYYY/MM/DD");
     const cust_date = moment(props.item.Ekxorimena_Timologium.cust_date).format("YYYY/MM/DD");
+    console.log(props.item, "ekxorimenaaacasfsds")
     return(
       <div className='box'>
         <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong> Εκχωρημένο Τιμολογιο details</strong></center>
 
-        <strong> Τίτλος Παραδοτέου:</strong>{props.item.paradotea.title}<br/>
+        <strong> Κωδικός Τιμολογίου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
         <strong> Όνομα Έργου:</strong>{props.item.paradotea.erga.name}<br/>
         <strong> Συνολικό Ποσό Τράπεζας:</strong>{props.item.Ekxorimena_Timologium.bank_ammount} €<br/>
@@ -47,7 +48,7 @@ const InfoBox = (props) => {
       <div className='box'>
         <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong> Εκχωρημένο Τιμολογιο details</strong></center>
 
-        <strong> Τίτλος Παραδοτέου:</strong>{props.item.paradotea.title}<br/>
+        <strong> Κωδικός Τιμολογίου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
         <strong> Όνομα Έργου:</strong>{props.item.paradotea.erga.name}<br/>
         <strong> Συνολικό Ποσό Τράπεζας:</strong>{props.item.Ekxorimena_Timologium.bank_ammount} €<br/>
@@ -65,7 +66,9 @@ const InfoBox = (props) => {
       <div className='box'>
         <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong>Τιμολογιο details</strong></center>
 
-        <strong> Κωδικος Τιμολογιου:</strong>{props.item.invoice_number}<br/>
+        <strong> Κωδικος Τιμολογιου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.id}`}>
+      {props.item.invoice_number}
+    </a><br/>
         <strong> invoice_date:</strong>{invoiceDate}<br/>
         <strong> actual_payment_date:</strong>{actual_payment_date}<br/>
         <strong> ammount:</strong>{props.item.ammount_no_tax}<br/>

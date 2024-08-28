@@ -5,6 +5,7 @@ import '../../custom.css';
 import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
+import Select from 'react-select';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,6 +20,15 @@ const FormProfileTimologia = () => {
   const[comments,setComments]=useState("");
   const[invoice_number,setInvoice_Number]=useState("");
   const [status_paid, setStatus_Paid] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
+  const [erga_id, setErga_id] = useState(null);
+  const [erga, setErga] = useState([]);
+  const [uniqueErga2, setUniqueErga2] = useState([]); // State to store unique `erga` data
+
+
+  const [paradotea, setParadoteaByErgo] = useState([]);
+  const[fullParadotea,setFullParadotea]=useState([])
 
 
     const[msg,setMsg]=useState("");
@@ -41,6 +51,27 @@ const FormProfileTimologia = () => {
                 setInvoice_Number(response.data.invoice_number);
                 setStatus_Paid(response.data.status_paid);
 
+                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const paradoteaData = paradoteaResponse.data
+
+                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const ergaData = ergaResponse.data;
+
+                setErga(ergaData);
+                setSelectedParadoteaDetails(paradoteaData);
+                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`);
+                setFullParadotea(fullParadoteaResponse.data);
+
+                const itemsWithTimologiaId = fullParadotea.filter(paradoteo => paradoteo.timologia_id === parseInt(id));
+                const unselectedParadotea = itemsWithTimologiaId.filter(paradoteo => 
+                    !selectedParadoteaDetails.some(selected => selected.id === paradoteo.id)
+                );
+    
+                console.log(unselectedParadotea)
+                
+    
+                // console.log("Done")
+
             }
             catch(error)
             {
@@ -52,6 +83,93 @@ const FormProfileTimologia = () => {
         };
         getTimologioById();
     }, [id]);
+
+    const clearFormFields = () => {
+        setSelectedOptions([]);
+        setSelectedParadoteaDetails([]);
+    }
+
+    const handleErgaStart = async(e) => {
+        console.log(e)
+        const selectedId = e.erga.id;
+        setErga_id(selectedId);
+        console.log(selectedId)
+        clearFormFields();
+        if (selectedId) {
+            try {
+                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`);
+                const paradoteaByErgoId = response.data;
+                setParadoteaByErgo(paradoteaByErgoId.filter(paradoteo=>paradoteo.erga.id===selectedId))
+                // Filter by timologia_id and then map over the filtered array
+                console.log(paradoteaByErgoId);
+                const selected = paradoteaByErgoId
+                .filter(paradoteo => paradoteo.timologia_id === e.timologia_id)
+                .map(paradoteo => ({
+                    value: paradoteo.id,
+                    label: paradoteo.title
+                }));
+
+                setSelectedOptions(selected);
+                
+                
+
+                console.log(selected);
+            } catch (error) {
+                console.error("Error fetching timologio data:", error);
+            }
+        }
+    };
+
+    const handleParadoteaChange2 = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+        console.log("Selected option paradotea CHANGE", selectedOptions)
+
+        const selectedIds = selectedOptions.map(options2 => options2.value);
+        const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
+        setSelectedParadoteaDetails(selectedDetails);
+    };
+
+    const options = paradotea.map(paradoteo => ({
+        value: paradoteo.id,
+        label: paradoteo.title
+    }));
+    const options2 = paradotea.map(paradoteo => ({
+        value: paradoteo.id,
+        label: paradoteo.title
+    }));
+
+    useEffect(()=>{
+        const selectedIds = selectedOptions.map(option => option.value);
+        const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
+        setSelectedParadoteaDetails(selectedDetails);
+    },[selectedOptions,id])
+
+    useEffect(() => {
+        if (erga.length > 0) {
+            // Step 1: Filter the rows where timologia_id equals the given id
+            const filteredErga = erga.filter(ergo => ergo.timologia_id === parseInt(id));
+    
+            // Step 2: Create a Set to ensure unique erga names and map the filtered array
+            const uniqueErga = Array.from(new Set(filteredErga.map(ergo => ergo.erga.id)))
+            .map(id => {      
+                return filteredErga.find(ergo => ergo.erga.id === id);
+            });
+    
+            setUniqueErga2(uniqueErga);
+            console.log(uniqueErga2)
+            
+        }
+        }, [erga, id]);
+    useEffect(()=>{
+        if(uniqueErga2.length>0){
+            handleErgaStart(uniqueErga2[0]);
+        }
+    },[uniqueErga2,id])
+    // handleErgaStart(uniqueErga2[0]);
+        // .map(id2 => {
+        //     return erga.find(ergo => (ergo.erga.id === id2 && ergo.timologia_id === id));
+        // })
+        // .filter(ergo => ergo !== undefined); 
 
 
     
@@ -67,6 +185,22 @@ const FormProfileTimologia = () => {
             <div className="text-500 w-6 md:w-2 font-medium">Κωδικός Τιμολογίου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{invoice_number}</div>
            
+        </li>
+
+        <li>
+        <div className="field">
+                                <label className="label">Παραδοτεα</label>
+                                <div className="control">
+                                    <Select
+                                        isMulti
+                                        value={selectedOptions}
+                                        onChange={handleParadoteaChange2}
+                                        options={options2}
+                                        classNamePrefix="react-select"
+                                        isDisabled={true}
+                                    />
+                                </div>
+                            </div>
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
