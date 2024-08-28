@@ -27,7 +27,7 @@ const FormEditEkxorimenoTimologio = () =>
 
     const formatDateToInput = (dateString) => {
         if(dateString === null || dateString =="" || dateString === NaN){
-            return ""
+            return null
         }
         dateString=dateString.split('T')[0];
         const [year, month, day] = dateString.split('-');
