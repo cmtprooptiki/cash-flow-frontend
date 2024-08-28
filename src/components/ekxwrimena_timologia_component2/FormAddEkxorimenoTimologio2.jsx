@@ -3,6 +3,15 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
 
+import Select from 'react-select';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { Divider } from 'primereact/divider';
+
 const FormAddEkxorimenoTimologio2 = () =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
@@ -77,12 +86,11 @@ const FormAddEkxorimenoTimologio2 = () =>
     return(
         <div>
         <h1 className='title'>Προσθήκη Εκχωρημένου Τιμολογίου</h1>
-        <div className="card is-shadowless">
-            <div className="card-content">
-                <div className="content">
                 <form onSubmit={saveEkxorimena_Timologia}>
-                <p className='has-text-centered'>{msg}</p>
-
+                <div className="grid">
+      <div className="col-12 md:col-6">
+          <div className="card p-fluid">
+          <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Εκχωρημένου Τιμολογίου</span></Divider></div>
                 <div className="field">
                         <label className="label">Τιμολόγιο</label>
                         <div className="control">
@@ -110,14 +118,14 @@ const FormAddEkxorimenoTimologio2 = () =>
                     <div className="field">
                         <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="date" className="input" value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                            <Calendar id="bank_estimated_date"  value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} inline showWeek />
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="date" className="input" value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                            <Calendar id="bank_date"  value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} inline showWeek />
                         </div>
                     </div>
 
@@ -133,7 +141,7 @@ const FormAddEkxorimenoTimologio2 = () =>
                     <div className="field">
                         <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <input type="date" className="input" value={cust_estimated_date} onChange={(e)=> setEstimated_Cust_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                            <Calendar id="cust_estimated_date"  value={cust_estimated_date} onChange={(e)=> setEstimated_Cust_Date(e.target.value)} inline showWeek />
                         </div>
                     </div>
 
@@ -141,34 +149,35 @@ const FormAddEkxorimenoTimologio2 = () =>
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <input type="date" className="input" value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                            <Calendar id="cust_date"  value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} inline showWeek />
                         </div>
                     </div>
 
                     <div className="field">
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <input type="text" className="input" value={status_customer_paid} onChange={(e)=> setStatusCustomerPaid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ'/>
+                            <InputText id="status_customer_paid" type="text" value={status_customer_paid} onChange={(e)=> setStatusCustomerPaid(e.target.value)} />
                         </div>
                     </div>
                     
                     <div className="field">
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <input type="text" className="input" value={status_bank_paid} onChange={(e)=> setStatusBankPaid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
+                            <InputText id="status_bank_paid" type="text" value={status_bank_paid} onChange={(e)=> setStatusBankPaid(e.target.value)} />
                         </div>
                     </div>
                     
                     <div className="field">
                         <div className="control">
-                            <button type="submit" className="button is-success is-fullwidth">Προσθήκη</button>
+                        <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                         </div>
                     </div>
-                </form>
-                </div>
+                    </div>
             </div>
         </div>
-    </div>
+                </form>
+                </div>
+                
     )
 
 
