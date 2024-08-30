@@ -114,7 +114,7 @@ import Stepper_Esoda1 from "./pages/Stepper_Esoda1";
 import Stepper_Esoda2 from "./pages/Stepper_Esoda2";
 import Stepper_Esoda3 from "./pages/Stepper_Esoda3";
 
-
+import KpisDashboard from "./pages/KpisDashboard";
 function App() {
   const value = {
     ripple: true,
@@ -267,6 +267,7 @@ function App() {
           <Route path="/esoda_step1" element={<Stepper_Esoda1/>}></Route>
           <Route path="/esoda_step2" element={<Stepper_Esoda2/>}></Route>
           <Route path="/esoda_step3" element={<Stepper_Esoda3/>}></Route>
+          <Route path="/statistics" element={<KpisDashboard/>}></Route>
 
 
         </Routes>

@@ -29,6 +29,8 @@ import { Avatar } from 'primereact/avatar';
 import { Ripple } from 'primereact/ripple';
 import { StyleClass } from 'primereact/styleclass';
 import cmt from "../logocmt.png";
+import { ReactComponent as WizardIcon } from '../icons/wizardicon.svg'; // Import the SVG as a React component
+
 
 const Navbar =()=>{
     const dispatch = useDispatch();
@@ -104,40 +106,52 @@ const Navbar =()=>{
                                             <ul className="list-none p-0 m-0 overflow-hidden">
                                                 <li><Link to="/dashboard"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-home mr-2"></i>
-                                                        <span className="font-medium">Dashboard</span>
+                                                        <i className="pi pi-calendar-plus mr-2"></i>
+                                                        <span className="font-medium">Ημερολόγιο Εσόδων</span>
                                                         <Ripple />
                                                     </a>
                                                     </Link>
                                                 </li>
-                                                <li>
+                                                {/* <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-bookmark mr-2"></i>
                                                         <span className="font-medium">Bookmarks</span>
                                                         <Ripple />
                                                     </a>
-                                                </li>
+                                                </li> */}
 
-                                                <li>
-                                                <Link to="/step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-cart-arrow-down"></i>
-                                                            <span className="font-medium">Διαχείριση Εξόδων</span>
-                                                            <Ripple />
-                                                        </a>
-                                                    </Link>
-                                                </li>
-
-                                                <li>
+                                          
+                                                {/* <li>
                                                 <Link to="/esoda_step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                         <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-chart-line mr-2"></i>
-                                                            <span className="font-medium">Διαχείριση Εσόδων</span>
+                                                            <span className="font-medium">Οδηγός Εσόδων</span>
                                                             <Ripple />
                                                         </a>
                                                     </Link>
-                                                </li>
+                                                </li> */}
                                                 <li>
+                                                <Link to="/statistics" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                <i className="pi pi-chart-line mr-2"></i>
+                                                    <span className="font-medium">Στατιστικά</span>
+                                                    <Ripple />
+
+                                                    </a>
+                                                </Link>
+                                                </li>
+
+
+                                                <li>
+                                                <Link to="/esoda_step1" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2" />  {/* Replace PrimeIcon with CustomIcon */}
+                                                        <span className="font-medium">Οδηγός Εσόδων</span>
+                                                    </div>
+                                                </Link>
+                                                </li>
+
+                                                {/* <li>
                                                     <StyleClass nodeRef={btnRef2} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
                                                         <a ref={btnRef2} className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                             <i className="pi pi-chart-line mr-2"></i>
@@ -181,15 +195,15 @@ const Navbar =()=>{
                                                             </a>
                                                         </li>
                                                     </ul>
-                                                </li>
-                                                <li>
+                                                </li> */}
+                                                {/* <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-users mr-2"></i>
                                                         <span className="font-medium">Team</span>
                                                         <Ripple />
                                                     </a>
-                                                </li>
-                                                <li>
+                                                </li> */}
+                                                {/* <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-comments mr-2"></i>
                                                         <span className="font-medium">Messages</span>
@@ -198,35 +212,55 @@ const Navbar =()=>{
                                                         </span>
                                                         <Ripple />
                                                     </a>
-                                                </li>
-                                                <li>
+                                                </li> */}
+                                                {/* <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-calendar mr-2"></i>
                                                         <span className="font-medium">Calendar</span>
                                                         <Ripple />
                                                     </a>
-                                                </li>
-                                                <li>
+                                                </li> */}
+                                                {/* <li>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-cog mr-2"></i>
                                                         <span className="font-medium">Settings</span>
                                                         <Ripple />
                                                     </a>
-                                                </li>
+                                                </li> */}
 
                                                 <li><Link to="/expen" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-users mr-2"></i>
-                                                        <span className="font-medium">Expenses Calendar</span>
+                                                        <i className="pi pi-calendar-minus mr-2"></i>
+                                                        <span className="font-medium">Ημερολόγιο Εξόδων</span>
                                                         <Ripple />
                                                     </a>
                                                     </Link>
                                                 </li>
 
+                                                {/* <li>
+                                                <Link to="/step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                        <i className="pi pi-cart-arrow-down mr-2"></i>
+                                                            <span className="font-medium">Οδηγός Εξόδων</span>
+                                                            <Ripple />
+                                                        </a>
+                                                    </Link>
+                                                </li> */}
+
+                                                <li>
+                                                <Link to="/step1" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
+                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2" />  {/* Replace PrimeIcon with CustomIcon */}
+                                                        <span className="font-medium">Οδηγός Εξόδων</span>
+                                                    </div>
+                                                </Link>
+                                                </li>
+
+
                                                 <li><Link to="/budget" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-cog mr-2"></i>
-                                                        <span className="font-medium">Budget</span>
+                                                        <i className="pi pi-euro mr-2"></i>
+                                                        <span className="font-medium">Προυπολογισμός</span>
                                                         <Ripple />
                                                     </a>
                                                     </Link>
