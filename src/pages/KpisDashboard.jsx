@@ -22,6 +22,7 @@ import { ReactComponent as ProjectIcon } from '../icons/projecticon.svg'; // Imp
 import { ReactComponent as CustomerIcon } from '../icons/customericon.svg'; // Import the SVG as a React component
 import { ReactComponent as DeliverablesIcon } from '../icons/deliverablesicon.svg'; // Import the SVG as a React component
 import { ReactComponent as InvoiceIcon } from '../icons/invoiceicon.svg'; // Import the SVG as a React component
+import BudgetChart from '../components/paid_components/BudgetChart';
 
 // Importing calendar library
 
@@ -363,7 +364,11 @@ const KpisDashboard = () => {
   <ApexCharts options={chartOptions3} series={chartSeries3} type='bar' height={350} />
   </div>
   </div>
- 
+  <div className="col-12 xl:col-6 lg:col-3">
+<div className="card">
+  <BudgetChart/>
+  </div>
+  </div>
 
 </div>
     </Layout>

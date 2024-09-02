@@ -23,6 +23,7 @@ import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { CustomerService } from './service/CustomerService';
 import PaidList from '../../components/paid_components/PaidLists'
 import { Ripple } from 'primereact/ripple';
+import BudgetChart from '../../components/paid_components/BudgetChart'
 
 ///////////////////////
 //import { classNames } from 'primereact/utils';
@@ -389,7 +390,12 @@ const PaidView = () =>
                 
     //         </DataTable>
     //     </div>
-    <div><Layout><PaidList/></Layout></div>
+    <div><Layout>
+        <PaidList/>
+        <BudgetChart></BudgetChart>
+    
+    
+    </Layout></div>
   )
 }
 

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import '../buildinglist.css';
-import apiBaseUrl from '../apiConfig';
+import '../../buildinglist.css';
+import apiBaseUrl from '../../apiConfig';
 import { DataTable } from 'primereact/datatable';
+import ApexCharts from 'react-apexcharts';
+
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -14,28 +16,22 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
-import { Dialog } from 'primereact/dialog';
-const PaidBudgetList = (props) => {
+
+const BudgetChart = (props) => {
     const [paradotea, setIncomeParadotea] = useState([]);
     const [ekxorimena, setEkxorimena] = useState([]);
     const [incomeTim, setIncomeTim] = useState([]);
-    const [daneia,setDaneia]=useState([]);
-    const [doseis,setDoseis]=useState([]);
+    const [daneia,setDaneia]=useState([])
+    const [doseis,setDoseis]=useState([])
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-    const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia','doseis','Daneia']);
+    const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia']);
     const [totalIncome, setTotalIncome] = useState(0);
-    const [filtercalled,setfiltercalled]=useState(false);
-    const [combinedData,setCombinedData]=useState([]);
-    const [paradoteoId,setparadoteoId]=useState([])
-    const budget = props.budget
-    const scenario=props.scenario
+    const [filtercalled,setfiltercalled]=useState(false)
+    const [combinedData,setCombinedData]=useState([])
 
-    const[selectedIdType,setSelectedIdType]=useState([])
-
-    const [visible, setVisible] = useState(false); // State to control the visibility of the popup
-    const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
+    const scenario =props.scenario
 
     const { user } = useSelector((state) => state.auth);
 
@@ -52,7 +48,6 @@ const PaidBudgetList = (props) => {
         await getIncomeTim();
         await getDaneia();
     };
-
     const getDoseis = async () =>{
         const response = await axios.get(`${apiBaseUrl}/doseis`)
         setDoseis(response.data)
@@ -87,31 +82,6 @@ const PaidBudgetList = (props) => {
     const getDaneia = async () =>{
         const response = await axios.get(`${apiBaseUrl}/daneia`)
         setDaneia(response.data);
-    }
-    const getParadoteoId = async(id)=>{
-        console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`)
-        setSelectedRowData(response.data)
-    }
-    const getTimologioId = async(id)=>{
-        console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/timologia/${id}`)
-        setSelectedRowData(response.data)
-    }
-    const getDaneioId = async(id)=>{
-        console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/daneia/${id}`)
-        setSelectedRowData(response.data)
-    }
-    const getDosiId = async(id)=>{
-        console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/doseis/${id}`)
-        setSelectedRowData(response.data)
-    }
-    const getEkxId = async(id)=>{
-        console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/ek_tim/${id}`)
-        setSelectedRowData(response.data)
     }
 
     const clearFilter = () => {
@@ -212,29 +182,6 @@ const statusItemTemplate = (option) => {
     return <Tag value={option} severity={getSeverity(option)} />;
 };
 
-const handleRowData = (rowData) => {
-    setSelectedRowData(rowData);
-    setSelectedIdType(rowData.type)
-    if(rowData.type ==="Paradotea"){
-        getParadoteoId(rowData.id)
-    }else if(rowData.type ==="Timologia"){
-        getTimologioId(rowData.id)
-    }else if(rowData.type ==="Daneia"){
-        getDaneioId(rowData.id)
-    }else if(rowData.type ==="doseis"){
-        getDosiId(rowData.id)
-    }else if(rowData.type ==="Bank" || rowData.type==="Customer"){
-        getEkxId(rowData.id)
-    }
-    
-    setVisible(true);
-};
-const idBodyTemplate = (rowData) => {
-    return (
-        <Button label={rowData.id} onClick={() => handleRowData(rowData)} />
-    );
-};
-
 
 
     const renderHeader = () => {
@@ -252,63 +199,162 @@ const idBodyTemplate = (rowData) => {
     const calculateTotalIncome = (data) => {
         
         if (!data || data.length === 0) return 0;
-        const final= data.reduce((acc, item) => acc + item.income, 0);
-        // return data.reduce((acc, item) => acc + item.income, 0);
-        console.log("type: ",typeof(final)," final: ",final)
-        return parseFloat(final)+parseFloat(budget);
+        return data.reduce((acc, item) => acc + item.income, 0);
     };
     
 
     
+    // useEffect(()=>{
+    //     if(scenario==="estimate_payment_date"){
+    //     const combinedData2 = [
+    //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+    //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+    //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+    //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+    //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+    //     ];
+    //     setCombinedData(combinedData2)
+    //     }else if(scenario==="estimate_payment_date_2"){
+    //         const combinedData2 = [
+    //             ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+    //             ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+    //             ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+    //             ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+    //             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+    //         ];
+    //         setCombinedData(combinedData2)
+    //     }else if(scenario==="estimate_payment_date_3"){
+    //         const combinedData2 = [
+    //             ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+    //             ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+    //             ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+    //             ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+    //             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+    //         ];
+    //         setCombinedData(combinedData2)
+    //     }
+
+    // },[paradotea,ekxorimena,incomeTim,daneia,scenario])
+    
+
     useEffect(()=>{
         console.log("scenario ",scenario)
-        if(scenario==="table1"){
-            const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id})),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-            ];
-            setCombinedData(combinedData2)
-        }else if(scenario==="table2"){
+        // if(scenario==="table1"){
             const combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id})),
+                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
                 ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id }))
             ];
             setCombinedData(combinedData2)
-        }else if(scenario==="table3"){
-            const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-            ];
-            setCombinedData(combinedData2)
-        }
+        // }else if(scenario==="table2"){
+        //     const combinedData2 = [
+        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
+        //     ];
+        //     setCombinedData(combinedData2)
+        // }else if(scenario==="table3"){
+        //     const combinedData2 = [
+        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
+        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
+        //     ];
+        //     setCombinedData(combinedData2)
+        //}
         
         
 
     },[paradotea,ekxorimena,incomeTim,daneia,doseis,scenario])
+
+
+
+
+    const data = [
+        { date: new Date('Sun Jun 30 2024 03:00:00 GMT+0300'), income: 12698.6, type: 'Paradotea', id: 7 },
+        { date: new Date('Wed Jun 12 2024 03:00:00 GMT+0300'), income: 17185.5, type: 'Timologia', id: 8 },
+        { date: new Date('Thu Jun 05 2024 03:00:00 GMT+0300'), income: 1500, type: 'doseis', id: 10 },
+        { date: new Date('Thu Jun 05 2024 03:00:00 GMT+0300'), income: 96.09, type: 'doseis', id: 11 },
+        { date: new Date('Sat Jun 05 2024 03:00:00 GMT+0300'), income: 96.09, type: 'doseis', id: 12 },
+        { date: new Date('Fri Jun 30 2024 03:00:00 GMT+0300'), income: 310, type: 'doseis', id: 14 },
+        { date: new Date('Wed Jun 14 2024 03:00:00 GMT+0300'), income: 3720, type: 'doseis', id: 15 }
+      ];
+    // Create a map to aggregate data by month/year
+    const aggregatedData = {};
+
+    combinedData.forEach(item => {
+    const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'long' });
+    if (!aggregatedData[monthYear]) {
+        aggregatedData[monthYear] = { x: monthYear, y: 0, goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] };
+    }
+    
+    if (item.type !== 'doseis') {
+        aggregatedData[monthYear].y += item.income;
+    } else {
+        aggregatedData[monthYear].goals[0].value += item.income;
+    }
+    });
+
+    // Convert aggregated data map to an array
+    const result = Object.values(aggregatedData);
+
+    console.log(JSON.stringify(result, null, 2));
     
 
 
-
+    const final = {
+        series: [
+          {
+            name: 'Έσοδα',
+            data: result
+          }
+        ],
+        options: {
+          chart: {
+            height: 350,
+            type: 'bar'
+          },
+          plotOptions: {
+            bar: {
+              columnWidth: '60%'
+            }
+          },
+          title: {
+            text: 'Μηνιαίος Προϋπολογισμός',
+            align: 'center',
+            floating: true
+        },
+          colors: ['#00E396'],
+          dataLabels: {
+            enabled: false
+          },
+          legend: {
+            show: true,
+            showForSingleSeries: true,
+            customLegendItems: ['Έσοδα', 'Έξοδα'],
+            markers: {
+              fillColors: ['#00E396', 'red']
+            }
+          }
+        },
+      };
+    
 
 
     useEffect(() => {
         if(!filtercalled){
-            setTotalIncome(formatCurrency(calculateTotalIncome( combinedData)));
+            setTotalIncome(formatCurrency(calculateTotalIncome(combinedData)));
         }
         
-    }, [combinedData,budget]);
+    }, [combinedData]);
 
     // const handleFilter = (filteredData) => {
     //     console.log("filtered data: ",filteredData)
@@ -383,7 +429,7 @@ const idBodyTemplate = (rowData) => {
         }
 
         // // Calculate total income for the visible rows
-        const incomeSum = parseFloat(budget)+ visibleRows.reduce((sum, row) => sum + (row.income || 0), 0);
+        const incomeSum = visibleRows.reduce((sum, row) => sum + (row.income || 0), 0);
         
         setTotalIncome(formatCurrency(incomeSum));
     };
@@ -392,7 +438,7 @@ const idBodyTemplate = (rowData) => {
 
     return (
         <div>
-            <DataTable value={combinedData} paginator rows={10} 
+            {/* <DataTable value={combinedData} paginator rows={10} 
             header={header} 
             filters={filters} 
             filterDisplay="menu" loading={loading} 
@@ -402,82 +448,22 @@ const idBodyTemplate = (rowData) => {
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
             
-            >
+            > */}
                 {/* {console.log("combined data: ",combinedData)} */}
-                <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
+                {/* <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column> */}
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
-                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
+                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-                <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
+                <Column field="id" header="Id" filter ></Column>
 
-            </DataTable>
+            </DataTable> */}
+            {/* <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={350} /> */}
+            <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
 
-            <Dialog header="Row Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                {selectedRowData && selectedIdType==="Paradotea" && (
-                    
-                    <div>
-                        {console.log(selectedRowData)}
-                        <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Title:</strong> {selectedRowData.title}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
-                    </div>
-                )}
-                {selectedRowData && selectedIdType==="Timologia" && (
-                    
-                    <div>
-                        {console.log(selectedRowData)}
-                        <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Invoice Number:</strong> {selectedRowData.invoice_number}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
-                    </div>
-                )}
-                {selectedRowData && selectedIdType==="doseis" && (
-                    
-                    <div>
-                        {console.log(selectedRowData)}
-                        <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>ammount:</strong> {selectedRowData.ammount}</p>
-                        <p><strong>payment date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
-                        <p><strong>estimated payment date:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
-                        <p><strong>status:</strong> {selectedRowData.status}</p>
-                        <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
-                        <p><strong>Υποχρέωση:</strong> {selectedRowData.ypoxreosei?.provider}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
-                    </div>
-                )}
-                {selectedRowData && selectedIdType==="Daneia" && (
-                    
-                    <div>
-                        {console.log(selectedRowData)}
-                        <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Name:</strong> {selectedRowData.name}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
-                    </div>
-                )}
-                {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
-                    
-                    <div>
-                        {console.log(selectedRowData)}
-                        <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
-                    </div>
-                )}
-            </Dialog>
-
+            {console.log("comb data ",combinedData)}
         </div>
     );
 };
 
-export default PaidBudgetList;
+export default BudgetChart;

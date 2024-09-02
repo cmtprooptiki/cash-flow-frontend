@@ -130,7 +130,7 @@ const FormEditEkxorimenoTimologio = () =>
                 <form onSubmit={UpdateEkxorimenoTimologio}>
                     <p className='has-text-centered'>{msg}</p>
                 
-                        <div className="field">
+                        {/* <div className="field">
                             <label className="label">ΤΙΜΟΛΟΓΙΑ</label>
                             <div className="control">
                                 <select className="input" onChange={handleTimologiaChange} value={timologia_id}>
@@ -140,7 +140,7 @@ const FormEditEkxorimenoTimologio = () =>
                                 ))}
                             </select>
                         </div>
-                    </div>
+                    </div> */}
 
 
                     {/* <div className="field">

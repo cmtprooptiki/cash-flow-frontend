@@ -66,9 +66,9 @@ const BudgetPage = () => {
                 {/* {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
                 {selectedTable === 'table2' && <WeeksTableBudget_Est2  budget={validBudget} />}
                 {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />} */}
-                {selectedTable}
+                {/* {selectedTable} */}
             </div>
-
+            <br></br>
             <PaidBudgetList budget={validBudget} scenario={selectedTable}/>
         </Layout>
     );
