@@ -68,6 +68,30 @@ const KpisDashboard = () => {
         getTimologia()
     },[]);
 
+
+//pie chart 
+const [chartSeries, setChartSeries] = useState([]);
+
+const [chartOptions, setChartOptions] = useState({
+    chart: {
+      type: 'pie',
+      width: 380,
+      height:350,
+    },
+    labels: [],
+    title: {
+        text: 'Πλήθος Έργων ανά κατηγορία', // Title of the chart
+        align: 'center', // Aligning the title to the center
+        style: {
+          fontFamily:'Helvetica, Arial, sans-serif',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: '#333',
+        },
+      },
+   
+  });
+
   // State for BarChart
   const [chartOptions2, setChartOptions2] = useState({
     chart: {
@@ -168,6 +192,32 @@ const KpisDashboard = () => {
         try {
             const response = await axios.get(`${apiBaseUrl}/erga`);
             const ergaData = response.data;
+
+
+    // Count the number of projects for each erga_category.name
+    const categoryCounts = ergaData.reduce((acc, item) => {
+        const categoryName = item.erga_category ? item.erga_category.name : 'Χωρίς Κατηγορία';
+        if (!acc[categoryName]) {
+          acc[categoryName] = 0;
+        }
+        acc[categoryName] += 1; // Increment count for each project in the category
+        return acc;
+      }, {});
+
+      // Prepare data for the chart
+      const ergaNames2 = Object.keys(categoryCounts); // erga_category.name as labels
+      const ergaCounts2 = Object.values(categoryCounts); // count of projects as data
+
+      console.log("Erga Categories:", ergaNames2);
+      console.log("Project Counts:", ergaCounts2);
+
+      // Update the chart options and series
+      setChartOptions(prevOptions => ({
+        ...prevOptions,
+        labels: ergaNames2
+      }));
+
+      setChartSeries(ergaCounts2);
     
             // Extract names and amounts
             const ergaNames = ergaData.map(item => item.name);
@@ -368,6 +418,16 @@ const KpisDashboard = () => {
 <div className="card">
   <BudgetChart/>
   </div>
+  </div>
+
+  <div className="col-12 xl:col-6 lg:col-3">
+<div className="card">
+<ApexCharts
+            options={chartOptions} 
+            series={chartSeries} 
+            type="pie" 
+            height={350} 
+      />  </div>
   </div>
 
 </div>
