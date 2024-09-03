@@ -32,6 +32,7 @@ import InfoBoxAntonis from '../components/InfoBoxAntonis';
 // import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
 
 import PaidList from '../components/paid_components/PaidLists';
+import BudgetChart from '../components/paid_components/BudgetChart';
 // import { FaUnderline } from 'react-icons/fa';
 
 
@@ -622,6 +623,11 @@ const getDaneia = async () =>{
         <div className="row">
           {eventClickedFirst === true && <InfoBoxAntonis item={boxData} event={second_boxData} />}
         </div>
+        <div className="row">
+          <div className="col-md-12">
+            <BudgetChart key={refresh}></BudgetChart>
+          </div>
+        </div>
       </div>
       <div className="container">
         <div className="row">
@@ -647,6 +653,7 @@ const getDaneia = async () =>{
       </div>
       
       </div>
+      <br></br>
       <PaidList key={refresh} scenario={selectedDateType}/>
       </div>
       

@@ -14,6 +14,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
+import { Dialog } from 'primereact/dialog';
 
 const PaidList = (props) => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -29,6 +30,10 @@ const PaidList = (props) => {
     const [combinedData,setCombinedData]=useState([])
 
     const scenario =props.scenario
+
+    const[selectedIdType,setSelectedIdType]=useState([])
+    const [visible, setVisible] = useState(false); // State to control the visibility of the popup
+    const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
 
     const { user } = useSelector((state) => state.auth);
 
@@ -75,6 +80,27 @@ const PaidList = (props) => {
     const getDaneia = async () =>{
         const response = await axios.get(`${apiBaseUrl}/daneia`)
         setDaneia(response.data);
+    }
+
+    const getParadoteoId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`)
+        setSelectedRowData(response.data)
+    }
+    const getTimologioId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/timologia/${id}`)
+        setSelectedRowData(response.data)
+    }
+    const getDaneioId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/daneia/${id}`)
+        setSelectedRowData(response.data)
+    }
+    const getEkxId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/ek_tim/${id}`)
+        setSelectedRowData(response.data)
     }
 
     const clearFilter = () => {
@@ -175,6 +201,27 @@ const statusItemTemplate = (option) => {
     return <Tag value={option} severity={getSeverity(option)} />;
 };
 
+const handleRowData = (rowData) => {
+    setSelectedRowData(rowData);
+    setSelectedIdType(rowData.type)
+    if(rowData.type ==="Paradotea"){
+        getParadoteoId(rowData.id)
+    }else if(rowData.type ==="Timologia"){
+        getTimologioId(rowData.id)
+    }else if(rowData.type ==="Daneia"){
+        getDaneioId(rowData.id)
+    }else if(rowData.type ==="Bank" || rowData.type==="Customer"){
+        getEkxId(rowData.id)
+    }
+    
+    setVisible(true);
+};
+const idBodyTemplate = (rowData) => {
+    return (
+        <Button label={rowData.id} onClick={() => handleRowData(rowData)} />
+    );
+};
+
 
 
     const renderHeader = () => {
@@ -202,8 +249,8 @@ const statusItemTemplate = (option) => {
         const combinedData2 = [
             ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
             ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
+            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
         ];
         setCombinedData(combinedData2)
@@ -211,8 +258,8 @@ const statusItemTemplate = (option) => {
             const combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
+                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
                 ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
             ];
             setCombinedData(combinedData2)
@@ -220,8 +267,8 @@ const statusItemTemplate = (option) => {
             const combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
+                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id})),
+                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
                 ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
             ];
             setCombinedData(combinedData2)
@@ -340,9 +387,57 @@ const statusItemTemplate = (option) => {
                 <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-                <Column field="id" header="Id" filter ></Column>
+                <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
             </DataTable>
+            
+
+            <Dialog header="Row Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                {selectedRowData && selectedIdType==="Paradotea" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Title:</strong> {selectedRowData.title}</p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && selectedIdType==="Timologia" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Invoice Number:</strong> {selectedRowData.invoice_number}</p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && selectedIdType==="Daneia" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Name:</strong> {selectedRowData.name}</p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+            </Dialog>
         </div>
     );
 };

@@ -34,6 +34,8 @@ import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable comp
 import EksodaInfoBox from '../components/EksodaInfoBox';
 import PaidExodaList from '../components/paid_components/PaidExodaList';
 
+import BudgetChart from '../components/paid_components/BudgetChart';
+
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
@@ -279,9 +281,11 @@ const Eksoda = ()=>
                         }}
                       ></div>
                       <h4>{item.provider}</h4>
+                      <h4>hello</h4>
                     </div>
                   ))}
                 </div>
+                
               </div>
               <div className="col-md-8">
                 <div className="calendar-container">
@@ -314,7 +318,14 @@ const Eksoda = ()=>
             <div className="row">
               {eventClickedFirst === true && <EksodaInfoBox item={boxData} />}
             </div>
+            <div className="row">
+              <div class="col-md-12">
+                <BudgetChart key={refresh}></BudgetChart>
+              </div>
+            </div>
+
           </div>
+          
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -333,7 +344,9 @@ const Eksoda = ()=>
               </div>
             </div>
           </div>
+          
           <PaidExodaList key={refresh}/>
+          <br></br>
           </div>
       ); 
 
