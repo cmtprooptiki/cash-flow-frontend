@@ -135,7 +135,7 @@ const PaidList = (props) => {
             //     month: '2-digit',
             //     year: 'numeric'
             // }))
-            return date.toLocaleDateString('en-US', {
+            return date.toLocaleDateString('en-UK', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'

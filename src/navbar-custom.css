@@ -5,3 +5,25 @@
 .navbar{
     background:lightgray;
 }
+i {
+    color: white;
+}
+span {
+    color: white;
+}
+
+.wizard-icon {
+    fill: white;
+    
+}
+
+.overflow-y-auto{
+    color: red;
+}
+
+a > a:hover{
+    background-color:rgb(107, 18, 18);
+}
+a:hover > .wizard-hover {
+    background-color:rgb(107, 18, 18);
+}
