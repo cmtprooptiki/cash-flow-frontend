@@ -14,6 +14,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
+import { Dialog } from 'primereact/dialog';
 
 const PaidExodaList = () => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -28,6 +29,11 @@ const PaidExodaList = () => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
     const [combinedData,setCombinedData]=useState([])
+    
+    
+    const[selectedIdType,setSelectedIdType]=useState([])
+    const [visible, setVisible] = useState(false); // State to control the visibility of the popup
+    const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
 
     const { user } = useSelector((state) => state.auth);
 
@@ -79,6 +85,12 @@ const PaidExodaList = () => {
     const getDaneia = async () =>{
         const response = await axios.get(`${apiBaseUrl}/daneia`)
         setDaneia(response.data);
+    }
+
+    const getDosiId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/doseis/${id}`)
+        setSelectedRowData(response.data)
     }
 
     const clearFilter = () => {
@@ -177,6 +189,21 @@ const statusFilterTemplate = (options) => {
 
 const statusItemTemplate = (option) => {
     return <Tag value={option} severity={getSeverity(option)} />;
+};
+
+
+const handleRowData = (rowData) => {
+    //setSelectedRowData(rowData);
+    setSelectedIdType(rowData.type)
+    getDosiId(rowData.id)
+    
+    
+    setVisible(true);
+};
+const idBodyTemplate = (rowData) => {
+    return (
+        <Button label={rowData.id} onClick={() => handleRowData(rowData)} />
+    );
 };
 
 
@@ -317,17 +344,35 @@ const statusItemTemplate = (option) => {
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
-            
             >
+
                 {/* {console.log("combined data: ",combinedData)} */}
                 <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
                 <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-                <Column field="id" header="Id" filter ></Column>
+                <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
             </DataTable>
+            <Dialog header="Row Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                {selectedRowData && selectedIdType==="doseis" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>ammount:</strong> {selectedRowData.ammount}</p>
+                        <p><strong>payment date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong>estimated payment date:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>status:</strong> {selectedRowData.status}</p>
+                        <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
+                        <p><strong>Υποχρέωση:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+            </Dialog>
         </div>
     );
 };
