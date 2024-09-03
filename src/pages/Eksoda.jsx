@@ -280,8 +280,8 @@ const Eksoda = ()=>
                         //   boxShadow: '0px 0px 4px 2px ' + item.erga.color,
                         }}
                       ></div>
-                      <h4>{item.provider}</h4>
-                      <h4>hello</h4>
+                      <h4>{item.ypoxreoseis.provider}</h4>
+                      {/* <h4>{console.log("item ",item)}</h4> */}
                     </div>
                   ))}
                 </div>
