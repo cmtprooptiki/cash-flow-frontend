@@ -239,7 +239,7 @@ const idBodyTemplate = (rowData) => {
     const calculateTotalIncome = (data) => {
         
         if (!data || data.length === 0) return 0;
-        return data.reduce((acc, item) => acc + item.income, 0);
+        return data.reduce((acc, item) => Number(acc) + Number(item.income), 0);
     };
     
 
@@ -283,7 +283,7 @@ const idBodyTemplate = (rowData) => {
 
     useEffect(() => {
         if(!filtercalled){
-            setTotalIncome(formatCurrency(calculateTotalIncome(combinedData)));
+            setTotalIncome(calculateTotalIncome(combinedData));
         }
         
     }, [combinedData]);
@@ -361,7 +361,7 @@ const idBodyTemplate = (rowData) => {
         }
 
         // // Calculate total income for the visible rows
-        const incomeSum = visibleRows.reduce((sum, row) => sum + (row.income || 0), 0);
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number(row.income || 0), 0);
         
         setTotalIncome(formatCurrency(incomeSum));
     };
