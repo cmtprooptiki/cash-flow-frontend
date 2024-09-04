@@ -15,11 +15,11 @@ import { Divider } from 'primereact/divider';
 const FormAddEkxorimenoTimologio2 = () =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
-    const[bank_ammount,setBank_Ammount]=useState("");
+    const[bank_ammount,setBank_Ammount]=useState(0.00);
     const[bank_date,setBank_Date]=useState(null);
     const[bank_estimated_date,setEstimated_Bank_Date]=useState(null);
 
-    const[customer_ammount,setCustomer_Ammount]=useState("");
+    const[customer_ammount,setCustomer_Ammount]=useState(0.00);
     const[cust_date,setCust_Date]=useState(null);
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
     const[status_bank_paid,setStatusBankPaid]=useState("");

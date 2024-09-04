@@ -18,7 +18,7 @@ const FormAddTimologia = () => {
     const[invoice_date,setInvoice_date]=useState("");
     const[ammount_no_tax,setAmmount_no_tax]=useState("");
     const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
-    const[actual_payment_date,setActual_Payment_Date]=useState("");
+    const[actual_payment_date,setActual_Payment_Date]=useState(null);
     const[ammount_of_income_tax_incl,setAmmount_Of_Income_Tax_Incl]=useState("");
     const[comments,setComments]=useState("");
     const[invoice_number,setInvoice_Number]=useState("");
@@ -87,9 +87,9 @@ const FormAddTimologia = () => {
         let totalAmmountTotal = 0;
 
         selectedParadoteaDetails.forEach(item => {
-            totalAmmount += item.ammount;
-            totalAmmountVat += item.ammount_vat;
-            totalAmmountTotal += item.ammount_total;
+            totalAmmount += Number(item.ammount);
+            totalAmmountVat += Number(item.ammount_vat);
+            totalAmmountTotal += Number(item.ammount_total);
         });
 
 
