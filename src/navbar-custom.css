@@ -5,10 +5,15 @@
 .navbar{
     background:lightgray;
 }
-i {
+/* i {
     color: white;
 }
 span {
+    color: white;
+} */
+
+.font-medium
+{
     color: white;
 }
 
