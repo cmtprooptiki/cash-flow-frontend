@@ -2,6 +2,10 @@ import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import '../../custom.css';
+import { Divider } from 'primereact/divider';
+import { Calendar } from 'primereact/calendar';
+import { Chip } from 'primereact/chip';
+import Select from 'react-select';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,16 +15,16 @@ import apiBaseUrl from '../../apiConfig';
 const FormProfileErgo= () => {
   const[name,setName]=useState("");
   const [color, setColor] = useState("white");
-  const[sign_ammount_no_tax,setSignAmmountNoTax]=useState("");
+  const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0.00);
   const[sign_date,setSignDate]=useState("");
   const[status,setStatus]=useState("");
   const[estimate_start_date,setEstimateStartDate]=useState("");
   const[project_manager,setProjectManager]=useState("")
   const[customer_id,setCustomerId]=useState("")
   const[shortname,setShortName]=useState("")
-  const[ammount,setAmmount]=useState("")
-  const[ammount_vat,setAmmount_Vat]=useState("")
-  const[ammount_total,setAmmount_Total]=useState("")
+  const[ammount,setAmmount]=useState(0.00)
+  const[ammount_vat,setAmmount_Vat]=useState(0.00)
+  const[ammount_total,setAmmount_Total]=useState(0.00)
   const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
   const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
   const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
@@ -41,19 +45,19 @@ const FormProfileErgo= () => {
             setName(response.data.name);
             setColor(response.data.color);
             setSignAmmountNoTax(response.data.sign_ammount_no_tax);
-            setSignDate(response.data.sign_date);
+            setSignDate(formatDateToInput(response.data.sign_date));
 
             setStatus(response.data.status);
-            setEstimateStartDate(response.data.estimate_start_date);
+            setEstimateStartDate(formatDateToInput(response.data.estimate_start_date));
             setProjectManager(response.data.project_manager);
             setCustomerId(response.data.customer_id);
             setShortName(response.data.shortname)
             setAmmount(response.data.ammount)
             setAmmount_Vat(response.data.ammount_vat)
             setAmmount_Total(response.data.ammount_total)
-            setEstimate_Payment_Date(response.data.estimate_payment_date)
-            setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
-            setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
+            setEstimate_Payment_Date(formatDateToInput(response.data.estimate_payment_date))
+            setEstimate_Payment_Date_2(formatDateToInput(response.data.estimate_payment_date_2))
+            setEstimate_Payment_Date_3(formatDateToInput(response.data.estimate_payment_date_3))
             setErga_cat_id(response.data.erga_cat_id)
         } catch (error) {
             if(error.response){
@@ -64,117 +68,203 @@ const FormProfileErgo= () => {
     getErgoById();
     },[id]);
 
+    const formatDateToInput = (dateString) => {
+        if(dateString === null || dateString =="" || dateString === NaN){
+            return ""
+        }
+        dateString=dateString.split('T')[0];
+        const [year, month, day] = dateString.split('-');
+        return `${year}-${month}-${day}`;
+    };
+
 
 
     return (
 		<div>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-<div className="container">
-    <div className="row">
-      <div className="col-lg-5 col-md-6">
-        <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-        </div>
-        <div className="mb-2 d-flex">
-
-        </div>
-
-        
-        
-      </div>
-      <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-        <div className='box'>
-          <div className="mb-2 d-flex">
-            <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >{name}</h2>
-            
-          </div>
-        
-        <div className="mb-2 d-flex">
-          
-          <ul className="list-unstyled">
-          <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΧΡΩΜΑ: &nbsp;</span><label className="media-body"> {color}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.: &nbsp;</span><label className="media-body"> {sign_ammount_no_tax}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ: &nbsp; </span>
-              <label className="media-body"> {sign_date}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ: &nbsp;</span>
-              <label className="media-body"> {status}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση): &nbsp;</span>
-              <label className="media-body"> {estimate_start_date}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">PROJECT MANAGER: &nbsp;</span>
-              <label className="media-body"> {project_manager}</label>
-            </li>
+<div className="surface-0">
+    <div className="font-medium text-3xl text-900 mb-3">Έργο</div>
+    <div className="text-500 mb-5">Στοιχεία</div>
+    <ul className="list-none p-0 m-0">
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ΟΝΟΜΑΣΙΑ ΕΡΓΟΥ</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ID ΠΕΛΑΤΗ: &nbsp;</span>
-              <label className="media-body"> {customer_id}</label>
-            </li>
+        </li>
 
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΣΥΝΤΟΜΟΠΓΡΑΦΙΑ ΟΝΟΜΑΤΟΣ: &nbsp;</span>
-              <label className="media-body"> {shortname}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΑΡΧΙΚΟ ΠΟΣΟ: &nbsp;</span>
-              <label className="media-body"> {ammount}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΦΠΑ: &nbsp;</span>
-              <label className="media-body"> {ammount_vat}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΣΥΝΟΛΙΚΟ ΠΟΣΟ: &nbsp;</span>
-              <label className="media-body"> {ammount_total}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ: &nbsp;</span>
-              <label className="media-body"> {estimate_payment_date}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2: &nbsp;</span>
-              <label className="media-body"> {estimate_payment_date_2}</label>
-            </li>
-
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3: &nbsp;</span>
-              <label className="media-body"> {estimate_payment_date_3}</label>
-            </li>
-            <li className="media">
-              <span className="w-5 text-black font-weight-normal">ID ΚΑΤΗΓΟΡΙΑΣ ΕΡΓΟΥ: &nbsp;</span>
-              <label className="media-body"> {erga_cat_id}</label>
-            </li>
-           
-          </ul>
-        </div>
-        
-       
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ShortName:</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={shortname} className="mr-2" />
+               
+            </div>
           
+        </li>
 
-          </div>
-    
-      </div>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ΚΑΤΗΓΟΡΙΑ ΕΡΓΟΥ Id: </div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/ergacat/edit/${erga_cat_id}`}>{erga_cat_id}</a></div>
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ΠΕΛΑΤΗΣ Id: </div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/customer/profile/${customer_id}`}>{customer_id}</a></div>
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Project Manager: </div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{project_manager}</div>
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ΧΡΩΜΑ:</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={color} className="mr-2" />
+               
+            </div>
+          
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Status Signed</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={status} className="mr-2" />
+               
+            </div>
+          
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">ΠΟΣΟ ΣΥΜΒΑΣΗΣ:</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={sign_ammount_no_tax} className="mr-2" />
+               
+            </div>
+          
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Υπογραφής Σύμβασης:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(sign_date)} inline showWeek />
 
 
-      
+            </div>
+
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Έναρξης:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(estimate_start_date)} inline showWeek />
+
+
+            </div>
+
+           
+        </li>
+
+        
+
+        </ul>
+        </div>
+        <Divider />
+
+        <div className="grid">
+  
+    <div className="col-12 md:col-6 lg:col-3">
+        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+            <div className="flex justify-content-between mb-3">
+                <div>
+                    <span className="block text-500 font-medium mb-3">Αρχικό Ποσό</span>
+                    <div className="text-900 font-medium text-xl">{ammount} €</div>
+                </div>
+                <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                    <i className="pi pi-map-marker text-orange-500 text-xl"></i>
+                </div>
+            </div>
+            <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span>
+        </div>
     </div>
-  </div>
-		</div>
+
+    <div className="col-12 md:col-6 lg:col-3">
+        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+            <div className="flex justify-content-between mb-3">
+                <div>
+                    <span className="block text-500 font-medium mb-3">Ποσό Φ.Π.Α.</span>
+                    <div className="text-900 font-medium text-xl">{ammount_vat} €</div>
+                </div>
+                <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                    <i className="pi pi-map-marker text-orange-500 text-xl"></i>
+                </div>
+            </div>
+            <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span>
+        </div>
+    </div>
+
+    <div className="col-12 md:col-6 lg:col-3">
+        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+            <div className="flex justify-content-between mb-3">
+                <div>
+                    <span className="block text-500 font-medium mb-3">Ποσό Είσπραξη με Φ.Π.Α.</span>
+                    <div className="text-900 font-medium text-xl">{ammount_total} €</div>
+                </div>
+                <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                    <i className="pi pi-map-marker text-orange-500 text-xl"></i>
+                </div>
+            </div>
+            <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span>
+        </div>
+    </div>
+        </div>
+        <Divider />
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 1:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(estimate_payment_date)} inline showWeek />
+
+
+            </div>
+
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 2:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(estimate_payment_date_2)} inline showWeek />
+
+
+            </div>
+
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 3:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(estimate_payment_date_3)} inline showWeek />
+
+
+            </div>
+
+           
+        </li>
+
+
+        </div>
 	);
 
   
