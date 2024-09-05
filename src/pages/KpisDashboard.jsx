@@ -36,9 +36,14 @@ const KpisDashboard = () => {
  
 
     const [paradotea, setParadotea] = useState([]);
+    const [timPar,setTimologimenPar]= useState([]);
+    
     const [erga,setErga]= useState([]);
     const [customer,setCustomer] = useState([]);
     const [timologia,setTimologia] = useState([]);
+
+    const [paidCount,setPaidTimologia]= useState([]);
+    const [unpaidCount,setUnpaidTimologia]=useState([]);
 
     const [chartSeries2, setChartSeries2] = useState([]);
     const [chartSeries3, setChartSeries3] = useState([]);
@@ -110,6 +115,16 @@ const [chartOptions, setChartOptions] = useState({
     xaxis: {
       categories: [],
     },
+    yaxis: {
+        labels: {
+          formatter: function (value) {
+            return Number(value).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })+ ' €';
+          }
+        }
+      },
     dataLabels: {
       enabled: false,
     },
@@ -118,6 +133,16 @@ const [chartOptions, setChartOptions] = useState({
         align: 'center',
         floating: true
     },
+    tooltip: {
+        y: {
+          formatter: function (value) {
+            return Number(value).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }) + ' €';
+          }
+        }
+      }
   });
 
 
@@ -137,7 +162,25 @@ const [chartOptions, setChartOptions] = useState({
       },
     xaxis: {
       categories: [],
+      labels: {
+        style: {
+          fontSize: '12px', // Adjust font size
+        },
+        rotate: -45, // Rotate labels to avoid overlapping
+        maxHeight: 70, // You can set max height to make sure the chart does not overflow
+        trim: true // Trim the label text if it exceeds a certain length
+      },
     },
+    yaxis: {
+        labels: {
+          formatter: function (value) {
+            return Number(value).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })+ ' €';
+          }
+        }
+      },
     dataLabels: {
       enabled: false,
     },
@@ -146,6 +189,16 @@ const [chartOptions, setChartOptions] = useState({
         align: 'center',
         floating: true
     },
+    tooltip: {
+        y: {
+          formatter: function (value) {
+            return Number(value).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }) + ' €';
+          }
+        }
+      }
   });
   
 
@@ -154,10 +207,14 @@ const [chartOptions, setChartOptions] = useState({
         const response = await axios.get(`${apiBaseUrl}/paradotea`);
         const paraData = response.data;
         console.log("ParaData:",paraData);
+        
+        const timPar = paraData.filter(item => item.timologia_id !== null).length;
 
         // Extract names and amounts
         const parNames = paraData.map(item => item.title);
         const parAmounts = paraData.map(item => item.ammount_total);
+
+
 
         console.log("Par Names:", parNames);
         console.log("Par Amounts:", parAmounts);
@@ -180,7 +237,7 @@ const [chartOptions, setChartOptions] = useState({
         const uniqueIdsCount = uniqueIds.length;
         console.log("Total Count of Unique Pardotea Ids:", uniqueIdsCount);
         setParadotea(uniqueIdsCount);
-    
+        setTimologimenPar(timPar);
         } catch (error) {
             console.error('Error fetching data:', error);
             // Handle errors as needed
@@ -298,11 +355,19 @@ const [chartOptions, setChartOptions] = useState({
             const timData = response.data;
             const uniqueIds= [...new Set(timData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
+
+
+        // Count records where status_paid == 'yes'
+        const paidCount = timData.filter(item => item.status_paid === 'yes').length;
+
+        // Count records where status_paid == 'no'
+        const unpaidCount = timData.filter(item => item.status_paid === 'no').length;
     
             console.log("Unique Customer names:",uniqueIdsCount);         
            
             setTimologia(uniqueIdsCount);
-    
+            setPaidTimologia(paidCount);  // Set paid invoices count
+            setUnpaidTimologia(unpaidCount); // Set unpaid invoices count
         } catch (error) {
             console.error('Error fetching data:', error);
             // Handle errors as needed
@@ -363,6 +428,7 @@ const [chartOptions, setChartOptions] = useState({
               <div>
                   <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Έργων</h6>
                   <h1 className="m-0 text-gray-800 ">{erga} </h1>
+
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
@@ -379,6 +445,8 @@ const [chartOptions, setChartOptions] = useState({
               <div>
                   <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Παραδοτέων</h6>
                   <h1 className="m-0 text-gray-800 ">{erga} </h1>
+                  <h6 className="m-0 mb-1 text-500 text-green-600">Εχουν τιμολογηθεί:{timPar}</h6>
+
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
@@ -395,6 +463,9 @@ const [chartOptions, setChartOptions] = useState({
               <div>
                   <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Τιμολογίων</h6>
                   <h1 className="m-0 text-gray-800 ">{timologia} </h1>
+                  <h6 className="m-0 mb-1 text-500 text-green-600">Πληρωμένα:{paidCount}</h6>
+                  <h6 className="m-0 mb-1 text-500 text-red-600">Απλήρωτα:{unpaidCount}</h6>
+
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}

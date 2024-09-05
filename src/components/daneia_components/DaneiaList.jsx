@@ -129,7 +129,7 @@ const DaneiaList = () => {
     };
 
     const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
     const renderHeader = () => {

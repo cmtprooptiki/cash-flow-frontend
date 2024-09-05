@@ -128,59 +128,59 @@ const BudgetChart = (props) => {
     };
 
   //Sign Date
-  const DateBodyTemplate = (rowData) => {
-    // console.log("date data: ",rowData)
-    return formatDate(rowData.date);
-};
+//   const DateBodyTemplate = (rowData) => {
+//     // console.log("date data: ",rowData)
+//     return formatDate(rowData.date);
+// };
 
-const dateFilterTemplate = (options) => {
-    // console.log('Current filter value:', options);
+// const dateFilterTemplate = (options) => {
+//     // console.log('Current filter value:', options);
 
-    return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-};
+//     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+// };
 
 
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
 };
 
-const ammountBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.income);
-};
+// const ammountBodyTemplate = (rowData) => {
+//     return formatCurrency(rowData.income);
+// };
 
 
-const ammountFilterTemplate = (options) => {
-    return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
-};
+// const ammountFilterTemplate = (options) => {
+//     return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
+// };
 
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'Bank':
-            return 'danger';
-        case 'Customer':
-            return 'danger';
-        case 'Paradotea':
-            return 'info';
-        case 'Timologia':
-            return 'success';
-        case 'Daneia':
-            return 'warning';
+// const getSeverity = (status) => {
+//     switch (status) {
+//         case 'Bank':
+//             return 'danger';
+//         case 'Customer':
+//             return 'danger';
+//         case 'Paradotea':
+//             return 'info';
+//         case 'Timologia':
+//             return 'success';
+//         case 'Daneia':
+//             return 'warning';
      
-    }
-};
+//     }
+// };
 
-const statusBodyTemplate = (rowData) => {
-    return <Tag value={rowData.type} severity={getSeverity(rowData.type)} />;
-};
+// const statusBodyTemplate = (rowData) => {
+//     return <Tag value={rowData.type} severity={getSeverity(rowData.type)} />;
+// };
 
-const statusFilterTemplate = (options) => {
-    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
-};
+// const statusFilterTemplate = (options) => {
+//     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
+// };
 
-const statusItemTemplate = (option) => {
-    return <Tag value={option} severity={getSeverity(option)} />;
-};
+// const statusItemTemplate = (option) => {
+//     return <Tag value={option} severity={getSeverity(option)} />;
+// };
 
 
 
@@ -204,42 +204,10 @@ const statusItemTemplate = (option) => {
     
 
     
-    // useEffect(()=>{
-    //     if(scenario==="estimate_payment_date"){
-    //     const combinedData2 = [
-    //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-    //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-    //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-    //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-    //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-    //     ];
-    //     setCombinedData(combinedData2)
-    //     }else if(scenario==="estimate_payment_date_2"){
-    //         const combinedData2 = [
-    //             ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-    //             ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-    //             ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-    //             ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-    //             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-    //         ];
-    //         setCombinedData(combinedData2)
-    //     }else if(scenario==="estimate_payment_date_3"){
-    //         const combinedData2 = [
-    //             ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-    //             ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-    //             ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-    //             ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-    //             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-    //         ];
-    //         setCombinedData(combinedData2)
-    //     }
-
-    // },[paradotea,ekxorimena,incomeTim,daneia,scenario])
     
 
     useEffect(()=>{
         console.log("scenario ",scenario)
-        // if(scenario==="table1"){
             const combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
@@ -249,64 +217,62 @@ const statusItemTemplate = (option) => {
                 ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id }))
             ];
             setCombinedData(combinedData2)
-        // }else if(scenario==="table2"){
-        //     const combinedData2 = [
-        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-        //     ];
-        //     setCombinedData(combinedData2)
-        // }else if(scenario==="table3"){
-        //     const combinedData2 = [
-        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-        //     ];
-        //     setCombinedData(combinedData2)
-        //}
-        
+   
         
 
     },[paradotea,ekxorimena,incomeTim,daneia,doseis,scenario])
 
-
-
-
-    const data = [
-        { date: new Date('Sun Jun 30 2024 03:00:00 GMT+0300'), income: 12698.6, type: 'Paradotea', id: 7 },
-        { date: new Date('Wed Jun 12 2024 03:00:00 GMT+0300'), income: 17185.5, type: 'Timologia', id: 8 },
-        { date: new Date('Thu Jun 05 2024 03:00:00 GMT+0300'), income: 1500, type: 'doseis', id: 10 },
-        { date: new Date('Thu Jun 05 2024 03:00:00 GMT+0300'), income: 96.09, type: 'doseis', id: 11 },
-        { date: new Date('Sat Jun 05 2024 03:00:00 GMT+0300'), income: 96.09, type: 'doseis', id: 12 },
-        { date: new Date('Fri Jun 30 2024 03:00:00 GMT+0300'), income: 310, type: 'doseis', id: 14 },
-        { date: new Date('Wed Jun 14 2024 03:00:00 GMT+0300'), income: 3720, type: 'doseis', id: 15 }
-      ];
-    // Create a map to aggregate data by month/year
-    const aggregatedData = {};
+    const aggregatedData = {}; // Assuming this is defined somewhere earlier
 
     combinedData.forEach(item => {
-    const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'long' });
-    if (!aggregatedData[monthYear]) {
-        aggregatedData[monthYear] = { x: monthYear, y: 0, goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] };
-    }
-    
-    if (item.type !== 'doseis') {
-        aggregatedData[monthYear].y += item.income;
-    } else {
-        aggregatedData[monthYear].goals[0].value += item.income;
-    }
+        const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'short' }); // Use 'short' for month
+        if (!aggregatedData[monthYear]) {
+            aggregatedData[monthYear] = { 
+                x: monthYear, 
+                y: 0, 
+                goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] 
+            };
+        }
+        
+        if (item.type !== 'doseis') {
+            aggregatedData[monthYear].y += item.income;
+        } else {
+            aggregatedData[monthYear].goals[0].value += item.income;
+        }
     });
-
-    // Convert aggregated data map to an array
-    const result = Object.values(aggregatedData);
-
+    
+    // Sort keys by date (convert monthYear string to date object)
+    const sortedKeys = Object.keys(aggregatedData).sort((a, b) => {
+        // Convert 'MMM YYYY' format to date objects for comparison
+        const dateA = new Date(a);
+        const dateB = new Date(b);
+        return dateA - dateB;
+    });
+    
+    // Convert sorted keys back to an array of values
+    const result = sortedKeys.map(key => aggregatedData[key]);
+    
     console.log(JSON.stringify(result, null, 2));
+
+    // const aggregatedData = {};
+
+    // combinedData.forEach(item => {
+    // const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'long' });
+    // if (!aggregatedData[monthYear]) {
+    //     aggregatedData[monthYear] = { x: monthYear, y: 0, goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] };
+    // }
+    
+    // if (item.type !== 'doseis') {
+    //     aggregatedData[monthYear].y += item.income;
+    // } else {
+    //     aggregatedData[monthYear].goals[0].value += item.income;
+    // }
+    // });
+
+    // // Convert aggregated data map to an array
+    // const result = Object.values(aggregatedData);
+
+    // console.log(JSON.stringify(result, null, 2));
     
 
 
@@ -327,11 +293,13 @@ const statusItemTemplate = (option) => {
               columnWidth: '60%'
             }
           },
+          
           title: {
             text: 'Μηνιαίος Προϋπολογισμός',
             align: 'center',
             floating: true
         },
+        
           colors: ['#00E396'],
           dataLabels: {
             enabled: false
@@ -356,71 +324,7 @@ const statusItemTemplate = (option) => {
         
     }, [combinedData]);
 
-    // const handleFilter = (filteredData) => {
-    //     console.log("filtered data: ",filteredData)
-    //     setTotalIncome(calculateTotalIncome(filteredData));
-    // };
 
-    //console.log(combinedData)
-
-    // const thisYearTotal = (filter) => {
-    //     console.log("filter data",filter)
-    //     console.log("filter filters",filter.props.filters)
-    //     let total2=0;
-        ///check if filters have been applied
-        ///if applied
-        /*
-        if(filter.props.filters!=null){
-            for(let typeFilter of filter.props.filters.type.constraints){
-                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
-                if(typeFilter.value){
-                    if(typeFilter.matchMode=="equals"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(sale.type==typeFilter.value){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }   
-                }
-            }
-            for(let typeFilter of filter.props.filters.date.constraints){
-                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
-                if(typeFilter.value){ 
-                    if(typeFilter.matchMode=="dateAfter"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(new Date(sale.date)>=new Date(typeFilter.value)){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }  
-                    if(typeFilter.matchMode=="dateBefore"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(new Date(sale.date)<=new Date(typeFilter.value)){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }    
-                }
-            }
-            
-
-            return formatCurrency(total2); 
-        }
-        ///if not applied
-        let total = 0;
-        for(let sale of combinedData) {
-            total += sale.income;
-        }
-
-        return formatCurrency(total); */
-    //}
-
-    // const handelAllFilters=(filters)=>{
-    //     console.log("Type filter: ",filters.type.constraints)
-    // }
     const handleValueChange = (e) => {
         const visibleRows = e;
         // console.log("visisble rows:",e);
