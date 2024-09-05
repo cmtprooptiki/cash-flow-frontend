@@ -42,6 +42,8 @@ const KpisDashboard = () => {
     const [customer,setCustomer] = useState([]);
     const [timologia,setTimologia] = useState([]);
 
+    const [doseis,setDoseis] = useState([]);
+
     const [paidCount,setPaidTimologia]= useState([]);
     const [unpaidCount,setUnpaidTimologia]=useState([]);
 
@@ -71,6 +73,7 @@ const KpisDashboard = () => {
         getErga()
         getCustomer()
         getTimologia()
+        getDoseis()
     },[]);
 
 
@@ -379,6 +382,20 @@ const [chartOptions, setChartOptions] = useState({
 
     }
 
+    const getDoseis = async() =>{
+      try {
+          const response = await axios.get(`${apiBaseUrl}/doseis`);
+          const doseis_data = response.data;
+          const doseisCount = doseis_data.filter(item => item.status === 'no').length;
+
+          setDoseis(doseisCount);
+  
+      } catch (error) {
+          console.error('Error fetching data:', error);
+          // Handle errors as needed
+      }
+  }
+
 
 
 
@@ -475,6 +492,26 @@ const [chartOptions, setChartOptions] = useState({
           
       </div>
   </div>
+
+  <div className="col-12 md:col-6 lg:col-3">
+      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+          <div className="flex justify-content-between mb-5">
+              <div>
+                  <h6 className="m-0 mb-1 text-500 text-gray-800">Δοσεις που Εκκρεμούν</h6>
+                  <h1 className="m-0 text-red-600">{doseis} </h1>
+               
+               
+
+              </div>
+              <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                  <InvoiceIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+              </div>
+          </div>
+          
+      </div>
+  </div>
+
 <div className="col-12 xl:col-6 lg:col-3">
 <div className="card">
   <ApexCharts options={chartOptions2} series={chartSeries2} type='bar' height={350} />
