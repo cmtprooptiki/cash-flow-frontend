@@ -160,11 +160,13 @@ const dateFilterTemplate = (options) => {
 
 
 const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+    return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 const ammountBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.income);
+    const incomeDecimal = parseFloat(rowData.income).toFixed(2);
+    console.log("here is the converted value",incomeDecimal)
+    return formatCurrency(incomeDecimal);
 };
 
 
@@ -283,7 +285,7 @@ const idBodyTemplate = (rowData) => {
 
     useEffect(() => {
         if(!filtercalled){
-            setTotalIncome(calculateTotalIncome(combinedData));
+            setTotalIncome(formatCurrency(calculateTotalIncome(combinedData)));
         }
         
     }, [combinedData]);

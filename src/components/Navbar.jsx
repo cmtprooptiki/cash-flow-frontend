@@ -109,15 +109,27 @@ const Navbar =()=>{
                                         <li>
                                             <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
                                                 <div ref={btnRef1} className="p-ripple p-3 flex align-items-center justify-content-between text-600 cursor-pointer">
-                                                    <span className="font-medium">FAVORITES</span>
-                                                    <i className="pi pi-chevron-down"></i>
+                                                    <span className="font-medium">Διαχείριση Οικονομικών</span>
+                                                    <i className="pi pi-chevron-down text-gray-50"></i>
                                                     <Ripple />
                                                 </div>
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
+
+
+                                            <li>
+                                                <Link to="/statistics" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
+                                                <i className="pi pi-chart-line mr-2 text-gray-50"></i>
+                                                    <span className="font-medium">Στατιστικά</span>
+                                                    <Ripple />
+
+                                                    </a>
+                                                </Link>
+                                                </li>
                                                 <li><Link className="link-a-tag" to="/dashboard"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-calendar-plus mr-2"></i>
+                                                        <i className="pi pi-calendar-plus mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Ημερολόγιο Εσόδων</span>
                                                         <Ripple />
                                                     </a>
@@ -141,16 +153,7 @@ const Navbar =()=>{
                                                         </a>
                                                     </Link>
                                                 </li> */}
-                                                <li>
-                                                <Link to="/statistics" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                <i className="pi pi-chart-line mr-2"></i>
-                                                    <span className="font-medium">Στατιστικά</span>
-                                                    <Ripple />
-
-                                                    </a>
-                                                </Link>
-                                                </li>
+                                             
 
 
                                                 <li>
@@ -241,7 +244,7 @@ const Navbar =()=>{
 
                                                 <li><Link to="/expen" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-calendar-minus mr-2"></i>
+                                                        <i className="pi pi-calendar-minus mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Ημερολόγιο Εξόδων</span>
                                                         <Ripple />
                                                     </a>
@@ -270,7 +273,7 @@ const Navbar =()=>{
 
                                                 <li><Link to="/budget" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-euro mr-2"></i>
+                                                        <i className="pi pi-euro mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Προυπολογισμός</span>
                                                         <Ripple />
                                                     </a>
@@ -284,14 +287,14 @@ const Navbar =()=>{
                                             <StyleClass nodeRef={btnRef4} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
                                                 <div ref={btnRef4} className="p-ripple p-3 flex align-items-center justify-content-between text-600 cursor-pointer">
                                                     <span className="font-medium">Διαχείριση</span>
-                                                    <i className="pi pi-chevron-down"></i>
+                                                    <i className="pi pi-chevron-down text-gray-50"></i>
                                                     <Ripple />
                                                 </div>
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
                                                 <li><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-users mr-2"></i>
+                                                        <i className="pi pi-users mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Πελατών</span>
                                                         <Ripple />
                                                     </a>
@@ -299,7 +302,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Εργων</span>
                                                         <Ripple />
                                                     </a>
@@ -307,7 +310,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Κατηγοριών Εργων</span>
                                                         <Ripple />
                                                     </a>
@@ -315,7 +318,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/timologia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Τιμολογίων</span>
                                                         <Ripple />
                                                     </a>
@@ -323,7 +326,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Εκχωριμένων Τιμολογίων</span>
                                                         <Ripple />
                                                     </a>
@@ -331,7 +334,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Παραδοτέων</span>
                                                         <Ripple />
                                                     </a>
@@ -339,7 +342,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Δανείων</span>
                                                         <Ripple />
                                                     </a>
@@ -347,7 +350,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Tags</span>
                                                         <Ripple />
                                                     </a>
@@ -355,7 +358,7 @@ const Navbar =()=>{
                                                 </li>
                                                 <li><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-folder mr-2"></i>
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                         <span className="font-medium">Διαχείριση Δόσεων</span>
                                                         <Ripple />
                                                     </a>
@@ -364,7 +367,7 @@ const Navbar =()=>{
                                                 <li>
                                                     <Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                         <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                            <i className="pi pi-folder mr-2"></i>
+                                                            <i className="pi pi-folder mr-2 text-gray-50"></i>
                                                             <span className="font-medium">Διαχείριση Υποχρεώσεων</span>
                                                             <Ripple />
                                                         </a>

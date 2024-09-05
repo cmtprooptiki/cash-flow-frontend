@@ -373,7 +373,7 @@ const getDaneia = async () =>{
               boxShadow: '0px 0px 4px 2px #' + item.paradotea.erga.color,
             }}
           ></div>
-          {item.paradotea.ammount_total} €
+          {Number(item.paradotea.ammount_total).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
         </div>
       ),
       start: getDateBySelectedType(item.paradotea),
@@ -397,7 +397,7 @@ const getDaneia = async () =>{
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.bank_ammount)} */}
-        {item.Ekxorimena_Timologium.bank_ammount} €
+        {Number(item.Ekxorimena_Timologium.bank_ammount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
       </div>
     ),
     start: new Date(item.Ekxorimena_Timologium.bank_estimated_date),
@@ -418,7 +418,7 @@ const getDaneia = async () =>{
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
-        {item.Ekxorimena_Timologium.customer_ammount} €
+        {Number(item.Ekxorimena_Timologium.customer_ammount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
       </div>
     ),
     start: new Date(item.Ekxorimena_Timologium.cust_estimated_date),
@@ -440,7 +440,9 @@ const getDaneia = async () =>{
           }}
         ></div> */}
         {/* {console.log(item.Ekxorimena_Timologium.customer_ammount)} */}
-        {item.timologia.ammount_of_income_tax_incl} €
+        {/* {item.timologia.ammount_of_income_tax_incl} € */}
+        {Number(item.timologia.ammount_of_income_tax_incl).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+
         {/* {console.log("timologia item: ",item)} */}
       </div>
     ),

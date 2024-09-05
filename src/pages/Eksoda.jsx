@@ -183,7 +183,7 @@ const Eksoda = ()=>
                   //   // boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
                   // }}
                 ></div>
-                {item.ammount} €
+                {Number(item.ammount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
               </div>
             ),
             start: item.estimate_payment_date,
