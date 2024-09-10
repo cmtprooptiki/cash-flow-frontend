@@ -141,7 +141,7 @@ const BudgetChart = (props) => {
 
 
 const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+    return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 // const ammountBodyTemplate = (rowData) => {
@@ -199,7 +199,7 @@ const formatCurrency = (value) => {
     const calculateTotalIncome = (data) => {
         
         if (!data || data.length === 0) return 0;
-        return data.reduce((acc, item) => acc + item.income, 0);
+        return data.reduce((acc, item) => formatCurrency(Number(acc + item.income)), 0);
     };
     
 
@@ -209,15 +209,16 @@ const formatCurrency = (value) => {
     useEffect(()=>{
         console.log("scenario ",scenario)
             const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id }))
+                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
+                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
+                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.id })),
+                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.id })),
+                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id })),
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.id }))
             ];
             setCombinedData(combinedData2)
-   
+            const total = calculateTotalIncome(combinedData2);
+            setTotalIncome(formatCurrency(total));
         
 
     },[paradotea,ekxorimena,incomeTim,daneia,doseis,scenario])
@@ -304,6 +305,22 @@ const formatCurrency = (value) => {
           dataLabels: {
             enabled: false
           },
+        
+        // Format tooltips when hovering over the bars
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return formatCurrency(val);  // Format the tooltip values as currency
+                }
+            }
+        },
+        yaxis: {
+            labels: {
+                formatter: function (val) {
+                    return formatCurrency(val);  // Format y-axis labels as currency
+                }
+            }
+        },
           legend: {
             show: true,
             showForSingleSeries: true,
@@ -333,12 +350,14 @@ const formatCurrency = (value) => {
         }
 
         // // Calculate total income for the visible rows
-        const incomeSum = visibleRows.reduce((sum, row) => sum + (row.income || 0), 0);
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.income || 0)), 0);
         
         setTotalIncome(formatCurrency(incomeSum));
+        
     };
 
     const header = renderHeader();
+    console.log("Totlal incomes111 = ", totalIncome)
 
     return (
         <div>
@@ -365,7 +384,7 @@ const formatCurrency = (value) => {
             {/* <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={350} /> */}
             <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
 
-            {console.log("comb data ",combinedData)}
+            {console.log("comb data ",final.series)}
         </div>
     );
 };
