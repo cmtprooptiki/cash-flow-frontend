@@ -135,7 +135,7 @@ const YpoxreoseisList2 = () =>
     const formatDate = (value) => {
         let date = new Date(value);
         if (!isNaN(date)) {
-            return date.toLocaleDateString('en-US', {
+            return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'

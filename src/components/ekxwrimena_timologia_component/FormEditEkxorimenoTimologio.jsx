@@ -26,6 +26,7 @@ const FormEditEkxorimenoTimologio = () =>
     const{id} = useParams();
 
     const formatDateToInput = (dateString) => {
+        console.log("YEEYHAHA: ", dateString)
         if(dateString === null || dateString =="" || dateString === NaN){
             return null
         }
@@ -178,7 +179,7 @@ const FormEditEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                        <Calendar id="bank_date"  value={new Date(bank_date)} onChange={(e)=> setBank_Date(e.target.value)}  inline showWeek />
+                        <Calendar id="bank_date"  value={bank_date} onChange={(e)=> setBank_Date(e.target.value)}  inline showWeek />
 
                         </div>
                     </div>
@@ -209,7 +210,7 @@ const FormEditEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                        <Calendar id="cust_date"  value={new Date(cust_date)} onChange={(e)=> setCust_Date(e.target.value)}  inline showWeek />
+                        <Calendar id="cust_date"  value={cust_date} onChange={(e)=> setCust_Date(e.target.value)}  inline showWeek />
 
                         </div>
                     </div>
