@@ -173,12 +173,18 @@ const DoseisList = () => {
 
     const formatDate = (value) => {
         let date = new Date(value);
+        let epochDate = new Date('1970-01-01T00:00:00Z');
+        if (date.getTime() === epochDate.getTime()) 
+        {
+            return null;
+        }
         if (!isNaN(date)) {
             return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
             });
+            
         } else {
             return "Invalid date";
         }

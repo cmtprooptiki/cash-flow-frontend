@@ -88,6 +88,11 @@ const FormAddYpoxreoseis2 = () => {
         label: tag.name
     }));
 
+    const clearInvoiceDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setInvoice_Date(null); // Clear the calendar date
+    };
+
     return (
         <div >
           <h1 className='title'>Προσθήκη Υποχρέωσεις</h1>
@@ -116,8 +121,11 @@ const FormAddYpoxreoseis2 = () => {
                     <label htmlFor="invoice_date">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
                     <div className="control">
 
-                    <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)} inline showWeek />
-                        </div>
+                        <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)} inline showWeek />
+                    </div>
+                    <div className="control">
+                        <Button label="Clear" onClick={clearInvoiceDate} className="p-button-secondary mt-2" type="button"/>
+                    </div>
                 </div>
 
                 <div className="field">

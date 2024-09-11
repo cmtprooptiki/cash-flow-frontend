@@ -51,6 +51,16 @@ const FormEditYpoxreoseis = () => {
     //     }
     // },[uniqueErga2,id])
 
+    const formatDateToInput = (dateString) => {
+        console.log("YEEYHAHA: ", dateString)
+        if(dateString === null || dateString =="" || dateString === NaN){
+            return null
+        }
+        dateString=dateString.split('T')[0];
+        const [year, month, day] = dateString.split('-');
+        return `${year}-${month}-${day}`;
+    };
+
     const getErga = async () => {
         const response = await axios.get(`${apiBaseUrl}/erga`);
         setErga(response.data);
@@ -66,7 +76,7 @@ const FormEditYpoxreoseis = () => {
             const response = await axios.get(`${apiBaseUrl}/ypoquery/${id}`);
             setProvider(response.data.ypoxreoseis.provider);
             setErga_Id(response.data.ypoxreoseis.erga_id);
-            setInvoice_Date(response.data.ypoxreoseis.invoice_date);
+            setInvoice_Date(formatDateToInput(response.data.ypoxreoseis.invoice_date));
             setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
             setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
 
@@ -118,6 +128,13 @@ const FormEditYpoxreoseis = () => {
         value: tag.id,
         label: tag.name
     }));
+
+    const clearInvoiceDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setInvoice_Date(null); // Clear the calendar date
+    };
+
+
 
     return (
 
@@ -210,12 +227,16 @@ const FormEditYpoxreoseis = () => {
                         <div className="field">
                             <label className="label">Ημερομηνία Τιμολόγισης</label>
                             <div className="control">
-                            <Calendar id="invoice_date"  value={new Date(invoice_date)} onChange={(e)=> setInvoice_Date(e.target.value)}  inline showWeek />
+                            <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)}  inline showWeek />
 
                             </div>
+                            <div className="control">
+                                <Button label="Clear" onClick={clearInvoiceDate} className="p-button-secondary mt-2" type="button"/>
+                            </div>
+                            <Divider></Divider>
                         </div>
-
-                
+                        <Divider></Divider>
+                        <Divider></Divider>
 
 
                        

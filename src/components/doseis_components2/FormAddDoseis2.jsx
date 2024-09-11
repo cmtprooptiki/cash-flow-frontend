@@ -57,6 +57,12 @@ const FormAddDoseis2 = () => {
             }
         }
     }
+
+    const clearDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setActual_Payment_Date(null); // Clear the calendar date
+    };
+
     return(
 
         <div >
@@ -102,6 +108,9 @@ const FormAddDoseis2 = () => {
 
                     <Calendar id="actual_payment_date"  value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
                         </div>
+                    <div className="control">
+                        <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
+                    </div>
                 </div>
 
                 <div className="field">

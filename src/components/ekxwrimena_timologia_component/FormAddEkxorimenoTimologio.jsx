@@ -83,6 +83,16 @@ const FormAddEkxorimenoTimologio = () =>
         }
     }
 
+    const clearBankDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setBank_Date(null); // Clear the calendar date
+    };
+
+    const clearCustDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setCust_Date(null); // Clear the calendar date
+    };
+
     return(
         <div>
         <h1 className='title'>Προσθήκη Εκχωρημένου Τιμολογίου</h1>
@@ -127,6 +137,9 @@ const FormAddEkxorimenoTimologio = () =>
                         <div className="control">
                             <Calendar id="bank_date"  value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} inline showWeek />
                         </div>
+                        <div className="control">
+                            <Button label="Clear" onClick={clearBankDate} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                     </div>
 
                
@@ -150,6 +163,9 @@ const FormAddEkxorimenoTimologio = () =>
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
                             <Calendar id="cust_date"  value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} inline showWeek />
+                        </div>
+                        <div className="control">
+                            <Button label="Clear" onClick={clearCustDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                     </div>
 
