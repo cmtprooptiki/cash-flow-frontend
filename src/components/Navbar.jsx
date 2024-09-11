@@ -373,6 +373,14 @@ const Navbar =()=>{
                                                         </a>
                                                     </Link>
                                                 </li>
+                                                <li><Link to="/budgetform"  style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                    <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
+                                                        <i className="pi pi-folder mr-2 text-gray-50"></i>
+                                                        <span className="font-medium">Διαχείριση Budget</span>
+                                                        <Ripple />
+                                                    </a>
+                                                    </Link>
+                                                </li>
                                             </ul>
                                         </li>
                                     </ul>

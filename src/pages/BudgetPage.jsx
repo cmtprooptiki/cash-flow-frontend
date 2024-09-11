@@ -139,13 +139,19 @@ const BudgetPage = () => {
         );
     }
 
+    const formatCurrency = (value) => {
+        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+
     return (
         <Layout>
             <div className="boxclass">
                 <h1>Budget</h1>
                 {msg && <p>{msg}</p>}
                 <div className="budget-display">
-                    <h3>Current Budget: {validBudget}</h3> {/* Display the fetched budget */}
+                    <h3>Current Budget: {formatCurrency(validBudget)}</h3> {/* Display the fetched budget */}
                     <h3>Submission Date: {formatDate(date)}</h3> {/* Display the fetched date */}
                 </div>
                 <div className="button-group">
