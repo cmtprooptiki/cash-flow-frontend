@@ -15,7 +15,7 @@ const FormAddYpoxreoseis = () => {
     const [provider, setProvider] = useState("");
     const [erga_id, setErga_Id] = useState(null);
     const [erga, setErga] = useState([]);
-    const [invoice_date, setInvoice_Date] = useState("");
+    const [invoice_date, setInvoice_Date] = useState(null);
     const [total_owed_ammount, setTotal_Owed_Ammount] = useState("");
     const [ammount_vat, setAmmount_Vat] = useState("");
     const [tags, setTags] = useState([]);
@@ -88,6 +88,11 @@ const FormAddYpoxreoseis = () => {
         label: tag.name
     }));
 
+    const clearInvoiceDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setInvoice_Date(null); // Clear the calendar date
+    };
+
     return (
         <div >
           <h1 className='title'>Προσθήκη Υποχρέωσεις</h1>
@@ -117,7 +122,10 @@ const FormAddYpoxreoseis = () => {
                     <div className="control">
 
                     <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)} inline showWeek />
-                        </div>
+                    </div>
+                    <div className="control">
+                    <Button label="Clear" onClick={clearInvoiceDate} className="p-button-secondary mt-2" type="button"/>
+                    </div>
                 </div>
 
                 <div className="field">
