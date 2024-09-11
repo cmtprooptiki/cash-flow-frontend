@@ -165,12 +165,13 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
-
 const BudgetForm = () => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState(0.00);
     const [status, setStatus] = useState("");
-    const [date, setDate] = useState(null);
+    const today = new Date();
+    const today_date = today.toLocaleDateString();
+    const [date, setDate] = useState(today_date);
 
     const [msg, setMsg] = useState("");
     const [isUpdateMode, setIsUpdateMode] = useState(false); // Track if it's update mode
@@ -268,7 +269,7 @@ const BudgetForm = () => {
                                     </div>
                                 </div>
 
-                                <div className="field">
+                                {/* <div className="field">
                                     <label htmlFor="date">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ</label>
                                     <div className="control">
                                         <Calendar
@@ -279,7 +280,7 @@ const BudgetForm = () => {
                                             showWeek
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="field">
                                 <div className="control">
@@ -310,7 +311,7 @@ const BudgetForm = () => {
                                     </div>
                                 </div>
 
-                                <div className="field">
+                                {/* <div className="field">
                                     <label htmlFor="date">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ</label>
                                     <div className="control">
                                         <Calendar
@@ -321,7 +322,7 @@ const BudgetForm = () => {
                                             showWeek
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="field">
                                 <div className="control">
