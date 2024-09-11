@@ -20,8 +20,13 @@ import { getColorClass2, getLimitAnnotation } from '../components/HelperComponen
 import apiBaseUrl from '../apiConfig';
 import { ReactComponent as ProjectIcon } from '../icons/projecticon.svg'; // Import the SVG as a React component
 import { ReactComponent as CustomerIcon } from '../icons/customericon.svg'; // Import the SVG as a React component
-import { ReactComponent as DeliverablesIcon } from '../icons/deliverablesicon.svg'; // Import the SVG as a React component
-import { ReactComponent as InvoiceIcon } from '../icons/invoiceicon.svg'; // Import the SVG as a React component
+import { ReactComponent as DeliverablesIcon } from '../icons/deliverablesicon2.svg'; // Import the SVG as a React component
+import { ReactComponent as InvoiceIcon } from '../icons/invoice.svg'; // Import the SVG as a React component
+import {ReactComponent as InstallmentsIcon } from '../icons/installments.svg';
+import {ReactComponent as EktimIcon } from '../icons/ektim.svg';
+import {ReactComponent as LoanIcon } from '../icons/loand.svg';
+import {ReactComponent as BudgetIcon } from '../icons/budget.svg';
+
 import BudgetChart from '../components/paid_components/BudgetChart';
 
 // Importing calendar library
@@ -33,7 +38,9 @@ import BudgetChart from '../components/paid_components/BudgetChart';
 // const localizer = momentLocalizer(moment);
 
 const KpisDashboard = () => {
- 
+
+    const[budget, setBudget] = useState(0.0);
+    const[budgetDate, setBudgetDate] = useState(null);
 
     const [paradotea, setParadotea] = useState([]);
     const [timPar,setTimologimenPar]= useState([]);
@@ -41,8 +48,16 @@ const KpisDashboard = () => {
     const [erga,setErga]= useState([]);
     const [customer,setCustomer] = useState([]);
     const [timologia,setTimologia] = useState([]);
+    const [ektim,setEkxorimena] = useState([]);
+
+    const [daneia,setDaneia]=useState([]);
+    const [daneiareceived,setReceived]= useState([]);
+    const [daneiaunreceived,setUnreceived]=useState([]);
+
 
     const [doseis,setDoseis] = useState([]);
+    const [doseisTotal,setTotalDoseisAmmount] = useState([]);
+
 
     const [paidCount,setPaidTimologia]= useState([]);
     const [unpaidCount,setUnpaidTimologia]=useState([]);
@@ -69,16 +84,83 @@ const KpisDashboard = () => {
     },[isError,navigate]);
 
     useEffect(()=>{
+      getBudget()
         getParadotea()
         getErga()
         getCustomer()
         getTimologia()
+        getEkxorimenaTimologia()
+        getDaneia()
         getDoseis()
+        getTags()
+
     },[]);
 
+    const formatCurrency = (value) => {
+      return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
 
+  const formatDate = (value) => {
+    let date = new Date(value);
+    let epochDate = new Date('1970-01-01T00:00:00Z');
+    if (date.getTime() === epochDate.getTime()) 
+    {
+        return null;
+    }
+    if (!isNaN(date)) {
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        
+    } else {
+        return "Invalid date";
+    }
+};
+  
 //pie chart 
 const [chartSeries, setChartSeries] = useState([]);
+
+const [chartSeries4, setChartSeries4] = useState([]);
+
+const [chartOptions4, setChartOptions4] = useState({
+  chart: {
+    type: 'bar',
+    height: 350,
+  },
+  plotOptions: {
+      bar: {
+        barHeight: '100%',
+        distributed: true,
+        borderRadius: 4,
+        borderRadiusApplication: 'end',
+        horizontal: true,
+      }
+    },
+  xaxis: {
+    categories: [],
+  },
+  yaxis: {
+      labels: {
+      
+      }
+    },
+  dataLabels: {
+    enabled: false,
+  },
+  title: {
+      text: 'Σύνολο Υποχρεώσεων ανα Tag',
+      align: 'center',
+      floating: true
+  },
+  tooltip: {
+      y: {
+    
+      }
+    }
+});
+
 
 const [chartOptions, setChartOptions] = useState({
     chart: {
@@ -204,6 +286,25 @@ const [chartOptions, setChartOptions] = useState({
       }
   });
   
+  const getBudget = async() =>{
+    try {
+
+    const response = await axios.get(`${apiBaseUrl}/budget`);
+    const budgetData = response.data;
+
+    
+
+    setBudget(budgetData[0].ammount);
+    setBudgetDate(budgetData[0].date);
+
+
+    // Assuming you have a state setter like setErga defined somewhere
+} catch (error) {
+    console.error('Error fetching data:', error);
+    // Handle errors as needed
+}
+}
+
 
      const getParadotea = async() =>{
         try {
@@ -382,13 +483,64 @@ const [chartOptions, setChartOptions] = useState({
 
     }
 
+
+    
+    const getEkxorimenaTimologia = async() =>{
+      try {
+
+      const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+      const ektimData = response.data;
+
+      const uniqueIds= [...new Set(ektimData.map(item => item.id))];
+      const uniqueIdsCount = uniqueIds.length;
+
+      console.log("Unique ektimi names:",uniqueIdsCount);
+      setEkxorimena(uniqueIdsCount);
+  
+
+      // Assuming you have a state setter like setErga defined somewhere
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle errors as needed
+  }
+  }
+
+  const getDaneia = async() =>{
+    try {
+
+    const response = await axios.get(`${apiBaseUrl}/daneia`);
+    const daneiaData = response.data;
+
+    const uniqueIds= [...new Set(daneiaData.map(item => item.id))];
+    const uniqueIdsCount = uniqueIds.length;
+
+    console.log("Unique daneiaData names:",uniqueIdsCount);
+
+    const unreiceived=daneiaData.filter(item => item.status === 'no').length
+    const reiceived=daneiaData.filter(item => item.status === 'yes').length
+
+    setDaneia(uniqueIdsCount);
+    setUnreceived(unreiceived);  // Set paid invoices count
+    setReceived(reiceived); // Set unpaid invoices count
+
+    // Assuming you have a state setter like setErga defined somewhere
+} catch (error) {
+    console.error('Error fetching data:', error);
+    // Handle errors as needed
+}
+}
+
+
     const getDoseis = async() =>{
       try {
           const response = await axios.get(`${apiBaseUrl}/doseis`);
           const doseis_data = response.data;
           const doseisCount = doseis_data.filter(item => item.status === 'no').length;
-
+          const filteredDoseis=doseis_data.filter(item => item.status === 'no')
+          const totalAmount = filteredDoseis.reduce((sum, item) => sum + Number(item.ammount || 0), 0);
+          console.log("total doseis ammounbt",totalAmount)
           setDoseis(doseisCount);
+          setTotalDoseisAmmount(totalAmount);
   
       } catch (error) {
           console.error('Error fetching data:', error);
@@ -397,6 +549,48 @@ const [chartOptions, setChartOptions] = useState({
   }
 
 
+  const getTags = async () => {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/ypoquery`);
+      const tags_data = response.data;
+
+      // Process the data to count occurrences of each tag
+      const tagCounts = {};
+
+      tags_data.forEach(item => {
+        item.tags.forEach(tag => {
+          if (tagCounts[tag]) {
+            tagCounts[tag]++;
+          } else {
+            tagCounts[tag] = 1;
+          }
+        });
+      });
+
+      // Extract the labels (tags) and their respective counts
+      const labels = Object.keys(tagCounts);
+      const counts = Object.values(tagCounts);
+
+      console.log("labels",labels)
+      console.log("counts",counts)
+
+ 
+      // Update the chart options and series
+      setChartOptions4(prevOptions => ({
+        ...prevOptions,
+        labels: labels
+      }));
+      setChartSeries4([{ name: 'Πλήθος', data: counts }]);
+
+      // setChartSeries4(counts);
+    
+      // Create the chart with the processed data
+      // createChart(labels, counts);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
 
     
@@ -421,6 +615,24 @@ const [chartOptions, setChartOptions] = useState({
           <span className="text-500">since last week</span>
       </div>
   </div> */}
+
+
+<div className="col-12 md:col-6 lg:col-3">
+      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+          <div className="flex justify-content-between mb-5">
+              <div>
+                  <h6 className="m-0 mb-1 text-500 text-gray-800">Τραπεζικά Διαθέσιμα</h6>
+                  <h1 className="m-0 text-gray-800 ">{formatCurrency(budget)}</h1>
+                  <small className="m-0 text-gray-800 ">Τελευταία Ενημέρωση: {formatDate(budgetDate)}</small>
+              </div>
+              <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                  <BudgetIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+              </div>
+          </div>
+          
+      </div>
+  </div>
 
 <div className="col-12 md:col-6 lg:col-3">
       <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
@@ -467,7 +679,7 @@ const [chartOptions, setChartOptions] = useState({
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
-                  <DeliverablesIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+                  <DeliverablesIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
           
@@ -486,7 +698,7 @@ const [chartOptions, setChartOptions] = useState({
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
-                  <InvoiceIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+                  <InvoiceIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
           
@@ -499,18 +711,60 @@ const [chartOptions, setChartOptions] = useState({
               <div>
                   <h6 className="m-0 mb-1 text-500 text-gray-800">Δοσεις που Εκκρεμούν</h6>
                   <h1 className="m-0 text-red-600">{doseis} </h1>
-               
+                  <h6 className="m-0 text-red-600">Συννολικό Ποσό Οφειλής: {formatCurrency(doseisTotal)} </h6>
+
                
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
                   {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
-                  <InvoiceIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+                  <InstallmentsIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
+
               </div>
           </div>
           
       </div>
   </div>
+
+
+  <div className="col-12 md:col-6 lg:col-3">
+      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+          <div className="flex justify-content-between mb-5">
+              <div>
+                  <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Εκχωρημένων Τιμολογίων</h6>
+                  <h1 className="m-0 text-gray-800 ">{ektim} </h1>
+    
+
+              </div>
+              <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                  <EktimIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
+              </div>
+          </div>
+          
+      </div>
+  </div>
+
+  <div className="col-12 md:col-6 lg:col-3">
+      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+          <div className="flex justify-content-between mb-5">
+              <div>
+                  <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Δανείων</h6>
+                  <h1 className="m-0 text-gray-800 ">{daneia} </h1>
+                  <h6 className="m-0 mb-1 text-500 text-green-600">Εχουν παραληφθεί:{daneiareceived}</h6>
+                  <h6 className="m-0 mb-1 text-500 text-red-600">Δεν εχουν παραληφθεί:{daneiaunreceived}</h6>
+    
+
+              </div>
+              <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                  <LoanIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
+              </div>
+          </div>
+          
+      </div>
+  </div>
+
 
 <div className="col-12 xl:col-6 lg:col-3">
 <div className="card">
@@ -534,6 +788,16 @@ const [chartOptions, setChartOptions] = useState({
             options={chartOptions} 
             series={chartSeries} 
             type="pie" 
+            height={350} 
+      />  </div>
+  </div>
+
+  <div className="col-12 xl:col-6 lg:col-3">
+<div className="card">
+<ApexCharts
+            options={chartOptions4} 
+            series={chartSeries4} 
+            type="bar" 
             height={350} 
       />  </div>
   </div>

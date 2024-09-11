@@ -1,80 +1,3 @@
-// import React, { useState } from 'react';
-// import { InputText } from 'primereact/inputtext';
-// import WeeksTableBudget from "../components/WeeksTableBudget";
-// import WeeksTableBudget_Est2 from "../components/WeeksTableBudget_Est2";
-// import WeeksTableBudget_Est3 from "../components/WeeksTableBudget_Est3";
-// import Layout from './Layout';
-// import PaidBudgetList from './PaidBudgetList';
-
-
-// const BudgetPage = () => {
-//     // State for selected table and input value
-//     const [selectedTable, setSelectedTable] = useState('table1');
-//     const [budget, setBudget] = useState('');
-
-//     // Handle change in input field
-//     const handleBudgetChange = (e) => {
-//         const value = e.target.value;
-//         // Ensure the value is a valid float or empty
-//         if (/^\d*\.?\d*$/.test(value)) {
-//             setBudget(value); // Update with the string value to handle decimals correctly
-//         }
-//     };
-
-//     // Convert the budget to a float for calculations
-//     const parsedBudget = parseFloat(budget);
-//     const validBudget = isNaN(parsedBudget) ? 0 : parsedBudget;
-//     // console.log(parsedBudget)
-//     return (
-//         <Layout>
-//             <div className="boxclass">
-//                 <h1>Budget</h1>
-//                 <div className="input-group">
-//                     <h3>Εισαγωγή budget: </h3>
-//                     <InputText
-//                         id="budget"
-//                         type="text" // Use text type to handle decimal input
-//                         value={budget}
-//                         onChange={handleBudgetChange}
-//                         placeholder="0.00" // Optional placeholder
-//                     />
-//                 </div>
-//                 <div className="button-group">
-//                     <button
-//                         className="Filters"
-//                         style={{ margin: "10px" }}
-//                         onClick={() => setSelectedTable('table1')}
-//                     >
-//                         ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario
-//                     </button>
-//                     <button
-//                         className="Filters"
-//                         style={{ margin: "10px" }}
-//                         onClick={() => setSelectedTable('table2')}
-//                     >
-//                         ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario
-//                     </button>
-//                     <button
-//                         className="Filters"
-//                         style={{ margin: "10px" }}
-//                         onClick={() => setSelectedTable('table3')}
-//                     >
-//                         ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-case Scenario
-//                     </button>
-//                 </div>
-
-//                 {/* {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
-//                 {selectedTable === 'table2' && <WeeksTableBudget_Est2  budget={validBudget} />}
-//                 {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />} */}
-//                 {/* {selectedTable} */}
-//             </div>
-//             <br></br>
-//             <PaidBudgetList budget={validBudget} scenario={selectedTable}/>
-//         </Layout>
-//     );
-// }
-
-// export default BudgetPage;
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios to fetch the budget from the backend
@@ -85,6 +8,7 @@ import Layout from './Layout';
 import PaidBudgetList from './PaidBudgetList';
 // import apiBaseUrl from '../../apiConfig'; // Assuming you have an apiBaseUrl defined for your backend
 import apiBaseUrl from '../apiConfig';
+import {ReactComponent as BudgetIcon } from '../icons/budget.svg';
 
 const BudgetPage = () => {
     // State for selected table, budget value, and date
@@ -147,13 +71,29 @@ const BudgetPage = () => {
 
     return (
         <Layout>
-            <div className="boxclass">
-                <h1>Budget</h1>
+            <div >
                 {msg && <p>{msg}</p>}
-                <div className="budget-display">
-                    <h3>Current Budget: {formatCurrency(validBudget)}</h3> {/* Display the fetched budget */}
-                    <h3>Submission Date: {formatDate(date)}</h3> {/* Display the fetched date */}
-                </div>
+                {/* <div className="budget-display">
+                    <h3>Current Budget: {formatCurrency(validBudget)}</h3> 
+                    <h3>Submission Date: {formatDate(date)}</h3> 
+                </div> */}
+
+                <div className="col-12 md:col-6 lg:col-3">
+      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+          <div className="flex justify-content-between mb-5">
+              <div>
+                  <h6 className="m-0 mb-1 text-500 text-gray-800">Τραπεζικά Διαθέσιμα</h6>
+                  <h1 className="m-0 text-gray-800 ">{formatCurrency(validBudget)}</h1>
+                  <small className="m-0 text-gray-800 ">Τελευταία Ενημέρωση: {formatDate(date)}</small>
+              </div>
+              <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                  <BudgetIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
+              </div>
+          </div>
+          
+      </div>
+  </div>
                 <div className="button-group">
                     <button
                         className="Filters"
