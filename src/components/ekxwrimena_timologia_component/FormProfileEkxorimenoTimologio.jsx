@@ -60,6 +60,12 @@ const FormProfileEkxorimenoTimologio = () =>
         getEkxorimenoTimologioById();
     },[id]);
 
+    const formatCurrency = (value) => {
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+
+
     return(
 
 
@@ -182,7 +188,7 @@ const FormProfileEkxorimenoTimologio = () =>
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό είσπραξης απο Τράπεζα</span>
-                    <div className="text-900 font-medium text-xl">{bank_ammount} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(bank_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -198,7 +204,7 @@ const FormProfileEkxorimenoTimologio = () =>
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό Είσπραξης απο πελάτη</span>
-                    <div className="text-900 font-medium text-xl">{customer_ammount} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(customer_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>

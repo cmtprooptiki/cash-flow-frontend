@@ -145,6 +145,9 @@ const ErgaList = () => {
             return "Invalid date";
         }
     };
+    const imageBodyTemplate = (rowData) => {
+        return <img src={`${apiBaseUrl}/${rowData.logoImage}`} alt={rowData.logoImage} className="w-6rem shadow-2 border-round" />;
+    };
 
     
 
@@ -383,7 +386,11 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 ,'estimate_payment_date','estimate_payment_date_2','estimate_payment_date_3'
                 ,'customer_id','customer.name','erga_cat_id','erga_category.name']} header={header}
             emptyMessage="No customers found.">
+                                
+
         <Column field="name" header="name" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
+        <Column field="logoImage" header="Λογότυπο" body={imageBodyTemplate}></Column>
+
         <Column field="shortname" header="shortname" filter filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
         <Column header="sign_date" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
 

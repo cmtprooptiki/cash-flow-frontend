@@ -171,7 +171,10 @@ const FormProfileTimologia = () => {
         // })
         // .filter(ergo => ergo !== undefined); 
 
-
+        const formatCurrency = (value) => {
+            return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+    
     
     return(
 
@@ -249,7 +252,7 @@ const FormProfileTimologia = () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό χωρίς Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_no_tax} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_no_tax)}</div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -265,7 +268,7 @@ const FormProfileTimologia = () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό με Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_tax_incl} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_tax_incl)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -281,7 +284,7 @@ const FormProfileTimologia = () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό Είσπραξη με Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_of_income_tax_incl} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_of_income_tax_incl)} €</div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>

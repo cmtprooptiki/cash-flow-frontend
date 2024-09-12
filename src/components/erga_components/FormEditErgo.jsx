@@ -11,10 +11,14 @@ import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
+import { Avatar } from 'primereact/avatar';
 
 
 const FormEditErgo= () => {
     const[name,setName]=useState("");
+    const [logoImage, setLogoImage] = useState(""); // New state for profile image
+    const [previewImage, setPreviewImage] = useState(''); // State for previewing selected image
+
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
@@ -84,6 +88,11 @@ const FormEditErgo= () => {
                 setEstimate_Payment_Date_2(response.data.estimate_payment_date_2)
                 setEstimate_Payment_Date_3(response.data.estimate_payment_date_3)
                 setErga_cat_id(response.data.erga_cat_id)
+                setLogoImage(response.data.logoImage);
+                // If profileImage URL is available, set previewImage for immediate display
+        if (response.data.logoImage) {
+            setPreviewImage(`${apiBaseUrl}/${response.data.logoImage}`); // Construct full image URL
+          }
                 
                 
             } catch (error) {
@@ -187,6 +196,7 @@ const FormEditErgo= () => {
         e.preventDefault();
         try{
             await axios.patch(`${apiBaseUrl}/erga/${id}`, {
+                logoImage:logoImage,
                 name:name,
                 color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
@@ -203,7 +213,14 @@ const FormEditErgo= () => {
                 estimate_payment_date_2: estimate_payment_date_2,
                 estimate_payment_date_3: estimate_payment_date_3,
                 erga_cat_id:erga_cat_id
-            });
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        
+        );
 
             navigate("/erga");
         }catch(error){
@@ -212,6 +229,22 @@ const FormEditErgo= () => {
             }
         }
     };
+
+    const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setLogoImage(selectedFile); // Update state for server-side update
+    
+        // Preview the selected image immediately
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewImage(reader.result);
+        };
+        reader.readAsDataURL(selectedFile);
+      };
+
+
+
+
   return (
     <div>
         <h1 className='title'>Διαχείριση Εργων</h1>
@@ -234,6 +267,33 @@ const FormEditErgo= () => {
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ' />
                                     </div>
                                 </div>
+
+                                <div className="field">
+                 
+                 <div className='mt-auto'>
+                 {previewImage ? ( // Conditionally render preview image if available
+                     <Avatar image={previewImage} shape="circle" size="xlarge" />
+                 ) : (
+                     logoImage ? ( // Otherwise, if profileImage URL exists, render it directly
+                     <Avatar
+                         image={`${apiBaseUrl}/${logoImage}`}
+                         shape="circle"
+                         size="xlarge"
+                     />
+                     ) : ( // Default placeholder if no image is available
+                     <Avatar shape="circle" size="xlarge" icon="pi pi-user" />
+                     )
+                 )}
+                 </div>
+                 <label className="label">Λογότυπο</label> {/* New field for profile image */}
+
+                 <div className="control">
+                     <input type="file" className="input"  onChange={handleImageChange} accept="image/*" />
+                 {/* {console.log(logoImage.name)} */}
+                 </div>
+             </div>
+
+                                
 
                                 <div className="field col-6">
                                     <label  className="label">ΧΡΩΜΑ</label>

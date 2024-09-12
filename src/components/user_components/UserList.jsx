@@ -29,6 +29,8 @@ const UserList = () => {
                 <tr>
                     <th>#</th>
                     <th>Όνομα Χρήστη</th>
+                    <th>Εικόνα Προφίλ</th> {/* New column for profile image */}
+
                     <th>Email</th>
                     <th>Ρόλος</th>
                     <th>Ενέργειες</th>
@@ -39,6 +41,17 @@ const UserList = () => {
                     <tr key={user.uuid}>
                         <td>{index+1}</td>
                         <td>{user.name}</td>
+                        <td>
+                                    {user.profileImage ? (
+                                        <img
+                                            src={`${apiBaseUrl}/${user.profileImage.split('/').pop()}`}
+                                            alt="Profile"
+                                            style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <span>No Image</span>
+                                    )}
+                                </td>
                         <td>{user.email}</td>
                         <td>{user.role}</td>
                         <td>

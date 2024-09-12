@@ -52,6 +52,10 @@ const FormProfileYpoxreoseis = () =>
         getYpoxreoseisById();
     }, [id]);
 
+    const formatCurrency = (value) => {
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
     return(
 <div>
 <div className="surface-0">
@@ -110,7 +114,7 @@ const FormProfileYpoxreoseis = () =>
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό χωρίς Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{total_owed_ammount} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(total_owed_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -126,7 +130,7 @@ const FormProfileYpoxreoseis = () =>
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό  Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_vat} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_vat)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
