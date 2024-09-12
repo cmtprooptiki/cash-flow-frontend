@@ -18,6 +18,8 @@ import { Divider } from 'primereact/divider';
 
 
 const FormAddErga = () => {
+    const [logoImage, setLogoImage] = useState(null); // New state for profile image
+
     const[name,setName]=useState("");
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
@@ -84,6 +86,7 @@ const FormAddErga = () => {
         e.preventDefault();
         try{
             await axios.post(`${apiBaseUrl}/erga`, {
+            logoImage:logoImage,
             name:name,
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
@@ -100,6 +103,11 @@ const FormAddErga = () => {
             estimate_payment_date_2: estimate_payment_date_2,
             estimate_payment_date_3: estimate_payment_date_3,
             erga_cat_id:erga_cat_id
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             navigate("/erga");
         }catch(error){
@@ -129,6 +137,13 @@ const FormAddErga = () => {
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ' />
                                     </div>
                                 </div>
+
+                                <div className="field col-6">
+                                <label className="label">Λογότυπο Έργου</label> {/* New field for profile image */}
+                                <div className="control">
+                                    <input type="file" className="input" onChange={(e) => setLogoImage(e.target.files[0])} accept="image/*" />
+                                </div>
+                            </div>
 
                                 <div className="field col-6">
                                     <label  className="label">ΧΡΩΜΑ</label>

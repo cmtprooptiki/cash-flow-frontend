@@ -182,6 +182,10 @@ const [chartOptions, setChartOptions] = useState({
    
   });
 
+
+
+
+
   // State for BarChart
   const [chartOptions2, setChartOptions2] = useState({
     chart: {
@@ -396,7 +400,7 @@ const [chartOptions, setChartOptions] = useState({
                 }
             }));
     
-            setChartSeries2([{ name: 'Amounts', data: ergaAmounts }]);
+            setChartSeries2([{ name: 'Ποσό', data: ergaAmounts }]);
     
             // Set the count for unique IDs if needed
             const uniqueIds = [...new Set(ergaData.map(item => item.id))];
@@ -408,6 +412,12 @@ const [chartOptions, setChartOptions] = useState({
             // Handle errors as needed
         }
     };
+
+
+
+
+
+    
     // const getErga = async() =>{
     //     try {
     //         const response = await axios.get(`${apiBaseUrl}/erga`);

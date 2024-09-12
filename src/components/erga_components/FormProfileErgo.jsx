@@ -13,6 +13,7 @@ import apiBaseUrl from '../../apiConfig';
 
 
 const FormProfileErgo= () => {
+const[logoImage,setLogoImage]=useState(null);
   const[name,setName]=useState("");
   const [color, setColor] = useState("white");
   const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0.00);
@@ -42,6 +43,7 @@ const FormProfileErgo= () => {
       const getErgoById = async()=>{
         try {
             const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
+            setLogoImage(response.data.logoImage);
             setName(response.data.name);
             setColor(response.data.color);
             setSignAmmountNoTax(response.data.sign_ammount_no_tax);
@@ -78,6 +80,10 @@ const FormProfileErgo= () => {
     };
 
 
+    const formatCurrency = (value) => {
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
 
     return (
 		<div>
@@ -85,6 +91,12 @@ const FormProfileErgo= () => {
     <div className="font-medium text-3xl text-900 mb-3">Έργο</div>
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
+
+    <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Λογότυπο</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><img src={`${apiBaseUrl}/${logoImage}`} alt={logoImage} className="w-6rem shadow-2 border-round" /></div>
+           
+        </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">ΟΝΟΜΑΣΙΑ ΕΡΓΟΥ</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
@@ -139,7 +151,7 @@ const FormProfileErgo= () => {
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">ΠΟΣΟ ΣΥΜΒΑΣΗΣ:</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                <Chip label={sign_ammount_no_tax} className="mr-2" />
+                <Chip label={formatCurrency(sign_ammount_no_tax)} className="mr-2" />
                
             </div>
           
@@ -182,7 +194,7 @@ const FormProfileErgo= () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Αρχικό Ποσό</span>
-                    <div className="text-900 font-medium text-xl">{ammount} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -198,7 +210,7 @@ const FormProfileErgo= () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_vat} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_vat)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
@@ -214,7 +226,7 @@ const FormProfileErgo= () => {
             <div className="flex justify-content-between mb-3">
                 <div>
                     <span className="block text-500 font-medium mb-3">Ποσό Είσπραξη με Φ.Π.Α.</span>
-                    <div className="text-900 font-medium text-xl">{ammount_total} €</div>
+                    <div className="text-900 font-medium text-xl">{formatCurrency(ammount_total)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
