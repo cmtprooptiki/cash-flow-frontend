@@ -16,8 +16,12 @@ const FormAddDoseis = () => {
     const [ammount, setAmmount] = useState("");
     const [actual_payment_date,setActual_Payment_Date] = useState(null)
     const [estimate_payment_date, setEstimate_Payment_Date] = useState("")
-    const [status,setStatus] = useState("")
+    const [status,setStatus] = useState("no")
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
+
+    const [totalOwedAmmount, setTotal_Owed_Ammount] = useState("");
+    const [ammountVat, setAmmount_Vat] = useState("");
+
 
     const [ypoxreoseis,setYpoxreoseis]=useState([]);
 
@@ -38,16 +42,32 @@ const FormAddDoseis = () => {
     const handleYpoxreoseisChange = async (e) => {
         const selectedId = e.target.value;
         setYpoxreoseisId(selectedId)
+        try {
+            const response = await axios.get(`${apiBaseUrl}/ypoquery/${selectedId}`);
+      
+            setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
+            setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
+          
+    } catch (error) {
+        if (error.response) {
+            setMsg(error.response.data.msg);
+        }
     }
 
+    }
+
+
+
     const saveDoseis = async (e) =>{
+        const updatedStatus = actual_payment_date ? "yes" : "no";
+
         e.preventDefault();
         try{
             await axios.post(`${apiBaseUrl}/doseis`, {
             ammount:ammount,
             actual_payment_date:actual_payment_date,
             estimate_payment_date:estimate_payment_date,
-            status:status,
+            status:updatedStatus,
             ypoxreoseis_id:ypoxreoseis_id
             });
             navigate("/doseis");
@@ -63,15 +83,22 @@ const FormAddDoseis = () => {
         setActual_Payment_Date(null); // Clear the calendar date
     };
 
+
+    const formatCurrency = (value) => {
+        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+        return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+
     return(
 
         <div >
-        <h1 className='title'>Προσθήκη Δόσεις</h1>
+        <h1 className='title'>Προσθήκη Δόσης</h1>
       <form onSubmit={saveDoseis}>
       <div className="grid">
       <div className="col-12 md:col-6">
           <div className="card p-fluid">
-          <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Δόσεις</span></Divider></div>
+          <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Δόσης</span></Divider></div>
 
           <div className="field">
                     <label className="label">Ονομα Παρόχου</label>
@@ -83,6 +110,14 @@ const FormAddDoseis = () => {
                             ))}
                         </select>
                     </div>
+              </div>
+
+              <div className="field">
+                  <label htmlFor="name1">Συνολικό Ποσο Υποχρέωσης</label>
+                  <div className="control">
+
+                 <h2>{formatCurrency(Number(totalOwedAmmount)+Number(ammountVat))}</h2> 
+                  </div>
               </div>
 
               <div className="field">
@@ -106,7 +141,7 @@ const FormAddDoseis = () => {
                     <label htmlFor="actual_payment_date">ΗΜΕΡΟΜΗΝΙΑ ΕΞΟΦΛΗΣΗΣ ΔΟΣΗΣ</label>
                     <div className="control">
 
-                    <Calendar id="actual_payment_date"  value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
+                    <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
                         </div>
 
                     <div className="control">
@@ -114,13 +149,13 @@ const FormAddDoseis = () => {
                     </div>
                 </div>
 
-                <div className="field">
+                {/* <div className="field">
                     <label className="label">Status</label>
                     <div className="control">
                     <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
 
                     </div>
-                </div>
+                </div> */}
 
 
 

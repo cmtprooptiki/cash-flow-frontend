@@ -70,6 +70,9 @@ const FormEditDoseis = () =>
     }, [id]);
 
     const updateDoseis = async(e) =>{
+
+        const updatedStatus = actual_payment_date ? "yes" : "no";
+
         e.preventDefault();
         try
         {
@@ -77,7 +80,7 @@ const FormEditDoseis = () =>
                 ammount:ammount,
                 actual_payment_date:actual_payment_date,
                 estimate_payment_date: estimate_payment_date,
-                status:status,
+                status:updatedStatus,
                 ypoxreoseis_id:ypoxreoseis_id
 
             });
@@ -155,7 +158,7 @@ const FormEditDoseis = () =>
                     <div className="field">
                         <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
                         <div className="control">
-                        <Calendar id="actual_payment_date"  value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
+                        <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
 
                         </div>
                         <div className="control">
@@ -164,13 +167,13 @@ const FormEditDoseis = () =>
                     </div>
 
 
-                    <div className="field">
+                    {/* <div className="field">
                     <label htmlFor="status">Kατάσταση Δόσης</label>
                     <div className="control">
 
                     <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
                     </div>
-                </div>
+                </div> */}
 
                     
                     <div className="field">

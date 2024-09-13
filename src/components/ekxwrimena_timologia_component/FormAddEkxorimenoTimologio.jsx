@@ -22,8 +22,8 @@ const FormAddEkxorimenoTimologio = () =>
     const[customer_ammount,setCustomer_Ammount]=useState(0.00);
     const[cust_date,setCust_Date]=useState(null);
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
-    const[status_bank_paid,setStatusBankPaid]=useState("");
-    const[status_customer_paid,setStatusCustomerPaid]=useState("");
+    const[status_bank_paid,setStatusBankPaid]=useState("no");
+    const[status_customer_paid,setStatusCustomerPaid]=useState("no");
 
     const[msg,setMsg]=useState("");
 
@@ -63,6 +63,8 @@ const FormAddEkxorimenoTimologio = () =>
 
     const saveEkxorimena_Timologia = async (e) =>{
         e.preventDefault();
+        const updatedStatusBankPaid = bank_date ? "yes" : "no";
+        const updatedStatusCustomerPaid = cust_date ? "yes" : "no";
         try{
             await axios.post(`${apiBaseUrl}/ek_tim`, {
             timologia_id: timologia_id,
@@ -72,8 +74,8 @@ const FormAddEkxorimenoTimologio = () =>
             customer_ammount: customer_ammount,
             cust_date:cust_date,
             cust_estimated_date:cust_estimated_date,
-            status_customer_paid:status_customer_paid,
-            status_bank_paid:status_bank_paid
+            status_bank_paid:updatedStatusBankPaid,
+            status_customer_paid:updatedStatusCustomerPaid,
             });
             navigate("/ek_tim");
         }catch(error){
@@ -135,7 +137,7 @@ const FormAddEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
                         <div className="control">
-                            <Calendar id="bank_date"  value={bank_date} onChange={(e)=> setBank_Date(e.target.value)} inline showWeek />
+                            <Calendar id="bank_date"  value={bank_date ? new Date(bank_date) : null} onChange={(e)=> setBank_Date(e.target.value)} inline showWeek />
                         </div>
                         <div className="control">
                             <Button label="Clear" onClick={clearBankDate} className="p-button-secondary mt-2" type="button"/>
@@ -162,26 +164,54 @@ const FormAddEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
-                            <Calendar id="cust_date"  value={cust_date} onChange={(e)=> setCust_Date(e.target.value)} inline showWeek />
+                            <Calendar id="cust_date"  value={cust_date ? new Date(cust_date) : null} onChange={(e)=> setCust_Date(e.target.value)} inline showWeek />
                         </div>
                         <div className="control">
                             <Button label="Clear" onClick={clearCustDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                     </div>
 
-                    <div className="field">
+                    {/* <div className="field">
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
                         <div className="control">
                             <InputText id="status_customer_paid" type="text" value={status_customer_paid} onChange={(e)=> setStatusCustomerPaid(e.target.value)} />
                         </div>
-                    </div>
-                    
-                    <div className="field">
-                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
-                        <div className="control">
-                            <InputText id="status_bank_paid" type="text" value={status_bank_paid} onChange={(e)=> setStatusBankPaid(e.target.value)} />
-                        </div>
-                    </div>
+                    </div> */}
+
+                    {/* <div className="field">
+    <label className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
+    <div className="control">
+        <Dropdown
+            id="status_customer_paid"
+            value={status_customer_paid}
+            options={[
+                { label: "Πληρωμένο", value: "yes" },
+                { label: "Απλήρωτο", value: "no" },
+            ]}
+            onChange={(e) => setStatusCustomerPaid(e.value)}
+            placeholder="Επιλέξτε Κατάσταση Πληρωμής Πελάτη"
+        />
+    </div>
+</div> */}
+
+              
+
+                    {/* <div className="field">
+    <label className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+    <div className="control">
+        <Dropdown
+            id="status_bank_paid"
+            value={status_bank_paid}
+            options={[
+                { label: "Πληρωμένο", value: "yes" },
+                { label: "Απλήρωτο", value: "no" },
+            ]}
+            onChange={(e) => setStatusBankPaid(e.value)}
+            placeholder="Επιλέξτε Κατάσταση Πληρωμής απο Τράπεζα"
+        />
+    </div>
+</div> */}
+
                     
                     <div className="field">
                         <div className="control">

@@ -266,7 +266,7 @@ const Eksoda = ()=>
 
              
           <div className="container">
-          <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>ΕΞΟΔΑ</h1>
+          <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>Προβλεπόμενα Έξοδα</h1>
             
             <div className="row">
               <div className="col-md-4">
