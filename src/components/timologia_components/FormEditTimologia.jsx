@@ -10,6 +10,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
 
+
+
 const FormEditTimologia = () => {
     const [invoice_date, setInvoice_date] = useState("");
     const [ammount_no_tax, setAmmount_no_tax] = useState("");
@@ -367,7 +369,7 @@ const FormEditTimologia = () => {
                             </div>
 
                             <div className="field">
-                                <label className="label">Ημερομηνία Εξόφλισης</label>
+                                <label className="label">Εκτιμώμενη Πληρωμής/ Ημερομηνία Εξόφλισης</label>
                                 <div className="control">
                                 <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />                                </div>
                             </div>
@@ -386,11 +388,28 @@ const FormEditTimologia = () => {
                                 </div>
                             </div>
 
-                            <div className="field">
+                            {/* <div className="field">
                                 <label className="label">Κατάσταση Πληρωμής</label>
                                 <div className="control">
                                 <InputText type="text" className="input" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ'/>                                </div>
+                            </div> */}
+
+                            <div className="field">
+                                <label className="label">Κατασταση Τιμολογίου</label>
+                                <div className="control">
+                                    <Dropdown
+                                        id="status_paid"
+                                        value={status_paid}
+                                        options={[
+                                            { label: "Πληρωμένο", value: "yes" },
+                                            { label: "Απλήρωτο", value: "no" },
+                                        ]}
+                                        onChange={(e) => setStatus_Paid(e.value)}
+                                        placeholder="Επιλέξτε Κατάσταση Τιμολογίου"
+                                    />
+                                </div>
                             </div>
+           
 
                             <div className="field">
                                 <Button type="submit" label="Ενημέρωση Τιμολογίου" disabled={selectedOptions.length === 0} />

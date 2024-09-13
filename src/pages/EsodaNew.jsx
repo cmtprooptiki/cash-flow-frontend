@@ -563,7 +563,7 @@ const getDaneia = async () =>{
          selectedButton === 'estimate_payment_date_2' ? 'Medium-Case Scenario' :
          selectedButton === 'estimate_payment_date_3' ? 'Worst-Case Scenario' : ''}</h1>
       <div className="container">
-        <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>ΕΣΟΔΑ</h1>
+        <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>Προβλεπόμενα Έσοδα</h1>
 
         <div className="row">
           <div className="col-md-4">
