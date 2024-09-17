@@ -421,8 +421,15 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Title:</strong> {selectedRowData.title}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
+                        <p><strong>Part Number: </strong>{selectedRowData.part_number}</p>
+                        <p><strong>Delivery Date: </strong>{formatDate(selectedRowData.delivery_date)}</p>
+                        <p><strong>Percentage: </strong>{selectedRowData.percentage}</p>
+                        <p><strong>Ammount: </strong>{formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Ammount Vat: </strong>{formatCurrency(selectedRowData.ammount_vat)}</p>
+                        <p><strong>Ammount Total: </strong>{formatCurrency(selectedRowData.ammount_total)}</p>
+                        <p><strong>Estimate Payment Date Best Case: </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Estimate Payment Date Medium Case: </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
+                        <p><strong>Estimate Payment Date Worst Case: </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="Timologia" && (
@@ -432,6 +439,11 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Invoice Number:</strong> {selectedRowData.invoice_number}</p>
+                        <p><strong>Invoice Date:</strong> {formatDate(selectedRowData.invoice_date)}</p>
+                        <p><strong>Αρχικό Ποσό:</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
+                        <p><strong>Ποσό ΦΠΑ:</strong>{formatCurrency(selectedRowData.ammount_tax_incl)}</p>
+                        <p><strong>Τελικό Ποσό:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
+                        <p><strong>Estimate Date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -459,6 +471,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Name:</strong> {selectedRowData.name}</p>
+                        <p><strong>Ammount:</strong> {formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Estimate Payment Date:</strong> {formatDate(selectedRowData.payment_date)}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -466,10 +480,14 @@ const idBodyTemplate = (rowData) => {
                 {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
                     
                     <div>
-                        {console.log(selectedRowData)}
+                        {console.log("Kantoooo", selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
+                        <p><strong>Bank Ammount: </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
+                        <p><strong>Bank Estimate Payment Date: </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
+                        <p><strong>Customer Ammount: </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
+                        <p><strong>Customer Estimate Payment Date: </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
