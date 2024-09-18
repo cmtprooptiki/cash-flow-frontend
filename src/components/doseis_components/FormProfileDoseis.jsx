@@ -69,7 +69,7 @@ const FormProfileDoseis = () =>
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
     <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-      <div className="text-500 w-6 md:w-2 font-medium">Σύνδεση με Πάροχο:</div>
+      <div className="text-500 w-6 md:w-2 font-medium">Σύνδεση με Προμηθευτή:</div>
       <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{ypoxreoseis_id}</div>
            
     </li>
@@ -82,7 +82,7 @@ const FormProfileDoseis = () =>
         <div className="col-12 lg:col-4">
             <div className="p-3 h-full">
                 <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-                    <div className="text-900 font-medium text-xl mb-2">Ημερομηνία εκτιμώμενης πληρωμής</div>
+                    <div className="text-900 font-medium text-xl mb-2">Εκτιμώμενη ημερομηνία πληρωμής</div>
                     {/* <div className="text-600">Plan description</div> */}
                     
                     <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />

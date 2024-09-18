@@ -56,12 +56,12 @@ const FormProfileCustomer= () => {
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Επωνυμία</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Πελάτης</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Α.Φ.Μ:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">ΑΦΜ:</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{afm}</div>
 
           
@@ -86,7 +86,7 @@ const FormProfileCustomer= () => {
         </li>
    
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Τ.Κ.</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ταχυδρομικός κωδικός</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{postal_code}</div>
           
         </li>

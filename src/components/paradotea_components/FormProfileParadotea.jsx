@@ -82,7 +82,7 @@ const FormProfileParadotea=() =>{
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Title</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Τίτλος παραδοτέου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{title}</div>
            
         </li>
@@ -104,12 +104,12 @@ const FormProfileParadotea=() =>{
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Αριθμός Παραδοτέου</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Παραδοτέο (Αριθμός)</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{part_number}</div>
           
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Παράδοσης</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία υποβολής</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(delivery_date)} inline showWeek />
@@ -122,17 +122,17 @@ const FormProfileParadotea=() =>{
 
             <TabView>
                 {estimate_payment_date!=null&&(
-                <TabPanel header="Best Case">
+                <TabPanel header="Ημερομηνία πληρωμής (εκτίμηση)">
                 <Calendar value={new Date(estimate_payment_date)} inline showWeek />
                 </TabPanel>
                 )}
                 {estimate_payment_date_2!=null&&(
-                <TabPanel header="Medium Case">
+                <TabPanel header="Ημερομηνία πληρωμής (εκτίμηση 2)">
                     <Calendar value={new Date(estimate_payment_date_2)} inline showWeek/>
                 </TabPanel>
                 )}
                 {estimate_payment_date_3!=null&&(
-                    <TabPanel header="Worst Case">
+                    <TabPanel header="Ημερομηνία πληρωμής (εκτίμηση 3)">
                         <Calendar value={new Date(estimate_payment_date_3)} inline showWeek/>
                     </TabPanel>
                 )}
@@ -143,7 +143,7 @@ const FormProfileParadotea=() =>{
    
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ποσοστό</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ποσοστό σύμβασης</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
             
             <Knob value={percentage}  />
@@ -161,7 +161,7 @@ const FormProfileParadotea=() =>{
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">ΑΡΧΙΚΟ ΠΟΣΟ</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό  (καθαρή αξία)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -177,7 +177,7 @@ const FormProfileParadotea=() =>{
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">ΠΟΣΟ Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό ΦΠΑ</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_vat)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -193,7 +193,7 @@ const FormProfileParadotea=() =>{
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">ΣΥΝΟΛΙΚΟ ΠΟΣΟ</span>
+                    <span className="block text-500 font-medium mb-3">Σύνολο</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_total)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>

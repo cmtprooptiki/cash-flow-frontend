@@ -185,10 +185,10 @@ const FormEditDoseis = () =>
                     <p className='has-text-centered'>{msg}</p>
                 
                         <div className="field">
-                            <label className="label">ΠΑΡΟΧΟΙ</label>
+                            <label className="label">Προμηθευτής-έξοδο</label>
                             <div className="control">
                                 <select className="input" onChange={handleYpoxreoseisChange} value={ypoxreoseis_id}>
-                                    <option value= "" disabled>Επιλέξτε ΠΑΡΟΧΟ</option>
+                                    <option value= "" disabled>Επιλέξτε Προμηθευτή</option>
                                 {ypoxreoseis.map((ypoxreosh, index) => (
                                 <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
                                 ))}
@@ -215,7 +215,7 @@ const FormEditDoseis = () =>
                 </div>
 
                     <div className="field">
-                    <label htmlFor="estimate_payment_date">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
+                    <label htmlFor="estimate_payment_date">Εκτιμώμενη ημερομηνία πληρωμής</label>
                     <div className="control">
 
                     <Calendar id="estimate_payment_date"  value={new Date(estimate_payment_date)} onChange={(e)=> setEstimate_Payment_Date(e.target.value)}  inline showWeek />
@@ -232,7 +232,7 @@ const FormEditDoseis = () =>
                     </div> */}
 
                     <div className="field">
-                        <label  className="label">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
+                        <label  className="label">Πραγματική ημερομηνία πληρωμής</label>
                         <div className="control">
                         <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
 

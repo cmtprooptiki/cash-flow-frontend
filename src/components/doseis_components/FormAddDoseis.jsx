@@ -159,10 +159,10 @@ const FormAddDoseis = () => {
           <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Δόσης</span></Divider></div>
 
           <div className="field">
-                    <label className="label">Ονομα Παρόχου</label>
+                    <label className="label">Προμηθευτής-έξοδο</label>
                 <div className="control">
                     <select className="input" onChange={(e) => handleYpoxreoseisChange(e)} defaultValue="">
-                            <option value="" disabled>Επιλέξτε Πάροχο</option>
+                            <option value="" disabled>Επιλέξτε Προμηθευτή</option>
                             {ypoxreoseis.map((ypoxreosh, index) => (
                                 <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
                             ))}
@@ -179,7 +179,7 @@ const FormAddDoseis = () => {
               </div>
 
               <div className="field">
-                  <label htmlFor="name1">ΠΟΣΟ ΔΟΣΗΣ</label>
+                  <label htmlFor="name1">Ποσό Δόσης</label>
                   <div className="control">
 
                   {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
@@ -190,7 +190,7 @@ const FormAddDoseis = () => {
               </div>
 
                 <div className="field">
-                    <label htmlFor="estimate_payment_date">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΟΣΗΣ</label>
+                    <label htmlFor="estimate_payment_date">Εκτιμώμενη ημερομηνία πληρωμής</label>
                     <div className="control">
 
                     <Calendar id="estimate_payment_date"  value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} inline showWeek />
@@ -199,7 +199,7 @@ const FormAddDoseis = () => {
 
 
                 <div className="field">
-                    <label htmlFor="actual_payment_date">ΗΜΕΡΟΜΗΝΙΑ ΕΞΟΦΛΗΣΗΣ ΔΟΣΗΣ</label>
+                    <label htmlFor="actual_payment_date">Πραγματική ημερομηνία πληρωμής</label>
                     <div className="control">
 
                     <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />

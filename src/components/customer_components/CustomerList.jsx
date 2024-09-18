@@ -198,22 +198,22 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             emptyMessage="No customers found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="name" filterField="name" 
+                <Column header="Πελάτης" filterField="name" 
                 showFilterMatchModes={false} 
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={customerBodyTemplate} 
                     filter filterElement={customerFilterTemplate} />  
               
-                <Column field="afm" header="afm"  filter filterPlaceholder="Search by afm"  style={{ minWidth: '12rem' }}></Column>
+                <Column field="afm" header="ΑΦΜ"  filter filterPlaceholder="Search by afm"  style={{ minWidth: '12rem' }}></Column>
 
-                <Column field="phone"  header="phone"  filter filterPlaceholder="Search by phone" style={{ minWidth: '12rem' }}></Column>
+                <Column field="phone"  header="Τηλέφωνο"  filter filterPlaceholder="Search by phone" style={{ minWidth: '12rem' }}></Column>
                 <Column field="email" header="email"  filter filterPlaceholder="Search by email"  style={{ minWidth: '12rem' }}></Column>
-                <Column field="address"  header="address"  filter filterPlaceholder="Search by address" style={{ minWidth: '12rem' }}></Column>
-                <Column field="postal_code" header="postal_code"  filter filterPlaceholder="Search by postal_code"  style={{ minWidth: '12rem' }}></Column>
+                <Column field="address"  header="Διεύθυνση"  filter filterPlaceholder="Search by address" style={{ minWidth: '12rem' }}></Column>
+                <Column field="postal_code" header="Ταχυδρομικός κωδικός"  filter filterPlaceholder="Search by postal_code"  style={{ minWidth: '12rem' }}></Column>
 
 
 
-                <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
 
  </DataTable>
 

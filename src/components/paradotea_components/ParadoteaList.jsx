@@ -371,32 +371,32 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No customers found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column field="part_number"  header="part_number"  filter filterPlaceholder="Search by part number" style={{ minWidth: '12rem' }}></Column>
-                <Column field="title" header="title"  filter filterPlaceholder="Search by title"  style={{ minWidth: '12rem' }}></Column>
-                <Column header="delivery_date" filterField="delivery_date" dataType="date" style={{ minWidth: '5rem' }} body={deliveryDateBodyTemplate} filter filterElement={deliveryDateFilterTemplate} ></Column>
+                <Column field="part_number"  header="Παραδοτέο (Αριθμός)"  filter filterPlaceholder="Search by part number" style={{ minWidth: '12rem' }}></Column>
+                <Column field="title" header="Τίτλος παραδοτέου"  filter filterPlaceholder="Search by title"  style={{ minWidth: '12rem' }}></Column>
+                <Column header="Ημερομηνία υποβολής" filterField="delivery_date" dataType="date" style={{ minWidth: '5rem' }} body={deliveryDateBodyTemplate} filter filterElement={deliveryDateFilterTemplate} ></Column>
 
-                <Column field="percentage" header="percentage"  style={{ minWidth: '12rem' }}></Column>
+                <Column field="percentage" header="Ποσοστό σύμβασης"  style={{ minWidth: '12rem' }}></Column>
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
-                <Column header="ammount" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="ammount_vat" filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="ammount_total" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Ποσό  (καθαρή αξία)" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Ποσό ΦΠΑ " filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Σύνολο" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
        
-                <Column header="estimate_payment_date" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
-                <Column header="estimate_payment_date_2" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
-                <Column header="estimate_payment_date_3" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
+                <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
+                <Column header="Ημερομηνία πληρωμής  (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
+                <Column header="Ημερομηνία πληρωμής  (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
                 {/* <Column  field="delivery_date" header="delivery_date" dataType="date" style={{ minWidth: '10rem' }} ></Column> */}
                 {/* <Column field="erga_id" header="erga_id" dataType="numeric"  sortable style={{ minWidth: '2rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate}  ></Column> */}
                 {/* <Column header="erga.name" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                    ></Column>
                  */}
 
-            <Column header="erga" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+            <Column header="Έργα" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
 
-             <Column header="timologia" filterField="timologia.invoice_number" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+             <Column header="Τιμολόγια" filterField="timologia.invoice_number" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={timologiaBodyTemplate} filter filterElement={timologiaFilterTemplate} />
-                <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
 
  </DataTable>
        
