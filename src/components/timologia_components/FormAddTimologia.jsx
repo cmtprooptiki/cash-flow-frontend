@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useRef } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -11,6 +11,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
+
+import { Toast } from 'primereact/toast'; // Import Toast component
+import { Tooltip } from 'primereact/tooltip'; // For optional tooltip on info icon
+import { PrimeIcons } from 'primereact/api';  // Import PrimeIcons
+import CustomToast from '../CustomToast';
+
 const FormAddTimologia = () => {
 
     const[tempErga,setTempErga]=useState("");
@@ -34,12 +40,21 @@ const FormAddTimologia = () => {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
+    // const toast = useRef(""); // Reference for the toast
 
 
     useEffect(()=>{
         getErga()
     },[]);
 
+    // const showInfo = (text) => {
+    //     toast.current.show({
+    //         severity: 'info',
+    //         summary: 'Πληροφορία',
+    //         detail: text,
+    //         life: 3000,
+    //     });
+    // };
     const getErga = async() =>{
         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
         setErga(response.data);
@@ -140,6 +155,8 @@ const FormAddTimologia = () => {
     return(
 
         <div >
+          
+
         <h1 className='title'>Προσθήκη Τιμολογίου</h1>
       <form onSubmit={saveTimologia}>
       <div className="grid">
@@ -149,6 +166,8 @@ const FormAddTimologia = () => {
 
               <div className="field">
                   <label htmlFor="name1">Κωδικός Τιμολογίου</label>
+                  <CustomToast txtmsg="Ο κωδικός που εχει δημιουργιθεί απο το λογηστίριο για το συγκεκριμένο τιμολόγιο"/>
+
                   <div className="control">
 
                   <InputText id="invoice_number" type="text" value={invoice_number} onChange={(e)=> setInvoice_Number(e.target.value)} />
@@ -169,6 +188,8 @@ const FormAddTimologia = () => {
 
               <div className="field">
                 <label className="label">Παραδοτεα</label>
+                <CustomToast  txtmsg="Υπαρχει η δυνατότητα τιμολόγισης ενός η και περισόττερων παραδοτέων που αφορούν το ίδιο Εργο"/>
+
                 <div className="control">
                     <Select
                     isMulti
@@ -205,6 +226,9 @@ const FormAddTimologia = () => {
 
                 <div className="field">
                     <label htmlFor="invoice_date">Ημερομηνία Τιμολόγισης</label>
+                    {/* <Button icon="pi pi-info-circle" className="p-button-rounded p-button-info p-button-text" onClick={(e)=> showInfo("message test")} /> */}
+                    <CustomToast txtmsg="Η ημερομηνία που αναγράφεται πάνω στο τιμόλογιο που θέλουμε να καταχωρίσουμε"/>
+
                     <div className="control">
 
                     <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_date(e.target.value)} inline showWeek />
@@ -214,6 +238,7 @@ const FormAddTimologia = () => {
 
                 <div className="field">
                     <label htmlFor="actual_payment_date">Εκτιμώμενη Πληρωμής/ Ημερομηνία Εξόφλισης</label>
+                    <CustomToast txtmsg="Εκτιμώμενη Ημερομηνία που επρόκειτο να πληρωθεί το τιμολόγιο.Εαν πληρωθεί τοτε μιλάμε για ημερομηνία εξόφλισης"/>
                     <div className="control">
 
                     <Calendar id="actual_payment_date"  value={actual_payment_date} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />

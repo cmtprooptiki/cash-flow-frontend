@@ -233,6 +233,8 @@ const FormEditYpoxreoseis = () => {
                             <div className="control">
                                 <Button label="Clear" onClick={clearInvoiceDate} className="p-button-secondary mt-2" type="button"/>
                             </div>
+
+                            
                             <Divider></Divider>
                         </div>
                         <Divider></Divider>
