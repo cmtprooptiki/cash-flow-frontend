@@ -98,13 +98,13 @@ const[logoImage,setLogoImage]=useState(null);
            
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ΟΝΟΜΑΣΙΑ ΕΡΓΟΥ</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Έργο</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ShortName:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ακρώνυμο έργου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={shortname} className="mr-2" />
                
@@ -113,13 +113,13 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ΚΑΤΗΓΟΡΙΑ ΕΡΓΟΥ Id: </div>
+            <div className="text-500 w-6 md:w-2 font-medium">Κατηγορία Έργου Id: </div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/ergacat/edit/${erga_cat_id}`}>{erga_cat_id}</a></div>
            
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ΠΕΛΑΤΗΣ Id: </div>
+            <div className="text-500 w-6 md:w-2 font-medium">Id Πελάτη: </div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/customer/profile/${customer_id}`}>{customer_id}</a></div>
            
         </li>
@@ -131,7 +131,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ΧΡΩΜΑ:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Χρώμα:</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={color} className="mr-2" />
                
@@ -140,7 +140,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Status Signed</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση έργου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={status} className="mr-2" />
                
@@ -149,7 +149,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">ΠΟΣΟ ΣΥΜΒΑΣΗΣ:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Συμβατική αξία (καθαρό ποσό):</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={formatCurrency(sign_ammount_no_tax)} className="mr-2" />
                
@@ -170,7 +170,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Έναρξης:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία έναρξης (εκτίμηση):</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(estimate_start_date)} inline showWeek />
@@ -193,15 +193,14 @@ const[logoImage,setLogoImage]=useState(null);
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Αρχικό Ποσό</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό (καθαρή αξία)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span>
+        
         </div>
     </div>
 
@@ -209,15 +208,15 @@ const[logoImage,setLogoImage]=useState(null);
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό ΦΠΑ</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_vat)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span>
+            {/* <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span> */}
         </div>
     </div>
 
@@ -225,22 +224,22 @@ const[logoImage,setLogoImage]=useState(null);
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό Είσπραξη με Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Σύνολο</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_total)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span>
+            {/* <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span> */}
         </div>
     </div>
         </div>
         <Divider />
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 1:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία πληρωμής (εκτίμηση):</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(estimate_payment_date)} inline showWeek />
@@ -252,7 +251,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 2:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία πληρωμής (εκτίμηση 2)</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(estimate_payment_date_2)} inline showWeek />
@@ -264,7 +263,7 @@ const[logoImage,setLogoImage]=useState(null);
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Εκτιμώμενη Ημερομηνία Πληρωμής 3:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία πληρωμής (εκτίμηση 3)</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(estimate_payment_date_3)} inline showWeek />
