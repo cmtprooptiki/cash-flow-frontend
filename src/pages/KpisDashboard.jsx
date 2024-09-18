@@ -65,6 +65,7 @@ const KpisDashboard = () => {
     const [chartSeries2, setChartSeries2] = useState([]);
     const [chartSeries3, setChartSeries3] = useState([]);
 
+    const [ergaLogos, setErgaLogos] = useState([]);
 
 
     const dispatch = useDispatch();
@@ -222,16 +223,27 @@ const [chartOptions, setChartOptions] = useState({
         align: 'center',
         floating: true
     },
-    tooltip: {
-        y: {
-          formatter: function (value) {
-            return Number(value).toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            }) + ' €';
-          }
-        }
-      }
+    // tooltip: {
+    //   custom: function({ series, seriesIndex, dataPointIndex, w }) {
+    //     const ergaName = w.globals.labels[dataPointIndex]; // Get project name from the chart
+    //     const projectAmount = series[seriesIndex][dataPointIndex]; // Get project amount
+    //     const logoImage = ergaLogos; // Get the corresponding logoImage URL
+    //     console.log("images ",logoImage);
+    //     console.log("hellooooo")
+    //     // Return custom HTML with the logo image and data
+    //     return (
+    //       '<div style="padding: 10px;">' +
+    //       `<strong>${ergaName}</strong><br/>` +
+    //       `${logoImage}`+
+    //       `<img src="${logoImage}" alt="Logo" style="width: 50px; height: auto;"/><br/>` +
+    //       'Ποσό: ' + projectAmount.toLocaleString('en-US', {
+    //         minimumFractionDigits: 2,
+    //         maximumFractionDigits: 2
+    //       }) + ' €' +
+    //       '</div>'
+    //     );
+    //   }
+    // }
   });
 
 
@@ -387,9 +399,17 @@ const [chartOptions, setChartOptions] = useState({
             // Extract names and amounts
             const ergaNames = ergaData.map(item => item.name);
             const ergaAmounts = ergaData.map(item => item.ammount_total);
-    
+            const ergaLogos = ergaData.map(item => {
+              // Check if logoImage is null or undefined, if so return the standard URL, otherwise split and pop the filename
+              return item.logoImage
+                ? item.logoImage.split('/').pop()  // Get the filename from the valid logo URL
+                : 'https://cdn1.iconfinder.com/data/icons/users-pack-mino-io/24/user-3-not-allowed-512.png';  // Standard URL for missing or null images
+            });
+
             console.log("Erga Names:", ergaNames);
             console.log("Erga Amounts:", ergaAmounts);
+            console.log("Erga Amounts:", ergaLogos);
+
     
             // Update the chart options and series
             setChartOptions2(prevOptions => ({
@@ -401,7 +421,7 @@ const [chartOptions, setChartOptions] = useState({
             }));
     
             setChartSeries2([{ name: 'Ποσό', data: ergaAmounts }]);
-    
+            setErgaLogos(ergaLogos); // Store the logos in a separate state
             // Set the count for unique IDs if needed
             const uniqueIds = [...new Set(ergaData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
