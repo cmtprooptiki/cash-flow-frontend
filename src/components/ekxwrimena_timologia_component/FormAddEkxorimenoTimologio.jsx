@@ -121,21 +121,21 @@ const FormAddEkxorimenoTimologio = () =>
 
         
                     <div className="field">
-                        <label className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
+                        <label className="label">Εκχώρηση (€)</label>
                         <div className="control">
                             <input type="text" className="input" value={bank_ammount} onChange={(e) => setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ' />
                         </div>
                     </div>
 
                     <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+                        <label  className="label">Ημερομηνία πληρωμής από τράπεζα (εκτίμηση)</label>
                         <div className="control">
                             <Calendar id="bank_estimated_date"  value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} inline showWeek />
                         </div>
                     </div>
 
                     <div className="field">
-                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
+                        <label  className="label">Ημερομηνία πληρωμής από τράπεζα</label>
                         <div className="control">
                             <Calendar id="bank_date"  value={bank_date ? new Date(bank_date) : null} onChange={(e)=> setBank_Date(e.target.value)} inline showWeek />
                         </div>
@@ -147,14 +147,14 @@ const FormAddEkxorimenoTimologio = () =>
                
 
                     <div className="field">
-                        <label  className="label">ΠΟΣΟ ΠΕΛΑΤΗ</label>
+                        <label  className="label">Υπόλοιπο από πελάτη (€)</label>
                         <div className="control">
                             <input type="text" className="input" value={customer_ammount} onChange={(e)=> setCustomer_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΠΕΛΑΤΗ'/>
                         </div>
                     </div>
 
                     <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
+                        <label  className="label">Ημερομηνία πληρωμής από πελάτη (εκτίμηση)</label>
                         <div className="control">
                             <Calendar id="cust_estimated_date"  value={cust_estimated_date} onChange={(e)=> setEstimated_Cust_Date(e.target.value)} inline showWeek />
                         </div>
@@ -162,7 +162,7 @@ const FormAddEkxorimenoTimologio = () =>
 
 
                     <div className="field">
-                        <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
+                        <label  className="label">Ημερομηνία πληρωμής από πελάτη</label>
                         <div className="control">
                             <Calendar id="cust_date"  value={cust_date ? new Date(cust_date) : null} onChange={(e)=> setCust_Date(e.target.value)} inline showWeek />
                         </div>

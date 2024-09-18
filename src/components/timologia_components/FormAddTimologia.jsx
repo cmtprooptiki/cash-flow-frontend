@@ -204,7 +204,7 @@ const FormAddTimologia = () => {
 
 
               <div className="field">
-                    <label className="label">Σύνολο Ποσό</label>
+                    <label className="label">Ποσό τιμολογίου  (καθαρή αξία)</label>
                     <div className="control">
                         <InputText  type="text" className="input" value={totalAmmount}  readOnly />
                     </div>
@@ -218,14 +218,14 @@ const FormAddTimologia = () => {
                 </div>
 
                 <div className="field">
-                    <label className="label">Σύνολο Ποσό με Φ.Π.Α.</label>
+                    <label className="label">Πληρωτέο</label>
                     <div className="control">
                         <InputText type="text" className="input" value={totalAmmountTotal}  readOnly />
                     </div>
                 </div>
 
                 <div className="field">
-                    <label htmlFor="invoice_date">Ημερομηνία Τιμολόγισης</label>
+                    <label htmlFor="invoice_date">Ημερομηνία έκδοσης τιμολογίου</label>
                     {/* <Button icon="pi pi-info-circle" className="p-button-rounded p-button-info p-button-text" onClick={(e)=> showInfo("message test")} /> */}
                     <CustomToast txtmsg="Η ημερομηνία που αναγράφεται πάνω στο τιμόλογιο που θέλουμε να καταχωρίσουμε"/>
 
@@ -237,7 +237,7 @@ const FormAddTimologia = () => {
 
 
                 <div className="field">
-                    <label htmlFor="actual_payment_date">Εκτιμώμενη Πληρωμής/ Ημερομηνία Εξόφλισης</label>
+                    <label htmlFor="actual_payment_date">Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</label>
                     <CustomToast txtmsg="Εκτιμώμενη Ημερομηνία που επρόκειτο να πληρωθεί το τιμολόγιο.Εαν πληρωθεί τοτε μιλάμε για ημερομηνία εξόφλισης"/>
                     <div className="control">
 
@@ -246,7 +246,7 @@ const FormAddTimologia = () => {
                 </div>
 
                 <div className="field">
-                    <label className="label">Παρατηρήσεις</label>
+                    <label className="label">Σχόλια</label>
                     <div className="control">
                     <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
 

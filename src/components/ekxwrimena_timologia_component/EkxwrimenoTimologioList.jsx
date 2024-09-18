@@ -321,18 +321,18 @@ const EkxwrimenoTimologioList = () =>
                 ]} header={header}
                 emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
                 <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
-                <Column header="bank_ammount" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="customer_ammount" filterField="customer_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={customer_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="bank_estimated_date" filterField="bank_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_estimated_dateDateBodyFilterTemplate} filter filterElement={bank_estimated_dateDateFilterTemplate} ></Column>
-                <Column header="bank_date" filterField="bank_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_dateDateBodyFilterTemplate} filter filterElement={bank_dateDateFilterTemplate} ></Column>
+                <Column header="Εκχώρηση (€)" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Υπόλοιπο από πελάτη (€)" filterField="customer_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={customer_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Ημερομηνία πληρωμής από τράπεζα (εκτίμηση)" filterField="bank_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_estimated_dateDateBodyFilterTemplate} filter filterElement={bank_estimated_dateDateFilterTemplate} ></Column>
+                <Column header="Ημερομηνία πληρωμής από τράπεζα" filterField="bank_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_dateDateBodyFilterTemplate} filter filterElement={bank_dateDateFilterTemplate} ></Column>
 
-                <Column header="cust_estimated_date" filterField="cust_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_estimated_dateDateBodyFilterTemplate} filter filterElement={cust_estimated_dateDateFilterTemplate} ></Column>
-                <Column header="cust_date" filterField="cust_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_dateDateBodyFilterTemplate} filter filterElement={cust_dateDateFilterTemplate} ></Column>
+                <Column header="Ημερομηνία πληρωμής από πελάτη (εκτίμηση)" filterField="cust_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_estimated_dateDateBodyFilterTemplate} filter filterElement={cust_estimated_dateDateFilterTemplate} ></Column>
+                <Column header="Ημερομηνία πληρωμής από πελάτη" filterField="cust_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_dateDateBodyFilterTemplate} filter filterElement={cust_dateDateFilterTemplate} ></Column>
 
                 <Column field="timologia_id" header="timologia_id" filter filterPlaceholder="Search by timologia_id" style={{ minWidth: '5rem' }} />
-                <Column field="status_bank_paid" header="status_bank_paid" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBankPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
-                <Column field="status_customer_paid" header="status_customer_paid" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
-                <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                <Column field="status_bank_paid" header="Εκχώρηση (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBankPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
+                <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
 
            </DataTable>
     </div>

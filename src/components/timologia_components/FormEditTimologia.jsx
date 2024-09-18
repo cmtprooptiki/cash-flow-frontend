@@ -340,28 +340,28 @@ const FormEditTimologia = () => {
                             </div>
 
                             <div className="field">
-                                <label className="label">Σύνολο Ποσό</label>
+                                <label className="label">Ποσό τιμολογίου  (καθαρή αξία)</label>
                                 <div className="control">
                                     <InputText type="text" className="input" value={totalAmmount} readOnly />
                                 </div>
                             </div>
 
                             <div className="field">
-                                <label className="label">Σύνολο Φ.Π.Α.</label>
+                                <label className="label">Ποσό Φ.Π.Α.</label>
                                 <div className="control">
                                     <InputText type="text" className="input" value={totalAmmountVat} readOnly />
                                 </div>
                             </div>
 
                             <div className="field">
-                                <label className="label">Σύνολο Τελικό Ποσό</label>
+                                <label className="label">Πληρωτέο</label>
                                 <div className="control">
                                     <InputText type="text" className="input" value={totalAmmountTotal} readOnly />
                                 </div>
                             </div>
 
                             <div className="field">
-                                <label className="label">Ημερομηνία Τιμολογίου</label>
+                                <label className="label">Ημερομηνία έκδοσης τιμολογίου</label>
                                 <div className="control">
                                 <Calendar id="invoice_date"  value={new Date(invoice_date)} onChange={(e)=> setInvoice_date(e.target.value)}  inline showWeek />
 
@@ -369,13 +369,13 @@ const FormEditTimologia = () => {
                             </div>
 
                             <div className="field">
-                                <label className="label">Εκτιμώμενη Πληρωμής/ Ημερομηνία Εξόφλισης</label>
+                                <label className="label">Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</label>
                                 <div className="control">
                                 <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />                                </div>
                             </div>
 
                             <div className="field">
-                                <label className="label">Ποσό Φόρου Εισοδήματος</label>
+                                <label className="label">Πληρωτέο</label>
                                 <div className="control">
                                     <InputText type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e) => setAmmount_Of_Income_Tax_Incl(e.target.value)} />
                                 </div>

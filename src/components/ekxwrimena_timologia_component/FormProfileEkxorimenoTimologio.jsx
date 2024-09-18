@@ -89,7 +89,7 @@ const FormProfileEkxorimenoTimologio = () =>
         <div className="col-12 lg:col-4">
             <div className="p-3 h-full">
                 <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-                    <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής απο Τράπεζα</div>
+                    <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής από τράπεζα</div>
                     {/* <div className="text-600">Plan description</div> */}
                     
                     <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
@@ -108,7 +108,7 @@ const FormProfileEkxorimenoTimologio = () =>
         <div className="col-12 lg:col-4">
             <div className="p-3 h-full">
                 <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-                    <div className="text-900 font-medium text-xl mb-2">Εκτιμώμενη Ημερομηνία πληρωμής απο Τράπεζα</div>
+                    <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής από τράπεζα (εκτίμηση)</div>
                     {/* <div className="text-600">Plan description</div> */}
                     
                     <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
@@ -132,7 +132,7 @@ const FormProfileEkxorimenoTimologio = () =>
 <div className="col-12 lg:col-4">
     <div className="p-3 h-full">
         <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-            <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής απο Πελάτη</div>
+            <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής από πελάτη</div>
             {/* <div className="text-600">Plan description</div> */}
             
             <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
@@ -151,7 +151,7 @@ const FormProfileEkxorimenoTimologio = () =>
 <div className="col-12 lg:col-4">
     <div className="p-3 h-full">
         <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-            <div className="text-900 font-medium text-xl mb-2">Εκτιμώμενη Ημερομηνία πληρωμής απο Πελάτη</div>
+            <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πληρωμής από πελάτη (εκτίμηση)</div>
             {/* <div className="text-600">Plan description</div> */}
             
             <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
@@ -187,7 +187,7 @@ const FormProfileEkxorimenoTimologio = () =>
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό είσπραξης απο Τράπεζα</span>
+                    <span className="block text-500 font-medium mb-3">Εκχώρηση (€)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(bank_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -203,15 +203,15 @@ const FormProfileEkxorimenoTimologio = () =>
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό Είσπραξης απο πελάτη</span>
+                    <span className="block text-500 font-medium mb-3">Υπόλοιπο από πελάτη (€)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(customer_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span>
+            {/* <span className="text-green-500 font-medium">%52+ </span>
+            <span className="text-500">since last week</span> */}
         </div>
     </div>
 
@@ -219,7 +219,7 @@ const FormProfileEkxorimenoTimologio = () =>
 
 </div>
 <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση πληρωμής τράπεζας:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Εκχώρηση (κατάσταση):</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={status_bank_paid} className="mr-2" />
                
@@ -228,7 +228,7 @@ const FormProfileEkxorimenoTimologio = () =>
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση πληρωμής πελάτη:</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Πληρωμή υπολοίπου από πελάτη (κατάσταση):</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={status_customer_paid} className="mr-2" />
                
