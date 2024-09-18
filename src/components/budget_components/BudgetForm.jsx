@@ -214,7 +214,8 @@ const BudgetForm = () => {
                     // If a budget exists, set the form to update mode
                     const budget = response.data[0]; // Assuming you only have one record
                     setAmmount(budget.ammount);
-                    setDate(formatDateToInput(budget.date));
+                    setDate(formatDateToInput(new Date().toLocaleDateString()));
+                    console.log("date : ", date)
                     setExistingBudgetId(budget.id); // Store the budget ID
                     setIsUpdateMode(true);
                 } else {
@@ -237,7 +238,7 @@ const BudgetForm = () => {
         try {
             await axios.patch(`${apiBaseUrl}/budget/${existingBudgetId}`, {
                 ammount: ammount,
-                date: date
+                date: new Date().toLocaleDateString()
             });
             navigate("/budget");
         } catch (error) {

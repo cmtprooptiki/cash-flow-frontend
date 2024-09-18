@@ -14,6 +14,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
+import { MultiSelect } from 'primereact/multiselect';
 import { Dialog } from 'primereact/dialog';
 
 const PaidExodaList = () => {
@@ -29,8 +30,9 @@ const PaidExodaList = () => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
     const [combinedData,setCombinedData]=useState([])
+    const [provider, setProvider] = useState([])
     
-    
+    const [ypoxreoseis, setYpoxreoseis] = useState([])
     const[selectedIdType,setSelectedIdType]=useState([])
     const [visible, setVisible] = useState(false); // State to control the visibility of the popup
     const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
@@ -49,11 +51,21 @@ const PaidExodaList = () => {
         await getIncomePar();
         await getIncomeTim();
         await getDaneia();
+        await getYpoxreoseis();
     };
 
     const getDoseis = async () =>{
         const response = await axios.get(`${apiBaseUrl}/doseis`)
         setDoseis(response.data)
+    }
+    const getYpoxreoseis = async() =>
+    {
+        const response = await axios.get(`${apiBaseUrl}/ypo`)
+        const uniqueNames = [...new Set(response.data.map(item => item.provider || 'N/A'))];
+        console.log("Unique names:",uniqueNames);
+        setProvider(uniqueNames);
+        // setCustomer(response.data);
+        setYpoxreoseis(response.data)
     }
 
     const getEkxorimena = async () => {
@@ -111,6 +123,7 @@ const PaidExodaList = () => {
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            name: { value: null, matchMode: FilterMatchMode.IN },
 
         });
         setGlobalFilterValue('');
@@ -183,6 +196,35 @@ const statusBodyTemplate = (rowData) => {
     return <Tag value={rowData.type} severity={getSeverity(rowData.type)} />;
 };
 
+const NameBodyTemplate = (rowData) =>
+{
+    console.log("RRR data: ", rowData)
+    const provider_name = rowData.provider || 'N/A';  
+    return (
+        <div className="flex align-items-center gap-2">
+            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+            <span>{provider_name}</span>
+        </div>
+    );
+}
+
+const NameFilterTemplate = (options) =>
+{
+    console.log("Provider Options in Filter: ", provider);
+    // return <Dropdown value={options.value} options={provider} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={NameBodyTemplate} placeholder="Select One" className="p-column-filter" showClear />;
+    return (<Dropdown value={options.value} options={provider} itemTemplate={NameItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+}
+
+const NameItemTemplate = (option) =>
+{
+    return (
+        <div className="flex align-items-center gap-2">
+            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+            <span>{option}</span>
+        </div>
+    );
+}
+
 const statusFilterTemplate = (options) => {
     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
 };
@@ -229,17 +271,24 @@ const idBodyTemplate = (rowData) => {
 
     
     useEffect(()=>{
+        
         const combinedData2 = [
+            
             // ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
             // ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
             // ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
             // ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
             // ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id }))
+            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id, provider: item.ypoxreosei?.provider?.trim() || 'N/A' }))
         ];
+        console.log("Combined Data: ", combinedData2);
         setCombinedData(combinedData2)
 
-    },[paradotea,ekxorimena,incomeTim,daneia,doseis])
+        const uniqueProviders = [...new Set(combinedData2.map(item => item.provider?.trim() || 'N/A'))];
+        console.log("Unique Providers (for filter): ", uniqueProviders);
+        setProvider(uniqueProviders); // Set provider options for the filter
+
+    },[doseis])
     
 
 
@@ -340,7 +389,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type','id']}
+            globalFilterFields={['date', 'income', 'type', 'name','id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
@@ -351,7 +400,11 @@ const idBodyTemplate = (rowData) => {
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
                 <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-
+                <Column header="name" filterField="name" 
+                showFilterMatchModes={false} 
+                  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={NameBodyTemplate} 
+                    filter filterElement={NameFilterTemplate} /> 
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
             </DataTable>

@@ -411,6 +411,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Estimate Payment Date Best Case: </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Estimate Payment Date Medium Case: </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
                         <p><strong>Estimate Payment Date Worst Case: </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
+                        <p><strong><a href = {`http://localhost:3000/paradotea/edit/${selectedRowData.id}`}>Edit Paradoteo</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/paradotea/profile/${selectedRowData.id}`}>Paradoteo more info</a></strong></p>
                         {/* <p><strong>Erga: </strong>{selectedRowData.erga.name.value}</p> */}
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
@@ -428,6 +430,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ποσό ΦΠΑ:</strong>{formatCurrency(selectedRowData.ammount_tax_incl)}</p>
                         <p><strong>Τελικό Ποσό:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
                         <p><strong>Estimate Date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/timologia/edit/${selectedRowData.id}`}>Edit Timologio</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/timologia/profile/${selectedRowData.id}`}>Timologio more info</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -441,6 +445,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Name:</strong> {selectedRowData.name}</p>
                         <p><strong>Ammount:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Estimate Payment Date:</strong> {formatDate(selectedRowData.payment_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/daneia/edit/${selectedRowData.id}`}>Edit Daneio</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/daneia/profile/${selectedRowData.id}`}>Daneio more info</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -456,6 +462,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Bank Estimate Payment Date: </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
                         <p><strong>Customer Ammount: </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
                         <p><strong>Customer Estimate Payment Date: </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/ek_tim/edit/${selectedRowData.id}`}>Edit Ekxwrisi</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/ek_tim/profile/${selectedRowData.id}`}>Ekxwrisi more info</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
