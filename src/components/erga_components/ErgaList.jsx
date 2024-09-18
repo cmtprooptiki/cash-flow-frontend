@@ -394,28 +394,28 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             emptyMessage="No customers found.">
                                 
 
-        <Column field="name" header="name" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
+        <Column field="name" header="Έργο" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
         <Column field="logoImage" header="Λογότυπο" body={imageBodyTemplate}></Column>
 
-        <Column field="shortname" header="shortname" filter filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
-        <Column header="sign_date" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
+        <Column field="shortname" header="Ακρώνυμο έργου" filter filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
+        <Column header="Ημερομηνία υπογραφής σύμβασης" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
 
-        <Column field="status" header="status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-        <Column header="sign_ammount_no_tax" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} />
+        <Column header="Κατάσταση έργου" field="status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+        <Column header="Συμβατική αξία (καθαρό ποσό)" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} />
 
-        <Column header="ammount" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="ammount_vat" filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="ammount_total" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="estimate_start_date" filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filter filterElement={estimateStartDateFilterTemplate} ></Column>
-        <Column header="estimate_payment_date" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
-        <Column header="estimate_payment_date_2" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
-        <Column header="estimate_payment_date_3" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
-        <Column header="project_manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+        <Column header="Ποσό  (καθαρή αξία)" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+        <Column header="Ποσό ΦΠΑ" filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
+        <Column header="Σύνολο" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
+        <Column header="Ημερομηνία έναρξης (εκτίμηση)" filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filter filterElement={estimateStartDateFilterTemplate} ></Column>
+        <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
+        <Column header="Ημερομηνία πληρωμής (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
+        <Column header="Ημερομηνία πληρωμής (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
+        <Column header="Project Manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter filterElement={projectManagerFilterTemplate} />
         
-        <Column field="customer.name" header="customer.name" filter filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
-        <Column field="erga_category.name" header="erga_category" filter filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
-        <Column header="actions" field="id" body={actionsBodyTemplate}/>
+        <Column field="customer.name" header="Όνομα Πελάτη" filter filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
+        <Column field="erga_category.name" header="Κατηγορία Έργου" filter filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
+        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
             body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
         {/* <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
