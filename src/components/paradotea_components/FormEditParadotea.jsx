@@ -23,8 +23,8 @@ const FormEditParadotea = () => {
     const[ammount_vat,setAmmount_Vat]=useState("");
     const[ammount_total,setAmmount_Total]=useState("");
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
-    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
-    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
+    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null);
+    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null);
 
     const [erga, setErga] = useState([])
 
@@ -130,6 +130,35 @@ const FormEditParadotea = () => {
         }
     };
 
+    const formatDate = (value) => {
+        let date = new Date(value);
+        let epochDate = new Date('1970-01-01T00:00:00Z');
+        if (date.getTime() === epochDate.getTime()) 
+        {
+            return null;
+        }
+        if (!isNaN(date)) {
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+        } else {
+            return "Invalid date";
+        }
+    };
+
+    const clearDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_2(null); // Clear the calendar date
+    };
+
+    const clearDate2 = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_3(null); // Clear the calendar date
+    }
+
     return(
 
         <div >
@@ -211,8 +240,11 @@ const FormEditParadotea = () => {
                     <label htmlFor="estimate_payment_date_2">Εκτιμωμένη Ημερομηνία Πληρωμής 2</label>
                     <div className="control">
 
-                    <Calendar id="estimate_payment_date_2"  value={new Date(estimate_payment_date_2)} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)}  inline showWeek />
+                    <Calendar id="estimate_payment_date_2"  value={estimate_payment_date_2 ? new Date(estimate_payment_date_2) : null} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)}  inline showWeek />
 </div>
+<div className="control">
+                            <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                 
                     </div>
 
@@ -220,8 +252,11 @@ const FormEditParadotea = () => {
                     <label htmlFor="estimate_payment_date_3">Εκτιμωμένη Ημερομηνία Πληρωμής 3</label>
                     <div className="control">
 
-                    <Calendar id="estimate_payment_date_3"  value={new Date(estimate_payment_date_3)} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)}  inline showWeek />
+                    <Calendar id="estimate_payment_date_3"  value={estimate_payment_date_3 ? new Date(estimate_payment_date_3) : null} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)}  inline showWeek />
 </div>
+<div className="control">
+                            <Button label="Clear" onClick={clearDate2} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                 
                     </div>
                 </div>

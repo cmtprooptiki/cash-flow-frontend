@@ -35,8 +35,8 @@ const FormAddErga = () => {
     const[ammount_vat,setAmmount_Vat]=useState(0)
     const[ammount_total,setAmmount_Total]=useState(0)
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
-    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
-    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
+    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null)
+    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null)
     const[erga_cat_id,setErga_cat_id]=useState(null)
     const[erga_cat_name,setErga_cat_name]=useState(null)
     const[erga_cat,setErga_Cat]=useState([])
@@ -115,6 +115,16 @@ const FormAddErga = () => {
                 setMsg(error.response.data.msg);
             }
         }
+    }
+
+    const clearDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_2(null); // Clear the calendar date
+    };
+
+    const clearDate2 = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_3(null); // Clear the calendar date
     }
 
   return (
@@ -258,6 +268,9 @@ const FormAddErga = () => {
                                         {/* <input type="date" className="input" value={estimate_payment_date_2} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/> */}
                                         <Calendar value={estimate_payment_date_2} onChange={(e) => setEstimate_Payment_Date_2(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/>
                                     </div>
+                                    <div className="control">
+                            <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                                 </div>
 
                                 <div className="field col-4">
@@ -266,6 +279,9 @@ const FormAddErga = () => {
                                         {/* <input type="date" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/> */}
                                         <Calendar value={estimate_payment_date_3} onChange={(e) => setEstimate_Payment_Date_3(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
                                     </div>
+                                    <div className="control">
+                            <Button label="Clear" onClick={clearDate2} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                                 </div>
                                 
                             </div>

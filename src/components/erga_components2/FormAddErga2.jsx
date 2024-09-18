@@ -18,6 +18,8 @@ import { Divider } from 'primereact/divider';
 
 
 const FormAddErga2 = () => {
+    const [logoImage, setLogoImage] = useState(null); // New state for profile image
+
     const[name,setName]=useState("");
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
@@ -33,8 +35,8 @@ const FormAddErga2 = () => {
     const[ammount_vat,setAmmount_Vat]=useState(0)
     const[ammount_total,setAmmount_Total]=useState(0)
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
-    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
-    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
+    const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null)
+    const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null)
     const[erga_cat_id,setErga_cat_id]=useState(null)
     const[erga_cat_name,setErga_cat_name]=useState(null)
     const[erga_cat,setErga_Cat]=useState([])
@@ -84,6 +86,7 @@ const FormAddErga2 = () => {
         e.preventDefault();
         try{
             await axios.post(`${apiBaseUrl}/erga`, {
+            logoImage:logoImage,
             name:name,
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
@@ -100,13 +103,28 @@ const FormAddErga2 = () => {
             estimate_payment_date_2: estimate_payment_date_2,
             estimate_payment_date_3: estimate_payment_date_3,
             erga_cat_id:erga_cat_id
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-            navigate("/esoda_step2");
+            navigate("/erga");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);
             }
         }
+    }
+
+    const clearDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_2(null); // Clear the calendar date
+    };
+
+    const clearDate2 = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setEstimate_Payment_Date_3(null); // Clear the calendar date
     }
 
   return (
@@ -129,6 +147,13 @@ const FormAddErga2 = () => {
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ' />
                                     </div>
                                 </div>
+
+                                <div className="field col-6">
+                                <label className="label">Λογότυπο Έργου</label> {/* New field for profile image */}
+                                <div className="control">
+                                    <input type="file" className="input" onChange={(e) => setLogoImage(e.target.files[0])} accept="image/*" />
+                                </div>
+                            </div>
 
                                 <div className="field col-6">
                                     <label  className="label">ΧΡΩΜΑ</label>
@@ -243,6 +268,9 @@ const FormAddErga2 = () => {
                                         {/* <input type="date" className="input" value={estimate_payment_date_2} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/> */}
                                         <Calendar value={estimate_payment_date_2} onChange={(e) => setEstimate_Payment_Date_2(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/>
                                     </div>
+                                    <div className="control">
+                            <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                                 </div>
 
                                 <div className="field col-4">
@@ -251,6 +279,9 @@ const FormAddErga2 = () => {
                                         {/* <input type="date" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/> */}
                                         <Calendar value={estimate_payment_date_3} onChange={(e) => setEstimate_Payment_Date_3(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
                                     </div>
+                                    <div className="control">
+                            <Button label="Clear" onClick={clearDate2} className="p-button-secondary mt-2" type="button"/>
+                        </div>
                                 </div>
                                 
                             </div>

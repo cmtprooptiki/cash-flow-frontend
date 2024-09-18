@@ -135,12 +135,18 @@ const ErgaList = () => {
     
     const formatDate = (value) => {
         let date = new Date(value);
+        let epochDate = new Date('1970-01-01T00:00:00Z');
+        if (date.getTime() === epochDate.getTime()) 
+        {
+            return null;
+        }
         if (!isNaN(date)) {
             return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
             });
+            
         } else {
             return "Invalid date";
         }
@@ -407,9 +413,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column header="project_manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter filterElement={projectManagerFilterTemplate} />
         
-        <Column field="customer_id" header="customer_id" filter filterPlaceholder="Search by customer id" style={{ minWidth: '5rem' }}/>
         <Column field="customer.name" header="customer.name" filter filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
-        <Column field="erga_cat_id" header="erga_cat_id" filter filterPlaceholder="Search by erga tag" style={{ minWidth: '5rem' }}/>
         <Column field="erga_category.name" header="erga_category" filter filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
         <Column header="actions" field="id" body={actionsBodyTemplate}/>
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
