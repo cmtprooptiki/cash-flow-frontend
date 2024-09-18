@@ -290,7 +290,7 @@ const Navbar =()=>{
                                     <a v-ripple className="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700  transition-duration-150 transition-colors p-ripple">
                                         {/* <Avatar image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png" shape="circle" />
                                         <span className="font-bold">Amy Elsner</span> */}
-                                        {console.log("here is the profile pci",user?.profileImage)}
+                                        {/* {console.log("here is the profile pci",user?.profileImage)} */}
                                          <Avatar
                                                     image={`http://localhost:5000/${user?.profileImage.split('/').pop()}`}
                                                     shape="circle"
