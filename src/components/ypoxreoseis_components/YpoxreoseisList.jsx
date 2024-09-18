@@ -305,22 +305,22 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No timologia found.">
                 <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column header="ypoxreoseis.provider" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column header="Προμηθευτής-έξοδο" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={providersBodyTemplate} filter filterElement={providersFilterTemplate} />
                 <Column field="ypoxreoseis.erga_id"  header="erga_id"  filter filterPlaceholder="Search by erga_id" style={{ minWidth: '12rem' }}></Column>
                
                
                
-                <Column header="ypoxreoseis.invoice_date" filterField="ypoxreoseis.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
+                <Column header="Ημερομηνία τιμολογίου" filterField="ypoxreoseis.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
-                <Column header="ypoxreoseis.total_owed_ammount" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="ypoxreoseis.ammount_vat" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
 
         
                
-                <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
 
  </DataTable>
        

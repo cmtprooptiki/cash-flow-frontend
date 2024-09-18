@@ -149,7 +149,7 @@ const FormEditYpoxreoseis = () => {
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Υποχρέωσης</span></Divider></div>
 
                         <div className="field">
-                            <label htmlFor="name1">Ονομα Παρόχου</label>
+                            <label htmlFor="name1">Προμηθευτής-έξοδο</label>
                             <div className="control">
                                 <InputText id="provider" type="text" value={provider} onChange={(e) => setProvider(e.target.value)} />
                             </div>
@@ -196,21 +196,21 @@ const FormEditYpoxreoseis = () => {
              
 
                         <div className="field">
-                            <label className="label">Ποσό χωρίς Φ.Π.Α.</label>
+                            <label className="label">Ποσό (σύνολο)</label>
                             <div className="control">
                                 <InputText type="text" className="input" value={total_owed_ammount}  />
                             </div>
                         </div>
 
                         <div className="field">
-                            <label className="label">Ποσό  Φ.Π.Α.</label>
+                            <label className="label">Ποσό  ΦΠΑ</label>
                             <div className="control">
                                 <InputText type="text" className="input" value={ammount_vat} readOnly />
                             </div>
                         </div>
 
                         <div className="field">
-                                 <label className="label">Tags</label>
+                                 <label className="label">Ετικέτες</label>
                                 <div className="control">
                                     <Select
                                         isMulti
@@ -225,7 +225,7 @@ const FormEditYpoxreoseis = () => {
                              </div>
 
                         <div className="field">
-                            <label className="label">Ημερομηνία Τιμολόγισης</label>
+                            <label className="label">Ημερομηνία τιμολογίου</label>
                             <div className="control">
                             <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)}  inline showWeek />
 

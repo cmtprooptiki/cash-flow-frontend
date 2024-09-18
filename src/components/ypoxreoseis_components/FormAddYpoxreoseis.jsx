@@ -102,7 +102,7 @@ const FormAddYpoxreoseis = () => {
             <div className="card p-fluid">
             <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Υποχρέωσεις</span></Divider></div>
             <div className="field">
-                    <label htmlFor="name1">ΟΝΟΜΑ ΠΑΡΟΧΟΥ</label>
+                    <label htmlFor="name1">Προμηθευτής-έξοδο</label>
                     <div className="control">
 
                     <InputText id="name1" type="text" value={provider} onChange={(e)=> setProvider(e.target.value)} />
@@ -110,7 +110,7 @@ const FormAddYpoxreoseis = () => {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="percentagevat">ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ</label>
+                    <label htmlFor="percentagevat">Ποσό (σύνολο)</label>
                     <div className="control">
 
                     <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.value)} />
@@ -118,7 +118,7 @@ const FormAddYpoxreoseis = () => {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="invoice_date">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
+                    <label htmlFor="invoice_date">Ημερομηνία τιμολογίου</label>
                     <div className="control">
 
                     <Calendar id="invoice_date"  value={invoice_date} onChange={(e)=> setInvoice_Date(e.target.value)} inline showWeek />
@@ -129,7 +129,7 @@ const FormAddYpoxreoseis = () => {
                 </div>
 
                 <div className="field">
-                                <label className="label">Tags</label>
+                                <label className="label">Ετικέτες</label>
                                 <div className="control">
                                     <Select
                                         isMulti
@@ -165,7 +165,7 @@ const FormAddYpoxreoseis = () => {
             <br />
 
             <div className="field">
-                    <label htmlFor="percentagevat">Ποσοστό ΦΠΑ</label>
+                    <label htmlFor="percentagevat">Ποσό ΦΠΑ</label>
                     <div className="control">
 
                     <InputNumber  id="percentagevat" className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)}  />

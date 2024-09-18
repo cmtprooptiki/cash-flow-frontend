@@ -134,14 +134,14 @@ const FormEditCustomer= () => {
 
             <p className='has-text-centered'>{msg}</p>
                 <div className="field">
-                    <label  htmlFor="name"  className="label">Επωνυμία</label>
+                    <label  htmlFor="name"  className="label">Πελάτης</label>
                     <div className="control">
                         
                     <InputText  id="name" type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='Επωνυμία'/>
                     </div>
                 </div>
                 <div className="field">
-                    <label  className="label">Α.Φ.Μ.</label>
+                    <label  className="label">ΑΦΜ</label>
                     <div className="control">
                         <InputText  id="afm" className="input" value={afm} onChange={handleChange} placeholder='Α.Φ.Μ.' />
                     </div>
@@ -172,7 +172,7 @@ const FormEditCustomer= () => {
                 </div>
 
                 <div className="field">
-                    <label  className="label">Τ.Κ.</label>
+                    <label  className="label">Ταχυδρομικός κωδικός</label>
                     <div className="control">
                     <InputText
       id="postalCodeInput"
@@ -181,7 +181,7 @@ const FormEditCustomer= () => {
       className={isValidPostal ? '' : 'p-invalid'}
       placeholder="Enter postal code"
     />    
-          {!isValidPostal && <small className="p-error">Invalid Postal Code format</small>}
+          {!isValidPostal && <small className="p-error">Λανθασμένος Ταχυδρομικός κωδικός</small>}
               
       </div>
                 </div>

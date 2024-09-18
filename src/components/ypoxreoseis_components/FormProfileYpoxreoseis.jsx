@@ -63,7 +63,7 @@ const FormProfileYpoxreoseis = () =>
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ονομα Παρόχου</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Προμηθευτής-έξοδο</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{provider}</div>
            
         </li>
@@ -71,7 +71,7 @@ const FormProfileYpoxreoseis = () =>
  
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Τιμολόγισης</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία τιμολογίου</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(invoice_date)} inline showWeek />
@@ -113,7 +113,7 @@ const FormProfileYpoxreoseis = () =>
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό χωρίς Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό (σύνολο)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(total_owed_ammount)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -129,7 +129,7 @@ const FormProfileYpoxreoseis = () =>
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό  Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό ΦΠΑ</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_vat)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
