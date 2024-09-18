@@ -217,7 +217,7 @@ const FormProfileTimologia = () => {
  
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Τιμολόγισης</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία έκδοσης τιμολογίου</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(invoice_date)} inline showWeek />
@@ -229,7 +229,7 @@ const FormProfileTimologia = () => {
         </li>
    
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Εξόφλισης</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(actual_payment_date)} inline showWeek />
@@ -251,7 +251,7 @@ const FormProfileTimologia = () => {
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό χωρίς Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό τιμολογίου  (καθαρή αξία)</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_no_tax)}</div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -267,7 +267,7 @@ const FormProfileTimologia = () => {
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό με Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Ποσό Φ.Π.Α.</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_tax_incl)} </div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -283,7 +283,7 @@ const FormProfileTimologia = () => {
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
                 <div>
-                    <span className="block text-500 font-medium mb-3">Ποσό Είσπραξη με Φ.Π.Α.</span>
+                    <span className="block text-500 font-medium mb-3">Πληρωτέο</span>
                     <div className="text-900 font-medium text-xl">{formatCurrency(ammount_of_income_tax_incl)} €</div>
                 </div>
                 <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
@@ -300,7 +300,7 @@ const FormProfileTimologia = () => {
 </div>
 
 <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Παρατηρήσεις</div>
+            <div className="text-500 w-6 md:w-2 font-medium">Σχόλια</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{comments}</div>
            
         </li>

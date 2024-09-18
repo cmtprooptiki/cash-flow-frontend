@@ -178,7 +178,7 @@ const FormEditParadotea = () => {
                     </div>
                 </div>
                 <div className="field">
-                    <label htmlFor="parnum1">Αριθμός Παραδοτέου</label>
+                    <label htmlFor="parnum1">Παραδοτέο (Αριθμός)</label>
                     <div className="control">
 
                     <InputText id="parnum1" type="text"  value={part_number} onChange={(e)=> setPart_Number(e.target.value)}  />
@@ -214,7 +214,7 @@ const FormEditParadotea = () => {
                     </div> */}
 
                 <div className="field">
-                    <label htmlFor="deliverydate1">Ημερομηνία Παράδοσης</label>
+                    <label htmlFor="deliverydate1">Ημερομηνία υποβολής</label>
                     <div className="control">
 
                     <Calendar id="deliverydate1"  value={new Date(delivery_date)} onChange={(e)=> setDelivery_Date(e.target.value)} inline showWeek />
@@ -229,7 +229,7 @@ const FormEditParadotea = () => {
 
                     <div className="field col-12 md:col-8">
                    
-                    <label htmlFor="estimate_payment_date">Εκτιμωμένη Ημερομηνία Πληρωμής 1</label>
+                    <label htmlFor="estimate_payment_date">Ημερομηνία πληρωμής (εκτίμηση)</label>
                     <div className="control">
 
                     <Calendar id="estimate_payment_date"  value={new Date(estimate_payment_date)} onChange={(e)=> setEstimate_Payment_Date(e.target.value)}  inline showWeek />
@@ -237,7 +237,7 @@ const FormEditParadotea = () => {
                          </div>
 
                     <div className="field col-12 md:col-8">
-                    <label htmlFor="estimate_payment_date_2">Εκτιμωμένη Ημερομηνία Πληρωμής 2</label>
+                    <label htmlFor="estimate_payment_date_2">Ημερομηνία πληρωμής  (εκτίμηση 2)</label>
                     <div className="control">
 
                     <Calendar id="estimate_payment_date_2"  value={estimate_payment_date_2 ? new Date(estimate_payment_date_2) : null} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)}  inline showWeek />
@@ -249,7 +249,7 @@ const FormEditParadotea = () => {
                     </div>
 
                     <div className="field col-12 md:col-8">
-                    <label htmlFor="estimate_payment_date_3">Εκτιμωμένη Ημερομηνία Πληρωμής 3</label>
+                    <label htmlFor="estimate_payment_date_3">Ημερομηνία πληρωμής  (εκτίμηση 3)</label>
                     <div className="control">
 
                     <Calendar id="estimate_payment_date_3"  value={estimate_payment_date_3 ? new Date(estimate_payment_date_3) : null} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)}  inline showWeek />
@@ -267,7 +267,7 @@ const FormEditParadotea = () => {
             <div className="card p-fluid">
             <div className=""><Divider><span className="p-tag text-lg">Οικονομικά Στοιχεία</span></Divider></div>
                 <div className="field">
-                    <label htmlFor="percentage">Ποσοστό επί του Συμβατικού</label>
+                    <label htmlFor="percentage">Ποσοστό σύμβασης</label>
                     <div className="control">
 
                     <InputNumber  id="percentage" className="input" mode="decimal" minFractionDigits={2} value={percentage}  onChange={(e)=> setPercentage(e.value)}/>
@@ -283,7 +283,7 @@ const FormEditParadotea = () => {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="ammount">Αρχικό Ποσό</label>
+                    <label htmlFor="ammount">Ποσό  (καθαρή αξία)</label>
                     <div className="control">
 
                     <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2}  value={ammount} onChange={handleAmmountChange}/>
@@ -300,7 +300,7 @@ const FormEditParadotea = () => {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="total_ammount">Συνολικό Ποσό</label>
+                    <label htmlFor="total_ammount">Σύνολο</label>
                     <InputNumber className="input" mode="decimal" minFractionDigits={2}  id="total_ammount" value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} readOnly />
                 </div>
             </div>
