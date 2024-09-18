@@ -12,18 +12,23 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
 
+import { Inplace, InplaceDisplay, InplaceContent } from "primereact/inplace"
+
 const FormAddDoseis = () => {
-    const [ammount, setAmmount] = useState("");
+    const [ammount, setAmmount] = useState(null);
     const [actual_payment_date,setActual_Payment_Date] = useState(null)
     const [estimate_payment_date, setEstimate_Payment_Date] = useState("")
     const [status,setStatus] = useState("no")
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
+    const[doseis,setdoseis]=useState([])
 
     const [totalOwedAmmount, setTotal_Owed_Ammount] = useState("");
     const [ammountVat, setAmmount_Vat] = useState("");
-
+    
 
     const [ypoxreoseis,setYpoxreoseis]=useState([]);
+
+    const [text, setText] = useState('');
 
     const[msg,setMsg]=useState("");
 
@@ -31,13 +36,66 @@ const FormAddDoseis = () => {
 
     useEffect(()=>{
         getYpoxreoseis()
+       
     },[]);
+    useEffect(()=>{
+        if(ypoxreoseis_id!==""){
+            getdoseis()
+        }
+    },[ypoxreoseis_id]);
 
     const getYpoxreoseis = async() =>{
         const response = await axios.get(`${apiBaseUrl}/ypo`);
         console.log(response.data)
         setYpoxreoseis(response.data);
     }
+    const getdoseis = async() =>{
+        const response = await axios.get(`${apiBaseUrl}/doseis`);
+        const doseisData = response.data.filter(item => item.ypoxreoseis_id === parseInt(ypoxreoseis_id)  )
+
+        setdoseis(doseisData);
+    }
+
+    //used for ammount to check the limit required for ypoxreoseis
+    useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
+    const CalculateMax= (event)=>{
+        const sumYpo=Number(totalOwedAmmount)+Number(ammountVat)
+        var sumdoseis=0
+        const keyInputs=event.value
+        doseis.map((dosi)=>{
+            sumdoseis+=parseFloat(dosi.ammount)
+
+        })
+        const total=sumYpo-sumdoseis
+        // var max = 0
+        // console.log("============================")
+        if(keyInputs>total){
+            // console.log("bigger")
+            setAmmount(total)
+            // max=total
+            // console.log("bigger max",max)
+            // console.log("ammount ",ammount)
+        }else{
+            // console.log("smaller")
+            setAmmount(Number(keyInputs))
+            // max=event.value;
+            // console.log("ammount ",ammount)
+        }
+        // const maxvalue=max;
+        // setAmmount(maxvalue);
+        // console.log("max ",max)
+        // console.log("doseis ",doseis)
+        // console.log("sumYpo ",sumYpo)
+        // console.log("sumdoseis ",sumdoseis)
+        // console.log("total is ",total)
+        // console.log("event value ",keyInputs)
+        
+        // console.log("ammount ",ammount)
+        // console.log("============================")
+
+    }
+    
+
 
     const handleYpoxreoseisChange = async (e) => {
         const selectedId = e.target.value;
@@ -124,7 +182,10 @@ const FormAddDoseis = () => {
                   <label htmlFor="name1">ΠΟΣΟ ΔΟΣΗΣ</label>
                   <div className="control">
 
-                  <InputText id="ammount" type="text" value={ammount} onChange={(e)=> setAmmount(e.target.value)} />
+                  {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
+                  <InputNumber id="ammount"  keyfilter="pnum"  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
+
+
                   </div>
               </div>
 
@@ -142,7 +203,17 @@ const FormAddDoseis = () => {
                     <div className="control">
 
                     <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
+                    </div>
+                    <div className="controll">
+                        <div className="card">
+                            <Inplace closable>
+                                <InplaceDisplay>{text || 'Click to add number of copies'}</InplaceDisplay>
+                                <InplaceContent>
+                                    <InputText value={text} keyfilter="pint" onChange={(e) => setText(e.target.value)} autoFocus />
+                                </InplaceContent>
+                            </Inplace>
                         </div>
+                    </div>
 
                     <div className="control">
                         <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>

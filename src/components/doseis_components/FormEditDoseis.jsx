@@ -17,6 +17,12 @@ const FormEditDoseis = () =>
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
     const[msg,setMsg]=useState("");
 
+
+    const [totalOwedAmmount, setTotal_Owed_Ammount] = useState("");
+    const [ammountVat, setAmmount_Vat] = useState("");
+
+    const[doseis,setdoseis]=useState([])
+
     const formatDateToInput = (dateString) => {
         if(dateString === null || dateString =="" || dateString === NaN){
             return null
@@ -60,6 +66,8 @@ const FormEditDoseis = () =>
             try {
                 const response = await axios.get(`${apiBaseUrl}/ypo`);
                 setYpoxreoseis(response.data);
+                
+                
             } catch (error) {
                 if (error.response) {
                     setMsg(error.response.data.msg);
@@ -99,6 +107,72 @@ const FormEditDoseis = () =>
         e.preventDefault();  // Prevent form submission
         setActual_Payment_Date(null); // Clear the calendar date
     };
+    ////these are used for the limiter of ammount
+    useEffect(()=>{
+        if(ypoxreoseis_id!=''){
+            getdoseis();
+            getYpoxreoseisId()
+        }
+        
+    },[ypoxreoseis_id])
+    const getdoseis = async() =>{
+        const response = await axios.get(`${apiBaseUrl}/doseis`);
+        var doseisData = response.data.filter(item => {
+            if(item.ypoxreoseis_id === parseInt(ypoxreoseis_id) && item.id!==parseInt(id)){
+                // console.log(" found")
+                return true
+            }
+            return false
+        })
+        // console.log("doseis data",doseisData)
+        // doseisData= doseisData.filter(item => item.id!==29)
+        setdoseis(doseisData);
+    }   
+    const getYpoxreoseisId = async()=>{
+        const response = await axios.get(`${apiBaseUrl}/ypoquery/${ypoxreoseis_id}`);
+        setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
+        setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
+    }
+
+    useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
+    const CalculateMax= (event)=>{
+        const sumYpo=Number(totalOwedAmmount)+Number(ammountVat)
+        var sumdoseis=0
+        const keyInputs=event.value
+        doseis.map((dosi)=>{
+            sumdoseis+=parseFloat(dosi.ammount)
+
+        })
+        const total=sumYpo-sumdoseis
+        // var max = 0
+        // console.log("============================")
+        if(keyInputs>total){
+            // console.log("bigger")
+            setAmmount(total)
+            // max=total
+            // console.log("bigger max",max)
+            // console.log("ammount ",ammount)
+        }else{
+            // console.log("smaller")
+            setAmmount(Number(keyInputs))
+            // max=event.value;
+            // console.log("ammount ",ammount)
+        }
+        // const maxvalue=max;
+        // setAmmount(maxvalue);
+        // console.log("max ",max)
+        // console.log("doseis ",doseis)
+        // console.log("sumYpo ",sumYpo)
+        // console.log("sumdoseis ",sumdoseis)
+        // console.log("total is ",total)
+        // console.log("event value ",keyInputs)
+        
+        // console.log("ammount ",ammount)
+        // console.log("============================")
+
+    }
+    ///////////////
+
 
     return(
         <div>
@@ -134,7 +208,9 @@ const FormEditDoseis = () =>
                     <label htmlFor="percentage">Ποσό Δόσης</label>
                     <div className="control">
 
-                    <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2} value={ammount}  onChange={(e)=> setAmmount(e.value)}/>
+                    {/* <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2} value={ammount}  onChange={(e)=> setAmmount(e.value)}/> */}
+                    <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
+
              </div>
                 </div>
 
