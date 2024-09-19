@@ -463,7 +463,7 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
-                        <p><strong>Υποχρέωση:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
                         <p><strong><a href = {`http://localhost:3000/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`http://localhost:3000/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
