@@ -22,7 +22,7 @@ const CustomToast = (props) => {
   return (
     <>
         <Toast ref={toast} />
-        <Button icon="pi pi-info-circle" className="p-button-rounded p-button-info p-button-text" onClick={(e)=> showInfo(msg)} />
+        <Button type="button" icon="pi pi-info-circle" className="p-button-rounded p-button-info p-button-text" onClick={(e)=> showInfo(msg)} />
 
     </>
   );
