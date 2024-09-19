@@ -51,6 +51,33 @@ const EksodaInfoBox = (props) => {
   const [ypoxreoseis, setYpoxreoseis] = useState(null);
   const [error, setError] = useState(null);
 
+  const formatCurrency = (value) => {
+    return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
+const formatDate = (value) => {
+  if (value===null || value===""){
+      return ""
+  } 
+  let date = new Date(value);
+  // console.log("invalid date is: ",date)
+  if (!isNaN(date)) {
+      // console.log("show date ",date.toLocaleDateString('en-US', {
+      //     day: '2-digit',
+      //     month: '2-digit',
+      //     year: 'numeric'
+      // }))
+      return date.toLocaleDateString('en-UK', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+      });
+  } else {
+      
+      return "Invalid date";
+  }
+};
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,13 +103,13 @@ const EksodaInfoBox = (props) => {
   }
 
   return (
-    <div className='box'>
-      <center style={{fontSize:"30px",fontWeight:"bold"}}>Eksoda Info Box</center>
-      <strong>Provider: </strong> {ypoxreoseis.provider}<br/>
-      <strong>Amount: </strong> {item.ammount}€<br/>
-      <strong>Actual Payment Date: </strong>{moment(item.actual_payment_date).format('YYYY/MM/DD')}<br/>
-      <strong>Estimate Payment Date: </strong> {date}<br/>
-      <strong>Status: </strong> {item.status}<br/>
+    <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+      <h5>Πληροφορίες Εκροής</h5>
+      <strong>Προμηθευτής-έξοδο: </strong> {ypoxreoseis.provider}<br/>
+      <strong>Ποσό: </strong> {formatCurrency(item.ammount)}<br/>
+      <strong>Πραγματική ημερομηνία πληρωμής: </strong>{formatDate(item.actual_payment_date)}<br/>
+      <strong>Εκτιμώμενη ημερομηνία πληρωμής: </strong> {formatDate(date)}<br/>
+      <strong>Κατάσταση: </strong> {item.status}<br/>
     </div>
   );
 }

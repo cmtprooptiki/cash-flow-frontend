@@ -130,6 +130,9 @@ const PaidExodaList = () => {
     };
 
     const formatDate = (value) => {
+        if (value===null || value===""){
+            return ""
+        } 
         let date = new Date(value);
         // console.log("invalid date is: ",date)
         if (!isNaN(date)) {
@@ -302,71 +305,7 @@ const idBodyTemplate = (rowData) => {
         
     }, [combinedData]);
 
-    // const handleFilter = (filteredData) => {
-    //     console.log("filtered data: ",filteredData)
-    //     setTotalIncome(calculateTotalIncome(filteredData));
-    // };
 
-    //console.log(combinedData)
-
-    // const thisYearTotal = (filter) => {
-    //     console.log("filter data",filter)
-    //     console.log("filter filters",filter.props.filters)
-    //     let total2=0;
-        ///check if filters have been applied
-        ///if applied
-        /*
-        if(filter.props.filters!=null){
-            for(let typeFilter of filter.props.filters.type.constraints){
-                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
-                if(typeFilter.value){
-                    if(typeFilter.matchMode=="equals"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(sale.type==typeFilter.value){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }   
-                }
-            }
-            for(let typeFilter of filter.props.filters.date.constraints){
-                ///check for each filter of type column if it has value (if the values is null then this type of filter has not been applied)
-                if(typeFilter.value){ 
-                    if(typeFilter.matchMode=="dateAfter"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(new Date(sale.date)>=new Date(typeFilter.value)){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }  
-                    if(typeFilter.matchMode=="dateBefore"){
-                        ///we add all income values only if their column type matches our selected filters
-                        for(let sale of filter.props.value) {
-                            if(new Date(sale.date)<=new Date(typeFilter.value)){
-                                total2 += sale.income;
-                            }  
-                        }                        
-                    }    
-                }
-            }
-            
-
-            return formatCurrency(total2); 
-        }
-        ///if not applied
-        let total = 0;
-        for(let sale of combinedData) {
-            total += sale.income;
-        }
-
-        return formatCurrency(total); */
-    //}
-
-    // const handelAllFilters=(filters)=>{
-    //     console.log("Type filter: ",filters.type.constraints)
-    // }
     const handleValueChange = (e) => {
         const visibleRows = e;
         // console.log("visisble rows:",e);
@@ -396,11 +335,11 @@ const idBodyTemplate = (rowData) => {
             >
 
                 {/* {console.log("combined data: ",combinedData)} */}
-                <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
+                <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
-                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
-                <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column header="name" filterField="name" 
+                <Column filterField="income" header="Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
+                <Column field="type" header="Τύπος Εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column  filterField="name" header="Περιγραφή"
                 showFilterMatchModes={false} 
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={NameBodyTemplate} 
@@ -408,21 +347,23 @@ const idBodyTemplate = (rowData) => {
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
             </DataTable>
-            <Dialog header="Row Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+            <Dialog header="Λεπτομέρειες" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                 {selectedRowData && selectedIdType==="doseis" && (
                     
                     <div>
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>ammount:</strong> {selectedRowData.ammount}</p>
-                        <p><strong>payment date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
-                        <p><strong>estimated payment date:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
-                        <p><strong>status:</strong> {selectedRowData.status}</p>
-                        <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
-                        <p><strong>Υποχρέωση:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
+                        <p><strong>id Yποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
+                        <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
+                        <p><strong><a href = {`http://localhost:3000/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                     </div>
                 )}
             </Dialog>
