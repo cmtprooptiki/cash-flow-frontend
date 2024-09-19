@@ -464,7 +464,7 @@ const getDaneia = async () =>{
           }}
         ></div>
         {/* {console.log(item.Ekxorimena_Timologium.bank_ammount)} */}
-        {item.ammount} €
+        {Number(item.ammount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
       </div>
 
     ),
@@ -504,55 +504,7 @@ const getDaneia = async () =>{
   uniqueekx_cust.forEach(joinjson)
   uniqueIncome_tim.forEach(joinjson)
   uniqueDaneia.forEach(joinjson)
-  //console.log("look here",MyEvents)
-
-  // console.log("Ekxkxkxkx",ekx)
-  //console.log(MyEvents)
-
-  
-
-  // const newparat = income_paradotea.map(item => ({
-  //   id: item.paradotea.id,
-  //   part_number: item.paradotea.part_number,
-  //   title: item.paradotea.title,
-  //   delivery_date: item.paradotea.delivery_date,
-  //   percentage: item.paradotea.percentage,
-  //   ammount: item.paradotea.ammount,
-  //   ammount_vat: item.paradotea.ammount_vat,
-  //   ammount_total: item.paradotea.ammount_total,
-  //   estimate_payment_date: item.paradotea.estimate_payment_date,
-  //   estimate_payment_date_2: item.paradotea.estimate_payment_date_2,
-  //   estimate_payment_date_3: item.paradotea.estimate_payment_date_3,
-  //   createdAt: item.paradotea.createdAt,
-  //   updatedAt: item.paradotea.updatedAt,
-  //   erga_id: item.paradotea.erga_id,
-  //   timologia_id: item.paradotea.timologia_id,
-  //   erga: {
-  //     name: item.paradotea.erga.name,
-  //     id: item.paradotea.erga.id,
-  //     color: item.paradotea.erga.color
-  //   }
-  // }));
-//   const new_tim = incomeTim.map(item => ({
-//     id: item.id,
-//     timologia: {
-//       id: 1,
-//       invoice_date: item.erga.invoice_date,
-//       ammount_no_tax: item.erga.ammount_no_tax,
-//       ammount_tax_incl: item.erga.ammount_tax_incl,
-//       actual_payment_date: item.erga.actual_payment_date,
-//       ammount_of_income_tax_incl: item.erga.ammount_of_income_tax_incl,
-//       comments: item.erga.comments,
-//       invoice_number: item.erga.invoice_number,
-//       status_paid: item.erga.status_paid,
-//     },
-//     erga: {
-//       name: "test",
-//       id: 1,
-//       color: "ffffff"
-//     }
-//   }));
-
+ 
   
  
 
@@ -567,8 +519,12 @@ const getDaneia = async () =>{
 
         <div className="row">
           <div className="col-md-4">
+            <div className="row">
+          {eventClickedFirst === true && <InfoBoxAntonis item={boxData} event={second_boxData} />}
+          </div>
+          <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round row'>
             <div className="scrollable-list">
-              <h3 style={{textDecoration:"underline"}}>ΕΡΓΑ</h3>
+              <h5>Εργα</h5>
               {erganames.map((item, index) => (
                 <div key={index} className="list-item">
                   <div
@@ -578,10 +534,12 @@ const getDaneia = async () =>{
                       boxShadow: '0px 0px 4px 2px ' +"#"+ item.erga.color,
                     }}
                   ></div>
-                  <h4>{item.erga.name}</h4>
+                  <h5>{item.erga.name}</h5>
                 </div>
               ))}
             </div>
+            </div>
+
           </div>
           <div className="col-md-8">
             <div className="calendar-container">
@@ -622,9 +580,8 @@ const getDaneia = async () =>{
             </div>
           </div>
         </div>
-        <div className="row">
-          {eventClickedFirst === true && <InfoBoxAntonis item={boxData} event={second_boxData} />}
-        </div>
+        {/* <div className="row">
+        </div> */}
         <div className="row">
           <div className="col-md-12">
             <BudgetChart key={refresh}></BudgetChart>

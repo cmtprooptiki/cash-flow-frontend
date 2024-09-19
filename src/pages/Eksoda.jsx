@@ -191,68 +191,7 @@ const Eksoda = ()=>
             item: item,
             allDay: item.allDay,
           }));
-   // console.log("My events",MyEvents)
-
-        //   const eks = eventsWithoutActualPaymentDate.map((item) => ({
-        //     id: item.id,
-        //     title: (
-        //     <div>
-        //       <div className="circle"></div>
-        //         {item.ammount} €
-        //     </div>
-        //     ),
-        // start: item.estimate_payment_date,
-        // end: item.estimate_payment_date,
-        // item: item,
-        // allDay: item.allDay,
-        //   }))
-
-
-
-          // const eventStyleGetter = (event) => {
-          //   if (event.allDay && event.hasActualPayment) {
-          //     // Apply red background color only if it's an all-day event with actual_payment_date
-          //     return {
-          //       style: {
-          //         backgroundColor: 'red'
-          //       }
-          //     };
-          //   }
-          //   return {}; // Return empty style for other cases
-
-          // };
-        //   console.log("My Event : ",MyEvents)
-
-        //   const eks = doseis.map((item)=> ({
-        //     id: item.id,
-        //     title: (
-        //       <div>
-        //         <div
-        //           className="circle"
-        //         //   style={{
-        //         //     backgroundColor: item.paradotea.erga.color,
-        //         //     boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
-        //         //   }}
-        //         ></div>
-        //         {item.ammount} €
-        //       </div>
-        //     ),
-        //     start: item.actual_payment_date,
-        //     end: item.actual_payment_date,
-        //     item: item,
-        //   }))
-
-        //   const uniqueeks = [
-        //     ...eks
-        //   ].filter((event, index, self) =>
-        //     index === self.findIndex((e) => e.id === event.id)
-        //   );
-    
-        //   function joinjson(items){
-        //     MyEvents.push(items)
-        //   }
-    
-        //   uniqueeks.forEach(joinjson)
+   
 
 
       
@@ -270,23 +209,24 @@ const Eksoda = ()=>
             
             <div className="row">
               <div className="col-md-4">
-                <div className="scrollable-list">
+              {eventClickedFirst === true && <EksodaInfoBox item={boxData} />}
+
+                {/* <div className="scrollable-list">
                   {ypoxreoseis.map((item, index) => (
                     <div key={index} className="list-item">
                       <div
                         className="circle"
                         style={{
-                        //   backgroundColor: item.erga.color,
-                        //   boxShadow: '0px 0px 4px 2px ' + item.erga.color,
+                       
                         }}
                       ></div>
                       <h4>{item.ypoxreoseis.provider}</h4>
-                      {/* <h4>{console.log("item ",item)}</h4> */}
                     </div>
                   ))}
-                </div>
+                </div> */}
                 
               </div>
+              
               <div className="col-md-8">
                 <div className="calendar-container">
                   <button className="FiltersYear" style={{ marginRight: 20, marginBottom: 20 }} onClick={() => handleYearChange(-1)}>
@@ -315,9 +255,8 @@ const Eksoda = ()=>
                 </div>
               </div>
             </div>
-            <div className="row">
-              {eventClickedFirst === true && <EksodaInfoBox item={boxData} />}
-            </div>
+            {/* <div className="row">
+            </div> */}
             <div className="row">
               <div class="col-md-12">
                 <BudgetChart key={refresh}></BudgetChart>

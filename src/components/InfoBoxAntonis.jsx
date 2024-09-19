@@ -4,93 +4,126 @@ const InfoBox = (props) => {
   const event = props.event;
   const item = props.item; 
   const date = moment(props.item.estimate_payment_date).format("YYYY/MM/DD");
+
+
+  const formatCurrency = (value) => {
+    return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
+const formatDate = (value) => {
+  if (value===null || value===""){
+      return ""
+  } 
+  let date = new Date(value);
+  // console.log("invalid date is: ",date)
+  if (!isNaN(date)) {
+      // console.log("show date ",date.toLocaleDateString('en-US', {
+      //     day: '2-digit',
+      //     month: '2-digit',
+      //     year: 'numeric'
+      // }))
+      return date.toLocaleDateString('en-UK', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+      });
+  } else {
+      
+      return "Invalid date";
+  }
+};
+
   ///paradotea
   if(event.test==="paradotea")
     {
 
     return(
-      <div className='box'>
-        <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong>Παραδοτέο {props.item.title} details</strong></center>
+      <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+        <h5>Πληροφορίες Εισροής</h5>
+
+       <strong>Τίτλος παραδοτέου: </strong>{props.item.title}<br/>
       
-        <strong> ονομα εργου:</strong>{props.item.erga.name}<br/>
-        <strong> Συνολικο ποσο:</strong>{props.item.ammount_total} €<br/>
-        <strong> Εκτιμωμενη ημερομηνια πληρωμης:</strong>{date}<br/> 
-        <strong> Ποσοστο:</strong>{props.item.percentage} <br/>
-        <strong> Αρχικο ποσο:</strong>{props.item.ammount} € <br/>
-        <strong> Ποσο VAT:</strong>{props.item.ammount_vat} € <br/>
+        <strong>Εργο: </strong>{props.item.erga.name}<br/>
+        <strong> Ποσό (καθαρή αξία): </strong>{formatCurrency(props.item.ammount)}<br/>
+        <strong> Ποσό ΦΠΑ: </strong>{formatCurrency(props.item.ammount_vat)}  <br/>
+        <strong>Σύνολο: </strong>{formatCurrency(props.item.ammount_total)} <br/>
+        <strong> Ποσοστό σύμβασης: </strong>{props.item.percentage} % <br/>
+        <strong> Εκτιμωμενη ημερομηνια πληρωμης: </strong>{formatDate(date)}<br/> 
+       
       </div>
     )
   }
   else if(event.test==="ekxorimena")
   {
-    const bank_date = moment(props.item.Ekxorimena_Timologium.bank_date).format("YYYY/MM/DD");
-    const cust_date = moment(props.item.Ekxorimena_Timologium.cust_date).format("YYYY/MM/DD");
+    const bank_estimated_date = formatDate(props.item.Ekxorimena_Timologium.bank_estimated_date);
+    const cust_estimated_date = formatDate(props.item.Ekxorimena_Timologium.cust_estimated_date);
     console.log(props.item, "ekxorimenaaacasfsds")
     return(
-      <div className='box'>
-        <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong> Εκχωρημένο Τιμολογιο details</strong></center>
+      <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+        <h5>Πληροφορίες Εισροής</h5>
 
-        <strong> Κωδικός Τιμολογίου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
+        <strong> Κωδικός Τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
-        <strong> Όνομα Έργου:</strong>{props.item.paradotea.erga.name}<br/>
-        <strong> Συνολικό Ποσό Τράπεζας:</strong>{props.item.Ekxorimena_Timologium.bank_ammount} €<br/>
-        <strong> Ημερομηνία Πληρωμής Τράπεζας:</strong>{bank_date}<br/> 
-        <strong> Συνολικό Ποσό Πελάτη:</strong>{props.item.Ekxorimena_Timologium.customer_ammount} €<br/>
-        <strong> Ημερομηνία Πληρωμής Πελάτη:</strong>{cust_date}  <br/>
+        <strong> Όνομα Έργου: </strong>{props.item.paradotea.erga.name}<br/>
+        <strong> Εκχώρηση (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.bank_ammount)}<br/>
+        <strong> Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{bank_estimated_date}<br/> 
+        <strong> Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.customer_ammount)} <br/>
+        <strong> Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{cust_estimated_date}  <br/>
       </div>
     )
   }
   else if(event.test==="ekxorimena_customer")
   {
-    const bank_date = moment(props.item.Ekxorimena_Timologium.bank_date).format("YYYY/MM/DD");
-    const cust_date = moment(props.item.Ekxorimena_Timologium.cust_date).format("YYYY/MM/DD");
+    const bank_estimated_date = formatDate(props.item.Ekxorimena_Timologium.bank_estimated_date);
+    const cust_estimated_date = formatDate(props.item.Ekxorimena_Timologium.cust_estimated_date);
     return(
-      <div className='box'>
-        <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong> Εκχωρημένο Τιμολογιο details</strong></center>
+      <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+      <h5>Πληροφορίες Εισροής</h5>
 
-        <strong> Κωδικός Τιμολογίου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
+      <strong> Κωδικός Τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
-        <strong> Όνομα Έργου:</strong>{props.item.paradotea.erga.name}<br/>
-        <strong> Συνολικό Ποσό Τράπεζας:</strong>{props.item.Ekxorimena_Timologium.bank_ammount} €<br/>
-        <strong> Ημερομηνία Πληρωμής Τράπεζας:</strong>{bank_date}<br/> 
-        <strong> Συνολικό Ποσό Πελάτη:</strong>{props.item.Ekxorimena_Timologium.customer_ammount} €<br/>
-        <strong> Ημερομηνία Πληρωμής Πελάτη:</strong>{cust_date}  <br/>
-      </div>
+      <strong> Όνομα Έργου: </strong>{props.item.paradotea.erga.name}<br/>
+      <strong> Εκχώρηση (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.bank_ammount)}<br/>
+      <strong> Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{bank_estimated_date}<br/> 
+      <strong> Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.customer_ammount)} <br/>
+      <strong> Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{cust_estimated_date}  <br/>
+    </div>
     )
   }
   else if(event.test==="timologia")
   {
-    const invoiceDate = moment(props.item.invoiceDate).format("YYYY/MM/DD");
-    const actual_payment_date = moment(props.item.actual_payment_date).format("YYYY/MM/DD");
+    const invoiceDate = formatDate(props.item.invoice_date);
+    const actual_payment_date = formatDate(props.item.actual_payment_date);
     return(
-      <div className='box'>
-        <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong>Τιμολογιο details</strong></center>
+      <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+      <h5>Πληροφορίες Εισροής</h5>
 
-        <strong> Κωδικος Τιμολογιου:</strong><a href={`http://localhost:3000/timologia/profile/${props.item.id}`}>
+        <strong>Αρ. τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.id}`}>
       {props.item.invoice_number}
     </a><br/>
-        <strong> invoice_date:</strong>{invoiceDate}<br/>
-        <strong> actual_payment_date:</strong>{actual_payment_date}<br/>
-        <strong> ammount:</strong>{props.item.ammount_no_tax}<br/>
-        <strong> tax :</strong>{props.item.ammount_tax_incl}<br/>
-        <strong> ammount with tax:</strong>{props.item.ammount_of_income_tax_incl}<br/>
-        <strong> status paid:</strong>{props.item.status_paid}<br/>
-        <strong> comments:</strong>{props.item.comments}<br/>
+        <strong> Ημερομηνία έκδοσης τιμολογίου:</strong>{invoiceDate}<br/>
+        <strong> Ημερομηνία πληρωμής τιμολογίου /(εκτίμηση):</strong>{actual_payment_date}<br/>
+        <strong> Ποσό τιμολογίου  (καθαρή αξία):</strong>{formatCurrency(props.item.ammount_no_tax)}<br/>
+        <strong> Ποσό ΦΠΑ: </strong>{formatCurrency(props.item.ammount_tax_incl)}<br/>
+        <strong> Πληρωτέο: </strong>{formatCurrency(props.item.ammount_of_income_tax_incl)}<br/>
+        <strong> Κατάσταση τιμολογίου: </strong>{props.item.status_paid}<br/>
+        <strong> Σχόλια:</strong>{props.item.comments}<br/>
 
 
       </div>
     )
   }
   else if(event.test==="daneia"){
-    const payment_date=moment(props.item.payment_date).format("YYYY/MM/DD");
+    const payment_date=formatDate(props.item.payment_date)
 
     return(
-      <div className='box'>
-        <center style={{fontSize:"30px",fontWeight:"bold"}}> <strong>Δάνειο {props.item.name} details</strong></center>
+      <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
+        <h5>Πληροφορίες Εισροής</h5>
+
       
-        <strong> Όνομα δανείου:</strong>{props.item.name}<br/>
-        <strong> Συνολικό ποσό:</strong>{props.item.ammount} €<br/>
-        <strong> Ημερομηνία πληρωμής:</strong>{payment_date}<br/> 
+        <strong> Περιγραφή δανείου: </strong>{props.item.name}<br/>
+        <strong> Ποσό Δανείου: </strong>{formatCurrency(props.item.ammount)} <br/>
+        <strong> Ημερομηνία πληρωμής (εκτίμηση): </strong>{payment_date}<br/> 
       </div>
     )
   }

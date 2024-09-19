@@ -426,7 +426,7 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Τίτλος παραδοτέου:</strong> {selectedRowData.title}</p>
                         <p><strong>Παραδοτέο (Αριθμός): </strong>{selectedRowData.part_number}</p>
                         <p><strong>Ημερομηνία υποβολής: </strong>{formatDate(selectedRowData.delivery_date)}</p>
-                        <p><strong>Ποσοστό σύμβασης: </strong>{selectedRowData.percentage}</p>
+                        <p><strong>Ποσοστό σύμβασης: </strong>{selectedRowData.percentage} %</p>
                         <p><strong>Ποσό  (καθαρή αξία): </strong>{formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Ποσό ΦΠΑ: </strong>{formatCurrency(selectedRowData.ammount_vat)}</p>
                         <p><strong>Σύνολο: </strong>{formatCurrency(selectedRowData.ammount_total)}</p>
