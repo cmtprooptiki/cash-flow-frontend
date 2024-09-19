@@ -9,6 +9,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
+import CustomToast from '../CustomToast';
 
 
 
@@ -327,6 +328,8 @@ const FormEditTimologia = () => {
                             </div> */}
                             <div className="field">
                                 <label className="label">Παραδοτεα</label>
+                                <CustomToast  txtmsg="Υπαρχει η δυνατότητα τιμολόγισης ενός η και περισόττερων παραδοτέων που αφορούν το ίδιο Εργο"/>
+
                                 <div className="control">
                                     <Select
                                         isMulti
