@@ -138,6 +138,9 @@ const PaidBudgetList = (props) => {
     };
 
     const formatDate = (value) => {
+        if(value===null || value===''){
+            return ''
+        }
         let date = new Date(value);
         // console.log("invalid date is: ",date)
         if (!isNaN(date)) {
@@ -458,7 +461,7 @@ const idBodyTemplate = (rowData) => {
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Ποσό:</strong> {selectedRowData.ammount}</p>
+                        <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
