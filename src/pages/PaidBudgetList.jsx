@@ -404,10 +404,10 @@ const idBodyTemplate = (rowData) => {
             
             >
                 {/* {console.log("combined data: ",combinedData)} */}
-                <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
+                <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
-                <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
-                <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column filterField="income" header="Εισροές/Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
+                <Column field="type" header="Τύπος εισροής/εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
@@ -420,16 +420,18 @@ const idBodyTemplate = (rowData) => {
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Title:</strong> {selectedRowData.title}</p>
-                        <p><strong>Part Number: </strong>{selectedRowData.part_number}</p>
-                        <p><strong>Delivery Date: </strong>{formatDate(selectedRowData.delivery_date)}</p>
-                        <p><strong>Percentage: </strong>{selectedRowData.percentage}</p>
-                        <p><strong>Ammount: </strong>{formatCurrency(selectedRowData.ammount)}</p>
-                        <p><strong>Ammount Vat: </strong>{formatCurrency(selectedRowData.ammount_vat)}</p>
-                        <p><strong>Ammount Total: </strong>{formatCurrency(selectedRowData.ammount_total)}</p>
-                        <p><strong>Estimate Payment Date Best Case: </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
-                        <p><strong>Estimate Payment Date Medium Case: </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
-                        <p><strong>Estimate Payment Date Worst Case: </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
+                        <p><strong>Τίτλος παραδοτέου:</strong> {selectedRowData.title}</p>
+                        <p><strong>Παραδοτέο (Αριθμός): </strong>{selectedRowData.part_number}</p>
+                        <p><strong>Ημερομηνία υποβολής: </strong>{formatDate(selectedRowData.delivery_date)}</p>
+                        <p><strong>Ποσοστό σύμβασης: </strong>{selectedRowData.percentage}</p>
+                        <p><strong>Ποσό  (καθαρή αξία): </strong>{formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Ποσό ΦΠΑ: </strong>{formatCurrency(selectedRowData.ammount_vat)}</p>
+                        <p><strong>Σύνολο: </strong>{formatCurrency(selectedRowData.ammount_total)}</p>
+                        <p><strong>Ημερομηνία πληρωμής (εκτίμηση): </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Ημερομηνία πληρωμής  (εκτίμηση 2): </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
+                        <p><strong>Ημερομηνία πληρωμής  (εκτίμηση 3): </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
+                        <p><strong><a href = {`http://localhost:3000/paradotea/edit/${selectedRowData.id}`}>Επεξεργασία παραδοτέου</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/paradotea/profile/${selectedRowData.id}`}>Πληροφορίες παραδοτέου</a></strong></p>
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="Timologia" && (
@@ -438,12 +440,14 @@ const idBodyTemplate = (rowData) => {
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Invoice Number:</strong> {selectedRowData.invoice_number}</p>
-                        <p><strong>Invoice Date:</strong> {formatDate(selectedRowData.invoice_date)}</p>
-                        <p><strong>Αρχικό Ποσό:</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
+                        <p><strong>Αρ. τιμολογίου:</strong> {selectedRowData.invoice_number}</p>
+                        <p><strong>Ημερομηνία έκδοσης τιμολογίου:</strong> {formatDate(selectedRowData.invoice_date)}</p>
+                        <p><strong>Ποσό τιμολογίου  (καθαρή αξία):</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
                         <p><strong>Ποσό ΦΠΑ:</strong>{formatCurrency(selectedRowData.ammount_tax_incl)}</p>
-                        <p><strong>Τελικό Ποσό:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
-                        <p><strong>Estimate Date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong>Πληρωτέο:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
+                        <p><strong>Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/timologia/edit/${selectedRowData.id}`}>Επεξεργασία τιμολογίου</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/timologia/profile/${selectedRowData.id}`}>Πληροφορίες τιμολογίου</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -454,12 +458,14 @@ const idBodyTemplate = (rowData) => {
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>ammount:</strong> {selectedRowData.ammount}</p>
-                        <p><strong>payment date:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
-                        <p><strong>estimated payment date:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
-                        <p><strong>status:</strong> {selectedRowData.status}</p>
+                        <p><strong>Ποσό:</strong> {selectedRowData.ammount}</p>
+                        <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
                         <p><strong>Υποχρέωση:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong><a href = {`http://localhost:3000/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -470,9 +476,11 @@ const idBodyTemplate = (rowData) => {
                         {console.log(selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>Name:</strong> {selectedRowData.name}</p>
-                        <p><strong>Ammount:</strong> {formatCurrency(selectedRowData.ammount)}</p>
-                        <p><strong>Estimate Payment Date:</strong> {formatDate(selectedRowData.payment_date)}</p>
+                        <p><strong>Περιγραφή:</strong> {selectedRowData.name}</p>
+                        <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής δανείου(εκτίμηση):</strong> {formatDate(selectedRowData.payment_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/daneia/edit/${selectedRowData.id}`}>Επεξεργασία δανείου</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/daneia/profile/${selectedRowData.id}`}>Πληροφορίες δανείου</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -484,10 +492,12 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
-                        <p><strong>Bank Ammount: </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
-                        <p><strong>Bank Estimate Payment Date: </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
-                        <p><strong>Customer Ammount: </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
-                        <p><strong>Customer Estimate Payment Date: </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
+                        <p><strong>Εκχώρηση (€): </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
+                        <p><strong>Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
+                        <p><strong><a href = {`http://localhost:3000/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία εκχώρησης</a></strong></p>
+                        <p><strong><a href = {`http://localhost:3000/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες εκχώρησης</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>

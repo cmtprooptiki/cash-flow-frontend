@@ -341,7 +341,7 @@ const Navbar =()=>{
                     onClick={handleMenu}
                     color="inherit"
                 >
-                <AccountCircle />
+                {/* <AccountCircle /> */}
                 </Avatar>
                 <Menu
                     id="menu-appbar"
