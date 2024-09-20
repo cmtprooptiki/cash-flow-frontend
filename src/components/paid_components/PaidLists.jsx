@@ -15,6 +15,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
+import apiBaseFrontUrl from '../../apiFrontConfig';
 
 const PaidList = (props) => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -349,8 +350,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ημερομηνία πληρωμής (εκτίμηση): </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Ημερομηνία πληρωμής (εκτίμηση 2): </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
                         <p><strong>Ημερομηνία πληρωμής (εκτίμηση 3): </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
-                        <p><strong><a href = {`http://localhost:3000/paradotea/edit/${selectedRowData.id}`}>Επεξεργασία Παραδοτέου</a></strong></p>
-                        <p><strong><a href = {`http://localhost:3000/paradotea/profile/${selectedRowData.id}`}>Πληροφορίες Παραδοτέου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/paradotea/edit/${selectedRowData.id}`}>Επεξεργασία Παραδοτέου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/paradotea/profile/${selectedRowData.id}`}>Πληροφορίες Παραδοτέου</a></strong></p>
                         {/* <p><strong>Erga: </strong>{selectedRowData.erga.name.value}</p> */}
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
@@ -368,8 +369,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ποσό ΦΠΑ:</strong>{formatCurrency(selectedRowData.ammount_tax_incl)}</p>
                         <p><strong>Πληρωτέο:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
                         <p><strong>Ημερομηνία πληρωμής τιμολογίου (εκτίμηση):</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
-                        <p><strong><a href = {`http://localhost:3000/timologia/edit/${selectedRowData.id}`}>Επεξεργασία Τιμολογίου</a></strong></p>
-                        <p><strong><a href = {`http://localhost:3000/timologia/profile/${selectedRowData.id}`}>Πληροφορίες Τιμολογίου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/timologia/edit/${selectedRowData.id}`}>Επεξεργασία Τιμολογίου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/timologia/profile/${selectedRowData.id}`}>Πληροφορίες Τιμολογίου</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -383,8 +384,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Περιγραφή:</strong> {selectedRowData.name}</p>
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής δανείου (εκτίμηση):</strong> {formatDate(selectedRowData.payment_date)}</p>
-                        <p><strong><a href = {`http://localhost:3000/daneia/edit/${selectedRowData.id}`}>Επεξεργασία Δανείου</a></strong></p>
-                        <p><strong><a href = {`http://localhost:3000/daneia/profile/${selectedRowData.id}`}>Πληροφορίες Δανείου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/daneia/edit/${selectedRowData.id}`}>Επεξεργασία Δανείου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/daneia/profile/${selectedRowData.id}`}>Πληροφορίες Δανείου</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>
@@ -400,8 +401,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
                         <p><strong>Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
-                        <p><strong><a href = {`http://localhost:3000/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία Εκχώρησης</a></strong></p>
-                        <p><strong><a href = {`http://localhost:3000/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες Εκχώρησης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία Εκχώρησης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες Εκχώρησης</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                     </div>

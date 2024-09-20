@@ -127,60 +127,13 @@ const BudgetChart = (props) => {
         }
     };
 
-  //Sign Date
-//   const DateBodyTemplate = (rowData) => {
-//     // console.log("date data: ",rowData)
-//     return formatDate(rowData.date);
-// };
-
-// const dateFilterTemplate = (options) => {
-//     // console.log('Current filter value:', options);
-
-//     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-// };
 
 
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
-// const ammountBodyTemplate = (rowData) => {
-//     return formatCurrency(rowData.income);
-// };
 
-
-// const ammountFilterTemplate = (options) => {
-//     return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
-// };
-
-
-// const getSeverity = (status) => {
-//     switch (status) {
-//         case 'Bank':
-//             return 'danger';
-//         case 'Customer':
-//             return 'danger';
-//         case 'Paradotea':
-//             return 'info';
-//         case 'Timologia':
-//             return 'success';
-//         case 'Daneia':
-//             return 'warning';
-     
-//     }
-// };
-
-// const statusBodyTemplate = (rowData) => {
-//     return <Tag value={rowData.type} severity={getSeverity(rowData.type)} />;
-// };
-
-// const statusFilterTemplate = (options) => {
-//     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
-// };
-
-// const statusItemTemplate = (option) => {
-//     return <Tag value={option} severity={getSeverity(option)} />;
-// };
 
 
 
@@ -255,27 +208,7 @@ const formatCurrency = (value) => {
     
     console.log(JSON.stringify(result, null, 2));
 
-    // const aggregatedData = {};
-
-    // combinedData.forEach(item => {
-    // const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'long' });
-    // if (!aggregatedData[monthYear]) {
-    //     aggregatedData[monthYear] = { x: monthYear, y: 0, goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] };
-    // }
-    
-    // if (item.type !== 'doseis') {
-    //     aggregatedData[monthYear].y += item.income;
-    // } else {
-    //     aggregatedData[monthYear].goals[0].value += item.income;
-    // }
-    // });
-
-    // // Convert aggregated data map to an array
-    // const result = Object.values(aggregatedData);
-
-    // console.log(JSON.stringify(result, null, 2));
-    
-
+   
 
     const final = {
         series: [
@@ -361,27 +294,7 @@ const formatCurrency = (value) => {
 
     return (
         <div>
-            {/* <DataTable value={combinedData} paginator rows={10} 
-            header={header} 
-            filters={filters} 
-            filterDisplay="menu" loading={loading} 
-            responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type','id']}
-            // onFilter={(e) => handleFilter(e.filteredValue)}
-            onFilter={(e)=>setFilters(e.filters)}
-            onValueChange={handleValueChange}
-            
-            > */}
-                {/* {console.log("combined data: ",combinedData)} */}
-                {/* <Column filterField="date" header="date" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column> */}
-                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
-                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
-                <Column field="type" header="Type" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-                <Column field="id" header="Id" filter ></Column>
-
-            </DataTable> */}
-            {/* <ReactApexChart options={this.state.options} series={this.state.series} type="bar" height={350} /> */}
             <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
 
             {console.log("comb data ",final.series)}

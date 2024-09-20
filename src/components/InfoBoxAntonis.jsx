@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import apiBaseFrontUrl from '../apiFrontConfig';
 const InfoBox = (props) => {
   const event = props.event;
   const item = props.item; 
@@ -62,7 +63,7 @@ const formatDate = (value) => {
       <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
         <h5>Πληροφορίες Εισροής</h5>
 
-        <strong> Κωδικός Τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
+        <strong> Κωδικός Τιμολογίου: </strong><a href={`${apiBaseFrontUrl}/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
         <strong> Όνομα Έργου: </strong>{props.item.paradotea.erga.name}<br/>
         <strong> Εκχώρηση (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.bank_ammount)}<br/>
@@ -80,7 +81,7 @@ const formatDate = (value) => {
       <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
       <h5>Πληροφορίες Εισροής</h5>
 
-      <strong> Κωδικός Τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
+      <strong> Κωδικός Τιμολογίου: </strong><a href={`${apiBaseFrontUrl}/timologia/profile/${props.item.paradotea.timologia_id}`}>{props.item.timologia.invoice_number}</a><br/>
 
       <strong> Όνομα Έργου: </strong>{props.item.paradotea.erga.name}<br/>
       <strong> Εκχώρηση (€): </strong>{formatCurrency(props.item.Ekxorimena_Timologium.bank_ammount)}<br/>
@@ -98,7 +99,7 @@ const formatDate = (value) => {
       <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
       <h5>Πληροφορίες Εισροής</h5>
 
-        <strong>Αρ. τιμολογίου: </strong><a href={`http://localhost:3000/timologia/profile/${props.item.id}`}>
+        <strong>Αρ. τιμολογίου: </strong><a href={`${apiBaseFrontUrl}/timologia/profile/${props.item.id}`}>
       {props.item.invoice_number}
     </a><br/>
         <strong> Ημερομηνία έκδοσης τιμολογίου:</strong>{invoiceDate}<br/>
