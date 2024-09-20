@@ -1,0 +1,1 @@
+logoImage,name,afm,doy,epagelma,phone,email,address,postal_code,website,facebookUrl,twitterUrl,linkedInUrl,instagramUrl,createdAt,updatedAt
