@@ -12,8 +12,10 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
 import { MultiSelect } from 'primereact/multiselect';
+import { PrimeIcons } from 'primereact/api';
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { Tab } from 'react-bootstrap';
 
 
 const CustomerList = () => {
@@ -85,13 +87,18 @@ const CustomerList = () => {
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+
             name: { value: null, matchMode: FilterMatchMode.IN },
             afm: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            doy: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            epagelma: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             phone: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             email: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             address: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             postal_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            website: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
+            
         });
         setGlobalFilterValue('');
     };
@@ -99,6 +106,26 @@ const CustomerList = () => {
 
 
 //customer
+
+const imageBodyTemplate = (rowData) => {
+    return <img src={`${apiBaseUrl}/${rowData.logoImage}`} alt={rowData.logoImage} className="w-6rem shadow-2 border-round" />;
+};
+const websiteBodyTemplate = (rowData) => {
+    return <a href={`${rowData.website}`} alt={rowData.logoImage} >{`${rowData.website}`}</a>;
+};
+const socialBodyTemplate = (rowData) => {
+    return (
+        <div>
+            <a href={`${rowData.facebookUrl}`} alt={rowData.facebookUrl} ><i className="pi pi-facebook"></i></a> &nbsp; 
+            <a href={`${rowData.twitterUrl}`} alt={rowData.twitterUrl} ><i className="pi pi-twitter"></i></a> &nbsp; 
+            <a href={`${rowData.linkedInUrl}`} alt={rowData.linkedInUrl} ><i className="pi pi-linkedin"></i></a> &nbsp; 
+            <a href={`${rowData.instagramUrl}`} alt={rowData.instagramUrl} ><i className="pi pi-instagram"></i></a> &nbsp; 
+        
+        </div>
+        
+        
+    );
+};
 
 const customerBodyTemplate = (rowData) => {
         
@@ -191,12 +218,13 @@ const customerItemTemplate = (option) => {
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={['id', 'name', 
-                'afm','phone', 'email',
-                'address','postal_code'
+                'afm','doy','epagelma','phone', 'email',
+                'address','postal_code','website'
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="logoImage" header="Λογότυπο"  body={imageBodyTemplate}></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
                 <Column header="Πελάτης" filterField="name" 
                 showFilterMatchModes={false} 
@@ -205,12 +233,16 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                     filter filterElement={customerFilterTemplate} />  
               
                 <Column field="afm" header="ΑΦΜ"  filter filterPlaceholder="Search by afm"  style={{ minWidth: '12rem' }}></Column>
-
+                <Column field="doy" header="Δ.Ο.Υ."  filter filterPlaceholder="Search by doy"  style={{ minWidth: '12rem' }}></Column>
+                <Column field="epagelma" header="Επάγγελμα"  filter filterPlaceholder="Search by epagelma"  style={{ minWidth: '12rem' }}></Column>
                 <Column field="phone"  header="Τηλέφωνο"  filter filterPlaceholder="Search by phone" style={{ minWidth: '12rem' }}></Column>
                 <Column field="email" header="email"  filter filterPlaceholder="Search by email"  style={{ minWidth: '12rem' }}></Column>
                 <Column field="address"  header="Διεύθυνση"  filter filterPlaceholder="Search by address" style={{ minWidth: '12rem' }}></Column>
                 <Column field="postal_code" header="Ταχυδρομικός κωδικός"  filter filterPlaceholder="Search by postal_code"  style={{ minWidth: '12rem' }}></Column>
-
+                <Column field="website" header="Ιστοσελίδα"  filter filterPlaceholder="Search by website" body={websiteBodyTemplate} style={{ minWidth: '12rem' }}></Column>
+                <Column field="social-media" header="Social"  body={socialBodyTemplate} style={{ minWidth: '12rem' }}></Column>
+                
+                
 
 
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>

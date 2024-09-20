@@ -184,7 +184,7 @@ const formatCurrency = (value) => {
             aggregatedData[monthYear] = { 
                 x: monthYear, 
                 y: 0, 
-                goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 2, strokeDashArray: 2, strokeColor: 'red' }] 
+                goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 3, strokeDashArray: 2, strokeColor: 'red' }] 
             };
         }
         
@@ -224,7 +224,9 @@ const formatCurrency = (value) => {
           },
           plotOptions: {
             bar: {
-              columnWidth: '60%'
+                horizontal:false,
+              columnWidth: '60%',
+              position:"top",
             }
           },
           
@@ -236,7 +238,8 @@ const formatCurrency = (value) => {
         
           colors: ['#00E396'],
           dataLabels: {
-            enabled: false
+            enabled: false,
+            
           },
         
         // Format tooltips when hovering over the bars
@@ -248,6 +251,8 @@ const formatCurrency = (value) => {
             }
         },
         yaxis: {
+            min:0,
+            tickAmmount:5,
             labels: {
                 formatter: function (val) {
                     return formatCurrency(val);  // Format y-axis labels as currency
@@ -264,6 +269,8 @@ const formatCurrency = (value) => {
           }
         },
       };
+      
+
     
 
 
