@@ -10,7 +10,7 @@ import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import apiBaseUrl from '../../apiConfig';
-
+import apiBaseFrontUrl from '../../apiFrontConfig';
 
 const FormProfileErgo= () => {
 const[logoImage,setLogoImage]=useState(null);
@@ -114,13 +114,13 @@ const[logoImage,setLogoImage]=useState(null);
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Κατηγορία Έργου Id: </div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/ergacat/edit/${erga_cat_id}`}>{erga_cat_id}</a></div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`${apiBaseFrontUrl}/ergacat/edit/${erga_cat_id}`}>{erga_cat_id}</a></div>
            
         </li>
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Id Πελάτη: </div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`http://localhost:3000/customer/profile/${customer_id}`}>{customer_id}</a></div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"><a href= {`${apiBaseFrontUrl}/customer/profile/${customer_id}`}>{customer_id}</a></div>
            
         </li>
 

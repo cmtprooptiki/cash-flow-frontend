@@ -16,6 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dialog } from 'primereact/dialog';
+import apiBaseFrontUrl from '../../apiFrontConfig';
 
 const PaidExodaList = () => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -362,8 +363,8 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
-                        <p><strong><a href = {`http://localhost:3000/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
-                        <p><strong><a href = {`http://localhost:3000/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                     </div>
                 )}
             </Dialog>
