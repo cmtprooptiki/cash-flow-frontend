@@ -26,8 +26,6 @@ const FormAddParadotea = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null);
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null);
 
-    const[comments,setComments]=useState("");
-
     const [percentage_vat, setPercentage_Vat] = useState(0.24); // Default percentage_vat
 
     const [erga,setErga]=useState([]);
@@ -133,8 +131,7 @@ const FormAddParadotea = () => {
                 ammount_total:ammount_total,
                 estimate_payment_date: estimate_payment_date,
                 estimate_payment_date_2: estimate_payment_date_2,
-                estimate_payment_date_3: estimate_payment_date_3,
-                comments:comments
+                estimate_payment_date_3: estimate_payment_date_3
         });
 
         navigate("/paradotea");
@@ -299,15 +296,6 @@ const FormAddParadotea = () => {
                     <label htmlFor="total_ammount">Σύνολο</label>
                     <InputNumber className="input" mode="decimal" minFractionDigits={2}  id="total_ammount" value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} readOnly />
                 </div>
-
-                <div className="field">
-                <label htmlFor="comments">Σχόλιο Παραδοτέου</label>
-                    <div className="control">
-
-                    <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
-                    </div>
-                    </div>
-
             </div>
 
             <div >

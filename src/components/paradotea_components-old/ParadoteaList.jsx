@@ -67,15 +67,11 @@ const ParadoteaList = () => {
                 estimate_payment_date_2:new Date(item.estimate_payment_date_2),
                 estimate_payment_date_3:new Date(item.estimate_payment_date_3)
             }));
-
-
-            const sortedParaData = parDataWithDates.sort((a, b) => a.delivery_date - b.delivery_date);
-
     
-            console.log(sortedParaData); // Optionally log the transformed data
+            console.log(parDataWithDates); // Optionally log the transformed data
     
             // Assuming you have a state setter like setErga defined somewhere
-            setParadotea(sortedParaData);
+            setParadotea(parDataWithDates);
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -123,8 +119,6 @@ const ParadoteaList = () => {
             estimate_payment_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             estimate_payment_date_2: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             estimate_payment_date_3: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-
-            comments: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             
             'erga.name':{ value: null, matchMode: FilterMatchMode.IN },
@@ -412,7 +406,6 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 'estimate_payment_date',
                 'estimate_payment_date_2',
                 'estimate_payment_date_3',
-                'comments',
                 'erga.name',
                 'erga.shortname',
                 'timologia.invoice_number'
@@ -439,9 +432,6 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
                 <Column header="Ημερομηνία πληρωμής  (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
                 <Column header="Ημερομηνία πληρωμής  (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
-               
-                <Column field="comments" header="Σχόλιο"  filter filterPlaceholder="Search by comments"  style={{ minWidth: '12rem' }}></Column>
-
                 {/* <Column  field="delivery_date" header="delivery_date" dataType="date" style={{ minWidth: '10rem' }} ></Column> */}
                 {/* <Column field="erga_id" header="erga_id" dataType="numeric"  sortable style={{ minWidth: '2rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate}  ></Column> */}
                 {/* <Column header="erga.name" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}

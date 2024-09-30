@@ -72,10 +72,15 @@ const TimologiaList = () => {
                 actual_payment_date: new Date(item.actual_payment_date)
             }));
     
-            console.log(parDataWithDates); // Optionally log the transformed data
+            const sortedParaData = parDataWithDates.sort((a, b) => a.actual_payment_date - b.actual_payment_date);
+
+    
+            console.log(sortedParaData); // Optionally log the transformed data
+
+
     
             // Assuming you have a state setter like setErga defined somewhere
-            setTimologia(parDataWithDates);
+            setTimologia(sortedParaData);
     
         } catch (error) {
             console.error('Error fetching data:', error);

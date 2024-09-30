@@ -139,14 +139,14 @@ const Navbar =()=>{
                                              
 
 
-                                                <li>
+                                                {/* <li>
                                                 <Link to="/esoda_step1" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="wizard-hover p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" />  {/* Replace PrimeIcon with CustomIcon */}
+                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" />  
                                                         <span className="font-medium">Οδηγός Εσόδων</span>
                                                     </div>
                                                 </Link>
-                                                </li>
+                                                </li> */}
 
                                  
                                           
@@ -161,15 +161,15 @@ const Navbar =()=>{
                                                 </li>
 
                                              
-
+{/* 
                                                 <li>
                                                 <Link to="/step1" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="wizard-hover p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 transition-duration-150 transition-colors w-full">
-                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" />  {/* Replace PrimeIcon with CustomIcon */}
+                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" /> 
                                                         <span className="font-medium">Οδηγός Εξόδων</span>
                                                     </div>
                                                 </Link>
-                                                </li>
+                                                </li> */}
 
 
                                                 <li><Link to="/budget" style={{ color: 'inherit', textDecoration: 'none' }}>

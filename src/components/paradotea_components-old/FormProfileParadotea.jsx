@@ -28,8 +28,6 @@ const FormProfileParadotea=() =>{
     const[estimate_payment_date,setEstimate_Payment_Date]=useState("");
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("");
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("");
-    const[comments,setComments]=useState("");
-
 
     const[msg,setMsg]=useState("");
 
@@ -61,7 +59,6 @@ const FormProfileParadotea=() =>{
                 setEstimate_Payment_Date(response.data.estimate_payment_date);
                 setEstimate_Payment_Date_2(response.data.estimate_payment_date_2);
                 setEstimate_Payment_Date_3(response.data.estimate_payment_date_3);
-                setComments(response.data.comments);
             }
             catch(error)
             {
@@ -93,14 +90,6 @@ const FormProfileParadotea=() =>{
             <div className="text-500 w-6 md:w-2 font-medium">Ανήκει στο Εργο:</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={erga_name} className="mr-2" />
-                
-            </div>
-          
-        </li>
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-            <div className="text-500 w-6 md:w-2 font-medium">Σχόλιο:</div>
-            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                <Chip label={comments} className="mr-2" />
                 
             </div>
           

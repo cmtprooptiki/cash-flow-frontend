@@ -26,9 +26,6 @@ const FormEditParadotea = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null);
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null);
 
-    const[comments,setComments]=useState("");
-
-
     const [erga, setErga] = useState([])
 
     const[msg,setMsg]=useState("");
@@ -58,8 +55,6 @@ const FormEditParadotea = () => {
                 setEstimate_Payment_Date(response.data.estimate_payment_date);
                 setEstimate_Payment_Date_2(response.data.estimate_payment_date_2);
                 setEstimate_Payment_Date_3(response.data.estimate_payment_date_3);
-                setComments(response.data.comments);
-
             }
             catch (error)
             {
@@ -122,9 +117,7 @@ const FormEditParadotea = () => {
                 ammount_total:ammount_total,
                 estimate_payment_date: estimate_payment_date,
                 estimate_payment_date_2: estimate_payment_date_2,
-                estimate_payment_date_3: estimate_payment_date_3,
-                comments:comments
-
+                estimate_payment_date_3: estimate_payment_date_3
             });
 
             navigate("/paradotea");
@@ -310,15 +303,7 @@ const FormEditParadotea = () => {
                     <label htmlFor="total_ammount">Σύνολο</label>
                     <InputNumber className="input" mode="decimal" minFractionDigits={2}  id="total_ammount" value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} readOnly />
                 </div>
-
-                <label htmlFor="comments">Σχόλιο Παραδοτέου</label>
-                    <div className="control">
-
-                    <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
-                    </div>
-
             </div>
-            
 
             <div >
 
