@@ -73,7 +73,7 @@ const FormEditErgo= () => {
                 const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
                 setName(response.data.name);
                 setColor(response.data.color);
-                setSignAmmountNoTax(response.data.sign_ammount_no_tax);
+                // setSignAmmountNoTax(response.data.sign_ammount_no_tax);
                 setSignDate(response.data.sign_date);
 
                 setStatus(response.data.status);
@@ -313,14 +313,13 @@ const FormEditErgo= () => {
                                     </div>
                                 </div>
 
-                                <div className="field col-6">
+                                {/* <div className="field col-6">
                                     <label  className="label ">Συμβατική αξία (καθαρό ποσό)</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.target.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/> */}
                                         <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/>
 
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="field col-6">
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">

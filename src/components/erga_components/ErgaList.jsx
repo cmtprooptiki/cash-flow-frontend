@@ -313,10 +313,18 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 estimate_payment_date_3:new Date(item.estimate_payment_date_3)
             }));
     
-            console.log(ergaDataWithDates); // Optionally log the transformed data
-    
+            // console.log(ergaDataWithDates); 
             // Assuming you have a state setter like setErga defined somewhere
-            setErga(ergaDataWithDates);
+            // setErga(ergaDataWithDates);
+
+
+                // Sort ergaDataWithDates by sign_date in ascending order
+        const sortedErgaData = ergaDataWithDates.sort((a, b) => a.sign_date - b.sign_date);
+
+        console.log(sortedErgaData); // Optionally log the sorted data
+
+        // Assuming you have a state setter like setErga defined somewhere
+        setErga(sortedErgaData);
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -381,11 +389,11 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column header="Ημερομηνία υπογραφής σύμβασης" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
 
         <Column header="Κατάσταση έργου" field="status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-        <Column header="Συμβατική αξία (καθαρό ποσό)" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} />
-{/* 
+        {/* <Column header="Συμβατική αξία (καθαρό ποσό)" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} /> */}
+ 
         <Column header="Ποσό  (καθαρή αξία)" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
         <Column header="Ποσό ΦΠΑ" filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="Σύνολο" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} /> */}
+        <Column header="Σύνολο" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
         <Column header="Ημερομηνία έναρξης (εκτίμηση)" filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filter filterElement={estimateStartDateFilterTemplate} ></Column>
         {/* <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
         <Column header="Ημερομηνία πληρωμής (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>

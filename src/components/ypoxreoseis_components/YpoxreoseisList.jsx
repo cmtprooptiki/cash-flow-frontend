@@ -74,11 +74,19 @@ const YpoxreoseisList = () =>
                 'ypoxreoseis.invoice_date': new Date(item.ypoxreoseis?.invoice_date)
                 // actual_payment_date: new Date(item.actual_payment_date)
             }));
+            // Sort parDataWithDates by ypoxreoseis.invoice_date in ascending order
+            const sortedParData = parDataWithDates.sort((a, b) => {
+                const dateA = a['ypoxreoseis.invoice_date'];
+                const dateB = b['ypoxreoseis.invoice_date'];
+                return dateA - dateB; // Sort in ascending order
+            });
+
+            
     
-            console.log(parDataWithDates); // Optionally log the transformed data
+            console.log(sortedParData); // Optionally log the transformed data
     
             // Assuming you have a state setter like setErga defined somewhere
-            setYpoxreoseis(parDataWithDates);
+            setYpoxreoseis(sortedParData);
     
         } catch (error) {
             console.error('Error fetching data:', error);

@@ -148,14 +148,14 @@ const[logoImage,setLogoImage]=useState(null);
           
         </li>
 
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+        {/* <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Συμβατική αξία (καθαρό ποσό):</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={formatCurrency(sign_ammount_no_tax)} className="mr-2" />
                
             </div>
           
-        </li>
+        </li> */}
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία Υπογραφής Σύμβασης:</div>
