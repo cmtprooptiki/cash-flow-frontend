@@ -1,7 +1,7 @@
-// apiConfig.js
+// For LocalServer
 const apiBaseUrl = 'http://localhost:5000';
 
-
-// const apiBaseUrl = 'https://backend.paratiritirio-edsna.gr:5000';
+//For live
+// const apiBaseUrl = 'https://api.cashflow.cmtprooptiki.gr:4002';
 
 export default apiBaseUrl;
