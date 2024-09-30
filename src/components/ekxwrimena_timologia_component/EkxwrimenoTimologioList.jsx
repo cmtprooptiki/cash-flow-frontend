@@ -118,6 +118,8 @@ const EkxwrimenoTimologioList = () =>
             cust_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             cust_estimated_date:{operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]},
             status_customer_paid:{ operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            comments: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+
         });
         setGlobalFilterValue('');
     };
@@ -317,7 +319,8 @@ const EkxwrimenoTimologioList = () =>
                     'cust_estimated_date',
                     'cust_date',
                     'status_bank_paid',
-                    'status_customer_paid'
+                    'status_customer_paid',
+                    'comments'
                 ]} header={header}
                 emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
                 <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
@@ -332,6 +335,8 @@ const EkxwrimenoTimologioList = () =>
                 <Column field="timologia_id" header="timologia_id" filter filterPlaceholder="Search by timologia_id" style={{ minWidth: '5rem' }} />
                 <Column field="status_bank_paid" header="Εκχώρηση (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBankPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
+                <Column field="comments" header="Σχόλια"  filter filterPlaceholder="Search by comment"  style={{ minWidth: '12rem' }}></Column>
+
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
 
            </DataTable>

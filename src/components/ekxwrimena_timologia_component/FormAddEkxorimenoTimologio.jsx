@@ -24,6 +24,7 @@ const FormAddEkxorimenoTimologio = () =>
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
     const[status_bank_paid,setStatusBankPaid]=useState("no");
     const[status_customer_paid,setStatusCustomerPaid]=useState("no");
+    const[comments,setComments]=useState("");
 
     const[msg,setMsg]=useState("");
 
@@ -76,6 +77,8 @@ const FormAddEkxorimenoTimologio = () =>
             cust_estimated_date:cust_estimated_date,
             status_bank_paid:updatedStatusBankPaid,
             status_customer_paid:updatedStatusCustomerPaid,
+            comments: comments,
+
             });
             navigate("/ek_tim");
         }catch(error){
@@ -170,6 +173,14 @@ const FormAddEkxorimenoTimologio = () =>
                             <Button label="Clear" onClick={clearCustDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                     </div>
+
+                    <div className="field">
+                    <label className="label">Σχόλια</label>
+                    <div className="control">
+                    <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
+
+                    </div>
+                </div>
 
                     {/* <div className="field">
                         <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>

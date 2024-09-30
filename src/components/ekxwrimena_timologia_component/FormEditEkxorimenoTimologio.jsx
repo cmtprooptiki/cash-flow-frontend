@@ -5,6 +5,7 @@ import apiBaseUrl from '../../apiConfig'
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 
@@ -20,6 +21,7 @@ const FormEditEkxorimenoTimologio = () =>
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
     const[status_bank_paid,setStatusBankPaid]=useState("");
     const[status_customer_paid,setStatusCustomerPaid]=useState("");
+    const [comments, setComments] = useState("");
 
     const [timologia, setTimologia] = useState([])
     const[msg,setMsg]=useState("");
@@ -71,6 +73,7 @@ const FormEditEkxorimenoTimologio = () =>
                 setCust_Date(formatDateToInput(response.data.cust_date));
                 setStatusCustomerPaid(response.data.status_customer_paid);
                 setStatusBankPaid(response.data.status_bank_paid);
+                setComments(response.data.comments);
 
             }
             catch(error)
@@ -111,7 +114,9 @@ const FormEditEkxorimenoTimologio = () =>
                 cust_estimated_date:cust_estimated_date,
                 cust_date:cust_date,
                 status_bank_paid:updatedStatusBankPaid,
-                status_customer_paid:updatedStatusCustomerPaid
+                status_customer_paid:updatedStatusCustomerPaid,
+                comments: comments,
+
             });
 
             navigate("/ek_tim");
@@ -203,6 +208,13 @@ const FormEditEkxorimenoTimologio = () =>
                             <Button label="Clear" onClick={clearCustDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                     </div>
+
+                    <div className="field">
+                                <label className="label">Σχόλια</label>
+                                <div className="control">
+                                    <InputTextarea value={comments} onChange={(e) => setComments(e.target.value)} />
+                                </div>
+                            </div>
 
                 {/* <div className="field">
                                 <label className="label">Kατάσταση πληρωμής πελάτη</label>
