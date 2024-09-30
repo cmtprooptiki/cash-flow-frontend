@@ -24,6 +24,7 @@ const FormProfileEkxorimenoTimologio = () =>
 
     const[status_bank_paid,setStatusBankPaid]=useState("");
     const[status_customer_paid,setStatusCustomerPaid]=useState("");
+    const[comments,setComments]=useState("");
 
     const[msg,setMsg]=useState("");
     const{id} = useParams();
@@ -51,6 +52,8 @@ const FormProfileEkxorimenoTimologio = () =>
                 setCust_Date(formatDateToInput(response.data.cust_date));
                 setStatusCustomerPaid(response.data.status_customer_paid);
                 setStatusBankPaid(response.data.status_bank_paid);
+                setComments(response.data.comments);
+
             }
             catch(error)
             {
@@ -167,6 +170,7 @@ const FormProfileEkxorimenoTimologio = () =>
     </div>
 </div>
 
+
 </div>
    
         
@@ -194,8 +198,7 @@ const FormProfileEkxorimenoTimologio = () =>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span>
+          
         </div>
     </div>
 
@@ -236,83 +239,15 @@ const FormProfileEkxorimenoTimologio = () =>
           
         </li>
 
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Σχόλια</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{comments}</div>
+           
+        </li>
+
 </div>
 
-//         <div>
-// 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossOrigin="anonymous" />
-// <div className="container">
-//     <div className="row">
-//       <div className="col-lg-5 col-md-6">
-//         <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-//         </div>
-//         <div className="mb-2 d-flex">
 
-//         </div>
-
-        
-        
-//       </div>
-//       <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-//         <div className='box'>
-//           <div className="mb-2 d-flex">
-//             <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >ΕΚΧΩΡΗΜΕΝΟ ΤΙΜΟΛΟΓΙΟ</h2>
-            
-//           </div>
-        
-//         <div className="mb-2 d-flex">
-          
-//           <ul className="list-unstyled">
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΤΙΜΟΛΟΓΙΟ ID:  &nbsp;</span><label className="media-body"> {timologia_id}</label>
-//             </li>
-          
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
-//               <label className="media-body"> {bank_ammount}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
-//               <label className="media-body"> {bank_estimated_date}</label>
-//             </li>
-           
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ: &nbsp;</span>
-//               <label className="media-body"> {bank_date}</label>
-//             </li>
-
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΠΕΛΑΤΗ: &nbsp;</span>
-//               <label className="media-body"> {customer_ammount}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ: &nbsp;</span>
-//               <label className="media-body"> {cust_estimated_date}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ: &nbsp;</span>
-//               <label className="media-body"> {cust_date}</label>
-//             </li>
-
-//           </ul>
-//         </div>
-        
-       
-          
-
-//           </div>
-    
-//       </div>
-
-
-      
-//     </div>
-//   </div>
-// 		</div>
     )
 }
 export default FormProfileEkxorimenoTimologio;

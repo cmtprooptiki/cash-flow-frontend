@@ -26,48 +26,28 @@ const ErgaList = () => {
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-    const [statuses] = useState(['unsigned', 'signed']);
+    const [statuses] = useState(['Σχεδίαση','Ολοκληρωμένο','Αποπληρωμένο','Υπογεγραμμένο','Ακυρωμένο']);
     const [project_managers, setProjectManager]=useState([]);
-    // <td>{ergo.name}</td>
-    // <td>{ergo.color}</td>
-    // <td>{ergo.sign_ammount_no_tax}</td>
-    // <td>{ergo.sign_date}</td>
-    // <td>{ergo.status}</td>
-    // <td>{ergo.estimate_start_date}</td>
-    // <td>{ergo.project_manager }</td>
-    // <td>{ergo.customer_id}</td>
-    // <td>{ergo.shortname}</td>
-    // <td>{ergo.ammount}</td>
-    // <td>{ergo.ammount_vat}</td>
-    // <td>{ergo.ammount_total}</td>
-    // <td>{ergo.estimate_payment_date}</td>
-    // <td>{ergo.estimate_payment_date_2}</td>
-    // <td>{ergo.estimate_payment_date_3}</td>
-    // <td>{ergo.erga_cat_id}</td>
-
-    // const columns = [
-    //     {field: 'id', header: 'id'},
-    //     {field: 'name', header: 'name'},
-    //     {field: 'shortname', header: 'shortname'},
-    //     {field: 'status', header: 'status'},
-    //     {field: 'sign_date', header: 'sign_date'},
-    //     {field: 'sign_ammount_no_tax', header: 'sign_ammount_no_tax'},
-    //     {field:'project_manager', header:'project_manager'},
-    //     {field: 'ammount', header: 'ammount'},
-    //     {field:'ammount_vat', header:'ammount_vat'},
-    //     {field:'ammount_total', header:'ammount_total'},
-    //     {field:'estimate_payment_date', header:'estimate_payment_date'},
-    //     {field:'estimate_payment_date_2', header:'estimate_payment_date_2'},
-    //     {field:'estimate_payment_date_3', header:'estimate_payment_date_3'}
-    // ];
+   
 
     const getSeverity = (status) => {
         switch (status) {
-            case 'unsigned':
+            case 'Σχεδίαση':
+                return 'info';
+
+            case 'Υπογεγραμμένο':
+                return 'success';
+            
+            case 'Ολοκληρωμένο':
+                return 'secondary';
+
+            case 'Αποπληρωμένο':
+                return 'contrast';
+
+            case 'Ακυρωμένο':
                 return 'danger';
 
-            case 'signed':
-                return 'success';
+           
 
          
         }
