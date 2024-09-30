@@ -1,7 +1,9 @@
-// apiConfig.js
-const apiBaseFrontUrl = 'http://localhost:3000';
+//For localhost
+const apiBaseFrontUrl = 'https://localhost:3000';
+
+//For Live Server
+// const apiBaseFrontUrl = 'https://cashflow.cmtprooptiki.gr';
 
 
-// const apiBaseUrl = 'https://backend.paratiritirio-edsna.gr:5000';
 
 export default apiBaseFrontUrl;

@@ -165,6 +165,9 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
+import moment from 'moment/moment';
+
+
 const BudgetForm = () => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState(0.00);
@@ -183,9 +186,12 @@ const BudgetForm = () => {
     const saveBudget = async (e) => {
         e.preventDefault();
         try {
+
+            let date = new Date();
+            let formattedDate = moment(date).format('YYYY-MM-DD');
             await axios.post(`${apiBaseUrl}/budget`, {
                 ammount: ammount,
-                date: date
+                date: formattedDate
             });
             navigate("/budget");
         } catch (error) {
@@ -236,9 +242,11 @@ const BudgetForm = () => {
     const updateBudget = async (e) => {
         e.preventDefault();
         try {
+            let date = new Date();
+            let formattedDate = moment(date).format('YYYY-MM-DD');
             await axios.patch(`${apiBaseUrl}/budget/${existingBudgetId}`, {
                 ammount: ammount,
-                date: new Date().toLocaleDateString()
+                date: formattedDate
             });
             navigate("/budget");
         } catch (error) {

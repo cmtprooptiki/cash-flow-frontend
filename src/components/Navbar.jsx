@@ -34,6 +34,7 @@ import { ReactComponent as WizardIcon } from '../icons/wizardicon.svg'; // Impor
 import { Toolbar } from "primereact/toolbar";
 
 // import apiBaseUrl from '../../apiConfig';
+import apiBaseUrl from "../apiConfig";
 
 const Navbar =()=>{
     const dispatch = useDispatch();
@@ -292,7 +293,7 @@ const Navbar =()=>{
                                         <span className="font-bold">Amy Elsner</span> */}
                                         {/* {console.log("here is the profile pci",user?.profileImage)} */}
                                          <Avatar
-                                                    image={`http://localhost:5000/${user?.profileImage.split('/').pop()}`}
+                                                    image={`${apiBaseUrl}/uploads/${user?.profileImage.split('/').pop()}`}
                                                     shape="circle"
                                                 />
                                                 <span className="font-bold">{user?.name || "Amy Elsner"}</span>
@@ -332,7 +333,7 @@ const Navbar =()=>{
             
             <div>
                 <Avatar
-                    image={`http://localhost:5000/${user?.profileImage.split('/').pop()}`}
+                    image={`${apiBaseUrl}/uploads/${user?.profileImage.split('/').pop()}`}
                     shape="circle"
                     size="large"
                     aria-label="account of current user"

@@ -25,6 +25,7 @@ const ParadoteaList = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [timologia, setTimologio]=useState([]);
     const [erga, setErgo]=useState([]);
+    const [ergashort, setErgoShort]=useState([]);
 
     useEffect(()=>{
         getParadotea()
@@ -46,6 +47,9 @@ const ParadoteaList = () => {
 
             const uniqueErga= [...new Set(paraData.map(item => item.erga?.name || 'N/A'))];
             setErgo(uniqueErga);
+
+            const uniqueErgaShort= [...new Set(paraData.map(item => item.erga?.shortname || 'N/A'))];
+            setErgoShort(uniqueErgaShort);
 
             // Convert sign_date to Date object for each item in ergaData
             const parDataWithDates = paraData.map(item => ({
@@ -118,6 +122,7 @@ const ParadoteaList = () => {
 
             
             'erga.name':{ value: null, matchMode: FilterMatchMode.IN },
+            'erga.shortname':{ value: null, matchMode: FilterMatchMode.IN },
             'timologia.invoice_number':  { value: null, matchMode: FilterMatchMode.IN },
             
 
@@ -277,6 +282,42 @@ const ergaItemTemplate = (option) => {
     );
 };
 
+//shortname
+
+const shortnameBodyTemplate = (rowData) => {
+        
+    const ergo = rowData.erga?.shortname || 'N/A';        // console.log("repsBodytempl",timologio)
+    console.log("timologio",ergo," type ",typeof(ergo));
+    console.log("rep body template: ",ergo)
+
+    return (
+        <div className="flex align-items-center gap-2">
+            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+            <span>{ergo}</span>
+        </div>
+    );
+};
+
+const shortnameFilterTemplate = (options) => {
+    console.log('Current timologia filter value:', options.value);
+
+        return (<MultiSelect value={options.value} options={ergashort} itemTemplate={shortnameItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+
+    };
+
+
+const shortnameItemTemplate = (option) => {
+    // console.log("itemTemplate",option)
+    console.log("rep Item template: ",option)
+    console.log("rep Item type: ",typeof(option))
+
+    return (
+        <div className="flex align-items-center gap-2">
+            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+            <span>{option}</span>
+        </div>
+    );
+};
 
 
 
@@ -366,11 +407,17 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 'estimate_payment_date_2',
                 'estimate_payment_date_3',
                 'erga.name',
+                'erga.shortname',
                 'timologia.invoice_number'
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column header="Έργα" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                <Column header="Ακρόνυμο έργου" filterField="erga.shortname" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={shortnameBodyTemplate} filter filterElement={shortnameFilterTemplate} />  
+
                 <Column field="part_number"  header="Παραδοτέο (Αριθμός)"  filter filterPlaceholder="Search by part number" style={{ minWidth: '12rem' }}></Column>
                 <Column field="title" header="Τίτλος παραδοτέου"  filter filterPlaceholder="Search by title"  style={{ minWidth: '12rem' }}></Column>
                 <Column header="Ημερομηνία υποβολής" filterField="delivery_date" dataType="date" style={{ minWidth: '5rem' }} body={deliveryDateBodyTemplate} filter filterElement={deliveryDateFilterTemplate} ></Column>
@@ -391,8 +438,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                    ></Column>
                  */}
 
-            <Column header="Έργα" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+            
 
              <Column header="Τιμολόγια" filterField="timologia.invoice_number" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={timologiaBodyTemplate} filter filterElement={timologiaFilterTemplate} />
