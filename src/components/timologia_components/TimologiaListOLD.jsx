@@ -14,7 +14,7 @@ const TimologiaList = () => {
     }, []);
 
     const getTimologia = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/timologia`);
+        const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
         setTimologia(response.data);
     }
 

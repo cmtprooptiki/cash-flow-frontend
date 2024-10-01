@@ -33,7 +33,7 @@ const TagList2 = ()=>
 
     const getTags = async() =>{
         try {
-            const response = await axios.get(`${apiBaseUrl}/tags`);
+            const response = await axios.get(`${apiBaseUrl}/tags`, {timeout: 5000});
             const tags_data = response.data;
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];

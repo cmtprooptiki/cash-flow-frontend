@@ -17,7 +17,7 @@ const FormEditTags = ()=>
     useEffect(()=>{
         const getTagsById = async()=>{
             try {
-                const response=await axios.get(`${apiBaseUrl}/tags/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/tags/${id}`, {timeout: 5000});
                 setName(response.data.name);
                 console.log(name)
             } catch (error) {

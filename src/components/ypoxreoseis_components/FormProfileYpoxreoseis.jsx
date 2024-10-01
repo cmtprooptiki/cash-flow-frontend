@@ -33,7 +33,7 @@ const FormProfileYpoxreoseis = () =>
         const getYpoxreoseisById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
                 setProvider(response.data.ypoxreoseis.provider)
                 setErga_Id(response.data.ypoxreoseis.erga_id)
                 setInvoice_date(response.data.ypoxreoseis.invoice_date);

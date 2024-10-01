@@ -56,7 +56,7 @@ const FormAddTimologia = () => {
     //     });
     // };
     const getErga = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`);
+        const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`, {timeout: 5000});
         setErga(response.data);
     }
     const handleErgaChange = async (e) => {
@@ -65,7 +65,7 @@ const FormAddTimologia = () => {
         clearFormFields();
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`);
+                const response = await axios.get(`${apiBaseUrl}/getParadoteaByErgoId/${selectedId}`, {timeout: 5000});
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId)
             } catch (error) {

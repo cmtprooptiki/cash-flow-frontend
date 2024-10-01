@@ -43,7 +43,7 @@ const EkxwrimenoTimologioList2 = () =>
     const getEkxorimena_Timologia = async() =>{
 
         try {
-            const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+            const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
             const paraData = response.data;
             console.log("ParaData:",paraData);
            

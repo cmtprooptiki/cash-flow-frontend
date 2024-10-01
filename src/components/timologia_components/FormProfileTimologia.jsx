@@ -41,7 +41,7 @@ const FormProfileTimologia = () => {
         const getTimologioById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/timologia/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/timologia/${id}`, {timeout: 5000});
                 setInvoice_date(response.data.invoice_date);
                 setAmmount_no_tax(response.data.ammount_no_tax);
                 setAmmount_Tax_Incl(response.data.ammount_tax_incl);
@@ -51,15 +51,15 @@ const FormProfileTimologia = () => {
                 setInvoice_Number(response.data.invoice_number);
                 setStatus_Paid(response.data.status_paid);
 
-                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`, {timeout: 5000});
                 const paradoteaData = paradoteaResponse.data
 
-                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`, {timeout: 5000});
                 const ergaData = ergaResponse.data;
 
                 setErga(ergaData);
                 setSelectedParadoteaDetails(paradoteaData);
-                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`);
+                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
                 setFullParadotea(fullParadoteaResponse.data);
 
                 const itemsWithTimologiaId = fullParadotea.filter(paradoteo => paradoteo.timologia_id === parseInt(id));
@@ -97,7 +97,7 @@ const FormProfileTimologia = () => {
         clearFormFields();
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`);
+                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`, {timeout: 5000});
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId.filter(paradoteo=>paradoteo.erga.id===selectedId))
                 // Filter by timologia_id and then map over the filtered array

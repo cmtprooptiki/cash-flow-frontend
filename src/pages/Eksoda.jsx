@@ -80,13 +80,13 @@ const Eksoda = ()=>
 
   const getDoseis = async () =>
     {
-        const response = await axios.get(`${apiBaseUrl}/doseis`);
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
         setDoseis(response.data)
     }
 
     const getYpoxreoseis = async () =>
     {
-        const response = await axios.get(`${apiBaseUrl}/ypoquery`);
+        const response = await axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000});
         setYpoxreoseis(response.data)
     }
 

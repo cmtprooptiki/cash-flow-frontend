@@ -40,11 +40,11 @@ const TimologiaList = () => {
     }, []);
 
     const getTimologia = async() =>{
-        // const response = await axios.get(`${apiBaseUrl}/timologia`);
+        // const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
         // setTimologia(response.data);
 
         try {
-            const response = await axios.get(`${apiBaseUrl}/timologia`);
+            const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
             const paraData = response.data;
             console.log("ParaData:",paraData);
             // Extract unique statuses
@@ -73,7 +73,7 @@ const TimologiaList = () => {
                 ErgaName:""
             }));
             try {
-                const response = await axios.get(`${apiBaseUrl}/paradotea`);
+                const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
                 const paraErgaData = response.data;
                 
                 const mergedTimParData=parDataWithDates.map(parDataWithDates=>{

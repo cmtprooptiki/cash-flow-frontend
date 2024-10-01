@@ -37,7 +37,7 @@ const FormProfileErgo= () => {
   useEffect(()=>{
       const getErgoById = async()=>{
         try {
-            const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
+            const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
             setName(response.data.name);
             setColor(response.data.color);
             setSignAmmountNoTax(response.data.sign_ammount_no_tax);

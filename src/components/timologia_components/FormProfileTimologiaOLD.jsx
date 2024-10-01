@@ -27,7 +27,7 @@ const FormProfileTimologia = () => {
         const getTimologioById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/timologia/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/timologia/${id}`, {timeout: 5000});
                 setInvoice_date(response.data.invoice_date);
                 setAmmount_no_tax(response.data.ammount_no_tax);
                 setAmmount_Tax_Incl(response.data.ammount_tax_incl);

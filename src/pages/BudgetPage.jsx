@@ -22,7 +22,7 @@ const BudgetPage = () => {
         const fetchBudget = async () => {
             try {
                 // Fetch budget from your API endpoint
-                const response = await axios.get(`${apiBaseUrl}/budget`);
+                const response = await axios.get(`${apiBaseUrl}/budget`, {timeout: 5000});
                 if (response.data && response.data.length > 0) {
                     // Assuming the first record is the one you're interested in
                     const budgetData = response.data[0];

@@ -30,7 +30,7 @@ const WeeksTableEksoda = ({ eventsWithActualPaymentDate, eventsWithoutActualPaym
 
   const getProviderName = async (ypoxreoseisId) => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/ypo/${ypoxreoseisId}`);
+      const response = await axios.get(`${apiBaseUrl}/ypo/${ypoxreoseisId}`, {timeout: 5000});
       return response.data.provider;
     } catch (error) {
       console.error('Error fetching provider name:', error);

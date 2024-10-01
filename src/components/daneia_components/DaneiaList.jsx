@@ -34,7 +34,7 @@ const DaneiaList = () => {
     },[]);
 
     const getDaneia = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/daneia`);
+        const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000});
         setDaneia(response.data);
     }
     const deleteDaneia = async(daneiaId)=>{

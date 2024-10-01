@@ -26,7 +26,7 @@ export const LoginUser=createAsyncThunk("user/loginUser",async(user,thunkAPI)=>{
 
 export const getMe=createAsyncThunk("user/getMe",async(_,thunkAPI)=>{
     try{
-        const response=await axios.get(`${apiBaseUrl}/me`);
+        const response=await axios.get(`${apiBaseUrl}/me`,{timeout: 5000});
         return response.data;
     } catch(error){
         if(error.response){

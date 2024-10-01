@@ -123,7 +123,7 @@ const getLimitAnnotation =(metricname)=>{
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiBaseUrl}/buildingmetrics`);
+        const response = await axios.get(`${apiBaseUrl}/buildingmetrics`, {timeout: 5000});
         const apiData = response.data;
 
         setBuildingMetrics(apiData);

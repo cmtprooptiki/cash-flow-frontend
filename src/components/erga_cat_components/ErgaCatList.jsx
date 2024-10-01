@@ -33,7 +33,7 @@ const ErgaCatList = () => {
     },[]);
 
     const getErgaCat = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/ergacat`);
+        const response = await axios.get(`${apiBaseUrl}/ergacat`, {timeout: 5000});
         setErgaCat(response.data);
     }
     const deleteErgaCat = async(ergaId)=>{

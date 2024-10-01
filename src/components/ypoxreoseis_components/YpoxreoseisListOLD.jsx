@@ -14,7 +14,7 @@ const YpoxreoseisList = () =>
     },[]);
 
     const getYpoxreoseis = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/ypoquery`);
+        const response = await axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000});
         setYpoxreoseis(response.data);
     }
 

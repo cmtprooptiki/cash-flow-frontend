@@ -20,7 +20,7 @@ const FormEditUser = () => {
     useEffect(()=>{
         const getUserById = async()=>{
             try {
-                const response=await axios.get(`${apiBaseUrl}/users/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/users/${id}`, {timeout: 5000});
                 setName(response.data.name);
                 setEmail(response.data.email);
                 setRole(response.data.role);

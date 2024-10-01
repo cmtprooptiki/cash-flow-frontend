@@ -28,7 +28,7 @@ const FormEditDoseis = ()=>
         const getDoseisById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000});
                 setActual_Payment_Date(response.data.actual_payment_date)
                 setYpoxreoseis_Id(response.data.ypoxreoseis_id);
                 setAmmount(response.data.ammount);
@@ -47,7 +47,7 @@ const FormEditDoseis = ()=>
 
         const getYpoxreoseis = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/ypo`);
+                const response = await axios.get(`${apiBaseUrl}/ypo`, {timeout: 5000});
                 setYpoxreoseis(response.data);
             } catch (error) {
                 if (error.response) {

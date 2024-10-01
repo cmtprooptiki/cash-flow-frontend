@@ -37,7 +37,7 @@ const DoseisList2 = () => {
 
     const getDoseis = async() =>{
         try {
-            const response = await axios.get(`${apiBaseUrl}/doseis`);
+            const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
             const doseis_data = response.data;
             console.log("ParaData:",doseis_data);
 

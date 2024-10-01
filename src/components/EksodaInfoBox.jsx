@@ -13,7 +13,7 @@
 //           try {
 //             // Fetching ypoxreoseis data using item.ypoxreoseis_id
 //             console.log(item)
-//             const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`);
+//             const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`, {timeout: 5000});
 //             // const ypoxreoseisData = await ypoxreoseisResponse.json();
 //             setYpoxreoseis(ypoxreoseisResponse);
 //           } catch (error) {
@@ -83,7 +83,7 @@ const formatDate = (value) => {
       try {
         // Fetching ypoxreoseis data using item.ypoxreoseis_id
         console.log(item.ammount)
-        const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`);
+        const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`, {timeout: 5000});
         setYpoxreoseis(ypoxreoseisResponse.data);
       } catch (error) {
         setError("Error fetching data");

@@ -51,10 +51,10 @@
 
 //     useEffect(()=>{
 //         const getBudgetById = async()=>{
-//             const response=await axios.get(`${apiBaseUrl}/budget/${id}`);
+//             const response=await axios.get(`${apiBaseUrl}/budget/${id}`, {timeout: 5000});
 //             try
 //             {
-//                 const response=await axios.get(`${apiBaseUrl}/budget/${id}`);
+//                 const response=await axios.get(`${apiBaseUrl}/budget/${id}`, {timeout: 5000});
 //                 setAmmount(response.data.ammount);
 //                 setDate(formatDateToInput(response.data.date))
 //             }
@@ -215,7 +215,7 @@ const BudgetForm = () => {
     useEffect(() => {
         const checkExistingBudget = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/budget`);
+                const response = await axios.get(`${apiBaseUrl}/budget`, {timeout: 5000});
                 if (response.data && response.data.length > 0) {
                     // If a budget exists, set the form to update mode
                     const budget = response.data[0]; // Assuming you only have one record

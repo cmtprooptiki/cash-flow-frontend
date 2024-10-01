@@ -16,7 +16,7 @@ const EkxwrimenoTimologioList = () =>
     }, []);
 
     const getEkxorimena_Timologia = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
         setEkxorimena_Timologia(response.data);
     }
 

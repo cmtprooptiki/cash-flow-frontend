@@ -45,7 +45,7 @@ const EkxwrimenoTimologioList = () =>
     const getEkxorimena_Timologia = async() =>{
 
         try {
-            const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+            const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
             const paraData = response.data;
             console.log("ParaData:",paraData);
             
@@ -68,7 +68,7 @@ const EkxwrimenoTimologioList = () =>
                 invoice_number:""
             }));
             try {
-                const response = await axios.get(`${apiBaseUrl}/paradotea`);
+                const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
                 const paraErgaData = response.data;
                 
                 const mergedΕκ_TimParData=parDataWithDates.map(parDataWithDates=>{
@@ -82,7 +82,7 @@ const EkxwrimenoTimologioList = () =>
                 console.error('Error fetching data2:', error);
             }
             try {
-                const response = await axios.get(`${apiBaseUrl}/timologia`);
+                const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
                 const paraTimData = response.data;
                 
                 const mergedΕκ_TimParData=parDataWithDates.map(parDataWithDates=>{

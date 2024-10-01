@@ -70,7 +70,7 @@ const FormEditErgo= () => {
     useEffect(()=>{
         const getErgoById = async()=>{
             try {
-                const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
                 setName(response.data.name);
                 setColor(response.data.color);
                 // setSignAmmountNoTax(response.data.sign_ammount_no_tax);
@@ -105,7 +105,7 @@ const FormEditErgo= () => {
 
         const getCustomers = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/customer`);
+                const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
                 setCustomers(response.data);
                 // setCustomerName(response.data)
                 // console.log(response.data)
@@ -126,7 +126,7 @@ const FormEditErgo= () => {
 
         const getErga_Cat = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/ergacat`);
+                const response = await axios.get(`${apiBaseUrl}/ergacat`, {timeout: 5000});
                 setErgo_Cat(response.data);
                 // setErga_cat_name(response.data)
             } catch (error) {
