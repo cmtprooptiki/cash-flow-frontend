@@ -30,7 +30,7 @@ const TimologiaList = () => {
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     // const [timologia, setTimologio]=useState([]);
-    // const [erga, setErgo]=useState([]);
+    const [erga, setErgo]=useState([]);
 
     
     useEffect(()=>{
@@ -69,13 +69,34 @@ const TimologiaList = () => {
                 //     invoice_number: item.timologia?.invoice_number || 'N/A'
                 // },
                 invoice_date: new Date(item.invoice_date),
-                actual_payment_date: new Date(item.actual_payment_date)
+                actual_payment_date: new Date(item.actual_payment_date),
+                ErgaName:""
             }));
+            try {
+                const response = await axios.get(`${apiBaseUrl}/paradotea`);
+                const paraErgaData = response.data;
+                
+                const mergedTimParData=parDataWithDates.map(parDataWithDates=>{
+                    parDataWithDates.ErgaName=paraErgaData.find(paraErgaData=>paraErgaData.timologia_id===parDataWithDates.id).erga.name
+                })
+                // console.log("merged ",mergedTimParData)
+
+            } catch (error) {
+                console.error('Error fetching data2:', error);
+            }
+
+            const uniqueErgaNames = [...new Set(parDataWithDates.map(item =>item.ErgaName))];
+            setErgo(uniqueErgaNames);
+            console.log("ddsadasdasda",uniqueErgaNames)
+            // const a3 = a1.map(it1 => {
+            //     it1.test = a2.find(it2 => it2.id === it1.id).test
+            //     return it1
+            //   })
     
             const sortedParaData = parDataWithDates.sort((a, b) => a.actual_payment_date - b.actual_payment_date);
 
     
-            console.log(sortedParaData); // Optionally log the transformed data
+            console.log("what  ",sortedParaData); // Optionally log the transformed data
 
 
     
@@ -120,6 +141,11 @@ const TimologiaList = () => {
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+
+            ErgaName: { value: null, matchMode: FilterMatchMode.IN} ,
+
+            
+
             invoice_number: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             
             invoice_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
@@ -144,7 +170,40 @@ const TimologiaList = () => {
         setGlobalFilterValue('');
     };
 
-
+    const ergaBodyTemplate = (rowData) => {
+        
+        const ergo = rowData.ErgaName || 'N/A';        // console.log("repsBodytempl",timologio)
+        console.log("timologio",ergo," type ",typeof(ergo));
+        console.log("rep body template: ",ergo)
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+                <span>{ergo}</span>
+            </div>
+        );
+    };
+    
+    const ergaFilterTemplate = (options) => {
+        console.log('Current timologia filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={erga} itemTemplate={ergaItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+    
+    
+    const ergaItemTemplate = (option) => {
+        // console.log("itemTemplate",option)
+        console.log("rep Item template: ",option)
+        console.log("rep Item type: ",typeof(option))
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+                <span>{option}</span>
+            </div>
+        );
+    };
     
 
 
@@ -301,6 +360,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             filters={filters} 
             globalFilterFields={[
                 'id', 
+                'ErgaName',
                 'invoice_number', 
                 'invoice_date',
                 'ammount_no_tax',
@@ -314,6 +374,10 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No timologia found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
+                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                
                 <Column field="invoice_number"  header="Αρ. τιμολογίου"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }}></Column>
                 <Column header="Ημερομηνία έκδοσης τιμολογίου" filterField="invoice_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
 
