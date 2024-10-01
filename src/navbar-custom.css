@@ -31,8 +31,8 @@ span {
     color: red;
 }
 
-a > a:hover{
-    background-color:rgb(107, 18, 18);
+a > div:hover{
+    background-color:rgb(25, 81, 114);
 }
 a:hover > .wizard-hover {
     background-color:rgb(107, 18, 18);
