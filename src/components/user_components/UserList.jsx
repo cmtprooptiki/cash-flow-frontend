@@ -32,7 +32,7 @@ const UserList = () => {
     },[]);
 
     const getUsers = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/users`);
+        const response = await axios.get(`${apiBaseUrl}/users`, {timeout: 5000});
         const userData=response.data;
         setUsers(response.data);
         const uniqueRole=[...new Set(userData.map(item=>item.role))];

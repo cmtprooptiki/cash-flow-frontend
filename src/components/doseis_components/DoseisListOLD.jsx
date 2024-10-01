@@ -11,7 +11,7 @@ const DoseisList = () =>
     },[]);
 
     const getDoseis = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/doseis`);
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
         setDoseis(response.data);
     }
     const deleteDoseis = async(doshId)=>{

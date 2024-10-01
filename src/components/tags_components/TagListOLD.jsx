@@ -11,7 +11,7 @@ const TagList = () =>
     },[]);
 
     const getTags = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/tags`);
+        const response = await axios.get(`${apiBaseUrl}/tags`, {timeout: 5000});
         setTags(response.data);
     }
     const deleteTags = async(tagId)=>{

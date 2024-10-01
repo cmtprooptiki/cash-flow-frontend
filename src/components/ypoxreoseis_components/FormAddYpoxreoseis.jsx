@@ -36,7 +36,7 @@ const FormAddYpoxreoseis = () => {
     }, []);
 
     const getErga = async () => {
-        const response = await axios.get(`${apiBaseUrl}/erga`);
+        const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
         setErga(response.data);
     };
 
@@ -45,7 +45,7 @@ const FormAddYpoxreoseis = () => {
     };
 
     const getTags = async () => {
-        const response = await axios.get(`${apiBaseUrl}/tags`);
+        const response = await axios.get(`${apiBaseUrl}/tags`, {timeout: 5000});
         setTags(response.data);
     };
 

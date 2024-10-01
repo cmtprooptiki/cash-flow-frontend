@@ -29,10 +29,10 @@ const FormEditDaneia= () => {
 
     useEffect(()=>{
         const getDaneiaById = async()=>{
-            const response=await axios.get(`${apiBaseUrl}/daneia/${id}`);
+            const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/daneia/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
                 setName(response.data.name);
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);

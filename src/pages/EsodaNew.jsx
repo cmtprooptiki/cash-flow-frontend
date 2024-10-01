@@ -93,18 +93,18 @@ const EsodaNew = () =>
   }, []);
 
   const getParadotea = async () => {
-    const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
+    const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`, {timeout: 5000});
     setParadotea(response.data);
   };
 
 //   const getIncome_paradotea=async () =>{
-//     const response = await axios.get(`${apiBaseUrl}/CheckParadotea`);
+//     const response = await axios.get(`${apiBaseUrl}/CheckParadotea`, {timeout: 5000});
 //     setIncome_paradotea(response.data);
 //     //console.log(response.data)
 //   }
   const getIncome_paradotea=async () =>{
-    const response = await axios.get(`${apiBaseUrl}/CheckParadotea`);
-    const response2 = await axios.get(`${apiBaseUrl}/income_par`);
+    const response = await axios.get(`${apiBaseUrl}/CheckParadotea`, {timeout: 5000});
+    const response2 = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
     
     // Extracting the data from the responses
     const checkParadoteaData = response.data; // Assuming response.data is an array
@@ -120,7 +120,7 @@ const EsodaNew = () =>
     //console.log(response.data)
   }
   const getIncome_ekx=async () =>{
-    const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`);
+    const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`, {timeout: 5000});
     const ekx=response.data
     // console.log("ekx data: ",ekx)
     setIncome_ekx(ekx.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no"));
@@ -128,14 +128,14 @@ const EsodaNew = () =>
   }
 
   const getErgaListNames = async () => {
-    const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
+    const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`, {timeout: 5000});
     setErgaListNames(response.data);
   };
 
 
   const getIncome_ekx_cust_date = async () =>
     {
-      const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`);
+      const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`, {timeout: 5000});
       const ekx_cust=response.data
       setIncome_Ekx_Cust(ekx_cust.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no"));
     }
@@ -147,11 +147,11 @@ const EsodaNew = () =>
 
   };
   const getIncomeTim = async () => {
-    const response = await axios.get(`${apiBaseUrl}/income_tim`);
+    const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
     setIncomeTim(response.data);
 };
 const getDaneia = async () =>{
-  const response = await axios.get(`${apiBaseUrl}/daneia`)
+  const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
   const response2 =response.data
   setDaneia(response2.filter(item=>item.status==="no"));
 }

@@ -34,7 +34,7 @@ const FormEditParadotea = () => {
         const getParadoteaById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/paradotea/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/paradotea/${id}`, {timeout: 5000});
                 setPart_Number(response.data.part_number);
                 setTitle(response.data.title);
                 setDelivery_Date(response.data.delivery_date);
@@ -60,7 +60,7 @@ const FormEditParadotea = () => {
 
         const getErga = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/erga`);
+                const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
                 setErga(response.data);
             } catch (error) {
                 if (error.response) {

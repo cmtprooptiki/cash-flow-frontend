@@ -62,25 +62,25 @@ const FormEditYpoxreoseis = () => {
     };
 
     const getErga = async () => {
-        const response = await axios.get(`${apiBaseUrl}/erga`);
+        const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
         setErga(response.data);
     };
 
     const getTags = async () => {
-        const response = await axios.get(`${apiBaseUrl}/tags`);
+        const response = await axios.get(`${apiBaseUrl}/tags`, {timeout: 5000});
         setTags(response.data);
     };
 
     const getYpoxreoseisById = async () => {
         try {
-            const response = await axios.get(`${apiBaseUrl}/ypoquery/${id}`);
+            const response = await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
             setProvider(response.data.ypoxreoseis.provider);
             setErga_Id(response.data.ypoxreoseis.erga_id);
             setInvoice_Date(formatDateToInput(response.data.ypoxreoseis.invoice_date));
             setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
             setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
 
-            const response2 = await axios.get(`${apiBaseUrl}/ypotags/${id}`)
+            const response2 = await axios.get(`${apiBaseUrl}/ypotags/${id}`, {timeout: 5000})
             const formattedTags = response2.data.map(tag => ({
             value: tag.id,
             label: tag.name

@@ -42,7 +42,7 @@ const[logoImage,setLogoImage]=useState(null);
   useEffect(()=>{
       const getErgoById = async()=>{
         try {
-            const response=await axios.get(`${apiBaseUrl}/erga/${id}`);
+            const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
             setLogoImage(response.data.logoImage);
             setName(response.data.name);
             setColor(response.data.color);

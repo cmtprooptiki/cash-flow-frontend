@@ -72,30 +72,30 @@ const Esoda = () =>
   }, []);
 
   const getParadotea = async () => {
-    const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`);
+    const response = await axios.get(`${apiBaseUrl}/getlistParErgColors`, {timeout: 5000});
     setParadotea(response.data);
   };
 
   const getIncome_paradotea=async () =>{
-    const response = await axios.get(`${apiBaseUrl}/CheckParadotea`);
+    const response = await axios.get(`${apiBaseUrl}/CheckParadotea`, {timeout: 5000});
     setIncome_paradotea(response.data);
     //console.log(response.data)
   }
   const getIncome_ekx=async () =>{
-    const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`);
+    const response = await axios.get(`${apiBaseUrl}/ParadoteaBank_Date`, {timeout: 5000});
     setIncome_ekx(response.data);
     //console.log(response.data)
   }
 
   const getErgaListNames = async () => {
-    const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`);
+    const response = await axios.get(`${apiBaseUrl}/getlistErgaNames`, {timeout: 5000});
     setErgaListNames(response.data);
   };
 
 
   const getIncome_ekx_cust_date = async () =>
     {
-      const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`);
+      const response = await axios.get(`${apiBaseUrl}/ParadoteaCust_Date`, {timeout: 5000});
       setIncome_Ekx_Cust(response.data);
     }
 

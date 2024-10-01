@@ -49,22 +49,22 @@ const BudgetChart = (props) => {
         await getDaneia();
     };
     const getDoseis = async () =>{
-        const response = await axios.get(`${apiBaseUrl}/doseis`)
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
         setDoseis(response.data)
     }
 
     const getEkxorimena = async () => {
-        const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
         setEkxorimena(response.data);
     };
 
     const getIncomePar = async () => {
-        const response = await axios.get(`${apiBaseUrl}/income_par`);
+        const response = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
         setIncomeParadotea(response.data);
     };
 
     const getIncomeTim = async () => {
-        const response = await axios.get(`${apiBaseUrl}/income_tim`);
+        const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
         const data = response.data;
 
         // Filter to ensure unique timologia.id values
@@ -80,7 +80,7 @@ const BudgetChart = (props) => {
         setIncomeTim(uniqueTimologia);
     };
     const getDaneia = async () =>{
-        const response = await axios.get(`${apiBaseUrl}/daneia`)
+        const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
         setDaneia(response.data);
     }
 

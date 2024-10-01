@@ -38,7 +38,7 @@ export const SidebarNew = () => {
     },[]);
 
     const getErga = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/erga`);
+        const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
         setErga(response.data);
     }
     const changeMenu=() =>{

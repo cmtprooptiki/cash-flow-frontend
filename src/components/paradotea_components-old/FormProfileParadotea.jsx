@@ -39,7 +39,7 @@ const FormProfileParadotea=() =>{
         const getParadoteaById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/paradotea/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/paradotea/${id}`, {timeout: 5000});
                 setPart_Number(response.data.part_number);
                 setTitle(response.data.title);
                 setDelivery_Date(response.data.delivery_date);

@@ -11,7 +11,7 @@ const UserList = () => {
     },[]);
 
     const getUsers = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/users`);
+        const response = await axios.get(`${apiBaseUrl}/users`, {timeout: 5000});
         setUsers(response.data);
     }
     const deleteUser = async(userId)=>{

@@ -27,7 +27,7 @@ const FormProfileDoseis = () =>
         const getDoseisById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000});
                 setAmmount(response.data.ammount);
                 setActual_Payment_Date(formatDateToInput(response.data.actual_payment_date));
                 setEstimate_Payment_Date(formatDateToInput(response.data.estimate_payment_date));

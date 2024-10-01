@@ -44,7 +44,7 @@ const FormEditEkxorimenoTimologio = () =>
 
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`);
+                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`, {timeout: 5000});
                 const timologio = response.data;
                 console.log(timologio)
 
@@ -60,7 +60,7 @@ const FormEditEkxorimenoTimologio = () =>
         const getEkxorimenoTimologioById = async() =>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/ek_tim/${id}`, {timeout: 5000});
                 setTimologia_Id(response.data.timologia_id);
                 setBank_Ammount(response.data.bank_ammount);
                 setEstimated_Bank_Date(formatDateToInput(response.data.bank_estimated_date));
@@ -85,7 +85,7 @@ const FormEditEkxorimenoTimologio = () =>
         
         const getTimologia = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/timologia`);
+                const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
                 setTimologia(response.data);
             } catch (error) {
                 if (error.response) {

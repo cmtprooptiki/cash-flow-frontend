@@ -43,7 +43,7 @@ const FormEditTimologia = () => {
     //     clearFormFields();
     //     if (selectedId) {
     //         try {
-    //             const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`);
+    //             const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`, {timeout: 5000});
     //             const paradoteaByErgoId = response.data;
     //             setParadoteaByErgo(paradoteaByErgoId)
     //         } catch (error) {
@@ -59,7 +59,7 @@ const FormEditTimologia = () => {
         clearFormFields();
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`);
+                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`, {timeout: 5000});
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId.filter(paradoteo=>paradoteo.erga.id===selectedId))
                 // Filter by timologia_id and then map over the filtered array
@@ -143,16 +143,16 @@ const FormEditTimologia = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const timologioResponse = await axios.get(`${apiBaseUrl}/timologia/${id}`);
+                const timologioResponse = await axios.get(`${apiBaseUrl}/timologia/${id}`, {timeout: 5000});
                 const timologioData = timologioResponse.data;
 
-                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const paradoteaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`, {timeout: 5000});
                 const paradoteaData = paradoteaResponse.data
 
-                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`);
+                const ergaResponse = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${id}`, {timeout: 5000});
                 const ergaData = ergaResponse.data;
 
-                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`);
+                const fullParadoteaResponse = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
                 setFullParadotea(fullParadoteaResponse.data);
 
                 // Set states with fetched data

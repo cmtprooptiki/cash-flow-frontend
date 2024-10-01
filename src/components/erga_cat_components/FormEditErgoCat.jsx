@@ -20,7 +20,7 @@ const FormEditErgoCat= () => {
     useEffect(()=>{
         const getErgoCatById = async()=>{
             try {
-                const response=await axios.get(`${apiBaseUrl}/ergacat/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/ergacat/${id}`, {timeout: 5000});
                 setName(response.data.name);
             } catch (error) {
                 if(error.response){

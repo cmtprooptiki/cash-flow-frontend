@@ -38,7 +38,7 @@ const CustomerList = () => {
     },[]);
 
     const getCustomer = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/customer`);
+        const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
         const paraData = response.data;
 
         const uniqueNames = [...new Set(paraData.map(item => item.name || 'N/A'))];

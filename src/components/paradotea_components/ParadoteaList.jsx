@@ -35,7 +35,7 @@ const ParadoteaList = () => {
 
     const getParadotea = async() =>{
         try {
-            const response = await axios.get(`${apiBaseUrl}/paradotea`);
+            const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
             const paraData = response.data;
             console.log("ParaData:",paraData);
             // Extract unique statuses

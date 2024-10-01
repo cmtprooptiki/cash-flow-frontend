@@ -74,7 +74,7 @@ const FormAddParadotea = () => {
     }, [ammount, percentage, percentage_vat]);
 
     const getErga = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/erga`);
+        const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
         console.log(response.data)
         setErga(response.data);
     }

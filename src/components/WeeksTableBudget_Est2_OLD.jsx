@@ -47,13 +47,13 @@ const WeeksTableBudget_Est2 = ()=>
                     doseisRes,
                     ypoxreoseisRes
                 ] = await Promise.all([
-                    axios.get(`${apiBaseUrl}/getlistParErgColors`),
-                    axios.get(`${apiBaseUrl}/CheckParadotea`),
-                    axios.get(`${apiBaseUrl}/ParadoteaBank_Date`),
-                    axios.get(`${apiBaseUrl}/getlistErgaNames`),
-                    axios.get(`${apiBaseUrl}/ParadoteaCust_Date`),
-                    axios.get(`${apiBaseUrl}/doseis`),
-                    axios.get(`${apiBaseUrl}/ypoquery`)
+                    axios.get(`${apiBaseUrl}/getlistParErgColors`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/CheckParadotea`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/ParadoteaBank_Date`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/getlistErgaNames`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/ParadoteaCust_Date`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000}),
+                    axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000})
                 ]);
 
                 setParadotea(paradoteaRes.data);

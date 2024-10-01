@@ -22,7 +22,7 @@ const FormAddDoseis = ()=>
     },[]);
 
     const getYpoxreoseis = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/ypo`);
+        const response = await axios.get(`${apiBaseUrl}/ypo`, {timeout: 5000});
         console.log(response.data)
         setYpoxreoseis(response.data);
     }

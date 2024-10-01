@@ -52,13 +52,13 @@ const FormAddErga2 = () => {
     },[]);
 
     const getCustomer = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/customer`);
+        const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
         setCustomer(response.data);
     }
 
     const getErga_Cat = async() => 
         {
-            const response = await axios.get(`${apiBaseUrl}/ergacat`);
+            const response = await axios.get(`${apiBaseUrl}/ergacat`, {timeout: 5000});
             setErga_Cat(response.data);
         }
 

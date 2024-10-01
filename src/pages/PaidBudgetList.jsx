@@ -57,22 +57,22 @@ const PaidBudgetList = (props) => {
     };
 
     const getDoseis = async () =>{
-        const response = await axios.get(`${apiBaseUrl}/doseis`)
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
         setDoseis(response.data)
     }
 
     const getEkxorimena = async () => {
-        const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
         setEkxorimena(response.data);
     };
 
     const getIncomePar = async () => {
-        const response = await axios.get(`${apiBaseUrl}/income_par`);
+        const response = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
         setIncomeParadotea(response.data);
     };
 
     const getIncomeTim = async () => {
-        const response = await axios.get(`${apiBaseUrl}/income_tim`);
+        const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
         const data = response.data;
 
         // Filter to ensure unique timologia.id values
@@ -88,32 +88,32 @@ const PaidBudgetList = (props) => {
         setIncomeTim(uniqueTimologia);
     };
     const getDaneia = async () =>{
-        const response = await axios.get(`${apiBaseUrl}/daneia`)
+        const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
         setDaneia(response.data);
     }
     const getParadoteoId = async(id)=>{
         console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`)
+        const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`, {timeout: 5000})
         setSelectedRowData(response.data)
     }
     const getTimologioId = async(id)=>{
         console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/timologia/${id}`)
+        const response = await axios.get(`${apiBaseUrl}/timologia/${id}`, {timeout: 5000})
         setSelectedRowData(response.data)
     }
     const getDaneioId = async(id)=>{
         console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/daneia/${id}`)
+        const response = await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000})
         setSelectedRowData(response.data)
     }
     const getDosiId = async(id)=>{
         console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/doseis/${id}`)
+        const response = await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000})
         setSelectedRowData(response.data)
     }
     const getEkxId = async(id)=>{
         console.log("id scenario id ",id)
-        const response = await axios.get(`${apiBaseUrl}/ek_tim/${id}`)
+        const response = await axios.get(`${apiBaseUrl}/ek_tim/${id}`, {timeout: 5000})
         setSelectedRowData(response.data)
     }
 

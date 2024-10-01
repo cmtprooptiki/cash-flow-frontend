@@ -305,7 +305,7 @@ const [chartOptions, setChartOptions] = useState({
   const getBudget = async() =>{
     try {
 
-    const response = await axios.get(`${apiBaseUrl}/budget`);
+    const response = await axios.get(`${apiBaseUrl}/budget`, {timeout: 5000});
     const budgetData = response.data;
 
     
@@ -324,7 +324,7 @@ const [chartOptions, setChartOptions] = useState({
 
      const getParadotea = async() =>{
         try {
-        const response = await axios.get(`${apiBaseUrl}/paradotea`);
+        const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
         const paraData = response.data;
         console.log("ParaData:",paraData);
         
@@ -367,7 +367,7 @@ const [chartOptions, setChartOptions] = useState({
 
     const getErga = async () => {
         try {
-            const response = await axios.get(`${apiBaseUrl}/erga`);
+            const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
             const ergaData = response.data;
 
 
@@ -440,7 +440,7 @@ const [chartOptions, setChartOptions] = useState({
     
     // const getErga = async() =>{
     //     try {
-    //         const response = await axios.get(`${apiBaseUrl}/erga`);
+    //         const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
     //         const ergaData = response.data;
     //         // Extract unique statuses
     //         //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
@@ -463,7 +463,7 @@ const [chartOptions, setChartOptions] = useState({
     const getCustomer = async() =>{
         try {
 
-        const response = await axios.get(`${apiBaseUrl}/customer`);
+        const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
         const custData = response.data;
 
         const uniqueIds= [...new Set(custData.map(item => item.id))];
@@ -481,11 +481,11 @@ const [chartOptions, setChartOptions] = useState({
     }
 
     const getTimologia = async() =>{
-        // const response = await axios.get(`${apiBaseUrl}/timologia`);
+        // const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
         // setTimologia(response.data);
 
         try {
-            const response = await axios.get(`${apiBaseUrl}/timologia`);
+            const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
             const timData = response.data;
             const uniqueIds= [...new Set(timData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
@@ -518,7 +518,7 @@ const [chartOptions, setChartOptions] = useState({
     const getEkxorimenaTimologia = async() =>{
       try {
 
-      const response = await axios.get(`${apiBaseUrl}/ek_tim`);
+      const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
       const ektimData = response.data;
 
       const uniqueIds= [...new Set(ektimData.map(item => item.id))];
@@ -538,7 +538,7 @@ const [chartOptions, setChartOptions] = useState({
   const getDaneia = async() =>{
     try {
 
-    const response = await axios.get(`${apiBaseUrl}/daneia`);
+    const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000});
     const daneiaData = response.data;
 
     const uniqueIds= [...new Set(daneiaData.map(item => item.id))];
@@ -563,7 +563,7 @@ const [chartOptions, setChartOptions] = useState({
 
     const getDoseis = async() =>{
       try {
-          const response = await axios.get(`${apiBaseUrl}/doseis`);
+          const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
           const doseis_data = response.data;
           const doseisCount = doseis_data.filter(item => item.status === 'no').length;
           const filteredDoseis=doseis_data.filter(item => item.status === 'no')
@@ -581,7 +581,7 @@ const [chartOptions, setChartOptions] = useState({
 
   const getTags = async () => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/ypoquery`);
+      const response = await axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000});
       const tags_data = response.data;
 
       // Process the data to count occurrences of each tag

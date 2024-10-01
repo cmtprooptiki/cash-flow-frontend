@@ -45,7 +45,7 @@ const FormEditDoseis = () =>
         const getDoseisById = async()=>{
             try
             {
-                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`);
+                const response=await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000});
                 setActual_Payment_Date(formatDateToInput(response.data.actual_payment_date))
                 setYpoxreoseis_Id(response.data.ypoxreoseis_id);
                 setAmmount(response.data.ammount);
@@ -64,7 +64,7 @@ const FormEditDoseis = () =>
 
         const getYpoxreoseis = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/ypo`);
+                const response = await axios.get(`${apiBaseUrl}/ypo`, {timeout: 5000});
                 setYpoxreoseis(response.data);
                 
                 
@@ -116,7 +116,7 @@ const FormEditDoseis = () =>
         
     },[ypoxreoseis_id])
     const getdoseis = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/doseis`);
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
         var doseisData = response.data.filter(item => {
             if(item.ypoxreoseis_id === parseInt(ypoxreoseis_id) && item.id!==parseInt(id)){
                 // console.log(" found")
@@ -129,7 +129,7 @@ const FormEditDoseis = () =>
         setdoseis(doseisData);
     }   
     const getYpoxreoseisId = async()=>{
-        const response = await axios.get(`${apiBaseUrl}/ypoquery/${ypoxreoseis_id}`);
+        const response = await axios.get(`${apiBaseUrl}/ypoquery/${ypoxreoseis_id}`, {timeout: 5000});
         setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
         setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
     }

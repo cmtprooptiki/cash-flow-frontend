@@ -28,7 +28,7 @@ const FormAddEkxorimenoTimologio = () =>
     },[]);
 
     const getTimologia = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/getTim_From_Income`);
+        const response = await axios.get(`${apiBaseUrl}/getTim_From_Income`, {timeout: 5000});
         setTimologia(response.data);
     }
 
@@ -38,7 +38,7 @@ const FormAddEkxorimenoTimologio = () =>
 
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`);
+                const response = await axios.get(`${apiBaseUrl}/getSumofchosenTim/${selectedId}`, {timeout: 5000});
                 const timologio = response.data;
 
                 setBank_Ammount((timologio[0].totalek)*0.8 || ""); // Assuming `bank_ammount` is part of the response data

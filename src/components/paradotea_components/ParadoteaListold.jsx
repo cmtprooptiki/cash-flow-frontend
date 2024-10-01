@@ -13,7 +13,7 @@ const ParadoteaList = () => {
     },[]);
 
     const getParadotea = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/paradotea`);
+        const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
         setParadotea(response.data);
     }
     const deleteParadotea = async(ParadoteoId)=>{

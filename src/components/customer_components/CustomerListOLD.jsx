@@ -15,7 +15,7 @@ const CustomerList = () => {
     },[]);
 
     const getCustomer = async() =>{
-        const response = await axios.get(`${apiBaseUrl}/customer`);
+        const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
         setCustomer(response.data);
     }
     const deleteCustomer = async(customerId)=>{

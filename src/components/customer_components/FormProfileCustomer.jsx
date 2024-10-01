@@ -40,7 +40,7 @@ const FormProfileCustomer= () => {
     useEffect(()=>{
       const getCustomerById = async()=>{
         try {
-            const response=await axios.get(`${apiBaseUrl}/customer/${id}`);
+            const response=await axios.get(`${apiBaseUrl}/customer/${id}`, {timeout: 5000});
             setLogoImage(response.data.logoImage)
             setName(response.data.name);
             setAfm(response.data.afm);

@@ -296,7 +296,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
     const getErga = async() =>{
         try {
-            const response = await axios.get(`${apiBaseUrl}/erga`);
+            const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
             const ergaData = response.data;
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
