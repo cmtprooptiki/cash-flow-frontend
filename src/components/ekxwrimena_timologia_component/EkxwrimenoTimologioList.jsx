@@ -29,6 +29,8 @@ const EkxwrimenoTimologioList = () =>
     
     const [statuses] = useState(['yes', 'no']);
 
+    const[erga,setErgo]=useState([])
+
 
 
 
@@ -46,6 +48,7 @@ const EkxwrimenoTimologioList = () =>
             const response = await axios.get(`${apiBaseUrl}/ek_tim`);
             const paraData = response.data;
             console.log("ParaData:",paraData);
+            
            
             const parDataWithDates = paraData.map(item => ({
                 ...item,
@@ -61,8 +64,39 @@ const EkxwrimenoTimologioList = () =>
                 cust_date: new Date(item.cust_date),
                 cust_estimated_date: new Date(item.cust_estimated_date),
                 bank_estimated_date: new Date(item.bank_estimated_date),
+                ErgaName:"",
+                invoice_number:""
             }));
-    
+            try {
+                const response = await axios.get(`${apiBaseUrl}/paradotea`);
+                const paraErgaData = response.data;
+                
+                const mergedΕκ_TimParData=parDataWithDates.map(parDataWithDates=>{
+                    parDataWithDates.ErgaName=paraErgaData.find(paraErgaData=>paraErgaData.timologia_id===parDataWithDates.timologia_id).erga.name || 'N/A'
+                })
+                console.log("merged ",mergedΕκ_TimParData[0])
+
+                
+
+            } catch (error) {
+                console.error('Error fetching data2:', error);
+            }
+            try {
+                const response = await axios.get(`${apiBaseUrl}/timologia`);
+                const paraTimData = response.data;
+                
+                const mergedΕκ_TimParData=parDataWithDates.map(parDataWithDates=>{
+                    parDataWithDates.invoice_number=paraTimData.find(paraTimData=>paraTimData.id===parDataWithDates.timologia_id).invoice_number || 'N/A'
+                })
+                console.log("merged ",mergedΕκ_TimParData[0])
+
+                
+
+            } catch (error) {
+                console.error('Error fetching data2:', error);
+            }
+            const uniqueErgaNames = [...new Set(parDataWithDates.map(item =>item.ErgaName))];
+            setErgo(uniqueErgaNames);
             console.log(parDataWithDates); // Optionally log the transformed data
     
             // Assuming you have a state setter like setErga defined somewhere
@@ -103,7 +137,10 @@ const EkxwrimenoTimologioList = () =>
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             id: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            timologia_id: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            ErgaName: { value: null, matchMode: FilterMatchMode.IN} ,
+            // timologia_id: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            invoice_number: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+
             bank_ammount: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             bank_ammount: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
@@ -172,6 +209,41 @@ const EkxwrimenoTimologioList = () =>
 
          
         }
+    };
+
+    const ergaBodyTemplate = (rowData) => {
+        
+        const ergo = rowData.ErgaName || 'N/A';        // console.log("repsBodytempl",timologio)
+        console.log("timologio",ergo," type ",typeof(ergo));
+        console.log("rep body template: ",ergo)
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+                <span>{ergo}</span>
+            </div>
+        );
+    };
+    
+    const ergaFilterTemplate = (options) => {
+        console.log('Current timologia filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={erga} itemTemplate={ergaItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+    
+    
+    const ergaItemTemplate = (option) => {
+        // console.log("itemTemplate",option)
+        console.log("rep Item template: ",option)
+        console.log("rep Item type: ",typeof(option))
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+                <span>{option}</span>
+            </div>
+        );
     };
 
 
@@ -311,7 +383,9 @@ const EkxwrimenoTimologioList = () =>
         <DataTable value={EkxwrimenoTimologio} paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[
                     'id',
+                    'ErgaName',
                     'timologia_id',
+                    'invoice_number',
                     'bank_ammount',
                     'bank_estimated_date', 
                     'bank_date', 
@@ -324,6 +398,10 @@ const EkxwrimenoTimologioList = () =>
                 ]} header={header}
                 emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
                 <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
+                {/* <Column field="ErgaName" header="Εργο" filter filterPlaceholder="Search by ergo" style={{ minWidth: '5rem' }} /> */}
+                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                
                 <Column header="Εκχώρηση (€)" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Υπόλοιπο από πελάτη (€)" filterField="customer_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={customer_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Ημερομηνία πληρωμής από τράπεζα (εκτίμηση)" filterField="bank_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_estimated_dateDateBodyFilterTemplate} filter filterElement={bank_estimated_dateDateFilterTemplate} ></Column>
@@ -332,7 +410,8 @@ const EkxwrimenoTimologioList = () =>
                 <Column header="Ημερομηνία πληρωμής από πελάτη (εκτίμηση)" filterField="cust_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_estimated_dateDateBodyFilterTemplate} filter filterElement={cust_estimated_dateDateFilterTemplate} ></Column>
                 <Column header="Ημερομηνία πληρωμής από πελάτη" filterField="cust_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_dateDateBodyFilterTemplate} filter filterElement={cust_dateDateFilterTemplate} ></Column>
 
-                <Column field="timologia_id" header="timologia_id" filter filterPlaceholder="Search by timologia_id" style={{ minWidth: '5rem' }} />
+                {/* <Column field="timologia_id" header="timologia_id" filter filterPlaceholder="Search by timologia_id" style={{ minWidth: '5rem' }} /> */}
+                <Column field="invoice_number" header="Αρ. τιμολογίου" filter filterPlaceholder="Search by invoice number" style={{ minWidth: '5rem' }} />
                 <Column field="status_bank_paid" header="Εκχώρηση (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBankPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="comments" header="Σχόλια"  filter filterPlaceholder="Search by comment"  style={{ minWidth: '12rem' }}></Column>
