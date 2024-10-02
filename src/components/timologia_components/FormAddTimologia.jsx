@@ -206,21 +206,21 @@ const FormAddTimologia = () => {
               <div className="field">
                     <label className="label">Ποσό τιμολογίου  (καθαρή αξία)</label>
                     <div className="control">
-                        <InputText  type="text" className="input" value={totalAmmount}  readOnly />
+                        <InputNumber className="input" value={totalAmmount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_no_tax(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly />   
                     </div>
               </div>
 
               <div className="field">
                     <label className="label">Σύνολο Φ.Π.Α.</label>
                     <div className="control">
-                        <InputText type="text" className="input" value={totalAmmountVat}  readOnly />
+                    <InputNumber className="input" value={totalAmmountVat} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly />
                     </div>
                 </div>
 
                 <div className="field">
                     <label className="label">Πληρωτέο</label>
                     <div className="control">
-                        <InputText type="text" className="input" value={totalAmmountTotal}  readOnly />
+                    <InputNumber className="input" value={totalAmmountTotal} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly />
                     </div>
                 </div>
 

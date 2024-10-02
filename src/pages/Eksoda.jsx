@@ -16,7 +16,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import '../dashboard.css';
 import { getColorClass2, getLimitAnnotation } from '../components/HelperComponent';
 import apiBaseUrl from '../apiConfig';
-import WeeksTableEksoda from '../components/WeeksTableEksoda';
+
 
 
 // Importing calendar library
@@ -30,7 +30,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 // import InfoBox from '../components/InfoBox';
 
-import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
+
 import EksodaInfoBox from '../components/EksodaInfoBox';
 import PaidExodaList from '../components/paid_components/PaidExodaList';
 

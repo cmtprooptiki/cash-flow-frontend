@@ -10,6 +10,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
 import CustomToast from '../CustomToast';
+import { InputNumber } from 'primereact/inputnumber';
 
 
 
@@ -300,8 +301,8 @@ const FormEditTimologia = () => {
                             <div className="field">
                                 <label className="label">Εργα</label>
                                 <div className="control">
-                                    {uniqueErga2.length>0 && <div><InputText id="ergo"className="input" value={uniqueErga2[0].erga.id} readOnly/>
-                                    <label htmlFor="ergo">{uniqueErga2[0].erga.name}</label></div>}
+                                    {uniqueErga2.length>0 && <div><InputText id="ergo"className="input" value={uniqueErga2[0].erga.name} readOnly disabled/>
+                                    {/*<label htmlFor="ergo">{uniqueErga2[0].erga.name}</label>*/}</div>}
                                     
                                     
                                     {/* <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
@@ -345,21 +346,21 @@ const FormEditTimologia = () => {
                             <div className="field">
                                 <label className="label">Ποσό τιμολογίου  (καθαρή αξία)</label>
                                 <div className="control">
-                                    <InputText type="text" className="input" value={totalAmmount} readOnly />
+                                <InputNumber className="input" value={totalAmmount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_no_tax(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly disabled /> 
                                 </div>
                             </div>
 
                             <div className="field">
                                 <label className="label">Ποσό Φ.Π.Α.</label>
                                 <div className="control">
-                                    <InputText type="text" className="input" value={totalAmmountVat} readOnly />
+                                <InputNumber className="input" value={totalAmmountVat} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly disabled/>
                                 </div>
                             </div>
 
                             <div className="field">
                                 <label className="label">Πληρωτέο</label>
                                 <div className="control">
-                                    <InputText type="text" className="input" value={totalAmmountTotal} readOnly />
+                                <InputNumber className="input" value={totalAmmountTotal} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly disabled/>
                                 </div>
                             </div>
 
@@ -377,12 +378,12 @@ const FormEditTimologia = () => {
                                 <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />                                </div>
                             </div>
 
-                            <div className="field">
+                            {/* <div className="field">
                                 <label className="label">Πληρωτέο</label>
                                 <div className="control">
                                     <InputText type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e) => setAmmount_Of_Income_Tax_Incl(e.target.value)} />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="field">
                                 <label className="label">Σχόλια</label>

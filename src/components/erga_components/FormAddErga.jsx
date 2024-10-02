@@ -24,7 +24,7 @@ const FormAddErga = () => {
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
-    const[status,setStatus]=useState("");
+    const[status,setStatus]=useState(null);
     const[estimate_start_date,setEstimateStartDate]=useState("");
     const[project_manager,setProjectManager]=useState("")
     const[customer_id,setCustomerId]=useState("")
@@ -41,6 +41,8 @@ const FormAddErga = () => {
     const[erga_cat_name,setErga_cat_name]=useState(null)
     const[erga_cat,setErga_Cat]=useState([])
     const[msg,setMsg]=useState("");
+    const [statuses, setStatuses] = useState(['Σχεδίαση', 'Υπογεγραμμένο', 'Ολοκληρωμένο', 'Αποπληρωμένο', 'Ακυρωμένο'])
+    
 
     const handleColorChange = (color) => {
         setColor(color.hex);
@@ -72,11 +74,29 @@ const FormAddErga = () => {
         setCustomerName(selectedName)
     }
 
+    const handleStatusChange = async (e) =>
+    {
+        const selectedStatus = e.value;
+        setStatus(selectedStatus)
+    }
+
     const handleCategoryChange = async (e) => {
         const selectedId = e.target.value.id;
         const selectedName = e.value;
         setErga_cat_id(selectedId)
         setErga_cat_name(selectedName)
+    }
+
+    const HandleAmmountChange = async(e) =>
+    {
+        setAmmount(e.value);
+        setAmmount_Total(ammount_vat + e.value);
+    }
+
+    const HandleAmmountVatChange = async(e) =>
+    {
+        setAmmount_Vat(e.value);
+        setAmmount_Total(ammount + e.value);
     }
 
 
@@ -173,8 +193,10 @@ const FormAddErga = () => {
                                 <div className="field col-6">
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">
+                                        
                                         {/* <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/> */}
-                                        <InputText type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/>
+                                        <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
+                                        placeholder="Select Status" className="w-full md:w-14rem" required/>
 
                                     </div>
                                 </div>
@@ -292,8 +314,8 @@ const FormAddErga = () => {
                             <label  className="label">Ποσό  (καθαρή αξία)</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
-                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
-
+                                {/* <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' /> */}
+                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> HandleAmmountChange(e)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
                             </div>
                         </div>
 
@@ -301,7 +323,7 @@ const FormAddErga = () => {
                             <label  className="label">Ποσό ΦΠΑ</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/> */}
-                                <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)} placeholder='ΠΟΣΟ ΦΠΑ'/>
+                                <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> HandleAmmountVatChange(e)} placeholder='ΠΟΣΟ ΦΠΑ'/>
 
                             </div>
                         </div>
@@ -310,7 +332,7 @@ const FormAddErga = () => {
                             <label  className="label">Σύνολο</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/> */}
-                                <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/>
+                                <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ' readOnly/>
 
                             </div>
                         </div>
