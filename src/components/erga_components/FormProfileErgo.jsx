@@ -236,7 +236,7 @@ const[logoImage,setLogoImage]=useState(null);
         </div>
     </div>
         </div>
-        <Divider />
+        {/* <Divider />
 
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία πληρωμής (εκτίμηση):</div>
@@ -272,7 +272,7 @@ const[logoImage,setLogoImage]=useState(null);
             </div>
 
            
-        </li>
+        </li> */}
 
 
         </div>

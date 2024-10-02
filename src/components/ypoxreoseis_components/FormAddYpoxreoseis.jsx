@@ -118,6 +118,14 @@ const FormAddYpoxreoseis = () => {
                 </div>
 
                 <div className="field">
+                    <label htmlFor="percentagevat">Ποσό ΦΠΑ</label>
+                    <div className="control">
+
+                    <InputNumber  id="percentagevat" className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)}  />
+                   </div>
+                </div>
+
+                <div className="field">
                     <label htmlFor="invoice_date">Ημερομηνία τιμολογίου</label>
                     <div className="control">
 
@@ -164,13 +172,7 @@ const FormAddYpoxreoseis = () => {
             <br />
             <br />
 
-            <div className="field">
-                    <label htmlFor="percentagevat">Ποσό ΦΠΑ</label>
-                    <div className="control">
-
-                    <InputNumber  id="percentagevat" className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)}  />
-                   </div>
-                </div>
+            
 
         </div>
 

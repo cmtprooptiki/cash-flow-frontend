@@ -31,7 +31,7 @@ const FormEditErgo= () => {
     const[ammount,setAmmount]=useState(0)
     const[ammount_vat,setAmmount_Vat]=useState(0)
     const[ammount_total,setAmmount_Total]=useState(0)
-    const[estimate_payment_date,setEstimate_Payment_Date]=useState("")
+    const[estimate_payment_date,setEstimate_Payment_Date]=useState(null)
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null)
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null)
     const[erga_cat_id,setErga_cat_id]=useState("")
@@ -418,15 +418,14 @@ const FormEditErgo= () => {
                                 <Calendar value={new Date(estimate_start_date)} onChange={(e) => setEstimateStartDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/>
                             </div>
                         </div>
-                        <Divider align="center">
+                        {/* <Divider align="center">
                             <span className="p-tag text-lg">Εκτιμήσεις</span>
-                        </Divider>
+                        </Divider> */}
                         <div className="col-12">
-                            <div className="grid">
+                            {/* <div className="grid">
                                 <div className="field col-4">
                                     <label  className="label">Ημερομηνία πληρωμής (εκτίμηση)</label>
                                     <div className="control">
-                                        {/* <input type="date" className="input" value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1'/> */}
                                         <Calendar value={new Date(estimate_payment_date)} onChange={(e) => setEstimate_Payment_Date(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1'/>
                                     </div>
                                 </div>
@@ -434,7 +433,6 @@ const FormEditErgo= () => {
                                 <div className="field col-4">
                                     <label  className="label">Ημερομηνία πληρωμής (εκτίμηση 2)</label>
                                     <div className="control">
-                                        {/* <input type="date" className="input" value={estimate_payment_date_2} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/> */}
                                         <Calendar value={estimate_payment_date_2 ? new Date(estimate_payment_date_2) : null} onChange={(e) => setEstimate_Payment_Date_2(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/>
                                     </div>
                                     <div className="control">
@@ -445,7 +443,6 @@ const FormEditErgo= () => {
                                 <div className="field col-4">
                                     <label  className="label">Ημερομηνία πληρωμής (εκτίμηση 3)</label>
                                     <div className="control">
-                                        {/* <input type="date" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/> */}
                                         <Calendar value={estimate_payment_date_3 ? new Date(estimate_payment_date_3) : null} onChange={(e) => setEstimate_Payment_Date_3(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
                                     </div>
                                     <div className="control">
@@ -453,7 +450,7 @@ const FormEditErgo= () => {
                         </div>
                                 </div>
                                 
-                            </div>
+                            </div> */}
                         </div>
                         <Divider align="center">
                             <span className="p-tag text-lg">Ποσό Πληρωμής</span>
