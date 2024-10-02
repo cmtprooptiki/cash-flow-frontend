@@ -117,6 +117,7 @@ import Stepper_Esoda3 from "./pages/Stepper_Esoda3";
 import BudgetFormPage from "./pages/budget_pages/BudgetFormPage";
 
 import KpisDashboard from "./pages/KpisDashboard";
+import Reports from "./pages/report_pages/Reports";
 function App() {
   const value = {
     ripple: true,
@@ -272,6 +273,7 @@ function App() {
           <Route path="/statistics" element={<KpisDashboard/>}></Route>
 
           <Route path="/budgetForm" element={<BudgetFormPage/>}></Route>
+          <Route path="/reports" element={<Reports/>}></Route>
 
         </Routes>
       </BrowserRouter>
