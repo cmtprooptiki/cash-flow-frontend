@@ -39,11 +39,18 @@ const FormEditErgo= () => {
     const [erga_cat, setErgo_Cat] = useState([]);
     const[erga_cat_name,setErga_cat_name]=useState(null)
     const[msg,setMsg]=useState("");
+    const [statuses, setStatuses] = useState(['Σχεδίαση', 'Υπογεγραμμένο', 'Ολοκληρωμένο', 'Αποπληρωμένο', 'Ακυρωμένο'])
 
 
     const handleColorChange = (color) => {
         setColor(color.hex);
     };
+
+    const handleStatusChange = async (e) =>
+        {
+            const selectedStatus = e.value;
+            setStatus(selectedStatus)
+        }
 
     const handleCustomerChange = (e) => {
         const selectedid=e.target.value.id
@@ -252,6 +259,18 @@ const FormEditErgo= () => {
         setEstimate_Payment_Date_3(null); // Clear the calendar date
     }
 
+    const HandleAmmountChange = async(e) =>
+    {
+        setAmmount(e.value);
+        setAmmount_Total(ammount_vat + e.value);
+    }
+    
+    const HandleAmmountVatChange = async(e) =>
+    {
+        setAmmount_Vat(e.value);
+        setAmmount_Total(ammount + e.value);
+    }
+
 
 
 
@@ -324,7 +343,8 @@ const FormEditErgo= () => {
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">
                                         {/* <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/> */}
-                                        <InputText type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/>
+                                        <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
+                                        placeholder="Select Status" className="w-full md:w-14rem" required/>
 
                                     </div>
                                 </div>
@@ -442,7 +462,7 @@ const FormEditErgo= () => {
                             <label  className="label">Ποσό (καθαρή αξία)</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
-                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
+                                <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> HandleAmmountChange(e)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
 
                             </div>
                         </div>
@@ -451,7 +471,7 @@ const FormEditErgo= () => {
                             <label  className="label">Ποσό ΦΠΑ</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/> */}
-                                <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)} placeholder='ΠΟΣΟ ΦΠΑ'/>
+                                <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> HandleAmmountVatChange(e)} placeholder='ΠΟΣΟ ΦΠΑ'/>
 
                             </div>
                         </div>
@@ -460,7 +480,7 @@ const FormEditErgo= () => {
                             <label  className="label">Σύνολο</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/> */}
-                                <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/>
+                                <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ' readOnly/>
 
                             </div>
                         </div>

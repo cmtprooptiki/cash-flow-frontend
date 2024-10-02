@@ -126,7 +126,8 @@ const FormAddEkxorimenoTimologio = () =>
                     <div className="field">
                         <label className="label">Εκχώρηση (€)</label>
                         <div className="control">
-                            <input type="text" className="input" value={bank_ammount} onChange={(e) => setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ' />
+                            {/* <input type="text" className="input" value={bank_ammount} onChange={(e) => setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ' /> */}
+                            <InputNumber  id="bank_ammount" className="input" mode="decimal" minFractionDigits={2} value={bank_ammount}  onChange={(e)=> setBank_Ammount(e.value)}/>
                         </div>
                     </div>
 
@@ -152,7 +153,7 @@ const FormAddEkxorimenoTimologio = () =>
                     <div className="field">
                         <label  className="label">Υπόλοιπο από πελάτη (€)</label>
                         <div className="control">
-                            <input type="text" className="input" value={customer_ammount} onChange={(e)=> setCustomer_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΠΕΛΑΤΗ'/>
+                        <InputNumber  id="customer_ammount" className="input" mode="decimal" minFractionDigits={2} value={customer_ammount}  onChange={(e)=> setCustomer_Ammount(e.value)}/>
                         </div>
                     </div>
 

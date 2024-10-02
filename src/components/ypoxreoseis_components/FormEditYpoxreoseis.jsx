@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
+import { InputNumber } from 'primereact/inputnumber';
 
 const FormEditYpoxreoseis = () => {
     const [provider, setProvider] = useState("");
@@ -198,14 +199,15 @@ const FormEditYpoxreoseis = () => {
                         <div className="field">
                             <label className="label">Ποσό (σύνολο)</label>
                             <div className="control">
-                                <InputText type="text" className="input" value={total_owed_ammount}  />
+                            <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.value)} readOnly disabled/>
                             </div>
                         </div>
 
                         <div className="field">
                             <label className="label">Ποσό  ΦΠΑ</label>
                             <div className="control">
-                                <InputText type="text" className="input" value={ammount_vat} readOnly />
+                            <InputNumber  id="percentagevat" className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)} readOnly disabled/>
+
                             </div>
                         </div>
 

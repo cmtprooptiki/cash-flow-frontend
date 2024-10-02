@@ -4,7 +4,7 @@ import Welcome from '../components/Welcome';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from '../features/authSlice';
-import Esoda from './Esoda';
+
 import Eksoda from './Eksoda';
 import axios from 'axios';
 import ApexCharts from 'react-apexcharts';

@@ -4,8 +4,8 @@ import Welcome from '../components/Welcome';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from '../features/authSlice';
-import Esoda from './Esoda';
-import Eksoda from './Eksoda';
+
+// import Eksoda from './Eksoda';
 import axios from 'axios';
 import ApexCharts from 'react-apexcharts';
 import Select from 'react-select';
@@ -17,9 +17,9 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import '../dashboard.css';
 import { getColorClass2, getLimitAnnotation } from '../components/HelperComponent';
 import apiBaseUrl from '../apiConfig';
-import WeeksTableBudget from '../components/WeeksTableBudget';
-import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
-import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
+// import WeeksTableBudget from '../components/WeeksTableBudget';
+// import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
+// import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
 import PaidView from './paid_pages/paidView';
 import EsodaNew from './EsodaNew';
 // Importing calendar library
@@ -33,8 +33,6 @@ import { Modal, Button } from 'react-bootstrap';
 
 import InfoBox from '../components/InfoBox';
 
-import WeeksTable from '../components/WeeksTable'; // Import the WeeksTable component
-import Esoda_ippos from './Esoda_ippos'
 import PaidList from '../components/paid_components/PaidLists';
 
 const localizer = momentLocalizer(moment);
