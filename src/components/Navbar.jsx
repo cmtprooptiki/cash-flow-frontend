@@ -103,13 +103,26 @@ const Navbar =()=>{
                                             <li>
                                                 <Link to="/statistics" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                 <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                <i className="pi pi-chart-line mr-2 text-gray-50"></i>
+                                                <i className="pi pi-chart-bar mr-2 text-gray-50"></i>
                                                     <span className="font-medium">Στατιστικά</span>
                                                     <Ripple />
 
                                                     </div>
                                                 </Link>
                                                 </li>
+
+                                                <li>
+                                                <Link to="/reports" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
+                                                <i className="pi pi-chart-line mr-2 text-gray-50"></i>
+                                                    <span className="font-medium">Αναφορές</span>
+                                                    <Ripple />
+
+                                                    </div>
+                                                </Link>
+                                                </li>
+
+
                                                 <li><Link className="link-a-tag" to="/dashboard"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <i className="pi pi-calendar-plus mr-2 text-gray-50"></i>
