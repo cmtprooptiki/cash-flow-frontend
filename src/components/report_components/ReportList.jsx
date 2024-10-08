@@ -31,6 +31,10 @@ const ReportList = () => {
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['Σχεδίαση','Ολοκληρωμένο','Αποπληρωμένο','Υπογεγραμμένο','Ακυρωμένο']);
+
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [filtercalled,setfiltercalled]=useState(false)
+
     // const [project_managers, setProjectManager]=useState([]);
    
     //Export functionaliy code
@@ -276,9 +280,22 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const footerTemplate = (data) => {
         return (
             <React.Fragment>
-                <td colSpan="4">
-                    <div className="flex justify-content-end font-bold w-full" style={{color:'black'}}>Σύνολο Έργων: {calculateCustomerTotal(data.customer_name)}</div>
+                <td colSpan="1">
+                    <div className="font-bold w-full" style={{color:'black'}}>Σύνολο Έργων: {calculateCustomerTotal(data.customer_name)}</div>
+                
                 </td>
+                <td colSpan="3">
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο Ποσο Έργων: {calculateAmmount_Total(data.customer_name)}</div>
+                    
+                </td>
+                <td colSpan="6">
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο τιμολόγιο Έργων: {calculateTotalParadotea(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο Υπόλοιπο Έργων: {calculatediff(data.customer_name)}</div>
+
+                </td>
+                {/* <td colSpan="6">
+                
+                </td> */}
             </React.Fragment>
         );
     };
@@ -307,6 +324,48 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         }
 
         return total;
+    };
+    const calculatediff = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.difference)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
+    };
+    const calculateAmmount_Total = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.ammount_total)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
+    };
+    const calculateTotalParadotea = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.totalparadotea)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
     };
 
    
@@ -438,7 +497,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 <Column header="Κατάσταση έργου" field="status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column header="Ημερομηνία υπογραφής σύμβασης" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
                 <Column header="Σύνολο Τιμ.Παραδοτέων/Έργο" filterField="totalparadotea" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalParadoteaTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="Υπόλοιπο Παραδοτέων" filterField="difference" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_differenceBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Υπόλοιπο Παραδοτέων" filterField="difference" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_differenceBodyTemplate} filter filterElement={ammountFilterTemplate}  />
                 
             </DataTable>
 </div>

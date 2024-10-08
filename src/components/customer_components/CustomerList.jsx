@@ -16,6 +16,7 @@ import { PrimeIcons } from 'primereact/api';
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Tab } from 'react-bootstrap';
+import { BreadCrumb } from 'primereact/breadcrumb';
 
 
 const CustomerList = () => {
@@ -207,8 +208,11 @@ const customerItemTemplate = (option) => {
         );
     }
 
+    
+
   return (
      <div className="card" >
+        
         <h1 className='title'>Πελάτες</h1>
         {user && user.role ==="admin" && (
         <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle"/></Link>

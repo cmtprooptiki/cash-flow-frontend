@@ -37,3 +37,25 @@ a > div:hover{
 a:hover > .wizard-hover {
     background-color:rgb(107, 18, 18);
 }
+
+.overflow-y-auto::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+.overflow-y-auto::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(25, 81, 114,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(25, 81, 114,0.4);  
+}
