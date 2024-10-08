@@ -33,8 +33,14 @@ import { ReactComponent as WizardIcon } from '../icons/wizardicon.svg'; // Impor
 
 import { Toolbar } from "primereact/toolbar";
 
+import {useClickOutside} from "primereact/hooks";
+
 // import apiBaseUrl from '../../apiConfig';
 import apiBaseUrl from "../apiConfig";
+import { InputText } from "primereact/inputtext";
+import { OverlayPanel } from "primereact/overlaypanel";
+import { AutoComplete } from "primereact/autocomplete";
+import { Navigate } from "react-router-dom";
 
 const Navbar =()=>{
     const dispatch = useDispatch();
@@ -60,18 +66,25 @@ const Navbar =()=>{
     const handleClose = () => {
       setAnchorEl(null);
     };
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
+    const [ShowSearch,setShowSearch] = useState(false);
+
+    const overlayRef = useRef(null);
+
+    useClickOutside(overlayRef, () => {
+        setVisible(false);
+    });
 
 
 
     const startContent = (
         <React.Fragment>
      
-            <div>
+            <div >
                 <Avatar icon="p-ripple pi pi-plus" style={{borderRadius:"20px"}} onClick={() => setVisible(true)} ><Ripple/></Avatar>
                 <Sidebar
                 visible={visible}
-                onHide={() => setVisible(false)}
+                onHide={() => setVisible(true)}
                 
                 content={({ closeIconRef, hide }) => (
                     <div className="min-h-screen flex relative lg:static surface-ground">
@@ -84,7 +97,7 @@ const Navbar =()=>{
                                       alt="logo"
                                     />
                                     <span>
-                                        <Button type="button" ref={closeIconRef} onClick={(e) => hide(e)} icon="pi pi-times" rounded outlined className="h-2rem w-2rem"></Button>
+                                        <Button type="button" ref={closeIconRef} onClick={(e) => {hide(e);setVisible(false)}} icon="pi pi-times" rounded outlined className="h-2rem w-2rem"></Button>
                                     </span>
                                 </div>
                                 <div className="overflow-y-auto " >
@@ -320,6 +333,154 @@ const Navbar =()=>{
             </div>
         </React.Fragment>
     );
+    const op = useRef(null);
+    const [selectedCity, setSelectedCity] = useState(null);
+    const [filteredCities, setFilteredCities] = useState(null);
+    const groupedCities = [
+        {
+            label: 'Customer',
+            items: [
+                { label: 'Πελάτης', value: 'customer' },
+                { label: 'Customer', value: 'customer' },
+            ]
+        },{
+            label: 'Erga',
+            items: [
+                { label: 'Εργα', value: 'erga' },
+                { label: 'erga', value: 'erga' },
+            ]
+        },
+        {
+            label: 'Paradotea',
+            items: [
+                { label: 'Παραδοτέα', value: 'paradotea' },
+                { label: 'paradotea', value: 'paradotea' },
+            ]
+        },
+        {
+            label: 'Timologia',
+            items: [
+                { label: 'Τιμολόγια', value: 'timologia' },
+                { label: 'timologia', value: 'timologia' },
+            ]
+        },
+        {
+            label: 'Ekxorimena timologia',
+            items: [
+                { label: 'Εκχωρημένα τιμολόγια', value: 'ek_tim' },
+                { label: 'ekxorimena timologia', value: 'ek_tim' },
+            ]
+        },
+        {
+            label: 'Erga Categories',
+            items: [
+                { label: 'Κατηγορίες Εργων', value: 'ergacat' },
+                { label: 'Erga Categories', value: 'ergacat' },
+            ]
+        },
+        {
+            label: 'Daneia',
+            items: [
+                { label: 'Δανεια', value: 'daneia' },
+                { label: 'daneia', value: 'daneia' },
+            ]
+        },
+        {
+            label: 'Tags',
+            items: [
+                { label: 'tags', value: 'taga' },
+            ]
+        },
+        {
+            label: 'Ypoxreoseis',
+            items: [
+                { label: 'Υποχρεωσεις', value: 'ypoquery' },
+                { label: 'Ypoxreoseis', value: 'ypoquery' },
+            ]
+        },
+        {
+            label: 'Doseis',
+            items: [
+                { label: 'Δοσεις', value: 'doseis' },
+                { label: 'doseis', value: 'doseis' },
+            ]
+        },
+        {
+            label: 'Budget Form',
+            items: [
+                { label: 'Φορμα Budget', value: 'budgetform' },
+                { label: 'Budget Form', value: 'budgetform' },
+            ]
+        },
+        {
+            label: 'Statistics',
+            items: [
+                { label: 'Στατιστικα', value: 'statistics' },
+                { label: 'statistics', value: 'statistics' },
+            ]
+        },
+        {
+            label: 'Reports',
+            items: [
+                { label: 'Αναφορες', value: 'reports' },
+                { label: 'reports', value: 'reports' },
+            ]
+        },
+        {
+            label: 'Income',
+            items: [
+                { label: 'Ημερολογιο Εσοδων', value: 'dashboard' },
+                { label: 'income calendar', value: 'dashboard' },
+            ]
+        },
+        {
+            label: 'Expenses',
+            items: [
+                { label: 'Ημερολογιο Εξοδων', value: 'expen' },
+                { label: 'expenses calendar', value: 'expen' },
+            ]
+        },
+        {
+            label: 'Budget',
+            items: [
+                { label: 'προυπολογισμος', value: 'budget' },
+                { label: 'budget', value: 'budget' },
+            ]
+        },
+    ];
+
+    const groupedItemTemplate = (item) => {
+        return (
+            <div className="flex align-items-center">
+                <div>{item.label}</div>
+            </div>
+        );
+    };
+
+    const search = (event) => {
+        let query = event.query;
+        let _filteredCities = [];
+
+        for (let country of groupedCities) {
+            let filteredItems = country.items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+
+            if (filteredItems && filteredItems.length) {
+                _filteredCities.push({ ...country, ...{ items: filteredItems } });
+            }
+        }
+
+        setFilteredCities(_filteredCities);
+    }
+    const navigation = useNavigate();
+    const select =(event)=>{
+        setSelectedCity(event.value)
+        if(typeof(event.value)==="object"){
+            //console.log("navigate value: ",event.value.value)
+            navigation('/'+event.value.value);
+        }
+        
+    }
+
 
     const centerContent = (
         <div className="flex flex-wrap align-items-center gap-3">
@@ -332,7 +493,16 @@ const Navbar =()=>{
                 <Ripple />
             </Link>
             <button className="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                <i className="pi pi-search text-2xl"></i>
+                <i className="pi pi-search text-2xl" onClick={(e) => op.current.toggle(e)}/>
+                
+                    <OverlayPanel ref={op} showCloseIcon closeOnEscape dismissable={false}>
+                    <AutoComplete value={selectedCity} onChange={(e) => select(e)} suggestions={filteredCities} completeMethod={search}
+                field="label" optionGroupLabel="label" optionGroupChildren="items" optionGroupTemplate={groupedItemTemplate} placeholder="Hint: type 'a'" />
+                    
+                     
+                    </OverlayPanel>
+                    
+                
             </button>
         </div>
     );
@@ -388,7 +558,7 @@ const Navbar =()=>{
 
     return(
       
-        <div className="card">
+        <div className="card" ref={overlayRef}>
             <Toolbar start={startContent} center={centerContent} end={endContent} className="bg-gray-900 shadow-2" 
             style={{ borderRadius: '3rem', backgroundImage: 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }} />
         </div>
