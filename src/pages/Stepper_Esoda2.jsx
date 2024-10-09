@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
-import Customer2 from './customer_pages2/Customer2';
-import ErgaCat2 from './erga_cat_pages2/ErgaCat2';
-import Erga2 from './erga_pages2/Erga2';
-import Paradotea2 from './paradotea_pages2/Paradotea2';
-import Timologia2 from './timologia_pages2/Timologia2';
-import Ekxorimena_Timologia2 from './ekxwrimeno_timologio_pages2/Ekxorimena_Timologia2';
+import Customer2 from './wizard_pages/customer_pages2/Customer2';
+import ErgaCat2 from './wizard_pages/erga_cat_pages2/ErgaCat2';
+import Erga2 from './wizard_pages/erga_pages2/Erga2';
+import Paradotea2 from './wizard_pages/paradotea_pages2/Paradotea2';
+import Timologia2 from './wizard_pages/timologia_pages2/Timologia2';
+import Ekxorimena_Timologia2 from './wizard_pages/ekxwrimeno_timologio_pages2/Ekxorimena_Timologia2';
 import Layout from './Layout';
 
 const Stepper_Esoda2 = () => {

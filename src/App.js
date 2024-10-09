@@ -76,15 +76,15 @@ import './flags.css';
 // import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 
-import Tags2 from "./pages/tags_pages2/Tags2";
-import AddTag2 from "./pages/tags_pages2/AddTag2";
+import Tags2 from "./pages/wizard_pages/tags_pages2/Tags2";
+import AddTag2 from "./pages/wizard_pages/tags_pages2/AddTag2";
 
 
-import AddYpoxreoseis2 from "./pages/ypoxreoseis_pages2/AddYpoxreoseis2";
-import YpoxreoseisList2 from "./components/ypoxreoseis_components2/YpoxreoseisList2";
+import AddYpoxreoseis2 from "./pages/wizard_pages/ypoxreoseis_pages2/AddYpoxreoseis2";
+import YpoxreoseisList2 from "./components/wizard_components/ypoxreoseis_components2/YpoxreoseisList2";
 
-import AddDoseis2 from "./pages/doseis_pages2/AddDoseis2"
-import Doseis2 from "./pages/doseis_pages2/Doseis2"
+import AddDoseis2 from "./pages/wizard_pages/doseis_pages2/AddDoseis2"
+import Doseis2 from "./pages/wizard_pages/doseis_pages2/Doseis2"
 
 import MyStepper1 from "./pages/MyStepper1";
 import MyStepper2 from "./pages/MyStepper2";
@@ -92,23 +92,23 @@ import MyStepper2 from "./pages/MyStepper2";
 import Expenses_Display from "./pages/Expenses_Display";
 import BudgetPage from './pages/BudgetPage'
 
-import Customer2 from "./pages/customer_pages2/Customer2";
-import AddCustomer2 from "./pages/customer_pages2/AddCustomer2";
+import Customer2 from "./pages/wizard_pages/customer_pages2/Customer2";
+import AddCustomer2 from "./pages/wizard_pages/customer_pages2/AddCustomer2";
 
-import Erga2 from "./pages/erga_pages2/Erga2";
-import AddErga2 from "./pages/erga_pages2/AddErga2";
+import Erga2 from "./pages/wizard_pages/erga_pages2/Erga2";
+import AddErga2 from "./pages/wizard_pages/erga_pages2/AddErga2";
 
-import ErgaCat2 from "./pages/erga_cat_pages2/ErgaCat2";
-import AddErgaCat2 from "./pages/erga_cat_pages2/AddErgaCat2";
+import ErgaCat2 from "./pages/wizard_pages/erga_cat_pages2/ErgaCat2";
+import AddErgaCat2 from "./pages/wizard_pages/erga_cat_pages2/AddErgaCat2";
 
-import Paradotea2 from "./pages/paradotea_pages2/Paradotea2";
-import AddParadoteo2 from "./pages/paradotea_pages2/AddParadoteo2";
+import Paradotea2 from "./pages/wizard_pages/paradotea_pages2/Paradotea2";
+import AddParadoteo2 from "./pages/wizard_pages/paradotea_pages2/AddParadoteo2";
 
-import Timologia2 from "./pages/timologia_pages2/Timologia2";
-import AddTimologio2 from "./pages/timologia_pages2/AddTimologio2";
+import Timologia2 from "./pages/wizard_pages/timologia_pages2/Timologia2";
+import AddTimologio2 from "./pages/wizard_pages/timologia_pages2/AddTimologio2";
 
-import Ekxorimena_Timologia2 from "./pages/ekxwrimeno_timologio_pages2/Ekxorimena_Timologia2";
-import AddEkxorimeno_Timologio2 from "./pages/ekxwrimeno_timologio_pages2/AddEkxorimeno_Timologio2";
+import Ekxorimena_Timologia2 from "./pages/wizard_pages/ekxwrimeno_timologio_pages2/Ekxorimena_Timologia2";
+import AddEkxorimeno_Timologio2 from "./pages/wizard_pages/ekxwrimeno_timologio_pages2/AddEkxorimeno_Timologio2";
 
 import Stepper_Esoda1 from "./pages/Stepper_Esoda1";
 import Stepper_Esoda2 from "./pages/Stepper_Esoda2";
