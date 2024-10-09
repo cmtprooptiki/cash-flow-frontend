@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
-import Tags2 from './tags_pages2/Tags2';
-import Ypoxreoseis2 from './ypoxreoseis_pages2/Ypoxreoseis2';
-import Doseis2 from './doseis_pages2/Doseis2';
-import AddTag2 from './tags_pages2/AddTag2';
+import Tags2 from './wizard_pages/tags_pages2/Tags2';
+import Ypoxreoseis2 from './wizard_pages/ypoxreoseis_pages2/Ypoxreoseis2';
+import Doseis2 from './wizard_pages/doseis_pages2/Doseis2';
+import AddTag2 from './wizard_pages/tags_pages2/AddTag2';
 import Layout from './Layout';
 
 const MyStepper1 = () => {
