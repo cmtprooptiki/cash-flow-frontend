@@ -74,7 +74,7 @@ const Navbar =()=>{
     useClickOutside(overlayRef, () => {
         setVisible(false);
     });
-
+    //ref={overlayRef}
 
 
     const startContent = (
@@ -84,7 +84,7 @@ const Navbar =()=>{
                 <Avatar icon="p-ripple pi pi-plus" style={{borderRadius:"20px"}} onClick={() => setVisible(true)} ><Ripple/></Avatar>
                 <Sidebar
                 visible={visible}
-                onHide={() => setVisible(true)}
+                onHide={() => setVisible(false)}
                 
                 content={({ closeIconRef, hide }) => (
                     <div className="min-h-screen flex relative lg:static surface-ground">
@@ -97,7 +97,7 @@ const Navbar =()=>{
                                       alt="logo"
                                     />
                                     <span>
-                                        <Button type="button" ref={closeIconRef} onClick={(e) => {hide(e);setVisible(false)}} icon="pi pi-times" rounded outlined className="h-2rem w-2rem"></Button>
+                                        <Button type="button" ref={closeIconRef} onClick={(e) => {hide(e)}} icon="pi pi-times" rounded outlined className="h-2rem w-2rem"></Button>
                                     </span>
                                 </div>
                                 <div className="overflow-y-auto " >
@@ -558,7 +558,7 @@ const Navbar =()=>{
 
     return(
       
-        <div className="card" ref={overlayRef}>
+        <div className="card" >
             <Toolbar start={startContent} center={centerContent} end={endContent} className="bg-gray-900 shadow-2" 
             style={{ borderRadius: '3rem', backgroundImage: 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }} />
         </div>
