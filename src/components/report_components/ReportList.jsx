@@ -48,8 +48,16 @@ const ReportList = () => {
         { field: 'ammount_total', header: 'Σύνολο Έργου' },
         { field: 'status', header: 'Κατάσταση έργου' },
         { field: 'sign_date', header: 'Ημερομηνία υπογραφής σύμβασης' },
-        { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
+        { field: 'total_yes_timologia', header: 'Εισπράξεις' },
+        { field: 'total_no_timologia', header: 'Απαιτήσεις Τιμολογιμένων' },
+        { field: 'demands_no_tim', header: 'Απαιτήσεις Μη Τιμολογιμένων' },
+
+        { field: 'demands', header: 'Απαιτήσεις' },
+        { field: 'future_demands', header: 'Μελλοντικές Απαιτήσεις' }
+
+
+        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
+        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -88,8 +96,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...product,
                 ammount_total: formatCurrency(product.ammount_total),
                 sign_date: formatDate(product.sign_date),
-                totalparadotea: formatCurrency(product.totalparadotea),
-                difference: formatCurrency(product.difference), // Format the quantity as currency
+                total_yes_timologia: formatCurrency(product.total_yes_timologia),
+                total_no_timologia: formatCurrency(product.total_no_timologia), // Format the quantity as currency
+                demands_no_tim:formatCurrency(product.demands_no_tim),
+                demands:formatCurrency(product.demands),
+                future_demands:formatCurrency(product.future_demands),
             };
         });
 
@@ -102,8 +113,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.ammount_total,
             product.status,
             product.sign_date, // Now this is formatted as currency
-            product.totalparadotea,
-            product.difference, // Now this is formatted as currency
+            product.total_yes_timologia,
+            product.total_no_timologia, // Now this is formatted as currency
+            product.demands_no_tim,
+            product.demands,
+            product.future_demands
         ]),
         styles: {
             font: 'Roboto-Regular' // Make sure the table uses the Roboto font
@@ -146,12 +160,22 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         if (col.field === 'ammount_total') {
                             return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
                         }
-                        if (col.field === 'totalparadotea') {
+                        if (col.field === 'total_yes_timologia') {
                             return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
                         }
-                        if (col.field === 'difference') {
+                        if (col.field === 'total_no_timologia') {
                             return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
                         }
+                        if (col.field === 'demands_no_tim') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'demands') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'future_demands') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
                         
                         return product[col.field];  // Return the value as is for other fields
                     })
@@ -240,11 +264,16 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             sign_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             ammount_total: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            totalparadotea: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            difference: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            total_yes_timologia: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            total_no_timologia: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            demands_no_tim: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            demands: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            future_demands: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+
         });
         setGlobalFilterValue('');
     };
+    
 
     const {user} = useSelector((state)=>state.auth)
 
@@ -280,7 +309,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const footerTemplate = (data) => {
         return (
             <React.Fragment>
-                <td colSpan="1">
+                {/* <td colSpan="1">
                     <div className="font-bold w-full" style={{color:'black'}}>Σύνολο Έργων: {calculateCustomerTotal(data.customer_name)}</div>
                 
                 </td>
@@ -292,7 +321,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <div className="font-bold w-full" style={{color:'black'}}>Συνολικο τιμολόγιο Έργων: {calculateTotalParadotea(data.customer_name)}</div>
                     <div className="font-bold w-full" style={{color:'black'}}>Συνολικο Υπόλοιπο Έργων: {calculatediff(data.customer_name)}</div>
 
-                </td>
+                </td> */}
                 {/* <td colSpan="6">
                 
                 </td> */}
@@ -413,13 +442,28 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
-    const ammount_totalParadoteaTemplate = (rowData) => {
-        return formatCurrency(rowData.totalparadotea);
+    const total_yes_timologiaTemplate = (rowData) => {
+        return formatCurrency(rowData.total_yes_timologia);
     };
 
-    const ammount_differenceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.difference);
+    const total_no_timologiaBodyTemplate = (rowData) => {
+        return formatCurrency(rowData.total_no_timologia);
     };
+
+
+    const demands_no_timTemplate = (rowData) => {
+        return formatCurrency(rowData.demands_no_tim);
+    };
+
+    const demandsBodyTemplate = (rowData) => {
+        return formatCurrency(rowData.demands);
+    };
+
+    const future_demandsBodyTemplate = (rowData) => {
+        return formatCurrency(rowData.future_demands);
+    };
+
+
 
     const ammount_totalBodyTemplate = (rowData) => {
         return formatCurrency(rowData.ammount_total);
@@ -447,6 +491,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             const ergaDataWithDates = reportData.map(item => ({
                 ...item,
+                demands_no_tim:parseFloat(item.demands_no_tim),
+
                 sign_date: new Date(item.sign_date)
                 // estimate_start_date: new Date(item.estimate_start_date),
                 // estimate_payment_date:new Date(item.estimate_payment_date),
@@ -488,17 +534,27 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     rowGroupFooterTemplate={footerTemplate} 
                     globalFilterFields={['erga_name'
                         ,'ammount_total','sign_ammount_no_tax'
-                        ,'sign_date', 'status', 'totalparadotea'
-                        ,'difference']}
+                        ,'sign_date', 'status',    
+                        'total_yes_timologia',
+                        'total_no_timologia',
+                        'demands_no_tim',
+                        'demands',
+                        'future_demands' ]}
                     header={header} 
                     tableStyle={{ minWidth: '100rem' }}>
+
+
+
                 <Column header="Έργα/Πελάτη" field="erga_name" filter style={{ minWidth: '200px' }}></Column>
                 <Column header="Σύνολο Έργου" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Κατάσταση έργου" field="status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column header="Ημερομηνία υπογραφής σύμβασης" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
-                <Column header="Σύνολο Τιμ.Παραδοτέων/Έργο" filterField="totalparadotea" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalParadoteaTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="Υπόλοιπο Παραδοτέων" filterField="difference" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_differenceBodyTemplate} filter filterElement={ammountFilterTemplate}  />
-                
+                <Column header="Εισπράξεις" filterField="total_yes_timologia" dataType="numeric" style={{ minWidth: '5rem' }} body={total_yes_timologiaTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Απαιτήσεις Τιμολογιμένων" filterField="total_no_timologia" dataType="numeric" style={{ minWidth: '5rem' }} body={total_no_timologiaBodyTemplate} filter filterElement={ammountFilterTemplate}  />
+                <Column header="Απαιτήσεις Μη Τιμολογιμένων" filterField="demands_no_tim" dataType="numeric" style={{ minWidth: '5rem' }} body={demands_no_timTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Απαιτήσεις" filterField="demands" dataType="numeric" style={{ minWidth: '5rem' }} body={demandsBodyTemplate} filter filterElement={ammountFilterTemplate}  />
+                <Column header="Μελλοντικές Απαιτήσεις" filterField="future_demands" dataType="numeric" style={{ minWidth: '5rem' }} body={future_demandsBodyTemplate} filter filterElement={ammountFilterTemplate}  />
+
             </DataTable>
 </div>
   )
