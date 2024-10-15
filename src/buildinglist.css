@@ -37,4 +37,12 @@
 }
 
 /* Add more styles as needed */
-
+.reportsTable {
+    border:3px solid #2196f3;
+    border-radius:  15px;
+    border-collapse: separate; 
+    width: 100%;
+}
+.reportsTable >tr {
+    width: 100px;
+}

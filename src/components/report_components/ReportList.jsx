@@ -309,6 +309,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const footerTemplate = (data) => {
         return (
             <React.Fragment>
+                
                 {/* <td colSpan="1">
                     <div className="font-bold w-full" style={{color:'black'}}>Σύνολο Έργων: {calculateCustomerTotal(data.customer_name)}</div>
                 
@@ -318,13 +319,39 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     
                 </td>
                 <td colSpan="6">
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο τιμολόγιο Έργων: {calculateTotalParadotea(data.customer_name)}</div>
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο Υπόλοιπο Έργων: {calculatediff(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολο Εισπράξεων: {calculateTotalYesTim(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις Εισπράξεων: {calculateTotalNoTim(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις Μη Τιμολογιμένων: {calculateTotalDemandsNoTim(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις: {calculateTotalDemands(data.customer_name)}</div>
+                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Μελλοντικές Απαιτήσεις: {calculateTotalFutureDemands(data.customer_name)}</div>
 
                 </td> */}
-                {/* <td colSpan="6">
-                
-                </td> */}
+                <td colSpan={8}>
+                <table className='reportsTable'>
+                    <thead>
+                    <tr>
+                        <th>Σύνολο Έργων</th>
+                        <th>Συνολικο Ποσο Έργων</th>
+                        <th>Συνολο Εισπράξεων</th>
+                        <th>Συνολικες Απαιτήσεις Εισπράξεων</th>
+                        <th>Συνολικες Απαιτήσεις Μη Τιμολογιμένων</th>
+                        <th>Συνολικες Απαιτήσεις</th>
+                        <th>Συνολικες Μελλοντικές Απαιτήσεις</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{calculateCustomerTotal(data.customer_name)}</td>
+                        <td>{calculateAmmount_Total(data.customer_name)}</td>
+                        <td>{calculateTotalYesTim(data.customer_name)}</td>
+                        <td>{calculateTotalNoTim(data.customer_name)}</td>
+                        <td>{calculateTotalDemandsNoTim(data.customer_name)}</td>
+                        <td>{calculateTotalDemands(data.customer_name)}</td>
+                        <td>{calculateTotalFutureDemands(data.customer_name)}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </td>
             </React.Fragment>
         );
     };
@@ -354,13 +381,13 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
         return total;
     };
-    const calculatediff = (name) => {
+    const calculateTotalNoTim = (name) => {
         let total = 0.0;
 
         if (reportData) {
             for (let customer of reportData) {
                 if (customer.customer_name === name) {
-                    total+=parseFloat(customer.difference)
+                    total+=parseFloat(customer.total_no_timologia)
                 }
             }
         }
@@ -382,13 +409,55 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
         return formatCurrency(total);
     };
-    const calculateTotalParadotea = (name) => {
+    const calculateTotalYesTim = (name) => {
         let total = 0.0;
 
         if (reportData) {
             for (let customer of reportData) {
                 if (customer.customer_name === name) {
-                    total+=parseFloat(customer.totalparadotea)
+                    total+=parseFloat(customer.total_yes_timologia)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
+    };
+    const calculateTotalDemandsNoTim = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.demands_no_tim)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
+    };
+    const calculateTotalDemands = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.demands)
+                }
+            }
+        }
+        
+
+        return formatCurrency(total);
+    };
+    const calculateTotalFutureDemands = (name) => {
+        let total = 0.0;
+
+        if (reportData) {
+            for (let customer of reportData) {
+                if (customer.customer_name === name) {
+                    total+=parseFloat(customer.future_demands)
                 }
             }
         }
@@ -491,7 +560,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             const ergaDataWithDates = reportData.map(item => ({
                 ...item,
+                total_yes_timologia:parseFloat(item.total_yes_timologia),
+                total_no_timologia:parseFloat(item.total_no_timologia),
                 demands_no_tim:parseFloat(item.demands_no_tim),
+                demands:parseFloat(item.demands),
+                future_demands:parseFloat(item.future_demands),
 
                 sign_date: new Date(item.sign_date)
                 // estimate_start_date: new Date(item.estimate_start_date),
