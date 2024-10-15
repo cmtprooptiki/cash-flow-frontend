@@ -69,6 +69,7 @@ const DoseisList = () => {
                 //     ...item.timologia,
                 //     invoice_number: item.timologia?.invoice_number || 'N/A'
                 // },
+                ammount: parseFloat(item.ammount),
                 actual_payment_date: new Date(item.actual_payment_date),
                 estimate_payment_date: new Date(item.estimate_payment_date)
             }));

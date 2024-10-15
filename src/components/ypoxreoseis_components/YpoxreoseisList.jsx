@@ -71,7 +71,9 @@ const YpoxreoseisList = () =>
                 //     ...item.timologia,
                 //     invoice_number: item.timologia?.invoice_number || 'N/A'
                 // },
-                'ypoxreoseis.invoice_date': new Date(item.ypoxreoseis?.invoice_date)
+                'ypoxreoseis.invoice_date': new Date(item.ypoxreoseis?.invoice_date),
+                'ypoxreoseis.total_owed_ammount': parseFloat(item.ypoxreoseis.total_owed_ammount),
+                'ypoxreoseis.ammount_vat': parseFloat(item.ypoxreoseis.ammount_vat)
                 // actual_payment_date: new Date(item.actual_payment_date)
             }));
             // Sort parDataWithDates by ypoxreoseis.invoice_date in ascending order

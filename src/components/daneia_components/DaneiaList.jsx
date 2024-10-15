@@ -35,7 +35,13 @@ const DaneiaList = () => {
 
     const getDaneia = async() =>{
         const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000});
-        setDaneia(response.data);
+        const daneia_data = response.data;
+        const Daneia_Data = daneia_data.map(item => ({
+            ...item,
+            'daneia.ammount': parseFloat(item.ammount),
+            'daneia.payment_date': new Date(item.payment_date)
+        }));
+        setDaneia(Daneia_Data);
     }
     const deleteDaneia = async(daneiaId)=>{
         await axios.delete(`${apiBaseUrl}/daneia/${daneiaId}`);
@@ -64,9 +70,9 @@ const DaneiaList = () => {
 
             'daneia.ammount': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             
-            'daneia.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            'name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
-            'daneia.status': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
+            'status': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
 
         });
         setGlobalFilterValue('');
@@ -187,10 +193,10 @@ const DaneiaList = () => {
                     filters={filters} 
                     globalFilterFields={[
                         'daneia.id', 
-                        'daneia.name', 
+                        'name', 
                         'daneia.ammount',
-                        'daneia.payment_date'
-        
+                        'daneia.payment_date',
+                        'status'
                         ]} 
                     header={header} 
                     emptyMessage="No daneia found.">
@@ -199,7 +205,7 @@ const DaneiaList = () => {
                        
                         <Column header="daneia.ammount" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                        
-                        <Column header="daneia.payment_date" filterField="daneia.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateBodyTemplate} ></Column>
+                        <Column header="daneia.payment_date" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
         
                         {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
         

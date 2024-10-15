@@ -63,6 +63,9 @@ const ParadoteaList = () => {
                     invoice_number: item.timologia?.invoice_number || 'N/A'
                 },
                 delivery_date: new Date(item.delivery_date),
+                ammount: parseFloat(item.ammount),
+                ammount_vat: parseFloat(item.ammount_vat),
+                ammount_total: parseFloat(item.ammount_total),
                 estimate_payment_date: new Date(item.estimate_payment_date),
                 estimate_payment_date_2:new Date(item.estimate_payment_date_2),
                 estimate_payment_date_3:new Date(item.estimate_payment_date_3)
