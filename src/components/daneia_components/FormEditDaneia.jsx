@@ -6,6 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
 
 const FormEditDaneia= () => {
     const [name, setName] = useState("");
@@ -13,6 +14,8 @@ const FormEditDaneia= () => {
     const [status, setStatus] = useState("");
     const [payment_date, setPayment_Date] = useState("")
     const[msg,setMsg]=useState("");
+
+    const [statuses, setStatuses] = useState(["yes", "no"])
 
     const navigate = useNavigate();
 
@@ -26,6 +29,11 @@ const FormEditDaneia= () => {
         const [year, month, day] = dateString.split('-');
         return `${year}-${month}-${day}`;
     };
+    const handleStatusChange = async (e) =>
+        {
+            const selectedStatus = e.value;
+            setStatus(selectedStatus)
+        }
 
     useEffect(()=>{
         const getDaneiaById = async()=>{
@@ -105,7 +113,8 @@ const FormEditDaneia= () => {
                     <label htmlFor="status">Kατάσταση Δανείου</label>
                     <div className="control">
 
-                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
+                    <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
+                                        placeholder="Επιλέξτε Κατάσταση" className="w-full md:w-14rem" required/>
                     </div>
                 </div>
 

@@ -306,7 +306,7 @@ const FormEditCustomer= () => {
 
                 <div className="field">
                     <div className="control">
-                    <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
+                    <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>
                     </div>
                 </div>
             </div>
