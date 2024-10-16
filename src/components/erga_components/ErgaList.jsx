@@ -306,6 +306,10 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             // Convert sign_date to Date object for each item in ergaData
             const ergaDataWithDates = ergaData.map(item => ({
                 ...item,
+                sign_ammount_no_tax: parseFloat(item.sign_ammount_no_tax),
+                ammount_vat: parseFloat(item.ammount_vat),
+                ammount: parseFloat(item.ammount),
+                ammount_total: parseFloat(item.ammount_total),
                 sign_date: new Date(item.sign_date),
                 estimate_start_date: new Date(item.estimate_start_date),
                 estimate_payment_date:new Date(item.estimate_payment_date),

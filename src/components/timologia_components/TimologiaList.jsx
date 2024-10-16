@@ -69,6 +69,9 @@ const TimologiaList = () => {
                 //     invoice_number: item.timologia?.invoice_number || 'N/A'
                 // },
                 invoice_date: new Date(item.invoice_date),
+                ammount_no_tax: parseFloat(item.ammount_no_tax),
+                ammount_tax_incl: parseFloat(item.ammount_tax_incl),
+                ammount_of_income_tax_incl: parseFloat(item.ammount_of_income_tax_incl),
                 actual_payment_date: new Date(item.actual_payment_date),
                 ErgaName:""
             }));

@@ -60,6 +60,8 @@ const EkxwrimenoTimologioList = () =>
                 //     ...item.timologia,
                 //     invoice_number: item.timologia?.invoice_number || 'N/A'
                 // },
+                bank_ammount: parseFloat(item.bank_ammount),
+                customer_ammount: parseFloat(item.customer_ammount),
                 bank_date: new Date(item.bank_date),
                 cust_date: new Date(item.cust_date),
                 cust_estimated_date: new Date(item.cust_estimated_date),
