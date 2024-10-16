@@ -229,8 +229,8 @@ const customerItemTemplate = (option) => {
 
         <ToggleButton checked={logoFrozen} onChange={(e) => setLogoFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Λογότυπο Πελάτη" offLabel="Λογότυπο Πελάτη" className = 'small-toggle' />
         <br />
-<DataTable value={customer} paginator 
-showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+<DataTable value={customer} paginator  stripedRows 
+ rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={['id', 'name', 
                 'afm','doy','epagelma','phone', 'email',
@@ -238,7 +238,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
                 <Column field="logoImage" header="Λογότυπο"  body={imageBodyTemplate} frozen={logoFrozen}></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
                 <Column header="Πελάτης" filterField="name" className="font-bold" 
