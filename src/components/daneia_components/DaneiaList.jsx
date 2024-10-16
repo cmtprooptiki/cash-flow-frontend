@@ -201,15 +201,15 @@ const DaneiaList = () => {
                     header={header} 
                     emptyMessage="No daneia found.">
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                        <Column field="name" header="name"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
+                        <Column field="name" header="Ονομα δανείου"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                        
-                        <Column header="daneia.ammount" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                        <Column header="Ποσό δανείου" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                        
-                        <Column header="daneia.payment_date" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
+                        <Column header="Πληρωμή Δανείου" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
         
                         {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
         
-                        <Column field="status" header="status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                        <Column field="status" header="Κατάσταση Δανείου" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
         
                 
                        

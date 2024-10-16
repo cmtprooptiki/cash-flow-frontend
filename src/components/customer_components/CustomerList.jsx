@@ -13,6 +13,7 @@ import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
 import { MultiSelect } from 'primereact/multiselect';
 import { PrimeIcons } from 'primereact/api';
+import { ToggleButton } from 'primereact/togglebutton';
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Tab } from 'react-bootstrap';
@@ -25,6 +26,9 @@ const CustomerList = () => {
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+    const [nameFrozen, setNameFrozen] = useState(false);
+    const [logoFrozen, setLogoFrozen] = useState(false)
 
     const [customernames, setCustomerNames]=useState([]);
 
@@ -172,6 +176,8 @@ const customerItemTemplate = (option) => {
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+                
+
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -217,7 +223,12 @@ const customerItemTemplate = (option) => {
         {user && user.role ==="admin" && (
         <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle"/></Link>
         )}
+        <br />
+        <ToggleButton checked={nameFrozen} onChange={(e) => setNameFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Όνομα Πελάτη" offLabel="Όνομα Πελάτη" className = 'small-toggle'/>
+        <br />
 
+        <ToggleButton checked={logoFrozen} onChange={(e) => setLogoFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Λογότυπο Πελάτη" offLabel="Λογότυπο Πελάτη" className = 'small-toggle' />
+        <br />
 <DataTable value={customer} paginator 
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
@@ -228,11 +239,11 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No customers found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column field="logoImage" header="Λογότυπο"  body={imageBodyTemplate}></Column>
+                <Column field="logoImage" header="Λογότυπο"  body={imageBodyTemplate} frozen={logoFrozen}></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="Πελάτης" filterField="name" 
-                showFilterMatchModes={false} 
-                  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column header="Πελάτης" filterField="name" className="font-bold" 
+                showFilterMatchModes={false} frozen={nameFrozen}
+                  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: "black" }}
                     body={customerBodyTemplate} 
                     filter filterElement={customerFilterTemplate} />  
               

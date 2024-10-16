@@ -46,3 +46,14 @@
 .reportsTable >tr {
     width: 100px;
 }
+
+/* .small-toggle .pi {
+    font-size: 0.8rem !important; 
+} */
+
+.small-toggle {
+    font-size: 0.7rem; /* Reduces label size */
+    padding: 5px 10px;  /* Reduces button padding */
+    height: 60px;      /* Adjusts button height */
+    width: 150px;      /* Adjusts button width */
+}
