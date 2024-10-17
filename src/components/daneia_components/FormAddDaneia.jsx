@@ -17,6 +17,7 @@ const FormAddDaneia = () => {
     const [ammount, setAmmount] = useState("");
     const [status, setStatus] = useState("");
     const [payment_date, setPayment_Date] = useState(null)
+    const [actual_payment_date, setActual_Payment_Date] = useState(null)
 
     const[msg,setMsg]=useState("");
 
@@ -29,7 +30,8 @@ const FormAddDaneia = () => {
             name:name,
             ammount:ammount,
             status:status,
-            payment_date:payment_date
+            payment_date:payment_date,
+            actual_payment_date:actual_payment_date
             });
             navigate("/daneia");
         }catch(error){
@@ -38,6 +40,11 @@ const FormAddDaneia = () => {
             }
         }
     }
+
+    const clearActualDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setActual_Payment_Date(null); // Clear the calendar date
+    };
 
     return(
         <div >
@@ -68,6 +75,16 @@ const FormAddDaneia = () => {
                     <div className="control">
 
                     <Calendar id="payment_date"  value={payment_date} onChange={(e)=> setPayment_Date(e.target.value)} inline showWeek />
+                        </div>
+                </div>
+                <div className="field">
+                    <label htmlFor="payment_date">ΠΡΑΓΑΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
+                    <div className="control">
+
+                        <Calendar id="payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
+                    </div>
+                        <div className="control">
+                            <Button label="Clear" onClick={clearActualDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                 </div>
 
