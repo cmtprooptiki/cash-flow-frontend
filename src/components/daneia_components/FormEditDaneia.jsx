@@ -13,6 +13,7 @@ const FormEditDaneia= () => {
     const [ammount, setAmmount] = useState("");
     const [status, setStatus] = useState("");
     const [payment_date, setPayment_Date] = useState("")
+    const [actual_payment_date, setActual_Payment_Date] = useState(null)
     const[msg,setMsg]=useState("");
 
     const [statuses, setStatuses] = useState(["yes", "no"])
@@ -37,7 +38,7 @@ const FormEditDaneia= () => {
 
     useEffect(()=>{
         const getDaneiaById = async()=>{
-            const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
+            //const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
@@ -45,6 +46,7 @@ const FormEditDaneia= () => {
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
                 setPayment_Date(formatDateToInput(response.data.payment_date))
+                setActual_Payment_Date(formatDateToInput(response.data.actual_payment_date))
             }
             catch(error)
             {
@@ -64,6 +66,7 @@ const FormEditDaneia= () => {
                 ammount:ammount,
                 status:status,
                 payment_date:payment_date,
+                actual_payment_date:actual_payment_date
             });
 
             navigate("/daneia");
@@ -73,6 +76,11 @@ const FormEditDaneia= () => {
                 setMsg(error.response.data.msg);
                 }
         }
+    };
+
+    const clearActualDate = (e) => {
+        e.preventDefault();  // Prevent form submission
+        setActual_Payment_Date(null); // Clear the calendar date
     };
     return(
         <div>
@@ -107,7 +115,17 @@ const FormEditDaneia= () => {
                     <Calendar id="estimate_payment_date"  value={new Date(payment_date)} onChange={(e)=> setPayment_Date(e.target.value)}  inline showWeek />
                     </div>
                 
+                </div>
+                <div className="field">
+                    <label htmlFor="payment_date">ΠΡΑΓΑΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΔΑΝΕΙΟΥ</label>
+                    <div className="control">
+
+                        <Calendar id="payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
                     </div>
+                        <div className="control">
+                            <Button label="Clear" onClick={clearActualDate} className="p-button-secondary mt-2" type="button"/>
+                        </div>
+                </div>
 
                     <div className="field">
                     <label htmlFor="status">Kατάσταση Δανείου</label>

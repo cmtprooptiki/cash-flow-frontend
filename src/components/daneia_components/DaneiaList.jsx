@@ -39,7 +39,9 @@ const DaneiaList = () => {
         const Daneia_Data = daneia_data.map(item => ({
             ...item,
             'daneia.ammount': parseFloat(item.ammount),
-            'daneia.payment_date': new Date(item.payment_date)
+            'daneia.payment_date': new Date(item.payment_date),
+            'daneia.actual_payment_date': new Date(item.actual_payment_date)
+            
         }));
         setDaneia(Daneia_Data);
     }
@@ -67,6 +69,7 @@ const DaneiaList = () => {
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             
             'daneia.payment_date': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+            'daneia.actual_payment_date': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
 
             'daneia.ammount': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             
@@ -104,14 +107,32 @@ const DaneiaList = () => {
     };
 
 
+    // const formatDate = (value) => {
+    //     let date = new Date(value);
+    //     if (!isNaN(date)) {
+    //         return date.toLocaleDateString('en-GB', {
+    //             day: '2-digit',
+    //             month: '2-digit',
+    //             year: 'numeric'
+    //         });
+    //     } else {
+    //         return "Invalid date";
+    //     }
+    // };
     const formatDate = (value) => {
         let date = new Date(value);
+        let epochDate = new Date('1970-01-01T00:00:00Z');
+        if (date.getTime() === epochDate.getTime()) 
+        {
+            return null;
+        }
         if (!isNaN(date)) {
             return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
             });
+            
         } else {
             return "Invalid date";
         }
@@ -122,6 +143,15 @@ const DaneiaList = () => {
     };
     
     const PaymentDateFilterTemplate = (options) => {
+        console.log('Current filter value:', options);
+        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+    }
+
+    const ActualPaymentDateBodyTemplate = (rowData) => {
+        return formatDate(rowData.actual_payment_date);
+    };
+    
+    const ActualPaymentDateFilterTemplate = (options) => {
         console.log('Current filter value:', options);
         return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     }
@@ -196,6 +226,7 @@ const DaneiaList = () => {
                         'name', 
                         'daneia.ammount',
                         'daneia.payment_date',
+                        'daneia.actual_payment_date',
                         'status'
                         ]} 
                     header={header} 
@@ -205,7 +236,8 @@ const DaneiaList = () => {
                        
                         <Column header="Ποσό δανείου" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                        
-                        <Column header="Πληρωμή Δανείου" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
+                        <Column header=" Πληρωμή Δανείου(εκτημηση)" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
+                        <Column header="Πληρωμή Δανείου" filterField="daneia.actual_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={ActualPaymentDateBodyTemplate} filter filterElement={ActualPaymentDateFilterTemplate} ></Column>
         
                         {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
         

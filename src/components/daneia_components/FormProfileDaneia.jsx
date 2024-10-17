@@ -19,6 +19,7 @@ const FormProfileDaneia = () => {
     const [status, setStatus] = useState("");
 
     const [payment_date, setPayment_Date] = useState(null)
+    const [actual_payment_date, setActual_Payment_Date] = useState(null)
 
 
     const[msg,setMsg]=useState("");
@@ -35,6 +36,7 @@ const FormProfileDaneia = () => {
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
                 setPayment_Date(formatDateToInput(response.data.payment_date))
+                setActual_Payment_Date(formatDateToInput(response.data.actual_payment_date))
             }
             catch(error)
             {
@@ -58,6 +60,24 @@ const FormProfileDaneia = () => {
   const formatCurrency = (value) => {
     return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
+const formatDate = (value) => {
+    let date = new Date(value);
+    let epochDate = new Date('1970-01-01T00:00:00Z');
+    if (date.getTime() === epochDate.getTime()) 
+    {
+        return null;
+    }
+    if (!isNaN(date)) {
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        
+    } else {
+        return "Invalid date";
+    }
+};
 
   return(
     <div>
@@ -69,21 +89,38 @@ const FormProfileDaneia = () => {
         <div className="grid">
             <div className="col-12 lg:col-4">
                 <div className="p-3 h-full">
-                <div className="text-500 w-6 md:w-2 font-medium">Όνομα Δανείου</div>
-        <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-            <Chip label={name} className="mr-2" />
-        </div>
+                    <div className="text-500 w-6 md:w-2 font-medium">Όνομα Δανείου</div>
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        <Chip label={name} className="mr-2" />
+                    </div>
+                    <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δανείου</div>
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        <Chip label={status} className="mr-2" />
+                    </div>
                     <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
                         <div className="text-900 font-medium text-xl mb-2">Ημερομηνία εκτιμώμενης πληρωμής</div>
                         <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
                         <div className="flex align-items-center">
-                            <Calendar value={new Date(payment_date)} inline showWeek />
+                            <Calendar value={formatDate(payment_date)} inline showWeek />
+                            
+                        </div>
+                        <div className="flex align-items-center">
+                            <Calendar value={formatDate(actual_payment_date)} inline showWeek />
+                            
                         </div>
                     </div>
+                    
                 </div>
+                
             </div>
         </div>
     </ul>
+    {/* <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+        <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δανείου</div>
+        <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+            <Chip label={status} className="mr-2" />
+        </div>
+    </li> */}
     <Divider />
     <div className="grid">
         <div className="col-12 md:col-6 lg:col-3">
@@ -102,12 +139,7 @@ const FormProfileDaneia = () => {
             </div>
         </div>
     </div>
-    <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-        <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δόσης</div>
-        <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-            <Chip label={status} className="mr-2" />
-        </div>
-    </li>
+    
     
 </div>
    )
