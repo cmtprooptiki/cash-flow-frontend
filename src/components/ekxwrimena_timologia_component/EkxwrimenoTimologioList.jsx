@@ -382,7 +382,7 @@ const EkxwrimenoTimologioList = () =>
         {user && user.role ==="admin" && (
         <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
         )}
-        <DataTable value={EkxwrimenoTimologio} paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
+        <DataTable value={EkxwrimenoTimologio} stripedRows paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[
                     'id',
                     'ErgaName',
@@ -418,7 +418,7 @@ const EkxwrimenoTimologioList = () =>
                 <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="comments" header="Σχόλια"  filter filterPlaceholder="Search by comment"  style={{ minWidth: '12rem' }}></Column>
 
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
 
            </DataTable>
     </div>

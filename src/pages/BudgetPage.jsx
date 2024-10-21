@@ -8,14 +8,72 @@ import Layout from './Layout';
 import PaidBudgetList from './PaidBudgetList';
 // import apiBaseUrl from '../../apiConfig'; // Assuming you have an apiBaseUrl defined for your backend
 import apiBaseUrl from '../apiConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getMe } from '../features/authSlice';
+
 import {ReactComponent as BudgetIcon } from '../icons/budget.svg';
+
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import {  momentLocalizer} from 'react-big-calendar';
+import { Calendar  }  from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Dialog } from 'primereact/dialog';
+import apiBaseFrontUrl from '../apiFrontConfig';
+import { Divider } from 'primereact/divider';
+import {ReactComponent as IncomeIcon } from '../icons/income_icon.svg';
+import {ReactComponent as CostIcon } from '../icons/cost_icon.svg';
+import 'moment/locale/el'; // Import Greek locale
+
+moment.locale('el');
+
+
+const localizer = momentLocalizer(moment);
+
+const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const BudgetPage = () => {
     // State for selected table, budget value, and date
-    const [selectedTable, setSelectedTable] = useState('table1');
+    //const [selectedTable, setSelectedTable] = useState('table1');
     const [budget, setBudget] = useState(null); // Set initial state to null to indicate loading
     const [date, setDate] = useState(null); // State to store the budget date
     const [msg, setMsg] = useState("");
+
+    const [paradotea, setIncomeParadotea] = useState([]);
+    const [ekxorimena, setEkxorimena] = useState([]);
+    const [incomeTim, setIncomeTim] = useState([]);
+    const [daneia,setDaneia]=useState([]);
+    const [doseis,setDoseis]=useState([]);
+    //const [filters, setFilters] = useState(null);
+    //const [loading, setLoading] = useState(false);
+    //const [globalFilterValue, setGlobalFilterValue] = useState('');
+    //const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia','doseis','Daneia']);
+    // const [totalIncome, setTotalIncome] = useState(0);
+    // const [filtercalled,setfiltercalled]=useState(false);
+    const [combinedData,setCombinedData]=useState([]);
+    //const [paradoteoId,setparadoteoId]=useState([]);
+    const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
+
+    const [calendarDate, setCalendarDate] = useState(new Date());
+    const[selectedIdType,setSelectedIdType]=useState([])
+
+    const [visible, setVisible] = useState(false); // State to control the visibility of the popup
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isError} = useSelector((state=>state.auth));
+  
+    useEffect(()=>{
+        dispatch(getMe());
+    },[dispatch]);
+    
+    useEffect(()=>{
+        if(isError){
+            navigate("/");
+        }
+    },[isError,navigate]);
+
+   
 
     // Fetch the budget and date from the database when the component mounts
     useEffect(() => {
@@ -43,6 +101,97 @@ const BudgetPage = () => {
         fetchBudget(); // Fetch the budget on component mount
     }, []);
 
+    const getDoseis = async () =>{
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
+        setDoseis(response.data)
+    }
+
+    const getEkxorimena = async () => {
+        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
+        setEkxorimena(response.data);
+    };
+
+    const getIncomePar = async () => {
+        const response = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
+        setIncomeParadotea(response.data);
+    };
+
+    const getIncomeTim = async () => {
+        const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
+        const data = response.data;
+
+        // Filter to ensure unique timologia.id values
+        const uniqueTimologia = [];
+        const seenTimologiaIds = new Set();
+
+        data.forEach(item => {
+            if (!seenTimologiaIds.has(item.timologia.id)) {
+                seenTimologiaIds.add(item.timologia.id);
+                uniqueTimologia.push(item);
+            }
+        });
+        setIncomeTim(uniqueTimologia);
+    };
+    const getDaneia = async () =>{
+        const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
+        setDaneia(response.data);
+    }
+
+    const fetchData = async () => {
+        await getDoseis();
+        await getEkxorimena();
+        await getIncomePar();
+        await getIncomeTim();
+        await getDaneia();
+    };
+    
+    useEffect(() => {
+        fetchData();
+        //setLoading(false);
+       
+    }, []);
+
+
+    const scenario="table1"
+    useEffect(()=>{
+        let combinedData2 = [];
+        console.log("scenario ",scenario)
+        // if(scenario==="table1"){
+            combinedData2 = [
+                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: parseFloat(item.bank_ammount), type: 'Bank', id: item.id })),
+                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: parseFloat(item.customer_ammount), type: 'Customer', id: item.id})),
+                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: parseFloat(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id })),
+                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: parseFloat(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
+                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: parseFloat(item.ammount), type: 'Daneia', id: item.id })),
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.id }))
+            ];
+            setCombinedData(combinedData2)
+        // }else if(scenario==="table2"){
+        //     combinedData2 = [
+        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
+        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id})),
+        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
+        //     ];
+        //     setCombinedData(combinedData2)
+        // }else if(scenario==="table3"){
+        //     combinedData2 = [
+        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
+        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
+        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
+        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
+        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
+        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
+        //     ];
+        //     setCombinedData(combinedData2)
+        // }
+        
+        
+
+    },[paradotea,ekxorimena,incomeTim,daneia,doseis])
+
     // Convert the fetched budget to a float for calculations
     const parsedBudget = parseFloat(budget);
     const validBudget = isNaN(parsedBudget) ? 0 : parsedBudget;
@@ -66,6 +215,148 @@ const BudgetPage = () => {
     const formatCurrency = (value) => {
         // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
+
+    
+
+    
+    const getParadoteoId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`, {timeout: 5000})
+        setSelectedRowData(response.data)
+    }
+    const getTimologioId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/timologia/${id}`, {timeout: 5000})
+        setSelectedRowData(response.data)
+    }
+    const getDaneioId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000})
+        setSelectedRowData(response.data)
+    }
+    const getDosiId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000})
+        setSelectedRowData(response.data)
+    }
+    const getEkxId = async(id)=>{
+        console.log("id scenario id ",id)
+        const response = await axios.get(`${apiBaseUrl}/ek_tim/${id}`, {timeout: 5000})
+        setSelectedRowData(response.data)
+    }
+
+    
+
+
+
+    
+    
+    
+
+    const handleRowData = (rowData) => {
+        setSelectedRowData(rowData);
+        setSelectedIdType(rowData.type)
+        if(rowData.type ==="Paradotea"){
+            getParadoteoId(rowData.id)
+        }else if(rowData.type ==="Timologia"){
+            getTimologioId(rowData.id)
+        }else if(rowData.type ==="Daneia"){
+            getDaneioId(rowData.id)
+        }else if(rowData.type ==="doseis"){
+            getDosiId(rowData.id)
+        }else if(rowData.type ==="Bank" || rowData.type==="Customer"){
+            getEkxId(rowData.id)
+        }
+        
+        setVisible(true);
+    };
+
+    const handleEventClick = (event, item) => {
+        // setEventClickedFirst(true);
+        // console.log("event here ",event)
+        handleRowData(item)
+        console.log("type tests: event.item here ",item)
+        
+        // setBoxData(item);
+        // setSecondBoxData(event);
+      };
+
+    const MyEvents=combinedData.map((item) => ({
+        id: item.id,//   id: item.ekxorimena_timologia_id, ?δεν ξερω γιατι ηταν ετσι αλλα και ετσι δουλευε
+        test:item.type,
+        title: (
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"bolder"}}>
+        
+            {Number(item.income).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+          </div>
+        ),
+        start: item.date,
+        end: item.date,
+        item: item,
+      }));
+      //Style Colors for Calendar Esoda with Color green E3oda with Color Red
+      const eventStyleGetter =(event, start, end, isSelected)=> {
+        console.log("isnide styler",event);
+        let backgroundColor = "black";
+        let color = "white"
+        if (event.test==="Timologia"){
+            backgroundColor = "ForestGreen";
+            color="white";
+        }
+        else if(event.test==="Bank"){
+            backgroundColor = "ForestGreen";
+            color="white";
+        }
+        else if(event.test==="Customer"){
+                backgroundColor = "ForestGreen";
+                color="white";
+          }
+        else if(event.test==="doseis"){
+            backgroundColor = "red";
+            color="white";
+        }
+        else if(event.test==="Paradotea"){
+            backgroundColor = "ForestGreen";
+            color="white";
+        }else if(event.test==="Daneia"){
+            backgroundColor = "ForestGreen";
+            color="white";
+        }
+        
+        var style = {
+            backgroundColor: backgroundColor,
+            borderRadius: '0px',
+            opacity: 0.8,
+            color: color,
+            border: '0px',
+            display: 'block'
+        };
+        return {
+            style: style
+        };
+    }
+
+    const defaultMessages = {
+        date: 'Ημερομηνία',
+        time: 'Ώρα',
+        event: 'Ποσό',
+        allDay: 'All Day',
+        week: 'Εβδομάδα',
+        work_week: 'Εργάσιμη Εβοδμάδα',
+        day: 'Μέρα',
+        month: 'Μήνας',
+        previous: 'Προηγόυμενο',
+        next: 'Επόμενο',
+        yesterday: 'Χθές',
+        tomorrow: 'Αύριο',
+        today: 'Σήμερα',
+        agenda: 'Ατζέντα',
+        noEventsInRange: 'There are no events in this range.',
+        showMore: function showMore(total) {
+            return "+" + total + " more";
+        }
     };
 
 
@@ -94,7 +385,7 @@ const BudgetPage = () => {
           
       </div>
   </div>
-                <div className="button-group">
+                {/* <div className="button-group">
                     <button
                         className="Filters"
                         style={{ margin: "10px" }}
@@ -116,7 +407,7 @@ const BudgetPage = () => {
                     >
                         ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-case Scenario
                     </button>
-                </div>
+                </div> */}
 
                 {/* Render the appropriate table based on the selected scenario */}
                 {/* {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
@@ -124,7 +415,150 @@ const BudgetPage = () => {
                 {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />} */}
             </div>
             <br></br>
-            <PaidBudgetList budget={validBudget} scenario={selectedTable} />
+            
+            <DragAndDropCalendar
+                localizer={localizer}
+                date={calendarDate}
+                onNavigate={(date) => setCalendarDate(date)}
+                
+                events={MyEvents}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: "max" }}
+                // onEventDrop={handleEventDrop}
+                onSelectEvent={(event) => handleEventClick(event, event.item)}
+                popup
+                resizable
+                messages={defaultMessages}
+
+                draggableAccessor={() => true}
+                eventPropGetter={eventStyleGetter}
+                
+              />
+            
+            <Dialog header="Πληροφορίες" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                {selectedRowData && selectedIdType==="Paradotea" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
+                        <h3>Παραδοτέο</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
+                        <Divider/>
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Τίτλος παραδοτέου:</strong> {selectedRowData.title}</p>
+                        <p><strong>Παραδοτέο (Αριθμός): </strong>{selectedRowData.part_number}</p>
+                        <p><strong>Ημερομηνία υποβολής: </strong>{formatDate(selectedRowData.delivery_date)}</p>
+                        <p><strong>Ποσοστό σύμβασης: </strong>{selectedRowData.percentage} %</p>
+                        <p><strong>Ποσό  (καθαρή αξία): </strong>{formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Ποσό ΦΠΑ: </strong>{formatCurrency(selectedRowData.ammount_vat)}</p>
+                        <p><strong>Σύνολο: </strong>{formatCurrency(selectedRowData.ammount_total)}</p>
+                        <p><strong>Ημερομηνία πληρωμής (εκτίμηση): </strong>{formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Ημερομηνία πληρωμής  (εκτίμηση 2): </strong>{formatDate(selectedRowData.estimate_payment_date_2)}</p>
+                        <p><strong>Ημερομηνία πληρωμής  (εκτίμηση 3): </strong>{formatDate(selectedRowData.estimate_payment_date_3)}</p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/paradotea/edit/${selectedRowData.id}`}>Επεξεργασία παραδοτέου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/paradotea/profile/${selectedRowData.id}`}>Πληροφορίες παραδοτέου</a></strong></p>
+                    </div>
+                )}
+                {selectedRowData && selectedIdType==="Timologia" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
+                        {/* <div className="inline-flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}> */}
+                            {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                            <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        {/* </div> */}
+                        </span>
+                        <Divider/>
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Αρ. τιμολογίου:</strong> {selectedRowData.invoice_number}</p>
+                        <p><strong>Ημερομηνία έκδοσης τιμολογίου:</strong> {formatDate(selectedRowData.invoice_date)}</p>
+                        <p><strong>Ποσό τιμολογίου  (καθαρή αξία):</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
+                        <p><strong>Ποσό ΦΠΑ:</strong>{formatCurrency(selectedRowData.ammount_tax_incl)}</p>
+                        <p><strong>Πληρωτέο:</strong>{formatCurrency(selectedRowData.ammount_of_income_tax_incl)}</p>
+                        <p><strong>Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/timologia/edit/${selectedRowData.id}`}>Επεξεργασία τιμολογίου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/timologia/profile/${selectedRowData.id}`}>Πληροφορίες τιμολογίου</a></strong></p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && selectedIdType==="doseis" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>
+                            <h3>Δόση</h3>
+
+                            <CostIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
+                        <Divider/>
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
+                        <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
+                        <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
+                        <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
+                        <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && selectedIdType==="Daneia" && (
+                    
+                    <div>
+                        {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}} >
+
+                        <h3>Δάνειο</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
+                        <Divider/>
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>Περιγραφή:</strong> {selectedRowData.name}</p>
+                        <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής δανείου(εκτίμηση):</strong> {formatDate(selectedRowData.payment_date)}</p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/daneia/edit/${selectedRowData.id}`}>Επεξεργασία δανείου</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/daneia/profile/${selectedRowData.id}`}>Πληροφορίες δανείου</a></strong></p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+                {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
+                    
+                    <div>
+                        {console.log("Kantoooo", selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>  
+
+                        <h3>Εκχώρηση</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
+                        <Divider/>
+                        <p><strong>ID:</strong> {selectedRowData.id}</p>
+                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
+                        <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
+                        <p><strong>Εκχώρηση (€): </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
+                        <p><strong>Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>
+                        <p><strong>Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία εκχώρησης</a></strong></p>
+                        <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες εκχώρησης</a></strong></p>
+                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
+                        {/* Render other fields as needed */}
+                    </div>
+                )}
+            </Dialog>
+
+                
+            <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData}/>
         </Layout>
     );
 };

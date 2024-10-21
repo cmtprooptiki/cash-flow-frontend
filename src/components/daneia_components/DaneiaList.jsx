@@ -245,7 +245,7 @@ const DaneiaList = () => {
         
                 
                        
-                        <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
         
          </DataTable>
                

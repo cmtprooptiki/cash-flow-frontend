@@ -299,7 +299,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 
-<DataTable value={ypoxreoseis} paginator 
+<DataTable value={ypoxreoseis} paginator stripedRows
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -330,7 +330,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
 
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
 
  </DataTable>
        

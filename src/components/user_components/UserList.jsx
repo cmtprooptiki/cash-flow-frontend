@@ -153,7 +153,7 @@ const UserList = () => {
     <Link to={"/users/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Χρήστη" icon="pi pi-plus-circle"/></Link>
     )}
 
-<DataTable value={users} paginator 
+<DataTable value={users} paginator stripedRows
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
         filters={filters} 
         globalFilterFields={[ 'name', 
@@ -168,7 +168,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             <Column header="Ρόλος" filterField="role" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={rolesBodyTemplate} filter filterElement={rolesFilterTemplate} />
            
-            <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+            <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
 
 </DataTable>
 

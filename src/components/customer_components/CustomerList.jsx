@@ -255,12 +255,12 @@ const customerItemTemplate = (option) => {
                 <Column field="address"  header="Διεύθυνση"  filter filterPlaceholder="Search by address" style={{ minWidth: '12rem' }}></Column>
                 <Column field="postal_code" header="Ταχυδρομικός κωδικός"  filter filterPlaceholder="Search by postal_code"  style={{ minWidth: '12rem' }}></Column>
                 <Column field="website" header="Ιστοσελίδα"  filter filterPlaceholder="Search by website" body={websiteBodyTemplate} style={{ minWidth: '12rem' }}></Column>
-                <Column field="social-media" header="Social"  body={socialBodyTemplate} style={{ minWidth: '12rem' }}></Column>
+                <Column field="social-media" header="Social"  body={socialBodyTemplate} style={{ minWidth: '12rem' }} ></Column>
                 
                 
 
 
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen />
 
  </DataTable>
 

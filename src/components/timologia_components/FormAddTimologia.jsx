@@ -40,6 +40,9 @@ const FormAddTimologia = () => {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
+
+    const[parEightPercent,setparEightPercent]=useState(0.0)
+    const[parEfor,setParEfor]=useState(0.0)
     // const toast = useRef(""); // Reference for the toast
 
 
@@ -106,7 +109,7 @@ const FormAddTimologia = () => {
             totalAmmountVat += Number(item.ammount_vat);
             totalAmmountTotal += Number(item.ammount_total);
         });
-
+        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor;
 
         return {
             totalAmmount,
@@ -127,6 +130,8 @@ const FormAddTimologia = () => {
             ammount_tax_incl:totalAmmountVat,
             actual_payment_date: actual_payment_date,
             ammount_of_income_tax_incl: totalAmmountTotal,
+            ammount_parakratisi_eight:	parEightPercent,
+            ammount_parakratisi_eforia: parEfor,
             comments: comments,
             invoice_number: invoice_number,
             status_paid:status_paid
@@ -214,6 +219,21 @@ const FormAddTimologia = () => {
                     <label className="label">Σύνολο Φ.Π.Α.</label>
                     <div className="control">
                     <InputNumber className="input" value={totalAmmountVat} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Παρακράτηση 8%</label>
+                    <div className="control">
+                    <InputNumber className="input" value={parEightPercent} mode="decimal" minFractionDigits={2}  onChange={(e)=> setparEightPercent(e.value)} placeholder='Παρακράτηση 8%'  />
+                    </div>
+                </div>
+
+
+                <div className="field">
+                    <label className="label">Παρακράτηση Εφορία</label>
+                    <div className="control">
+                    <InputNumber className="input" value={parEfor} mode="decimal" minFractionDigits={2}  onChange={(e)=> setParEfor(e.value)} placeholder='Παρακράτηση Εφορία'  />
                     </div>
                 </div>
 

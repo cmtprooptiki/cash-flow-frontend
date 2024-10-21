@@ -75,8 +75,9 @@ const FormAddParadotea = () => {
 
     const getErga = async() =>{
         const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
-        console.log(response.data)
-        setErga(response.data);
+        const filtered_response=response.data.filter(item=>item.status != "Ολοκληρωμένο")
+        console.log(filtered_response)
+        setErga(filtered_response);
     }
     // const handleErgaChange = async (e) => {
     //     // const selectedId = e.value;

@@ -376,7 +376,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     {user && user.role ==="admin" && (
     <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
     )}
-    <DataTable value={erga} paginator showGridlines rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
+    <DataTable value={erga} paginator stripedRows showGridlines rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'
                 ,'sign_date', 'status', 'estimate_start_date'

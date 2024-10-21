@@ -302,7 +302,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
 
 {/* scrollable scrollHeight="600px" */}
-<DataTable value={doseis} paginator 
+<DataTable value={doseis} paginator stripedRows
 showGridlines rows={20}  loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -331,7 +331,7 @@ showGridlines rows={20}  loading={loading} dataKey="id"
 
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
 
  </DataTable>
        
