@@ -136,8 +136,8 @@ const TagList = ()=>
 
 
 
-<DataTable value={tags} paginator 
-showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+<DataTable value={tags} paginator stripedRows
+ rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
                 'id',
@@ -146,8 +146,8 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             header={header} 
             emptyMessage="No doseis found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column field="name" header="name"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
-                <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                <Column field="name" header="Όνομα Ετικέτας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
+                <Column header="Ένέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
         </DataTable>
         </div>
     )

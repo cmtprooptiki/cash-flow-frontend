@@ -201,7 +201,7 @@ const FormEditParadotea = () => {
                     optionLabel="name" 
                     placeholder="Επιλέξτε Εργο"
                 /> */}
-                  <select className="input" onChange={(e) => handleErgaChange(e)} value={erga_id}>
+                  <select className="input" onChange={(e) => handleErgaChange(e)} value={erga_id}  disabled={true} >
                                     <option value="" disabled>Επιλέξτε Εργο</option>
                                         {erga.map((ergo, index) => (
                                             <option key={index} value={ergo.id}>{ergo.name}</option>

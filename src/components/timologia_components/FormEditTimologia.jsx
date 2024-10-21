@@ -20,6 +20,7 @@ const FormEditTimologia = () => {
     const [ammount_tax_incl, setAmmount_Tax_Incl] = useState("");
     const [actual_payment_date, setActual_Payment_Date] = useState(null);
     const [ammount_of_income_tax_incl, setAmmount_Of_Income_Tax_Incl] = useState("");
+
     const [comments, setComments] = useState("");
     const [invoice_number, setInvoice_Number] = useState("");
     const [status_paid, setStatus_Paid] = useState("");
@@ -35,6 +36,10 @@ const FormEditTimologia = () => {
     const [uniqueErga2, setUniqueErga2] = useState([]); // State to store unique `erga` data
 
     const[calcdata,setcalcdata]=useState([])
+
+    //Parakratiseis
+    const[parEightPercent,setparEightPercent]=useState([])
+    const[parEfor,setParEfor]=useState([])
 
     const[fullParadotea,setFullParadotea]=useState([])
 
@@ -126,6 +131,11 @@ const FormEditTimologia = () => {
             totalAmmountTotal += Number(item.ammount_total);
         });
 
+        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor;
+
+        
+
+
         return {
             totalAmmount,
             totalAmmountVat,
@@ -133,7 +143,13 @@ const FormEditTimologia = () => {
         };
     };
 
+
+
     const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts();
+    
+    // useEffect(()=>{
+    //     setAmmount_Of_Income_Tax_Incl(totalAmmountTotal)
+    // },[totalAmmountTotal])
 
     const [msg, setMsg] = useState("");
 
@@ -162,6 +178,8 @@ const FormEditTimologia = () => {
                 setAmmount_Tax_Incl(timologioData.ammount_tax_incl);
                 setActual_Payment_Date(timologioData.actual_payment_date);
                 setAmmount_Of_Income_Tax_Incl(timologioData.ammount_of_income_tax_incl);
+                setparEightPercent(timologioData.ammount_parakratisi_eight);
+                setParEfor(timologioData.ammount_parakratisi_eforia);
                 setComments(timologioData.comments);
                 setInvoice_Number(timologioData.invoice_number);
                 setStatus_Paid(timologioData.status_paid);
@@ -189,6 +207,8 @@ const FormEditTimologia = () => {
                 ammount_tax_incl: totalAmmountVat,
                 actual_payment_date: actual_payment_date,
                 ammount_of_income_tax_incl: totalAmmountTotal,
+                ammount_parakratisi_eight:	parEightPercent,
+                ammount_parakratisi_eforia: parEfor,
                 comments: comments,
                 invoice_number: invoice_number,
                 status_paid: status_paid
@@ -357,8 +377,26 @@ const FormEditTimologia = () => {
                                 </div>
                             </div>
 
+
                             <div className="field">
-                                <label className="label">Πληρωτέο</label>
+                                <label className="label">Παρακράτηση 8%</label>
+                                <div className="control">
+                                <InputNumber className="input" value={parEightPercent} mode="decimal" minFractionDigits={2}  onChange={(e)=> setparEightPercent(e.value)} placeholder='Παρακράτηση 8%'  />
+                                </div>
+                            </div>
+
+
+                            <div className="field">
+                                <label className="label">Παρακράτηση Εφορία</label>
+                                <div className="control">
+                                <InputNumber className="input" value={parEfor} mode="decimal" minFractionDigits={2}  onChange={(e)=> setParEfor(e.value)} placeholder='Παρακράτηση Εφορία'  />
+                                </div>
+                            </div>
+
+
+
+                            <div className="field">
+                                <label className="label">Πληρωτέο: (πραγματικη τιμη:<strong> {ammount_of_income_tax_incl} </strong> €)</label>
                                 <div className="control">
                                 <InputNumber className="input" value={totalAmmountTotal} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount_Of_Income_Tax_Incl(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' readOnly disabled/>
                                 </div>

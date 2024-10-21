@@ -102,15 +102,15 @@ const ErgaCatList = () => {
 
 
         <div className="card" >
-                <h1 className='title'>Ευρωπαϊκά Προγράμματα</h1>
+                <h1 className='title'>Κατηγορίες Έργων</h1>
                 {user && user.role ==="admin" && (
                 <Link to={"/ergacat/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Κατηγορίας" icon="pi pi-plus-circle"/></Link>
                 )}
         
         
         
-        <DataTable value={ergaCat} paginator 
-        showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+        <DataTable value={ergaCat} paginator stripedRows 
+         rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
                     filters={filters} 
                     globalFilterFields={[
                         'id',
@@ -119,8 +119,8 @@ const ErgaCatList = () => {
                     header={header} 
                     emptyMessage="No categories found.">
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                        <Column field="name" header="name"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
-                        <Column header="actions" field="id" body={actionsBodyTemplate}/>
+                        <Column field="name" header="'Ονομα Κατηγορίας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
+                        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen/>
                 </DataTable>
                 </div>
             )

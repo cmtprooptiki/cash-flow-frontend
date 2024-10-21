@@ -406,8 +406,8 @@ const timologiaItemTemplate = (option) => {
 
 
 
-<DataTable value={paradotea} paginator 
-showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+<DataTable value={paradotea} paginator stripedRows
+ rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={['id', 'part_number', 
                 'title','delivery_date', 'percentage',
@@ -422,11 +422,11 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
                 <Column header="Έργα" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} frozen />  
                 <Column header="Ακρόνυμο έργου" filterField="erga.shortname" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={shortnameBodyTemplate} filter filterElement={shortnameFilterTemplate} />  
+                    body={shortnameBodyTemplate} filter filterElement={shortnameFilterTemplate} frozen />  
 
                 <Column field="part_number"  header="Παραδοτέο (Αριθμός)"  filter filterPlaceholder="Search by part number" style={{ minWidth: '12rem' }}></Column>
                 <Column field="title" header="Τίτλος παραδοτέου"  filter filterPlaceholder="Search by title"  style={{ minWidth: '12rem' }}></Column>
@@ -455,7 +455,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
 
              <Column header="Τιμολόγια" filterField="timologia.invoice_number" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={timologiaBodyTemplate} filter filterElement={timologiaFilterTemplate} />
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}/>
 
  </DataTable>
        
