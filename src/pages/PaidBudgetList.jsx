@@ -23,6 +23,8 @@ import { Calendar } from 'primereact/calendar';
 // import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Divider } from 'primereact/divider';
+import {ReactComponent as IncomeIcon } from '../icons/income_icon.svg';
+import {ReactComponent as CostIcon } from '../icons/cost_icon.svg';
 
 
 // const localizer = momentLocalizer(moment);
@@ -393,7 +395,10 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
                         <h3>Παραδοτέο</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
@@ -415,7 +420,12 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log(selectedRowData)}
-                        <h3>Τιμολόγιο</h3>
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
+                        {/* <div className="inline-flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}> */}
+                            {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
+                            <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        {/* </div> */}
+                        </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
@@ -435,7 +445,11 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log(selectedRowData)}
-                        <h3>Δόσεις</h3>
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>
+                            <h3>Δόση</h3>
+
+                            <CostIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
@@ -455,7 +469,11 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log(selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}} >
+
                         <h3>Δάνειο</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
@@ -472,7 +490,11 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log("Kantoooo", selectedRowData)}
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>  
+
                         <h3>Εκχώρηση</h3>
+                        <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
+                        </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
@@ -485,7 +507,6 @@ const idBodyTemplate = (rowData) => {
                         <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες εκχώρησης</a></strong></p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
-                        
                     </div>
                 )}
             </Dialog>

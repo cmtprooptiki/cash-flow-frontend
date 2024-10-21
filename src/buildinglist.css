@@ -29,6 +29,7 @@
 
 .table tbody tr:hover {
     background-color: #d0eed2;
+    
 }
 
 .button-container {
@@ -52,11 +53,14 @@
     /* font-weight: 900; */
 }
 .rbc-calendar {
-    height: auto;
+    height: 600px !important;
     padding: 17px !important;
     border-radius: 9px !important;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
 }
+
+
+
 .rbc-toolbar{
     
         background: linear-gradient(to right, var(--bluegray-500), var(--bluegray-800)) !important;
@@ -94,6 +98,8 @@
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     background-color: #b9b5b5;
     border-color: #adadad;
+    color: rgb(25, 81, 114) !important;
+    font-weight: 600;
 }
 
 .rbc-toolbar button:hover {
