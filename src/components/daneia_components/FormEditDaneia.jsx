@@ -24,7 +24,7 @@ const FormEditDaneia= () => {
 
     const formatDateToInput = (dateString) => {
         if(dateString === null || dateString =="" || dateString === NaN){
-            return ""
+            return null
         }
         dateString=dateString.split('T')[0];
         const [year, month, day] = dateString.split('-');
@@ -60,11 +60,12 @@ const FormEditDaneia= () => {
 
     const updateDaneio = async(e) =>{
         e.preventDefault();
+        const updateStatus = actual_payment_date ? "yes": "no";
         try{
             await axios.patch(`${apiBaseUrl}/daneia/${id}`, {
                 name:name,
                 ammount:ammount,
-                status:status,
+                status:updateStatus,
                 payment_date:payment_date,
                 actual_payment_date:actual_payment_date
             });
@@ -127,14 +128,14 @@ const FormEditDaneia= () => {
                         </div>
                 </div>
 
-                    <div className="field">
+                    {/* <div className="field">
                     <label htmlFor="status">Kατάσταση Δανείου</label>
                     <div className="control">
 
                     <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
                                         placeholder="Επιλέξτε Κατάσταση" className="w-full md:w-14rem" required/>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="field">
                             <div className="control">

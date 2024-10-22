@@ -22,8 +22,8 @@ const FormAddDoseis = () => {
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
     const[doseis,setdoseis]=useState([])
 
-    const [totalOwedAmmount, setTotal_Owed_Ammount] = useState("");
-    const [ammountVat, setAmmount_Vat] = useState("");
+    const [totalOwedAmmount, setTotal_Owed_Ammount] = useState(0.0);
+    const [ammountVat, setAmmount_Vat] = useState(0.0);
     
 
     const [ypoxreoseis,setYpoxreoseis]=useState([]);
@@ -183,7 +183,7 @@ const FormAddDoseis = () => {
                   <div className="control">
 
                   {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
-                  <InputNumber id="ammount"  keyfilter="pnum"  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
+                  <InputNumber id="ammount"  keyfilter="pnum" mode="decimal" minFractionDigits={2} value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
 
 
                   </div>

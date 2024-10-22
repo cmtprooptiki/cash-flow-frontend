@@ -26,7 +26,7 @@ const FormAddParadotea = () => {
     const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState(null);
     const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState(null);
 
-    const[comments,setComments]=useState("");
+    const[comments,setComments]=useState(null);
 
     const [percentage_vat, setPercentage_Vat] = useState(0.24); // Default percentage_vat
 

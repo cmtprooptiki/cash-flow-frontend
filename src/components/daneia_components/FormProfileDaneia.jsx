@@ -81,22 +81,18 @@ const formatDate = (value) => {
 
   return(
     <div>
+    <div className="surface-0">
     <div className="font-medium text-3xl text-900 mb-3">ΔΑΝΕΙΟ</div>
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
-        <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
-
-        <div className="grid">
-            <div className="col-12 lg:col-4">
-                <div className="p-3 h-full">
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
                     <div className="text-500 w-6 md:w-2 font-medium">Όνομα Δανείου</div>
-                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                        <Chip label={name} className="mr-2" />
-                    </div>
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
                     <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δανείου</div>
-                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                        <Chip label={status} className="mr-2" />
-                    </div>
+                    <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{status}</div>
+        </li>
                     <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
                         <div className="text-900 font-medium text-xl mb-2">Ημερομηνία εκτιμώμενης πληρωμής</div>
                         <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
@@ -104,16 +100,16 @@ const formatDate = (value) => {
                             <Calendar value={formatDate(payment_date)} inline showWeek />
                             
                         </div>
+                        <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
+                        <div className="text-900 font-medium text-xl mb-2">Ημερομηνία πραγματικής πληρωμής</div>
+                        <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
                         <div className="flex align-items-center">
                             <Calendar value={formatDate(actual_payment_date)} inline showWeek />
                             
                         </div>
                     </div>
-                    
-                </div>
-                
-            </div>
-        </div>
+                    </div>
+
     </ul>
     {/* <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
         <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δανείου</div>
@@ -121,6 +117,7 @@ const formatDate = (value) => {
             <Chip label={status} className="mr-2" />
         </div>
     </li> */}
+    </div>
     <Divider />
     <div className="grid">
         <div className="col-12 md:col-6 lg:col-3">

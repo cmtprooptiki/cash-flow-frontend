@@ -26,7 +26,7 @@ const FormAddTimologia = () => {
     const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
     const[actual_payment_date,setActual_Payment_Date]=useState(null);
     const[ammount_of_income_tax_incl,setAmmount_Of_Income_Tax_Incl]=useState("");
-    const[comments,setComments]=useState("");
+    const[comments,setComments]=useState(null);
     const[invoice_number,setInvoice_Number]=useState("");
     const[status_paid,setStatus_Paid]=useState("no");
 

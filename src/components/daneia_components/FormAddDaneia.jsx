@@ -14,9 +14,9 @@ import { Divider } from 'primereact/divider';
 
 const FormAddDaneia = () => {
     const [name, setName] = useState("");
-    const [ammount, setAmmount] = useState("");
-    const [status, setStatus] = useState("");
-    const [payment_date, setPayment_Date] = useState(null)
+    const [ammount, setAmmount] = useState(0);
+    const [status, setStatus] = useState("no");
+    const [payment_date, setPayment_Date] = useState("")
     const [actual_payment_date, setActual_Payment_Date] = useState(null)
 
     const[msg,setMsg]=useState("");
@@ -25,11 +25,12 @@ const FormAddDaneia = () => {
 
     const saveDaneia = async (e) =>{
         e.preventDefault();
+        const updatedStatus = actual_payment_date ? "yes" : "no";
         try{
             await axios.post(`${apiBaseUrl}/daneia`, {
             name:name,
             ammount:ammount,
-            status:status,
+            status:updatedStatus,
             payment_date:payment_date,
             actual_payment_date:actual_payment_date
             });
@@ -45,6 +46,12 @@ const FormAddDaneia = () => {
         e.preventDefault();  // Prevent form submission
         setActual_Payment_Date(null); // Clear the calendar date
     };
+
+    const handleAmmountChange = async(e) =>
+    {
+        console.log(ammount, "Helloo ammount")
+        setAmmount(e.value);
+    }
 
     return(
         <div >
@@ -66,7 +73,7 @@ const FormAddDaneia = () => {
                   <label htmlFor="name2">ΠΟΣΟ ΔΑΝΕΙΟΥ</label>
                   <div className="control">
 
-                  <InputText id="ammount" type="text" value={ammount} onChange={(e)=> setAmmount(e.target.value)} />
+                  <InputNumber  className="input" value={ammount} mode="decimal" minFractionDigits={2} onChange={(e)=> handleAmmountChange(e)} />
                   </div>
               </div>
 
@@ -88,13 +95,13 @@ const FormAddDaneia = () => {
                         </div>
                 </div>
 
-                <div className="field">
+                {/* <div className="field">
                     <label className="label">Status</label>
                     <div className="control">
                     <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
 
                     </div>
-                </div>
+                </div> */}
 
           </div>
           <div className="field">
