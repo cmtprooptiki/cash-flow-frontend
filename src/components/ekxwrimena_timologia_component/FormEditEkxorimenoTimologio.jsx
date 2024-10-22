@@ -21,7 +21,7 @@ const FormEditEkxorimenoTimologio = () =>
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
     const[status_bank_paid,setStatusBankPaid]=useState("");
     const[status_customer_paid,setStatusCustomerPaid]=useState("");
-    const [comments, setComments] = useState("");
+    const [comments, setComments] = useState(null);
 
     const [timologia, setTimologia] = useState([])
     const[msg,setMsg]=useState("");

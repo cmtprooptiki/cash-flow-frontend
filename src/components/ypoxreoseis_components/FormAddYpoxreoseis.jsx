@@ -16,8 +16,8 @@ const FormAddYpoxreoseis = () => {
     const [erga_id, setErga_Id] = useState(null);
     const [erga, setErga] = useState([]);
     const [invoice_date, setInvoice_Date] = useState(null);
-    const [total_owed_ammount, setTotal_Owed_Ammount] = useState("");
-    const [ammount_vat, setAmmount_Vat] = useState("");
+    const [total_owed_ammount, setTotal_Owed_Ammount] = useState(0.0);
+    const [ammount_vat, setAmmount_Vat] = useState(0.0);
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [msg, setMsg] = useState("");

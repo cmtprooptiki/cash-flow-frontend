@@ -24,7 +24,7 @@ const FormAddEkxorimenoTimologio = () =>
     const[cust_estimated_date,setEstimated_Cust_Date]=useState(null);
     const[status_bank_paid,setStatusBankPaid]=useState("no");
     const[status_customer_paid,setStatusCustomerPaid]=useState("no");
-    const[comments,setComments]=useState("");
+    const[comments,setComments]=useState(null);
 
     const[msg,setMsg]=useState("");
 
