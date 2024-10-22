@@ -360,6 +360,10 @@ const BudgetPage = () => {
     };
 
 
+
+    
+
+
     return (
         <Layout>
             <div >
@@ -424,12 +428,16 @@ const BudgetPage = () => {
                 events={MyEvents}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: "max" }}
+                style={{ height: "600px"}}
                 // onEventDrop={handleEventDrop}
                 onSelectEvent={(event) => handleEventClick(event, event.item)}
                 popup
                 resizable
                 messages={defaultMessages}
+                
+                
+                
+                
 
                 draggableAccessor={() => true}
                 eventPropGetter={eventStyleGetter}
