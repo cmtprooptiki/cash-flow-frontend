@@ -120,7 +120,7 @@ const ErgaCatList = () => {
                     emptyMessage="No categories found.">
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                         <Column field="name" header="'Ονομα Κατηγορίας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
-                        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen/>
+                        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
                 </DataTable>
                 </div>
             )

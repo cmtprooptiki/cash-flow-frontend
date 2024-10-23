@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -18,6 +18,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
 
 
 const TimologiaList = () => {
@@ -26,11 +28,193 @@ const TimologiaList = () => {
 
     const [statuses] = useState(['yes', 'no']);
 
+    const [filteredTimologia, setFilteredTimologia] = useState([]);
+
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     // const [timologia, setTimologio]=useState([]);
     const [erga, setErgo]=useState([]);
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'invoice_date', header: 'Ημερομηνία έκδοσης τιμολογίου' },
+        { field: 'invoice_number', header: 'Αρ. τιμολογίου' },
+        { field: 'ErgaName', header: 'Έργο' },
+        { field: 'ammount_no_tax', header: 'Ποσό τιμολογίου (καθαρή αξία)' },
+        { field: 'ammount_tax_incl', header: 'Ποσό ΦΠΑ' },
+        { field: 'ammount_of_income_tax_incl', header: 'Πληρωτέο' },
+        { field: 'actual_payment_date', header: 'Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)' },
+        { field: 'status_paid', header: 'Κατάσταση Τιμολογίου' },
+        { field: 'comments', header: 'Σχόλια' },
+
+        { field: 'ammount_parakratisi_eight', header: 'Παρακράτηση 8%' },
+        { field: 'ammount_parakratisi_eforia', header: 'Παρακράτηση εφορίας' }
+
+        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
+        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredTimologia.map((product) => {
+            return {
+                ...product,
+                ammount_no_tax: formatCurrency(product.ammount_no_tax),
+                actual_payment_date: formatDate(product.actual_payment_date),
+                ammount_tax_incl: formatCurrency(product.ammount_tax_incl),
+                ammount_of_income_tax_incl: formatCurrency(product.ammount_of_income_tax_incl), // Format the quantity as currency
+                invoice_date:formatDate(product.invoice_date),
+                ammount_parakratisi_eight: formatCurrency(product.ammount_parakratisi_eight),
+                ammount_parakratisi_eforia: formatCurrency(product.ammount_parakratisi_eforia),
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.ErgaName,
+            product.invoice_date,
+            product.invoice_number,
+            product.ammount_no_tax,
+            product.ammount_tax_incl,
+            product.ammount_of_income_tax_incl, // Now this is formatted as currency
+            product.actual_payment_date,
+            product.status_paid, // Now this is formatted as currency
+            product.comments,
+            product.ammount_parakratisi_eight,
+            product.ammount_parakratisi_eforia
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }
+        });
+
+        // Step 6: Save the document
+        doc.save('Timologia.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredTimologia.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        if (col.field === 'ammount_no_tax') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount_tax_incl') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount_of_income_tax_incl') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        if (col.field === 'ammount_parakratisi_eight') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        if (col.field === 'ammount_parakratisi_eforia') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        // if (col.field === 'customer.name')
+                        // {
+                        //     return product.customer ? product.customer.name : '';
+                        // }
+
+                        // if (col.field === 'erga_category.name')
+                        //     {
+                        //         return product.erga_category ? product.erga_category.name : '';
+                        //     }
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Timologia');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
+
 
     
     useEffect(()=>{
@@ -105,6 +289,7 @@ const TimologiaList = () => {
     
             // Assuming you have a state setter like setErga defined somewhere
             setTimologia(sortedParaData);
+            setFilteredTimologia(sortedParaData)
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -237,6 +422,9 @@ const TimologiaList = () => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -244,12 +432,18 @@ const TimologiaList = () => {
 
     const formatDate = (value) => {
         let date = new Date(value);
+        let epochDate = new Date('1970-01-01T00:00:00Z');
+        if (date.getTime() === epochDate.getTime()) 
+        {
+            return null;
+        }
         if (!isNaN(date)) {
             return date.toLocaleDateString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
             });
+            
         } else {
             return "Invalid date";
         }
@@ -358,7 +552,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 
-<DataTable value={Timologia} paginator 
+<DataTable value={Timologia} ref = {dt} onValueChange={(timologia) => setFilteredTimologia(timologia)} paginator 
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -378,7 +572,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             emptyMessage="No timologia found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
                 
                 <Column field="invoice_number"  header="Αρ. τιμολογίου"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }}></Column>
@@ -402,7 +596,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
             <Column field="status_paid" header="Κατάσταση τιμολογίου" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
 
  </DataTable>
        

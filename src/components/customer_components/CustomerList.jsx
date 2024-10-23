@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -19,9 +19,13 @@ import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Tab } from 'react-bootstrap';
 import { BreadCrumb } from 'primereact/breadcrumb';
 
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
 
 const CustomerList = () => {
     const [customer,setCustomer]=useState([]);
+    const [filteredCustomer, setFilteredCustomer] = useState([]);
 
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -33,6 +37,180 @@ const CustomerList = () => {
     const [customernames, setCustomerNames]=useState([]);
 
     const {user} = useSelector((state)=>state.auth)
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'name', header: 'Όνομα Πελάτη' },
+        { field: 'afm', header: 'ΑΦΜ' },
+        { field: 'doy', header: 'Δ.Ο.Υ' },
+        { field: 'epagelma', header: 'Επάγγελμα' },
+        { field: 'phone', header: 'Τηλέφωνο' },
+        { field: 'email', header: 'email' },
+        { field: 'address', header: 'Διεύθυνση' },
+        { field: 'postal_code', header: 'Ταχυδρομικός κώδικας' },
+        { field: 'website', header: 'Ιστοσελίδα' },
+        { field: 'facebookUrl', header: 'Facebook Page'},
+        { field: 'twitterUrl', header: 'twitterPage'},
+        { field: 'instagramUrl', header: 'Instagram Page'},
+        { field: 'linkedInUrl', header: 'LinkedIn Page'}
+
+        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
+        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredCustomer.map((product) => {
+            return {
+                ...product
+                // ammount_total: formatCurrency(product.ammount_total),
+                // sign_date: formatDate(product.sign_date),
+                // ammount: formatCurrency(product.ammount),
+                // ammount_total: formatCurrency(product.ammount_total), // Format the quantity as currency
+                // estimate_start_date:formatDate(product.estimate_start_date)
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.name,
+            product.afm,
+            product.doy,
+            product.epagelma,
+            product.phone,
+            product.email, // Now this is formatted as currency
+            product.address,
+            product.postal_code, // Now this is formatted as currency
+            product.website,
+            product.facebookUrl,
+            product.twitterUrl,
+            product.instagramUrl,
+            product.linkedInUrl
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }});
+
+
+
+
+        // Step 6: Save the document
+        doc.save('Customers.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredCustomer.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // if (col.field === 'ammount_total') {
+                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        // }
+                        // if (col.field === 'ammount') {
+                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        // }
+                        // if (col.field === 'ammount_vat') {
+                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        // }
+
+                        // if (col.field === 'customer.name')
+                        // {
+                        //     return product.customer ? product.customer.name : '';
+                        // }
+
+                        // if (col.field === 'erga_category.name')
+                        //     {
+                        //         return product.erga_category ? product.erga_category.name : '';
+                        //     }
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'customers');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
     
     useEffect(()=>{
         getCustomer()
@@ -64,6 +242,7 @@ const CustomerList = () => {
 
         // Assuming you have a state setter like setErga defined somewhere
         setCustomer(parDataWithDates);
+        setFilteredCustomer(parDataWithDates)
 
     }
     const deleteCustomer = async(customerId)=>{
@@ -182,6 +361,9 @@ const customerItemTemplate = (option) => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -229,7 +411,7 @@ const customerItemTemplate = (option) => {
 
         <ToggleButton checked={logoFrozen} onChange={(e) => setLogoFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Λογότυπο Πελάτη" offLabel="Λογότυπο Πελάτη" className = 'small-toggle' />
         <br />
-<DataTable value={customer} paginator  stripedRows 
+<DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={['id', 'name', 
@@ -260,7 +442,7 @@ const customerItemTemplate = (option) => {
                 
 
 
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen />
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}  />
 
  </DataTable>
 
