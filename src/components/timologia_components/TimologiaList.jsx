@@ -40,9 +40,10 @@ const TimologiaList = () => {
     const robotoBase64 = robotoData.robotoBase64;
 
     const cols = [
+        { field: 'ErgaName', header: 'Έργο' },
         { field: 'invoice_date', header: 'Ημερομηνία έκδοσης τιμολογίου' },
         { field: 'invoice_number', header: 'Αρ. τιμολογίου' },
-        { field: 'ErgaName', header: 'Έργο' },
+        
         { field: 'ammount_no_tax', header: 'Ποσό τιμολογίου (καθαρή αξία)' },
         { field: 'ammount_tax_incl', header: 'Ποσό ΦΠΑ' },
         { field: 'ammount_of_income_tax_incl', header: 'Πληρωτέο' },

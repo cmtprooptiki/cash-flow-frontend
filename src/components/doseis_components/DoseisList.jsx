@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -19,6 +19,9 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
 const DoseisList = () => {
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
@@ -27,6 +30,148 @@ const DoseisList = () => {
     const [ypoxreoseis, setYpoxreoseis]=useState([]);
     const {user} = useSelector((state) => state.auth)
     const [statuses] = useState(['yes', 'no']);
+
+    const [filteredDoseis, setFilteredDoseis] = useState([]);
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'ypoxreosei.provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'ammount', header: 'Ποσό Δόσης' },
+        { field: 'estimate_payment_date', header: 'Εκτιμώμενη ημερομηνία πληρωμής' },
+        { field: 'actual_payment_date', header: 'Πραγματική ημερομηνία πληρωμής' },
+        { field: 'status', header: 'Κατάσταση Δόσης' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredDoseis.map((product) => {
+            return {
+                ...product,
+                ammount: formatCurrency(product.ammount),
+                actual_payment_date: formatDate(product.actual_payment_date),
+                estimate_payment_date:formatDate(product.estimate_payment_date)
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.ypoxreosei.provider,
+            product.ammount,
+            product.estimate_payment_date,
+            product.actual_payment_date,
+            product.status
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }
+        });
+
+        // Step 6: Save the document
+        doc.save('Doseis.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredDoseis.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        if (col.field === 'ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ypoxreosei.provider') {
+                            return product.ypoxreosei ? product.ypoxreosei.provider : '';  // Apply the currency format to the 'quantity'
+                        }
+                        
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'doseis');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
+
     
 
     useEffect(()=>{
@@ -78,6 +223,7 @@ const DoseisList = () => {
     
             // Assuming you have a state setter like setErga defined somewhere
             setDoseis(doseisDataWithDates);
+            setFilteredDoseis(doseisDataWithDates)
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -167,6 +313,9 @@ const DoseisList = () => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -302,7 +451,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
 
 {/* scrollable scrollHeight="600px" */}
-<DataTable value={doseis} paginator stripedRows
+<DataTable value={doseis} ref = {dt} onValueChange={(doseis) => setFilteredDoseis(doseis)} paginator stripedRows
 showGridlines rows={20}  loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -331,7 +480,7 @@ showGridlines rows={20}  loading={loading} dataKey="id"
 
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
 
  </DataTable>
        
