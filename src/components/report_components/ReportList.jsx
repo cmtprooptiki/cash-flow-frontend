@@ -31,7 +31,7 @@ const ReportList = () => {
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['Σχεδίαση','Ολοκληρωμένο','Αποπληρωμένο','Υπογεγραμμένο','Ακυρωμένο']);
-
+    const [filteredData, setFilteredData] = useState([]);
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
 
@@ -86,12 +86,16 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const exportPdf = () => {
         import('jspdf').then((jsPDF) => {
             import('jspdf-autotable').then(() => {
-                const doc = new jsPDF.default(0, 0);
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
         // Step 4: Set the custom font and font size
         doc.setFont('Roboto-Regular');
         doc.setFontSize(12);
 
-        const formattedReportData = reportData.map((product) => {
+        const formattedReportData = filteredData.map((product) => {
             return {
                 ...product,
                 ammount_total: formatCurrency(product.ammount_total),
@@ -153,7 +157,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             // Create data rows with headers first
             const data = [
                 headers,  // First row with headers
-                ...reportData.map((product) =>
+                ...filteredData.map((product) =>
                     cols.map((col) => {
                      
                         // Check if the field is 'quantity' or any other amount field that needs formatting
@@ -579,6 +583,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
         // Assuming you have a state setter like setErga defined somewhere
         setReportData(ergaDataWithDates);
+        setFilteredData(ergaDataWithDates);
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -600,7 +605,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     {/* {user && user.role ==="admin" && (
     <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
     )} */}
-   <DataTable ref={dt} value={reportData} rowGroupMode="subheader" groupRowsBy="customer_name" sortMode="single" sortField="customer_name"
+   <DataTable ref={dt} value={reportData} onValueChange={(reportData) => setFilteredData(reportData)} rowGroupMode="subheader" groupRowsBy="customer_name" sortMode="single" sortField="customer_name"
                     sortOrder={1} scrollable scrollHeight="600px" loading={loading} 
                     filters={filters}
                     rowGroupHeaderTemplate={headerTemplate} 

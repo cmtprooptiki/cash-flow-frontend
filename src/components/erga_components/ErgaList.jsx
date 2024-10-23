@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -20,6 +20,10 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
+
 
 const ErgaList = () => {
     const [erga,setErga]=useState([]);
@@ -28,7 +32,179 @@ const ErgaList = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['Σχεδίαση','Ολοκληρωμένο','Αποπληρωμένο','Υπογεγραμμένο','Ακυρωμένο']);
     const [project_managers, setProjectManager]=useState([]);
-   
+    const [filteredErga, setFilteredErga] = useState([]);
+
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'name', header: 'Έργο' },
+        { field: 'customer.name', header: 'Όνομα Πελάτη' },
+        { field: 'erga_category.name', header: 'Κατηγορία Έργου' },
+        { field: 'ammount_total', header: 'Σύνολο Έργου' },
+        { field: 'status', header: 'Κατάσταση έργου' },
+        { field: 'sign_date', header: 'Ημερομηνία υπογραφής σύμβασης' },
+        { field: 'project_manager', header: 'Project Manager' },
+        { field: 'shortname', header: 'Συντομογραφία' },
+        { field: 'ammount', header: 'Ποσό (καθαρή αξία)' },
+
+        { field: 'ammount_vat', header: 'Ποσό ΦΠΑ' },
+        { field: 'estimate_start_date', header: 'Ημερομηνία έναρξης (εκτίμηση)' }
+
+        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
+        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredErga.map((product) => {
+            return {
+                ...product,
+                ammount_total: formatCurrency(product.ammount_total),
+                sign_date: formatDate(product.sign_date),
+                ammount: formatCurrency(product.ammount),
+                ammount_total: formatCurrency(product.ammount_total), // Format the quantity as currency
+                estimate_start_date:formatDate(product.estimate_start_date)
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.name,
+            product.customer.name,
+            product.erga_category.name,
+            product.ammount_total,
+            product.status,
+            product.sign_date, // Now this is formatted as currency
+            product.estimate_start_date,
+            product.ammount, // Now this is formatted as currency
+            product.ammount_vat,
+            product.project_manager,
+            product.shortname
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }
+        });
+
+        // Step 6: Save the document
+        doc.save('erga.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredErga.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        if (col.field === 'ammount_total') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount_vat') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        if (col.field === 'customer.name')
+                        {
+                            return product.customer ? product.customer.name : '';
+                        }
+
+                        if (col.field === 'erga_category.name')
+                            {
+                                return product.erga_category ? product.erga_category.name : '';
+                            }
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'erga');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
+
+
 
     const getSeverity = (status) => {
         switch (status) {
@@ -62,6 +238,8 @@ const ErgaList = () => {
         let _filters = { ...filters };
 
         _filters['global'].value = value;
+
+        
 
         setFilters(_filters);
         setGlobalFilterValue(value);
@@ -107,6 +285,10 @@ const ErgaList = () => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+           
             </div>
         );
     };
@@ -289,7 +471,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
 
     useEffect(()=>{
-        getErga()
+        getErga();
         setLoading(false);
         initFilters();
     },[]);
@@ -329,6 +511,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
         // Assuming you have a state setter like setErga defined somewhere
         setErga(sortedErgaData);
+        setFilteredErga(sortedErgaData)
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -376,7 +559,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     {user && user.role ==="admin" && (
     <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
     )}
-    <DataTable value={erga} paginator stripedRows showGridlines rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
+    <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows showGridlines rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'
                 ,'sign_date', 'status', 'estimate_start_date'
@@ -386,28 +569,28 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             emptyMessage="No customers found.">
                                 
 
-        <Column field="name" header="Έργο" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
-        <Column field="logoImage" header="Λογότυπο" body={imageBodyTemplate}></Column>
+        <Column field="name" header="Έργο" alignFrozen="left" frozen filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
+        <Column field="logoImage" header="Λογότυπο" alignFrozen="left" frozen body={imageBodyTemplate}></Column>
 
-        <Column field="shortname" header="Ακρώνυμο έργου" filter filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
-        <Column header="Ημερομηνία υπογραφής σύμβασης" filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filter filterElement={dateFilterTemplate} ></Column>
+        <Column field="shortname" header="Ακρώνυμο έργου" alignFrozen="left" frozen filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
+        <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
 
-        <Column header="Κατάσταση έργου" field="status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+        <Column header="Κατάσταση έργου" field="status" filter={true} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
         {/* <Column header="Συμβατική αξία (καθαρό ποσό)" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} /> */}
  
-        <Column header="Ποσό  (καθαρή αξία)" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="Ποσό ΦΠΑ" filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="Σύνολο" filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate} filter filterElement={ammountFilterTemplate} />
-        <Column header="Ημερομηνία έναρξης (εκτίμηση)" filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filter filterElement={estimateStartDateFilterTemplate} ></Column>
+        <Column header="Ποσό  (καθαρή αξία)" filter={true} filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filterElement={ammountFilterTemplate} />
+        <Column header="Ποσό ΦΠΑ" filter={true} filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filterElement={ammountFilterTemplate} />
+        <Column header="Σύνολο" filter={true} filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate}  filterElement={ammountFilterTemplate} />
+        <Column header="Ημερομηνία έναρξης (εκτίμηση)" filter={true} filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filterElement={estimateStartDateFilterTemplate} ></Column>
         {/* <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
         <Column header="Ημερομηνία πληρωμής (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
         <Column header="Ημερομηνία πληρωμής (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column> */}
         <Column header="Project Manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={projectManagerBodyTemplate} filter filterElement={projectManagerFilterTemplate} />
+                    body={projectManagerBodyTemplate} filter={true} filterElement={projectManagerFilterTemplate} />
         
-        <Column field="customer.name" header="Όνομα Πελάτη" filter filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
-        <Column field="erga_category.name" header="Κατηγορία Έργου" filter filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
-        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}/>
+        <Column field="customer.name" header="Όνομα Πελάτη" filter={true} filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
+        <Column field="erga_category.name" header="Κατηγορία Έργου" filter={true} filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
+        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
             body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
         {/* <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
