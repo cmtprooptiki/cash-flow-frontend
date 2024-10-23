@@ -112,11 +112,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.ammount_total,
             product.status,
             product.sign_date, // Now this is formatted as currency
-            product.estimate_start_date,
-            product.ammount, // Now this is formatted as currency
-            product.ammount_vat,
             product.project_manager,
-            product.shortname
+            product.shortname, // Now this is formatted as currency
+            product.ammount,
+            product.ammount_vat,
+            product.estimate_start_date
         ]),
         styles: {
             font: 'Roboto-Regular' // Make sure the table uses the Roboto font

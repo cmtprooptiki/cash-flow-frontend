@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -18,6 +18,9 @@ import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
 const YpoxreoseisList = () =>
 {
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
@@ -29,6 +32,150 @@ const YpoxreoseisList = () =>
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+    const [filteredypoxreoseis, setFilteredYpoxreoseis] = useState([]);
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'ypoxreoseis.provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'ypoxreoseis.total_owed_ammount', header: 'Ποσό (σύνολο)' },
+        { field: 'ypoxreoseis.invoice_date', header: 'Ημερομηνία τιμολογίου' },
+        { field: 'ypoxreoseis.ammount_vat', header: 'ΦΠΑ' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredypoxreoseis.map((product) => {
+            return {
+                ...product.ypoxreoseis,
+                total_owed_ammount: formatCurrency(product.ypoxreoseis.total_owed_ammount),
+                invoice_date: formatDate(product.ypoxreoseis.invoice_date),
+                ammount_vat:formatCurrency(product.ypoxreoseis.ammount_vat)
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.provider,
+            product.total_owed_ammount,
+            product.invoice_date,
+            product.ammount_vat
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }
+        });
+
+        // Step 6: Save the document
+        doc.save('Ypoxreoseis.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredypoxreoseis.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        if (col.field === 'ypoxreoseis.total_owed_ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        if (col.field === 'ypoxreoseis.ammount_vat')
+                        {
+                            return formatCurrencyReport(product[col.field]);
+                        }
+
+                        if (col.field === 'ypoxreoseis.provider')
+                        {
+                            return product.ypoxreoseis ? product.ypoxreoseis.provider : '';  // Return the value as is for other fields
+                        }
+                        return product[col.field];
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Ypoxreoseis');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
 
     useEffect(()=>{
         getYpoxreoseis();
@@ -89,6 +236,7 @@ const YpoxreoseisList = () =>
     
             // Assuming you have a state setter like setErga defined somewhere
             setYpoxreoseis(sortedParData);
+            setFilteredYpoxreoseis(sortedParData)
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -236,6 +384,9 @@ const invoice_dateDateFilterTemplate = (options) => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -299,7 +450,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 
-<DataTable value={ypoxreoseis} paginator stripedRows
+<DataTable value={ypoxreoseis} ref = {dt} onValueChange={(ypoxreoseis) => setFilteredYpoxreoseis(ypoxreoseis)} paginator stripedRows
 showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -330,7 +481,7 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
 
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}/>
 
  </DataTable>
        
