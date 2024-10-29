@@ -18,12 +18,22 @@ import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 
+import { Dialog } from 'primereact/dialog';
+import FormProfileTags from './FormProfileTags';
+import FormEditTags from './FormEditTags';
+
 const TagList = ()=>
 {
     const [tags, setTags] = useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedTagId, setSelectedTagId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
+
+
     const {user} = useSelector((state) => state.auth)
     useEffect(()=>{
         getTags();
@@ -99,32 +109,78 @@ const TagList = ()=>
         );
     };
     const header = renderHeader();
-
-    const actionsBodyTemplate=(rowData)=>{
-        const id=rowData.id
-        return(
-            <div className=" flex flex-wrap justify-content-center gap-3">
+    
+    // const actionsBodyTemplate=(rowData)=>{
+    //     const id=rowData.id
+    //     return(
+    //         <div className=" flex flex-wrap justify-content-center gap-3">
                
-            {user && user.role!=="admin" &&(
-                <div>
-                    <Link to={`/tags/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
-                </div>
-            )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/tags/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/tags/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTags(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
+    //         {user && user.role!=="admin" &&(
+    //             <div>
+    //                 <Link to={`/tags/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
+    //             </div>
+    //         )}
+    //         {user && user.role ==="admin" && (
+    //         <span className='flex gap-1'>
+    //             <Link to={`/tags/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
+    //             </Link>
+    //             <Link to={`/tags/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+    //             <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTags(id)} />
+    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
+    //        </span>
            
-            )}
-            </div>
+    //         )}
+    //         </div>
  
-        );
-    }
+    //     );
+    // }
 
+
+    const actionsBodyTemplate = (rowData) => {
+        const id = rowData.id;
+        return (
+            <div className="flex flex-wrap justify-content-center gap-3">
+                {user && user.role !== "admin" && (
+                    <div>
+                        <Link to={`/tags/profile/${id}`} >
+                            <Button severity="info" label="Προφίλ" text raised />
+                        </Link>
+                    </div>
+                )}
+                {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedTagId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedTagId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteTags(id)} />
+                    </span>
+                )}
+            </div>
+        );
+    };
+    
     return(
 
 
@@ -136,20 +192,34 @@ const TagList = ()=>
 
 
 
-<DataTable value={tags} paginator stripedRows
- rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
-            filters={filters} 
-            globalFilterFields={[
-                'id',
-                'name'
-            ]}
-            header={header} 
-            emptyMessage="No doseis found.">
+        <DataTable value={tags} paginator stripedRows
+        rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+                    filters={filters} 
+                    globalFilterFields={[
+                        'id',
+                        'name'
+                    ]}
+                    header={header} 
+                    emptyMessage="No doseis found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column field="name" header="Όνομα Ετικέτας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                 <Column header="Ένέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
         </DataTable>
+
+        <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
+            {selectedTagId && (selectedType=='Edit') && (
+            <FormEditTags id={selectedTagId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedTagId && (selectedType=='Profile') && (
+            <FormProfileTags id={selectedTagId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
+        
+        
+
         </div>
+
+        
     )
 }
 

@@ -475,7 +475,7 @@ const customerItemTemplate = (option) => {
 
  </DataTable>
 
- <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+ <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedCustomerId && (selectedType=='Edit') && (
             <FormEditCustomer id={selectedCustomerId} onHide={() => setDialogVisible(false)} />
             )}

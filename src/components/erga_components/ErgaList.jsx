@@ -631,7 +631,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} /> */}
     </DataTable>
     
-    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedErgaId && (selectedType=='Edit') && (
             <FormEditErgo id={selectedErgaId} onHide={() => setDialogVisible(false)} />
             )}

@@ -629,7 +629,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
  </DataTable>
 
- <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+ <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedTimologiaId && (selectedType=='Edit') && (
             <FormEditTimologia id={selectedTimologiaId} onHide={() => setDialogVisible(false)} />
             )}

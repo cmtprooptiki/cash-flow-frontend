@@ -740,7 +740,7 @@ const timologiaItemTemplate = (option) => {
  </DataTable>
 
     {/* Dialog for editing Paradotea */}
-    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedParadoteaId && (selectedType=='Edit') && (
             <FormEditParadotea id={selectedParadoteaId} onHide={() => setDialogVisible(false)} />
             )}

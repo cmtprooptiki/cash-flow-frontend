@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import apiBaseUrl from '../../apiConfig';
 
-const FormProfileDoseis = () =>
+const FormProfileDoseis = ({ id, onHide }) =>
 {
     const [ammount, setAmmount] = useState("");
     const [estimate_payment_date,setEstimate_Payment_Date] = useState("")
@@ -21,7 +21,7 @@ const FormProfileDoseis = () =>
 
     const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getDoseisById = async()=>{

@@ -152,7 +152,7 @@ const ErgaCatList = () => {
                         <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
                 </DataTable>
 
-                <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+                <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedErgaCatId && (selectedType=='Edit') && (
             <FormEditErgoCat id={selectedErgaCatId} onHide={() => setDialogVisible(false)} />
             )}

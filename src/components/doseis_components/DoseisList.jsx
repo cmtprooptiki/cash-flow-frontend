@@ -21,7 +21,9 @@ import { Tag } from 'primereact/tag';
 
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
-
+import { Dialog } from 'primereact/dialog';
+import FormEditDoseis from '../doseis_components/FormEditDoseis';
+import FormProfileDoseis from '../doseis_components/FormProfileDoseis';
 const DoseisList = () => {
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
@@ -35,6 +37,10 @@ const DoseisList = () => {
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedDosiId, setSelectedDosiId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const cols = [
         { field: 'ypoxreosei.provider', header: 'Προμηθευτής-έξοδο' },
@@ -415,30 +421,74 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
     const header = renderHeader();
 
-    const actionsBodyTemplate=(rowData)=>{
-        const id=rowData.id
-        return(
-            <div className=" flex flex-wrap justify-content-center gap-3">
+    // const actionsBodyTemplate=(rowData)=>{
+    //     const id=rowData.id
+    //     return(
+    //         <div className=" flex flex-wrap justify-content-center gap-3">
                
-            {user && user.role!=="admin" &&(
-                <div>
-                    <Link to={`/doseis/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-                </div>
-            )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/doseis/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/doseis/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
+    //         {user && user.role!=="admin" &&(
+    //             <div>
+    //                 <Link to={`/doseis/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+    //             </div>
+    //         )}
+    //         {user && user.role ==="admin" && (
+    //         <span className='flex gap-1'>
+    //             <Link to={`/doseis/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
+    //             </Link>
+    //             <Link to={`/doseis/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+    //             <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
+    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
+    //         </span>
            
-            )}
-            </div>
+    //         )}
+    //         </div>
  
+    //     );
+    // }
+    const actionsBodyTemplate = (rowData) => {
+        const id = rowData.id;
+        return (
+            <div className="flex flex-wrap justify-content-center gap-3">
+                {user && user.role !== "admin" && (
+                    <div>
+                        <Link to={`/doseis/profile/${id}`} >
+                            <Button severity="info" label="Προφίλ" text raised />
+                        </Link>
+                    </div>
+                )}
+                {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedDosiId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedDosiId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteDoseis(id)} />
+                    </span>
+                )}
+            </div>
         );
-    }
+    };
 
      return(
 
@@ -483,6 +533,18 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
 
  </DataTable>
+
+        <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
+            {selectedDosiId && (selectedType=='Edit') && (
+            <FormEditDoseis id={selectedDosiId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedDosiId && (selectedType=='Profile') && (
+            <FormProfileDoseis id={selectedDosiId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
+        
+        
+        
        
     </div>
      )
