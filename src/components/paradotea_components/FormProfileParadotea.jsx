@@ -13,7 +13,7 @@ import { TabView, TabPanel } from 'primereact/tabview';
 
 import { Ripple } from 'primereact/ripple';
 
-const FormProfileParadotea=() =>{
+const FormProfileParadotea=({ id, onHide }) =>{
     const[part_number,setPart_Number]=useState("");
     const[title,setTitle]=useState("");
     const[delivery_date,setDelivery_Date]=useState("");
@@ -35,7 +35,7 @@ const FormProfileParadotea=() =>{
 
     const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getParadoteaById = async()=>{

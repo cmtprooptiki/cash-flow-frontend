@@ -286,8 +286,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
            
             </div>
         );
@@ -530,19 +530,22 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     const actionsBodyTemplate=(rowData)=>{
         const id=rowData.id
         return(
-            <div className=" flex flex-wrap justify-content-center gap-3">
+            <div className="flex flex-wrap justify-content-center gap-3">
                
             {user && user.role!=="admin" &&(
                 <div>
-                    <Link to={`/erga/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
+                    <Link to={`/erga/profile/${id}`} >
+                    <Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
                 </div>
             )}
             {user && user.role ==="admin" && (
-            <span>
-                <Link to={`/erga/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
-                <Link to={`/erga/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+            <span className='flex gap-1'>
+                <Link to={`/erga/profile/${id}`} >
+                    <Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" /></Link>
+                <Link to={`/erga/edit/${id}`}>
+                    <Button className='action-button' icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
             
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"  onClick={()=>deleteErga(id)} />
+                <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Εdit"  onClick={()=>deleteErga(id)} />
             </span>
             
             )}
@@ -559,7 +562,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     {user && user.role ==="admin" && (
     <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
     )}
-    <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows showGridlines rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
+    <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows  rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'
                 ,'sign_date', 'status', 'estimate_start_date'

@@ -565,7 +565,7 @@ const BudgetPage = () => {
                 )}
             </Dialog>
 
-                
+                <br></br>
             <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData}/>
         </Layout>
     );

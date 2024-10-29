@@ -338,8 +338,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -520,14 +520,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                
             {user && user.role!=="admin" &&(
                 <div>
-                    <Link to={`/ek_tim/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                    <Link to={`/ek_tim/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/ek_tim/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+                <Link to={`/ek_tim/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
                 </Link>
-                <Link to={`/ek_tim/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+                <Link to={`/ek_tim/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
                 <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteEkxorimeno_Timologio(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
@@ -546,7 +546,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         {user && user.role ==="admin" && (
         <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
         )}
-        <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => setFilteredEkxoriseis(ekxoriseis)} stripedRows paginator showGridlines rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
+        <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => setFilteredEkxoriseis(ekxoriseis)} stripedRows paginator  rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[
                     'id',
                     'ErgaName',
@@ -563,7 +563,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     'comments'
                 ]} header={header}
                 emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
-                <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
+                <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} frozen />
                 {/* <Column field="ErgaName" header="Εργο" filter filterPlaceholder="Search by ergo" style={{ minWidth: '5rem' }} /> */}
                 <Column header="Εργο" filterField="ErgaName" alignFrozen="left" frozen showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
