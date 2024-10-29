@@ -418,14 +418,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+                <Button  type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -522,15 +522,15 @@ const invoice_dateDateFilterTemplate = (options) => {
                
             {user && user.role!=="admin" &&(
                 <div>
-                    <Link to={`/timologia/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                    <Link to={`/timologia/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/timologia/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+                <Link to={`/timologia/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
                 </Link>
-                <Link to={`/timologia/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTimologio(id)} />
+                <Link to={`/timologia/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTimologio(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
            
@@ -554,7 +554,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 <DataTable value={Timologia} ref = {dt} onValueChange={(timologia) => setFilteredTimologia(timologia)} paginator 
-showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+ rows={20} stripedRows scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
                 'id', 
@@ -571,12 +571,12 @@ showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKe
                 ]} 
             header={header} 
             emptyMessage="No timologia found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
                 {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen 
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
                 
-                <Column field="invoice_number"  header="Αρ. τιμολογίου"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }}></Column>
+                <Column field="invoice_number"  header="Αρ. τιμολογίου"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }} frozen ></Column>
                 <Column header="Ημερομηνία έκδοσης τιμολογίου" filterField="invoice_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}

@@ -119,3 +119,74 @@
     width: 150px;      /* Adjusts button width */
 }
 
+/* Container holding the three dots and the hidden buttons */
+.actions-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style the three dots button */
+.actions-menu-button {
+    background-color: grey;
+    border: none;
+    cursor: pointer;
+}
+
+/* Initially hide the action buttons */
+.hidden-buttons {
+    /* display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 100;
+    border-radius: 4px;
+    white-space: nowrap; */
+
+    display: none;
+    position: absolute;
+    top: 0; /* Adjust the position as needed */
+    right: 100%; /* The buttons will appear to the right of the three dots */
+    background-color: transparent;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    z-index: 100;
+    border-radius: 4px;
+    white-space: nowrap;
+    gap: 15px; /* Space between the buttons */
+}
+
+/* Display the buttons when hovering over the container */
+.actions-menu-container:hover .hidden-buttons {
+    display: flex;
+}
+
+
+
+/* Ensure the buttons are styled nicely */
+.hidden-buttons button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+
+.action-button {
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+    padding: 0.75rem 0;
+    margin: 0;
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    vertical-align: bottom;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+

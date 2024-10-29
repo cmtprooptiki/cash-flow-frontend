@@ -11,7 +11,7 @@ import { InputNumber } from 'primereact/inputnumber';
 
 import { Divider } from 'primereact/divider';
 
-const FormEditParadotea = () => {
+const FormEditParadotea = ({ id, onHide }) => {
     const[part_number,setPart_Number]=useState("");
     const[title,setTitle]=useState("");
     const[delivery_date,setDelivery_Date]=useState("");
@@ -39,7 +39,7 @@ const FormEditParadotea = () => {
 
     const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(() => {
         const getParadoteaById = async()=>{
@@ -126,8 +126,9 @@ const FormEditParadotea = () => {
                 comments:comments
 
             });
-
-            navigate("/paradotea");
+            onHide();
+            window.location.reload();
+            // navigate("/paradotea");
         }
         catch(error)
         {

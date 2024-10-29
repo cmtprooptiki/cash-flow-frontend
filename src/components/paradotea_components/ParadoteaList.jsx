@@ -17,6 +17,9 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
+import { Dialog } from 'primereact/dialog'; // Import Dialog
+import FormEditParadotea from './FormEditParadotea'; // Adjust the import path as necessary
+import FormProfileParadotea from './FormProfileParadotea';
 
 const ParadoteaList = () => {
     const [paradotea, setParadotea] = useState([]);
@@ -26,6 +29,11 @@ const ParadoteaList = () => {
     const [timologia, setTimologio]=useState([]);
     const [erga, setErgo]=useState([]);
     const [ergashort, setErgoShort]=useState([]);
+
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedParadoteaId, setSelectedParadoteaId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     useEffect(()=>{
         getParadotea()
@@ -372,30 +380,111 @@ const timologiaItemTemplate = (option) => {
     const header = renderHeader();
 
 
-    const actionsBodyTemplate=(rowData)=>{
-        const id=rowData.id
-        return(
-            <div className=" flex flex-wrap justify-content-center gap-3">
+    // const actionsBodyTemplate=(rowData)=>{
+    //     const id=rowData.id
+    //     return(
+    //         <div className=" flex flex-wrap justify-content-center gap-3">
                
-            {user && user.role!=="admin" &&(
-                <div>
-                    <Link to={`/paradotea/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-                </div>
-            )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/paradotea/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/paradotea/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteParadotea(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
+    //         {user && user.role!=="admin" &&(
+    //             <div>
+    //                 <Link to={`/paradotea/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+    //             </div>
+    //         )}
+    //         {user && user.role ==="admin" && (
+    //         <span className='flex gap-1'>
+    //             <Link to={`/paradotea/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+    //             </Link>
+    //             <Link to={`/paradotea/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+    //             <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteParadotea(id)} />
+    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
+    //         </span>
            
-            )}
-            </div>
+    //         )}
+    //         </div>
  
+    //     );
+    // }
+
+
+    const actionsBodyTemplate = (rowData) => {
+        const id = rowData.id;
+        return (
+            <div className="flex flex-wrap justify-content-center gap-3">
+                {user && user.role !== "admin" && (
+                    <div>
+                        <Link to={`/paradotea/profile/${id}`} >
+                            <Button severity="info" label="Προφίλ" text raised />
+                        </Link>
+                    </div>
+                )}
+                {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedParadoteaId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedParadoteaId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteParadotea(id)} />
+                    </span>
+                )}
+            </div>
         );
-    }
+    };
+
+
+    // const actionsBodyTemplate = (rowData) => {
+    //     const id = rowData.id;
+    //     return (
+    //         <div className="relative actions-menu-container">
+    //             {/* Three dots icon */}
+    //             <Button
+    //                 icon="pi pi-ellipsis-v" 
+    //                 className="actions-menu-button"
+    //                 aria-label="Actions Menu"
+    //             />
+    //             {/* Buttons that will appear on hover */}
+    //             <div className="hidden-buttons">
+    //                 <Link to={`/paradotea/profile/${id}`}>
+    //                     <Button icon="pi pi-eye" severity="info" aria-label="User" />
+    //                 </Link>
+    //                 {user && user.role === "admin" && (
+    //                     <>
+    //                         <Button
+    //                             icon="pi pi-pen-to-square"
+    //                             severity="info"
+    //                             aria-label="Edit"
+    //                             onClick={() => {
+    //                                 setSelectedParadoteaId(id);
+    //                                 setDialogVisible(true);
+    //                             }}
+    //                         />
+    //                         <Button icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteParadotea(id)} />
+    //                     </>
+    //                 )}
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     return(
         <div className="card" >
@@ -458,6 +547,18 @@ const timologiaItemTemplate = (option) => {
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}/>
 
  </DataTable>
+
+    {/* Dialog for editing Paradotea */}
+    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedParadoteaId && (selectedType=='Edit') && (
+            <FormEditParadotea id={selectedParadoteaId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedParadoteaId && (selectedType=='Profile') && (
+            <FormProfileParadotea id={selectedParadoteaId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
+
+        
        
     </div>
     )

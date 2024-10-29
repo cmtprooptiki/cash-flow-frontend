@@ -314,8 +314,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -427,10 +427,10 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/doseis/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+                <Link to={`/doseis/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
                 </Link>
-                <Link to={`/doseis/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
+                <Link to={`/doseis/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
            
@@ -452,7 +452,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
 {/* scrollable scrollHeight="600px" */}
 <DataTable value={doseis} ref = {dt} onValueChange={(doseis) => setFilteredDoseis(doseis)} paginator stripedRows
-showGridlines rows={20}  loading={loading} dataKey="id" 
+ rows={20}  loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
                 'id',

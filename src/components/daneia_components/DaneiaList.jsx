@@ -315,8 +315,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
 
             </div>
         );
@@ -329,15 +329,19 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                
             {user && user.role!=="admin" &&(
                 <div>
-                    <Link to={`/daneia/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+                    <Link to={`/daneia/profile/${id}`} >
+                    <Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
-                <Link to={`/daneia/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
+                <Link to={`/daneia/profile/${id}`} >
+                    <Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
                 </Link>
-                <Link to={`/daneia/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDaneia(id)} />
+                <Link to={`/daneia/edit/${id}`}>
+                    <Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" />
+                </Link>
+                     <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDaneia(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
            
@@ -361,7 +365,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         
         
         <DataTable value={daneia} paginator ref = {dt} onValueChange={(daneia) => setFilteredDaneia(daneia)}
-        showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+         rows={20} stripedRows scrollable scrollHeight="600px" loading={loading} dataKey="id" 
                     filters={filters} 
                     globalFilterFields={[
                         'daneia.id', 

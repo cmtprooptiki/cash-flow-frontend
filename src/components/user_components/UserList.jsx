@@ -103,8 +103,8 @@ const UserList = () => {
             {user && user.role ==="admin" && (
             <span className='flex gap-1'>
                
-                <Link to={`/users/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="delete" onClick={()=>deleteUser(id)} />
+                <Link to={`/users/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="delete" onClick={()=>deleteUser(id)} />
                 {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
             </span>
            
@@ -154,7 +154,7 @@ const UserList = () => {
     )}
 
 <DataTable value={users} paginator stripedRows
-showGridlines rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+ rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
         filters={filters} 
         globalFilterFields={[ 'name', 
             'profileImage', 'email',
