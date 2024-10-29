@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import apiBaseUrl from '../../apiConfig';
 import apiBaseFrontUrl from '../../apiFrontConfig';
 
-const FormProfileErgo= () => {
+const FormProfileErgo= ({id, onHide}) => {
 const[logoImage,setLogoImage]=useState(null);
   const[name,setName]=useState("");
   const [color, setColor] = useState("white");
@@ -34,7 +34,8 @@ const[logoImage,setLogoImage]=useState(null);
   const[msg,setMsg]=useState("");
 
 
-  const{id} = useParams();
+//   const{id} = useParams();
+
 
 
 

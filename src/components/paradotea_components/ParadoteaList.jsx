@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -21,6 +21,9 @@ import { Dialog } from 'primereact/dialog'; // Import Dialog
 import FormEditParadotea from './FormEditParadotea'; // Adjust the import path as necessary
 import FormProfileParadotea from './FormProfileParadotea';
 
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
 const ParadoteaList = () => {
     const [paradotea, setParadotea] = useState([]);
     const [filters, setFilters] = useState(null);
@@ -29,11 +32,195 @@ const ParadoteaList = () => {
     const [timologia, setTimologio]=useState([]);
     const [erga, setErgo]=useState([]);
     const [ergashort, setErgoShort]=useState([]);
+    const [filteredParadotea, setFilteredParadotea] = useState([]);
+    
 
 
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedParadoteaId, setSelectedParadoteaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
+    const cols = [
+        { field: 'erga.name', header: 'Έργο' },
+        { field: 'erga.shortname', header: 'Ακρόνυμο έργου' },
+        { field: 'part_number', header: 'Παραδοτέο (Αριθμός)' },
+        { field: 'title', header: 'Τίτλος παραδοτέου' },
+        { field: 'delivery_date', header: 'Ημερομηνία υποβολής' },
+        { field: 'percentage', header: 'Ποσοστό σύμβασης' },
+        { field: 'ammount', header: 'Ποσό (καθαρή αξία)' },
+        { field: 'ammount_vat', header: 'Ποσό ΦΠΑ' },
+        { field: 'ammount_total', header: 'Σύνολο' },
+        { field: 'estimate_payment_date', header: 'Ημερομηνία πληρωμής (εκτίμηση)' },
+        {field: 'estimate_payment_date_2', header: 'Ημερομηνία πληρωμής (εκτίμηση 2)' },
+        {field: 'estimate_payment_date_3', header: 'Ημερομηνία πληρωμής (εκτίμηση 3)' },
+        {field: 'comments', header: 'Σχόλια' },
+        { field: 'timologia.invoice_number', header: 'Τιμολόγια' }
+
+        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
+        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
+    ];
+
+
+
+// Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
+
+// Function to add the Roboto-Regular font to jsPDF
+const callAddFont = function () {
+  this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+  this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+};
+
+// Step 2: Register the font adding event
+jsPDF.API.events.push(['addFonts', callAddFont]);
+
+
+
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+
+    const exportCSV = (selectionOnly) => {
+        dt.current.exportCSV({ selectionOnly });
+    };
+
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default({
+                    orientation: 'l',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+        // Step 4: Set the custom font and font size
+        doc.setFont('Roboto-Regular');
+        doc.setFontSize(12);
+        
+        const formattedReportData = filteredParadotea.map((product) => {
+            return {
+                ...product,
+                ammount: formatCurrency(product.ammount),
+                delivery_date: formatDate(product.delivery_date),
+                ammount_vat: formatCurrency(product.ammount_vat),
+                ammount_total: formatCurrency(product.ammount_total),
+                estimate_payment_date: formatDate(product.estimate_payment_date), // Format the quantity as currency
+                estimate_payment_date_2:formatDate(product.estimate_payment_date_2),
+                estimate_payment_date_3: formatDate(product.estimate_payment_date_3)
+            };
+        });
+
+        // Step 5: Add the table using autoTable
+        doc.autoTable({
+        columns: exportColumns,
+        body: formattedReportData.map((product) => [
+            product.erga.name,
+            product.erga.shortname,
+            product.part_number,
+            product.title,
+            product.delivery_date,
+            product.percentage, // Now this is formatted as currency
+            product.ammount,
+            product.ammount_vat, // Now this is formatted as currency
+            product.ammount_total, // Now this is formatted as currency
+            product.estimate_payment_date,
+            product.estimate_payment_date_2,
+            product.estimate_payment_date_3,
+            product.comments,
+            product.timologia.invoice_number
+        ]),
+        styles: {
+            font: 'Roboto-Regular' // Make sure the table uses the Roboto font
+        }
+        });
+
+        // Step 6: Save the document
+        doc.save('Paradotea.pdf');
+                        
+                    });
+                });
+    };
+
+
+        
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...filteredParadotea.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        if (col.field === 'ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount_vat') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+                        if (col.field === 'ammount_total') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                        }
+
+                        if (col.field === 'erga.name')
+                        {
+                            return product.erga ? product.erga.name : '';
+                        }
+    
+                        if (col.field === 'erga.shortname')
+                        {
+                            return product.erga ? product.erga.shortname : '';
+                        }
+
+                        if (col.field === 'timologia.invoice_number')
+                        {
+                            return product.timologia ? product.timologia.invoice_number : '';
+                        }
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Paradotea');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
 
     useEffect(()=>{
         getParadotea()
@@ -87,6 +274,7 @@ const ParadoteaList = () => {
     
             // Assuming you have a state setter like setErga defined somewhere
             setParadotea(sortedParaData);
+            setFilteredParadotea(sortedParaData)
     
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -162,6 +350,9 @@ const ParadoteaList = () => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -495,7 +686,7 @@ const timologiaItemTemplate = (option) => {
 
 
 
-<DataTable value={paradotea} paginator stripedRows
+<DataTable value={paradotea} ref = {dt} onValueChange={(paradotea) => setFilteredParadotea(paradotea)} paginator stripedRows
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={['id', 'part_number', 

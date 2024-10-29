@@ -12,7 +12,7 @@ import { Chip } from 'primereact/chip';
 import { Button } from 'primereact/button';
 
 
-const FormProfileEkxorimenoTimologio = () =>
+const FormProfileEkxorimenoTimologio = ({ id, onHide }) =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState("");
@@ -27,7 +27,7 @@ const FormProfileEkxorimenoTimologio = () =>
     const[comments,setComments]=useState("");
 
     const[msg,setMsg]=useState("");
-    const{id} = useParams();
+    // const{id} = useParams();
 
     const formatDateToInput = (dateString) => {
       if(dateString === null || dateString =="" || dateString === NaN){

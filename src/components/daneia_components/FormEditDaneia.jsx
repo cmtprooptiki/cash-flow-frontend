@@ -8,7 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 
-const FormEditDaneia= () => {
+const FormEditDaneia= ({id, onHide}) => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState("");
     const [status, setStatus] = useState("");
@@ -18,9 +18,9 @@ const FormEditDaneia= () => {
 
     const [statuses, setStatuses] = useState(["yes", "no"])
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     const formatDateToInput = (dateString) => {
         if(dateString === null || dateString =="" || dateString === NaN){
@@ -70,7 +70,10 @@ const FormEditDaneia= () => {
                 actual_payment_date:actual_payment_date
             });
 
-            navigate("/daneia");
+            onHide();
+            window.location.reload();
+
+            // navigate("/daneia");
         }
         catch(error){
             if(error.response){

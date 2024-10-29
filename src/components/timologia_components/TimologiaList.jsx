@@ -14,6 +14,9 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
 
+import { Dialog } from 'primereact/dialog'; // Import Dialog
+import FormEditTimologia from '../timologia_components/FormEditTimologia'
+import FormProfileTimologia from '../timologia_components/FormProfileTimologia'
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
@@ -38,6 +41,11 @@ const TimologiaList = () => {
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
+
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedTimologiaId, setSelectedTimologiaId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const cols = [
         { field: 'ErgaName', header: 'Έργο' },
@@ -525,16 +533,36 @@ const invoice_dateDateFilterTemplate = (options) => {
                     <Link to={`/timologia/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/timologia/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/timologia/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteTimologio(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
-           
-            )}
+            {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedTimologiaId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedTimologiaId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteTimologio(id)} />
+                    </span>
+                )}
             </div>
  
         );
@@ -600,68 +628,18 @@ const invoice_dateDateFilterTemplate = (options) => {
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
 
  </DataTable>
+
+ <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedTimologiaId && (selectedType=='Edit') && (
+            <FormEditTimologia id={selectedTimologiaId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedTimologiaId && (selectedType=='Profile') && (
+            <FormProfileTimologia id={selectedTimologiaId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
        
     </div>
 
-
-
-
-    //     <div style={{ overflowX: 'auto', maxWidth: '800px'}}>
-    //     <div>
-    //     <h1 className='title'>ΤΙΜΟΛΟΓΙΑ</h1>
-    //     {user && user.role ==="admin" && (
-    //     <Link to={"/timologia/add"} className='button is-primary mb-2'>Προσθήκη Νέου Τιμολογίου</Link>
-    //     )}
-    //     <div className="table-responsive-md">
-
-    //     <table className='table is-stripped is-fullwidth'>
-    //         <thead>
-    //             <tr>
-
-    //                 <th>#</th>
-
-    //                 <th>ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</th>
-    //                 <th>ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α</th>
-    //                 <th>ΠΟΣΟ ΜΕ Φ.Π.Α</th>
-    //                 <th>ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ</th>
-    //                 <th>ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ ΜΕ Φ.Π.Α</th>
-    //                 <th>ΠΑΡΑΤΗΡΗΣΕΙΣ</th>
-    //                 <th>ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ</th>
-    //                 <th>Ενέργειες</th>
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //             {Timologia.map((Timologia,index)=>(
-    //                 <tr key={Timologia.id}>
-    //                     <td>{index+1}</td>
-    //                     <td>{Timologia.invoice_date}</td>
-    //                     <td>{Timologia.ammount_no_tax}</td>
-    //                     <td>{Timologia.ammount_tax_incl }</td>
-    //                     <td>{Timologia.actual_payment_date }</td>
-    //                     <td>{Timologia.ammount_of_income_tax_incl }</td>
-    //                     <td>{Timologia.comments }</td>
-    //                     <td>{Timologia.invoice_number}</td>
-
-
-    //                     <td>
-    //                         <Link to={`/timologia/profile/${Timologia.id}`} className='button is-small is-info'>Προφίλ</Link>
-    //                         {user && user.role ==="admin" && (
-    //                         <div>
-    //                             <Link to={`/Timologia/edit/${Timologia.id}`} className='button is-small is-info'>Επεξεργασία</Link>
-    //                             <button onClick={()=>deleteTimologio(Timologia.id)} className='button is-small is-danger'>Διαγραφή</button>
-                                
-    //                         </div>
-    //                         )}
-                            
-    //                     </td>
-    //                 </tr>
-    //             ))}
-                
-    //         </tbody>
-    //     </table>
-    //     </div>
-    // </div>
-    // </div>
     )
 }
 

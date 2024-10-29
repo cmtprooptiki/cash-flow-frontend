@@ -18,13 +18,20 @@ import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 
+import {Dialog} from 'primereact/dialog'
 
+import FormEditErgoCat from '../erga_cat_components/FormEditErgoCat';
 
 const ErgaCatList = () => {
     const [ergaCat,setErgaCat]=useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedErgaCatId, setSelectedErgaCatId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
+
     const {user} = useSelector((state)=>state.auth)
     useEffect(()=>{
         getErgaCat()
@@ -84,14 +91,36 @@ const ErgaCatList = () => {
         return(
             <div className=" flex flex-wrap justify-content-center gap-3">
                
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/ergacat/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteErgaCat(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
-           
-            )}
+               {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedErgaCatId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedErgaCatId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                             <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteErgaCat(id)} />
+                             </span>
+                        )}
             </div>
  
         );
@@ -122,6 +151,13 @@ const ErgaCatList = () => {
                         <Column field="name" header="'Ονομα Κατηγορίας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                         <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
                 </DataTable>
+
+                <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedErgaCatId && (selectedType=='Edit') && (
+            <FormEditErgoCat id={selectedErgaCatId} onHide={() => setDialogVisible(false)} />
+            )}
+             
+        </Dialog>
                 </div>
             )
         

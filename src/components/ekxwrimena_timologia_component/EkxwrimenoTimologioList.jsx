@@ -9,6 +9,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
+import { Dialog } from 'primereact/dialog'; // Import Dialog
+
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
@@ -22,6 +24,8 @@ import { Tag } from 'primereact/tag';
 
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
+import FormEditEkxorimenoTimologio from './FormEditEkxorimenoTimologio';
+import FormProfileEkxorimenoTimologio from './FormProfileEkxorimenoTimologio';
 
 const EkxwrimenoTimologioList = () => 
 {
@@ -30,6 +34,10 @@ const EkxwrimenoTimologioList = () =>
     const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedEkxoriseisId, setSelectedEkxoriseisId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
     
     const [statuses] = useState(['yes', 'no']);
 
@@ -523,16 +531,36 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <Link to={`/ek_tim/profile/${id}`} ><Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/ek_tim/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/ek_tim/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteEkxorimeno_Timologio(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
-           
-            )}
+            {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedEkxoriseisId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedEkxoriseisId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                             <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteEkxorimeno_Timologio(id)} />
+                             </span>
+                        )}
             </div>
  
         );
@@ -585,6 +613,15 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
 
            </DataTable>
+
+           <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedEkxoriseisId && (selectedType=='Edit') && (
+            <FormEditEkxorimenoTimologio id={selectedEkxoriseisId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedEkxoriseisId && (selectedType=='Profile') && (
+            <FormProfileEkxorimenoTimologio id={selectedEkxoriseisId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
     </div>
     );
 }

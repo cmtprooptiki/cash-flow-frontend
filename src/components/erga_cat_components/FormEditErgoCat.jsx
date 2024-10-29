@@ -8,14 +8,14 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 
-const FormEditErgoCat= () => {
+const FormEditErgoCat= ({id, onHide}) => {
     const[name,setName]=useState("");
     const[msg,setMsg]=useState("");
 
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getErgoCatById = async()=>{
@@ -38,7 +38,10 @@ const FormEditErgoCat= () => {
                 name:name,
             });
 
-            navigate("/ergacat");
+            onHide();
+            window.location.reload();
+
+            // navigate("/ergacat");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);
