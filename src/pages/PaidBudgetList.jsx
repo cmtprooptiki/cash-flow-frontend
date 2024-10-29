@@ -498,7 +498,7 @@ const idBodyTemplate = (rowData) => {
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
-                        <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
+                        <p><strong>Συσχέτιση με τιμολόγιο Id:</strong> {selectedRowData.timologia_id}</p>
                         <p><strong>Εκχώρηση (€): </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
                         <p><strong>Υπόλοιπο από πελάτη (€): </strong>{formatCurrency(selectedRowData.customer_ammount)}</p>

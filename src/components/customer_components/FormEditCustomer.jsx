@@ -10,7 +10,7 @@ import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { Avatar } from 'primereact/avatar';
 
-const FormEditCustomer= () => {
+const FormEditCustomer= ({id, onHide}) => {
     const [previewImage, setPreviewImage] = useState('');
     const [logoImage, setLogoImage] = useState(null);
     const[name,setName]=useState("");
@@ -38,9 +38,9 @@ const FormEditCustomer= () => {
 
 
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getCustomerById = async()=>{
@@ -101,7 +101,10 @@ const FormEditCustomer= () => {
         
         );
 
-            navigate("/customer");
+        onHide();
+        window.location.reload();
+
+            // navigate("/customer");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

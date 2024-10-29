@@ -14,7 +14,7 @@ import { Divider } from 'primereact/divider';
 import { Avatar } from 'primereact/avatar';
 
 
-const FormEditErgo= () => {
+const FormEditErgo= ({id, onHide}) => {
     const[name,setName]=useState("");
     const [logoImage, setLogoImage] = useState(""); // New state for profile image
     const [previewImage, setPreviewImage] = useState(''); // State for previewing selected image
@@ -70,9 +70,9 @@ const FormEditErgo= () => {
         setErga_cat_id(e.target.value);
     };
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getErgoById = async()=>{
@@ -228,8 +228,11 @@ const FormEditErgo= () => {
             }
         
         );
+        onHide();
+        window.location.reload();
 
-            navigate("/erga");
+
+            // navigate("/erga");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

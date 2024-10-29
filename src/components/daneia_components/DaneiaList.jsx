@@ -12,11 +12,14 @@ import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
+import {Dialog} from 'primereact/dialog'
 
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
+import FormEditDaneia from '../daneia_components/FormEditDaneia'
+import FormProfileDaneia from '../daneia_components/FormProfileDaneia'
 
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
@@ -29,6 +32,10 @@ const DaneiaList = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['yes', 'no']);
     const [filteredDaneia, setFilteredDaneia] = useState([]);
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedDaneiaId, setSelectedDaneiaId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -333,19 +340,36 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <Button className='action-button'  severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/daneia/profile/${id}`} >
-                    <Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/daneia/edit/${id}`}>
-                    <Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" />
-                </Link>
-                     <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDaneia(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
-           
-            )}
+            {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedDaneiaId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedDaneiaId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                             <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteDaneia(id)} />
+                             </span>
+                        )}
             </div>
  
         );
@@ -394,6 +418,16 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}/>
         
          </DataTable>
+
+         <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedDaneiaId && (selectedType=='Edit') && (
+            <FormEditDaneia id={selectedDaneiaId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedDaneiaId && (selectedType=='Profile') && (
+            <FormProfileDaneia id={selectedDaneiaId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
+
                
             </div>)
 }

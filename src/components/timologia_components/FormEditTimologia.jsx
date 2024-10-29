@@ -14,7 +14,7 @@ import { InputNumber } from 'primereact/inputnumber';
 
 
 
-const FormEditTimologia = () => {
+const FormEditTimologia = ({id, onHide}) => {
     const [invoice_date, setInvoice_date] = useState("");
     const [ammount_no_tax, setAmmount_no_tax] = useState("");
     const [ammount_tax_incl, setAmmount_Tax_Incl] = useState("");
@@ -153,9 +153,9 @@ const FormEditTimologia = () => {
 
     const [msg, setMsg] = useState("");
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const { id } = useParams();
+    // const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -246,7 +246,10 @@ const FormEditTimologia = () => {
 
             // console.log("Done")
 
-            navigate("/timologia");
+            onHide();
+            window.location.reload();
+
+            // navigate("/timologia");
         }
         catch (error) {
             if (error.response) {

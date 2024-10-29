@@ -12,7 +12,7 @@ import apiBaseUrl from '../../apiConfig';
 import { Status } from '@chatscope/chat-ui-kit-react';
 
 
-const FormProfileDaneia = () => {
+const FormProfileDaneia = ({id, onHide}) => {
     const [name, setName] = useState("");
     const [ammount, setAmmount] = useState("");
 
@@ -25,7 +25,7 @@ const FormProfileDaneia = () => {
     const[msg,setMsg]=useState("");
 
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getDaneioById = async()=>{

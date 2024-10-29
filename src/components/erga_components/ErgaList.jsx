@@ -15,6 +15,8 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
 
+import { Dialog } from 'primereact/dialog';
+
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Calendar } from 'primereact/calendar';
@@ -22,6 +24,9 @@ import { Tag } from 'primereact/tag';
 
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
+
+import FormEditErgo from '../erga_components/FormEditErgo'
+import FormProfileErgo from '../erga_components/FormProfileErgo'
 
 
 
@@ -33,6 +38,11 @@ const ErgaList = () => {
     const [statuses] = useState(['Σχεδίαση','Ολοκληρωμένο','Αποπληρωμένο','Υπογεγραμμένο','Ακυρωμένο']);
     const [project_managers, setProjectManager]=useState([]);
     const [filteredErga, setFilteredErga] = useState([]);
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedErgaId, setSelectedErgaId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
+
 
 
     const dt = useRef(null);
@@ -538,17 +548,36 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                     <Button icon="pi pi-eye" severity="info" aria-label="User" /></Link>
                 </div>
             )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/erga/profile/${id}`} >
-                    <Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" /></Link>
-                <Link to={`/erga/edit/${id}`}>
-                    <Button className='action-button' icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-            
-                <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Εdit"  onClick={()=>deleteErga(id)} />
-            </span>
-            
-            )}
+            {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedErgaId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedErgaId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                             <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteErga(id)} />
+                             </span>
+                        )}
             </div>
 
         );
@@ -601,6 +630,16 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
         <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} /> */}
     </DataTable>
+    
+    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedErgaId && (selectedType=='Edit') && (
+            <FormEditErgo id={selectedErgaId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedErgaId && (selectedType=='Profile') && (
+            <FormProfileErgo id={selectedErgaId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
+
 </div>
   )
 }

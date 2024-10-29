@@ -15,6 +15,11 @@ import { MultiSelect } from 'primereact/multiselect';
 import { PrimeIcons } from 'primereact/api';
 import { ToggleButton } from 'primereact/togglebutton';
 
+import FormEditCustomer from '../customer_components/FormEditCustomer'
+import FormProfileCustomer from '../customer_components/FormProfileCustomer'
+
+import {Dialog} from 'primereact/dialog'
+
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Tab } from 'react-bootstrap';
 import { BreadCrumb } from 'primereact/breadcrumb';
@@ -37,6 +42,10 @@ const CustomerList = () => {
     const [customernames, setCustomerNames]=useState([]);
 
     const {user} = useSelector((state)=>state.auth)
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -381,16 +390,36 @@ const customerItemTemplate = (option) => {
                     <Link to={`/customer/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
                 </div>
             )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/customer/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/customer/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteCustomer(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
-           
-            )}
+            {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedCustomerId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedCustomerId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                             <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteCustomer(id)} />
+                             </span>
+                        )}
             </div>
  
         );
@@ -445,6 +474,15 @@ const customerItemTemplate = (option) => {
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}  />
 
  </DataTable>
+
+ <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+            {selectedCustomerId && (selectedType=='Edit') && (
+            <FormEditCustomer id={selectedCustomerId} onHide={() => setDialogVisible(false)} />
+            )}
+             {selectedCustomerId && (selectedType=='Profile') && (
+            <FormProfileCustomer id={selectedCustomerId} onHide={() => setDialogVisible(false)} />
+            )}
+        </Dialog>
 
 
    

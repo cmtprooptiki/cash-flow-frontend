@@ -10,7 +10,7 @@ import apiBaseUrl from '../../apiConfig';
 import { Avatar } from 'primereact/avatar';
 
 
-const FormProfileCustomer= () => {
+const FormProfileCustomer= ({id, onHide}) => {
   const [previewImage, setPreviewImage] = useState('');
   const[logoImage,setLogoImage]=useState("");
   const[name,setName]=useState("");
@@ -30,9 +30,9 @@ const FormProfileCustomer= () => {
 
     const[msg,setMsg]=useState("");
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
 
 
