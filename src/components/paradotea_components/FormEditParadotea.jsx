@@ -226,16 +226,16 @@ const FormEditParadotea = ({ id, onHide }) => {
                     <div className="control">
 
                     <Calendar id="deliverydate1"  value={new Date(delivery_date)} onChange={(e)=> setDelivery_Date(e.target.value)} inline showWeek />
-</div>
+                    </div>
                 </div>
             </div>
 
             <div className="card p-fluid">
             <div className=""><Divider><span className="p-tag text-lg">Εκτιμήσεις</span></Divider></div>
-            <div className="formgrid grid">
+            <div >
                 
 
-                    <div className="field col-12 md:col-8">
+                    <div className="field">
                    
                     <label htmlFor="estimate_payment_date">Ημερομηνία πληρωμής (εκτίμηση)</label>
                     <div className="control">
@@ -244,7 +244,7 @@ const FormEditParadotea = ({ id, onHide }) => {
                    </div>
                          </div>
 
-                    <div className="field col-12 md:col-8">
+                    <div className="field">
                     <label htmlFor="estimate_payment_date_2">Ημερομηνία πληρωμής  (εκτίμηση 2)</label>
                     <div className="control">
 
@@ -256,7 +256,7 @@ const FormEditParadotea = ({ id, onHide }) => {
                 
                     </div>
 
-                    <div className="field col-12 md:col-8">
+                    <div className="field">
                     <label htmlFor="estimate_payment_date_3">Ημερομηνία πληρωμής  (εκτίμηση 3)</label>
                     <div className="control">
 
@@ -349,117 +349,6 @@ const FormEditParadotea = ({ id, onHide }) => {
     </div>
 
 
-
-
-    //     <div>
-    //     <h1 className='title'>Διαχείριση Παραδοτέων</h1>
-    //     <h2 className='subtitle'>Επεξεργασία Παραδοτέων</h2>
-    //     <div className="card is-shadowless">
-    //         <div className="card-content">
-    //             <div className="content">
-    //             <form onSubmit={updateParadotea}>
-    //                 <p className='has-text-centered'>{msg}</p>
-    //             <div className="field">
-    //                     <label  className="label">ΑΡΙΘΜΟΣ ΠΑΡΑΔΟΤΕΟΥ</label>
-    //                     <div className="control">
-    //                         <input type="text" className="input" value={part_number} onChange={(e)=> setPart_Number(e.target.value)} placeholder='ΑΡΙΘΜΟΣ ΠΑΡΑΔΟΤΕΟΥ'/>
-    //                     </div>
-    //                 </div>
-    //                 <div className="field">
-    //                     <label  className="label">ΤΙΤΛΟΣ ΠΑΡΑΔΟΤΕΟΥ</label>
-    //                     <div className="control">
-    //                         <input type="text" className="input" value={title} onChange={(e)=> setTitle(e.target.value)} placeholder='ΤΙΤΛΟΣ ΠΑΡΑΔΟΤΕΟΥ'/>
-    //                     </div>
-    //                 </div>
-    //                 <div className="field">
-    //                     <label  className="label">ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ</label>
-    //                     <div className="control">
-    //                         <input type="date" className="input" value={delivery_date} onChange={(e)=> setDelivery_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ'/>
-    //                     </div>
-    //                 </div>
-    //                 <div className="field">
-    //                     <label  className="label">ΠΟΣΟΣΤΟ ΕΠΙ ΤΟΥ ΣΥΜΒΑΤΙΚΟΥ</label>
-    //                     <div className="control">
-    //                         <input type="text" className="input" value={percentage} onChange={(e)=> setPercentage(e.target.value)} placeholder='ΠΟΣΟΣΤΟ ΕΠΙ ΤΟΥ ΣΥΜΒΑΤΙΚΟΥ'/>
-    //                     </div>
-    //                 </div>
-
-    //                 <div className="field">
-    //                     <label className="label">Ποσοστό ΦΠΑ</label>
-    //                             <div className="control">
-    //                                 <input type="text" className="input" value={percentage_vat} onChange={handlePercentageChange} placeholder='Ποσοστό ΦΠΑ' />
-    //                             </div>
-    //                     </div>
-
-    //                 <div className="field">
-    //                     <label className="label">ΕΡΓΟ</label>
-    //                     <div className="control">
-    //                         <select className="input" onChange={handleErgaChange} value={erga_id}>
-    //                             <option value="" disabled>Επιλέξτε ΕΡΓΟ</option>
-    //                             {erga.map((ergo, index) => (
-    //                             <option key={index} value={ergo.id}>{ergo.name}</option>
-    //                             ))}
-    //                         </select>
-    //                     </div>
-    //                 </div>
-
-
-
-    //                 <div className="field">
-    //                         <label  className="label">ΑΡΧΙΚΟ ΠΟΣΟ</label>
-    //                         <div className="control">
-    //                             <input type="text" className="input" value={ammount} onChange= {handleAmmountChange} placeholder='ΑΡΧΙΚΟ ΠΟΣΟ'/>
-    //                         </div>
-    //                     </div>
-
-    //                     <div className="field">
-    //                         <label  className="label">ΠΟΣΟ ΦΠΑ</label>
-    //                         <div className="control">
-    //                             <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} readOnly placeholder='ΠΟΣΟ ΦΠΑ'/>
-    //                         </div>
-    //                     </div>
-
-    //                     <div className="field">
-    //                         <label  className="label">ΣΥΝΟΛΙΚΟ ΠΟΣΟ</label>
-    //                         <div className="control">
-    //                             <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} readOnly placeholder='ΣΥΝΟΛΙΚΟ ΠΟΣΟ'/>
-    //                         </div>
-    //                     </div>
-
-    //                     <div className="field">
-    //                         <label  className="label">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1</label>
-    //                         <div className="control">
-    //                             <input type="date" className="input" value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1'/>
-    //                         </div>
-    //                     </div>
-
-    //                     <div className="field">
-    //                         <label  className="label">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2</label>
-    //                         <div className="control">
-    //                             <input type="date" className="input" value={estimate_payment_date_2} onChange={(e)=> setEstimate_Payment_Date_2(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/>
-    //                         </div>
-    //                     </div>
-
-    //                     <div className="field">
-    //                         <label  className="label">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3</label>
-    //                         <div className="control">
-    //                             <input type="date" className="input" value={estimate_payment_date_3} onChange={(e)=> setEstimate_Payment_Date_3(e.target.value)} placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
-    //                         </div>
-    //                     </div>
-
-                    
-                    
-                    
-    //                 <div className="field">
-    //                     <div className="control">
-    //                         <button type="submit" className="button is-success is-fullwidth">Ενημέρωση</button>
-    //                     </div>
-    //                 </div>
-    //             </form>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>
     )
 }
 
