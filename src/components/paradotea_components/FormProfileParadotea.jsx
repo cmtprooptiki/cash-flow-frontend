@@ -119,17 +119,19 @@ const FormProfileParadotea=({ id, onHide }) =>{
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{part_number}</div>
           
         </li>
-        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+        </ul>
+        
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία υποβολής</div>
-            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+            {/* <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1"> */}
 
-            <Calendar value={new Date(delivery_date)} inline showWeek />
+            <Calendar  value={new Date(delivery_date)} inline showWeek />
 
 
-            </div>
+            {/* </div> */}
+     
             <div className="text-500 w-6 md:w-2 font-medium">Εκτιμωμένη Ημερομηνία Πληρωμής</div>
 
-            <div className="w-6 md:w-2 flex justify-content-end">
+            
 
             <TabView>
                 {estimate_payment_date!=null&&(
@@ -149,10 +151,9 @@ const FormProfileParadotea=({ id, onHide }) =>{
                 )}
                 
             </TabView>           
-             </div>
-        </li>
-   
-
+       
+                
+        <ul className="list-none p-0 m-0">
         <li className="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Ποσοστό σύμβασης</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
