@@ -147,10 +147,12 @@ const FormEditEkxorimenoTimologio = ({ id, onHide }) =>
         <div>
         <h1 className='title'>Διαχείριση Εκχωριμένων Τιμολογίων</h1>
         <h2 className='subtitle'>Επεξεργασία Εκχωριμένων Τιμολογίων</h2>
-        <div className="card is-shadowless">
-            <div className="card-content">
+        <div className="grid">
+        <div className="col-12 md:col-6">
+            <div className="card p-fluid">
                 <div className="content">
                 <form onSubmit={UpdateEkxorimenoTimologio}>
+
                     <p className='has-text-centered'>{msg}</p>
                 
 
@@ -265,6 +267,7 @@ const FormEditEkxorimenoTimologio = ({ id, onHide }) =>
                  
                 </form>
                 </div>
+            </div>
             </div>
         </div>
     </div>
