@@ -703,7 +703,7 @@ const [chartOptions, setChartOptions] = useState({
           <div className="flex justify-content-between mb-5">
               <div>
                   <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Παραδοτέων</h6>
-                  <h1 className="m-0 text-gray-800 ">{erga} </h1>
+                  <h1 className="m-0 text-gray-800 ">{paradotea} </h1>
                   <h6 className="m-0 mb-1 text-500 text-green-600">Εχουν τιμολογηθεί:{timPar}</h6>
 
               </div>
