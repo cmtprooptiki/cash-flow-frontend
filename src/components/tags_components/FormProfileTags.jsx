@@ -10,13 +10,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import apiBaseUrl from '../../apiConfig';
 
-const FormProfileTags = () =>
+const FormProfileTags = ({ id, onHide }) =>
 {
     const [name, setName] = useState("");
 
     const[msg,setMsg]=useState("");
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getTagsById = async()=>{

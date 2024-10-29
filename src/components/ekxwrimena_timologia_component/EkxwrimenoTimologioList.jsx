@@ -614,7 +614,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
            </DataTable>
 
-           <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal>
+           <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
             {selectedEkxoriseisId && (selectedType=='Edit') && (
             <FormEditEkxorimenoTimologio id={selectedEkxoriseisId} onHide={() => setDialogVisible(false)} />
             )}

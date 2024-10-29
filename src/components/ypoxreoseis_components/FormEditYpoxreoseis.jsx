@@ -10,7 +10,7 @@ import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
 import { InputNumber } from 'primereact/inputnumber';
 
-const FormEditYpoxreoseis = () => {
+const FormEditYpoxreoseis = ({ id, onHide }) => {
     const [provider, setProvider] = useState("");
     const [erga_id, setErga_Id] = useState(null);
     const [erga, setErga] = useState([]);
@@ -21,7 +21,7 @@ const FormEditYpoxreoseis = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [msg, setMsg] = useState("");
     const [tagError, setTagError] = useState("");
-    const { id } = useParams();
+    // const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -117,7 +117,9 @@ const FormEditYpoxreoseis = () => {
                 ammount_vat: ammount_vat,
                 tags_id: tagIds
             });
-            navigate("/ypoquery");
+            onHide();
+            window.location.reload();
+            // navigate("/ypoquery");
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);

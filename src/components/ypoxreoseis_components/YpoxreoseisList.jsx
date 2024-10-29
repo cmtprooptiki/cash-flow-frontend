@@ -20,6 +20,11 @@ import { Tag } from 'primereact/tag';
 
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
+import { Dialog } from 'primereact/dialog';
+import FormEditParadotea from '../paradotea_components/FormEditParadotea';
+
+import FormEditYpoxreoseis from './FormEditYpoxreoseis';
+import FormProfileYpoxreoseis from './FormProfileYpoxreoseis';
 
 const YpoxreoseisList = () =>
 {
@@ -34,6 +39,10 @@ const YpoxreoseisList = () =>
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
     const [filteredypoxreoseis, setFilteredYpoxreoseis] = useState([]);
+
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedYpoxreoseisId, setSelectedYpoxreoseisId] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -410,30 +419,74 @@ const invoice_dateDateFilterTemplate = (options) => {
     const header = renderHeader();
 
 
-    const actionsBodyTemplate=(rowData)=>{
-        const id=rowData.ypoxreoseis?.id
-        return(
-            <div className=" flex flex-wrap justify-content-center gap-3">
+    // const actionsBodyTemplate=(rowData)=>{
+    //     const id=rowData.ypoxreoseis?.id
+    //     return(
+    //         <div className=" flex flex-wrap justify-content-center gap-3">
                
-            {user && user.role!=="admin" &&(
-                <div>
-                    <Link to={`/ypoquery/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-                </div>
-            )}
-            {user && user.role ==="admin" && (
-            <span className='flex gap-1'>
-                <Link to={`/ypoquery/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-                </Link>
-                <Link to={`/ypoquery/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-                <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteYpoxreoseis(id)} />
-                {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-            </span>
+    //         {user && user.role!=="admin" &&(
+    //             <div>
+    //                 <Link to={`/ypoquery/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
+    //             </div>
+    //         )}
+    //         {user && user.role ==="admin" && (
+    //         <span className='flex gap-1'>
+    //             <Link to={`/ypoquery/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
+    //             </Link>
+    //             <Link to={`/ypoquery/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
+    //             <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteYpoxreoseis(id)} />
+    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
+    //         </span>
            
-            )}
-            </div>
+    //         )}
+    //         </div>
  
+    //     );
+    // }
+    const actionsBodyTemplate = (rowData) => {
+        const id=rowData.ypoxreoseis?.id
+        return (
+            <div className="flex flex-wrap justify-content-center gap-3">
+                {user && user.role !== "admin" && (
+                    <div>
+                        <Link to={`/ypoquery/profile/${id}`} >
+                            <Button severity="info" label="Προφίλ" text raised />
+                        </Link>
+                    </div>
+                )}
+                {user && user.role === "admin" && (
+                    <span className='flex gap-1'>
+                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+
+                            <Button className='action-button' 
+                            icon="pi pi-eye" 
+                            severity="info" 
+
+                            aria-label="User" 
+                            onClick={() => {
+                                setSelectedYpoxreoseisId(id);
+                                setSelectedType('Profile');
+                                setDialogVisible(true);
+                            }}
+                            />
+                        {/* </Link> */}
+                        <Button
+                            className='action-button'
+                            icon="pi pi-pen-to-square"
+                            severity="info"
+                            aria-label="Edit"
+                            onClick={() => {
+                                setSelectedYpoxreoseisId(id);
+                                setSelectedType('Edit');
+                                setDialogVisible(true);
+                            }}
+                        />
+                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteYpoxreoseis(id)} />
+                    </span>
+                )}
+            </div>
         );
-    }
+    };
 
 
 
@@ -484,6 +537,16 @@ const invoice_dateDateFilterTemplate = (options) => {
                 <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }}/>
 
  </DataTable>
+    {/* Dialog for editing Paradotea */}
+    <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>
+        {selectedYpoxreoseisId && (selectedType=='Edit') && (
+        <FormEditYpoxreoseis id={selectedYpoxreoseisId} onHide={() => setDialogVisible(false)}  />
+        )}
+            {selectedYpoxreoseisId && (selectedType=='Profile') && (
+        <FormProfileYpoxreoseis id={selectedYpoxreoseisId} onHide={() => setDialogVisible(false)} />
+        )}
+    </Dialog>
+    
        
     </div>
 

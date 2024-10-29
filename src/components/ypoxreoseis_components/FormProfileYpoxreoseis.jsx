@@ -12,7 +12,7 @@ import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
 
-const FormProfileYpoxreoseis = () =>
+const FormProfileYpoxreoseis = ({ id, onHide }) =>
 {
     const[invoice_date,setInvoice_date]=useState("");
     const[ammount_vat,setAmmount_Vat]=useState("");
@@ -27,7 +27,7 @@ const FormProfileYpoxreoseis = () =>
 
     const navigate = useNavigate();
 
-    const{id} = useParams();
+    // const{id} = useParams();
 
     useEffect(()=>{
         const getYpoxreoseisById = async()=>{
