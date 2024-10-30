@@ -13,7 +13,7 @@ import { TabView, TabPanel } from 'primereact/tabview';
 
 import { Ripple } from 'primereact/ripple';
 
-const FormProfileParadotea=({ id, onHide }) =>{
+const FormProfileParadotea=({ id: propId, onHide }) =>{
     const[part_number,setPart_Number]=useState("");
     const[title,setTitle]=useState("");
     const[delivery_date,setDelivery_Date]=useState("");
@@ -34,7 +34,8 @@ const FormProfileParadotea=({ id, onHide }) =>{
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
-
+    const { id: paramId } = useParams();
+    const id = propId !== undefined ? propId : paramId;
     // const{id} = useParams();
 
     useEffect(()=>{
@@ -222,99 +223,7 @@ const FormProfileParadotea=({ id, onHide }) =>{
 </div>
 </div>
       
-//         <div>
-// 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-// <div className="container">
-//     <div className="row">
-//       <div className="col-lg-5 col-md-6">
-//         <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-//         </div>
-//         <div className="mb-2 d-flex">
 
-//         </div>
-
-        
-        
-//       </div>
-//       <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-//         <div className='box'>
-//           <div className="mb-2 d-flex">
-//             <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >{title}</h2>
-            
-//           </div>
-        
-//         <div className="mb-2 d-flex">
-          
-//           <ul className="list-unstyled">
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΑΡΙΘΜΟΣ ΠΑΡΑΔΟΤΕΟΥ: &nbsp;</span><label className="media-body"> {part_number}</label>
-//             </li>
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ: &nbsp; </span>
-//               <label className="media-body"> {delivery_date}</label>
-//             </li>
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟΣΤΟ ΕΠΙ ΤΟΥ ΣΥΜΒΑΤΙΚΟΥ: &nbsp;</span>
-//               <label className="media-body"> {percentage}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ERGO id: &nbsp;</span>
-//               <label className="media-body"> {erga_id}</label>
-//             </li>
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΤΙΜΟΛΟΓΙΟ id: &nbsp;</span>
-//               <label className="media-body"> {timologia_id}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΑΡΧΙΚΟ ΠΟΣΟ: &nbsp;</span>
-//               <label className="media-body"> {ammount}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΦΠΑ: &nbsp;</span>
-//               <label className="media-body"> {ammount_vat}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΣΥΝΟΛΙΚΟ ΠΟΣΟ: &nbsp;</span>
-//               <label className="media-body"> {ammount_total}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1 : &nbsp;</span>
-//               <label className="media-body"> {estimate_payment_date}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2 : &nbsp;</span>
-//               <label className="media-body"> {estimate_payment_date_2}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3 : &nbsp;</span>
-//               <label className="media-body"> {estimate_payment_date_3}</label>
-//             </li>
-           
-            
-
-//           </ul>
-//         </div>
-        
-       
-          
-
-//           </div>
-    
-//       </div>
-
-
-      
-//     </div>
-//   </div>
-// 		</div>
     );
 }
 

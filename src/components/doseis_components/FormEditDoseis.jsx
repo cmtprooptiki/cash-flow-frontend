@@ -7,7 +7,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-const FormEditDoseis = ({ id, onHide }) =>
+const FormEditDoseis = ({ id: propId, onHide }) =>
 {
     const[ammount,setAmmount]=useState("");
     const[estimate_payment_date,setEstimate_Payment_Date]=useState(null);
@@ -38,8 +38,8 @@ const FormEditDoseis = ({ id, onHide }) =>
     }
 
     const navigate = useNavigate();
-
-    // const{id} = useParams();
+    const { id: paramId } = useParams();
+    const id = propId !== undefined ? propId : paramId;
 
     useEffect(() => {
         const getDoseisById = async()=>{
@@ -92,8 +92,15 @@ const FormEditDoseis = ({ id, onHide }) =>
                 ypoxreoseis_id:ypoxreoseis_id
 
             });
-            onHide();
-            window.location.reload();
+            if(paramId === undefined)
+                {
+                    onHide();
+                    window.location.reload();
+                }
+                else
+                {
+                    navigate(-1);
+                }
             // navigate("/doseis");
         }
         catch(error)
