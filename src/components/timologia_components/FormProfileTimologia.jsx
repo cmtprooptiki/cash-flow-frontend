@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import apiBaseUrl from '../../apiConfig';
 
-const FormProfileTimologia = ({ id, onHide }) => {
+const FormProfileTimologia = ({ id: propId, onHide }) => {
   const[invoice_date,setInvoice_date]=useState("");
   const[ammount_no_tax,setAmmount_no_tax]=useState("");
   const[ammount_tax_incl,setAmmount_Tax_Incl]=useState("");
@@ -36,6 +36,8 @@ const FormProfileTimologia = ({ id, onHide }) => {
     // const navigate = useNavigate();
 
     // const{id} = useParams();
+    const { id: paramId } = useParams();
+    const id = propId !== undefined ? propId : paramId;
 
     useEffect(()=>{
         const getTimologioById = async()=>{
