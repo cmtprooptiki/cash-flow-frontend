@@ -395,7 +395,7 @@ const idBodyTemplate = (rowData) => {
                     
                     <div>
                         {console.log(selectedRowData)}
-                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
+                        <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>
                         <h3>Παραδοτέο</h3>
                         <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
                         </span>
