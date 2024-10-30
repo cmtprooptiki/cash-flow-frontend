@@ -9,7 +9,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 
-const FormEditEkxorimenoTimologio = ({ id, onHide }) =>
+const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState(0);
@@ -25,8 +25,10 @@ const FormEditEkxorimenoTimologio = ({ id, onHide }) =>
 
     const [timologia, setTimologia] = useState([])
     const[msg,setMsg]=useState("");
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const{id} = useParams();
+    const { id: paramId } = useParams();
+    const id = propId !== undefined ? propId : paramId;
 
     const formatDateToInput = (dateString) => {
         console.log("YEEYHAHA: ", dateString)
@@ -118,9 +120,15 @@ const FormEditEkxorimenoTimologio = ({ id, onHide }) =>
                 comments: comments,
 
             });
-
-            onHide();
-            window.location.reload();
+            if(paramId === undefined)
+                {
+                    onHide();
+                    window.location.reload();
+                }
+                else
+                {
+                    navigate(-1);
+                }
 
             // navigate("/ek_tim");
         }

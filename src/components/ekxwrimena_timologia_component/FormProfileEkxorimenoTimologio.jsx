@@ -12,7 +12,7 @@ import { Chip } from 'primereact/chip';
 import { Button } from 'primereact/button';
 
 
-const FormProfileEkxorimenoTimologio = ({ id, onHide }) =>
+const FormProfileEkxorimenoTimologio = ({ id: propId, onHide }) =>
 {
     const[timologia_id,setTimologia_Id]=useState("");
     const[bank_ammount,setBank_Ammount]=useState("");
@@ -37,6 +37,9 @@ const FormProfileEkxorimenoTimologio = ({ id, onHide }) =>
       const [year, month, day] = dateString.split('-');
       return `${year}-${month}-${day}`;
   };
+
+  const { id: paramId } = useParams();
+  const id = propId !== undefined ? propId : paramId;
 
     useEffect(()=>{
         const getEkxorimenoTimologioById = async() =>{
