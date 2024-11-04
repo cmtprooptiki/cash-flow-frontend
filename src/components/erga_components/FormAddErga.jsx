@@ -12,8 +12,8 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
         
-        
-        
+import { format } from 'date-fns';
+
         
 
 
@@ -102,6 +102,12 @@ const FormAddErga = () => {
 
     const navigate = useNavigate();
 
+
+      // Convert dates to UTC format before sending to the server
+      const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
+
     const saveErgo = async (e) =>{
         e.preventDefault();
         try{
@@ -110,18 +116,18 @@ const FormAddErga = () => {
             name:name,
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
-            sign_date:sign_date,
+            sign_date:formatToUTC(sign_date),
             status:status,
-            estimate_start_date:estimate_start_date,
+            estimate_start_date:formatToUTC(estimate_start_date),
             project_manager:project_manager,
             customer_id:customer_id,
             shortname: shortname,
             ammount: ammount,
             ammount_vat: ammount_vat,
             ammount_total: ammount_total,
-            estimate_payment_date: estimate_payment_date,
-            estimate_payment_date_2: estimate_payment_date_2,
-            estimate_payment_date_3: estimate_payment_date_3,
+            estimate_payment_date:formatToUTC( estimate_payment_date),
+            estimate_payment_date_2: formatToUTC(estimate_payment_date_2),
+            estimate_payment_date_3: formatToUTC(estimate_payment_date_3),
             erga_cat_id:erga_cat_id
             },
             {

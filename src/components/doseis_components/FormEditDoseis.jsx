@@ -99,6 +99,8 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                 }
                 else
                 {
+                    window.location.reload();
+
                     navigate(-1);
                 }
             // navigate("/doseis");

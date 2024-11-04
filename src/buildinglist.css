@@ -62,8 +62,8 @@
 
 
 .rbc-toolbar{
-    
-        background: linear-gradient(to right, var(--bluegray-500), var(--bluegray-800)) !important;
+        background:linear-gradient(to right, #1400B9, #00B4D8)!important;
+        /* background: linear-gradient(to right, var(--bluegray-500), var(--bluegray-800)) !important; */
         color: white;
         padding: 30px;
         border-top-right-radius: 6px!important;
