@@ -9,6 +9,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
+import { format } from 'date-fns';
+
+
 
 const FormAddParadotea = () => {
     const[part_number,setPart_Number]=useState("");
@@ -118,6 +121,12 @@ const FormAddParadotea = () => {
         setAmmount_Total((parseFloat(ammount) + vat).toFixed(2));
     };
 
+
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
+
     const saveParadotea = async (e) => {
         e.preventDefault();
         try
@@ -125,16 +134,16 @@ const FormAddParadotea = () => {
             await axios.post(`${apiBaseUrl}/paradotea`, {
                 part_number:part_number,
                 title:title,
-                delivery_date:delivery_date,
+                delivery_date:formatToUTC(delivery_date),
                 percentage:percentage,
                 erga_id:erga_id,
                 timologia_id:timologia_id,
                 ammount:ammount,
                 ammount_vat: ammount_vat,
                 ammount_total:ammount_total,
-                estimate_payment_date: estimate_payment_date,
-                estimate_payment_date_2: estimate_payment_date_2,
-                estimate_payment_date_3: estimate_payment_date_3,
+                estimate_payment_date: formatToUTC(estimate_payment_date),
+                estimate_payment_date_2: formatToUTC( estimate_payment_date_2),
+                estimate_payment_date_3: formatToUTC(estimate_payment_date_3),
                 comments:comments
         });
 

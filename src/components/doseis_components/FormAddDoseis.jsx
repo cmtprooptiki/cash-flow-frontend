@@ -13,6 +13,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
 
 import { Inplace, InplaceDisplay, InplaceContent } from "primereact/inplace"
+import { format } from 'date-fns';
 
 const FormAddDoseis = () => {
     const [ammount, setAmmount] = useState(null);
@@ -115,6 +116,10 @@ const FormAddDoseis = () => {
     }
 
 
+      // Convert dates to UTC format before sending to the server
+      const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
 
     const saveDoseis = async (e) =>{
         const updatedStatus = actual_payment_date ? "yes" : "no";
@@ -123,8 +128,8 @@ const FormAddDoseis = () => {
         try{
             await axios.post(`${apiBaseUrl}/doseis`, {
             ammount:ammount,
-            actual_payment_date:actual_payment_date,
-            estimate_payment_date:estimate_payment_date,
+            actual_payment_date:formatToUTC(actual_payment_date),
+            estimate_payment_date:formatToUTC(estimate_payment_date),
             status:updatedStatus,
             ypoxreoseis_id:ypoxreoseis_id
             });
