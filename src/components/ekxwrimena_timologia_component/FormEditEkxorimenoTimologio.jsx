@@ -8,6 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
+import { format } from 'date-fns';
 
 const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
 {
@@ -98,7 +99,10 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
         getTimologia();
     }, [id]);
 
-
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
     const UpdateEkxorimenoTimologio = async (e) =>
     {
         const updatedStatusBankPaid = bank_date ? "yes" : "no";
@@ -110,11 +114,11 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
             await axios.patch(`${apiBaseUrl}/ek_tim/${id}`, {
                 timologia_id: timologia_id,
                 bank_ammount: bank_ammount,
-                bank_estimated_date:bank_estimated_date,
-                bank_date: bank_date,
+                bank_estimated_date:formatToUTC(bank_estimated_date),
+                bank_date: formatToUTC(bank_date),
                 customer_ammount: customer_ammount,
-                cust_estimated_date:cust_estimated_date,
-                cust_date:cust_date,
+                cust_estimated_date:formatToUTC(cust_estimated_date),
+                cust_date:formatToUTC(cust_date),
                 status_bank_paid:updatedStatusBankPaid,
                 status_customer_paid:updatedStatusCustomerPaid,
                 comments: comments,
