@@ -11,6 +11,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
+import { format } from 'date-fns';
 
 const FormAddDaneia = () => {
     const [name, setName] = useState("");
@@ -23,6 +24,11 @@ const FormAddDaneia = () => {
 
     const navigate = useNavigate();
 
+         // Convert dates to UTC format before sending to the server
+         const formatToUTC = (date) => {
+            return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+        };
+
     const saveDaneia = async (e) =>{
         e.preventDefault();
         const updatedStatus = actual_payment_date ? "yes" : "no";
@@ -31,8 +37,8 @@ const FormAddDaneia = () => {
             name:name,
             ammount:ammount,
             status:updatedStatus,
-            payment_date:payment_date,
-            actual_payment_date:actual_payment_date
+            payment_date:formatToUTC(payment_date),
+            actual_payment_date:formatToUTC(actual_payment_date)
             });
             navigate("/daneia");
         }catch(error){

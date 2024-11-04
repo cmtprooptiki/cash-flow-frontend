@@ -6,7 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-
+import { format } from 'date-fns';
 const FormEditDoseis = ({ id: propId, onHide }) =>
 {
     const[ammount,setAmmount]=useState("");
@@ -77,6 +77,12 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
         getYpoxreoseis();
     }, [id]);
 
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+    return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+};
+
+
     const updateDoseis = async(e) =>{
 
         const updatedStatus = actual_payment_date ? "yes" : "no";
@@ -86,8 +92,8 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
         {
             await axios.patch(`${apiBaseUrl}/doseis/${id}`, {
                 ammount:ammount,
-                actual_payment_date:actual_payment_date,
-                estimate_payment_date: estimate_payment_date,
+                actual_payment_date:formatToUTC(actual_payment_date),
+                estimate_payment_date: formatToUTC(estimate_payment_date),
                 status:updatedStatus,
                 ypoxreoseis_id:ypoxreoseis_id
 

@@ -7,6 +7,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
+import { format } from 'date-fns';
 
 const FormEditDaneia= ({id: propId, onHide}) => {
     const [name, setName] = useState("");
@@ -61,6 +62,12 @@ const FormEditDaneia= ({id: propId, onHide}) => {
         getDaneiaById();
     }, [id]);
 
+         // Convert dates to UTC format before sending to the server
+         const formatToUTC = (date) => {
+            return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+        };
+    
+
     const updateDaneio = async(e) =>{
         e.preventDefault();
         const updateStatus = actual_payment_date ? "yes": "no";
@@ -69,8 +76,8 @@ const FormEditDaneia= ({id: propId, onHide}) => {
                 name:name,
                 ammount:ammount,
                 status:updateStatus,
-                payment_date:payment_date,
-                actual_payment_date:actual_payment_date
+                payment_date:formatToUTC(payment_date),
+                actual_payment_date:formatToUTC(actual_payment_date)
             });
 
             if(paramId === undefined)

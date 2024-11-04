@@ -11,6 +11,8 @@ import { InputNumber } from 'primereact/inputnumber';
 
 import { Divider } from 'primereact/divider';
 
+import { format } from 'date-fns';
+
 const FormEditParadotea = ({ id: propId, onHide }) => {
     const[part_number,setPart_Number]=useState("");
     const[title,setTitle]=useState("");
@@ -42,6 +44,12 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
     // const{id} = useParams();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
+
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
+
 
     useEffect(() => {
         const getParadoteaById = async()=>{
@@ -115,16 +123,16 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
             await axios.patch(`${apiBaseUrl}/paradotea/${id}`, {
                 part_number:part_number,
                 title:title,
-                delivery_date:delivery_date,
+                delivery_date:formatToUTC(delivery_date),
                 percentage:percentage,
                 erga_id:erga_id,
                 timologia_id:timologia_id,
                 ammount:ammount,
                 ammount_vat: ammount_vat,
                 ammount_total:ammount_total,
-                estimate_payment_date: estimate_payment_date,
-                estimate_payment_date_2: estimate_payment_date_2,
-                estimate_payment_date_3: estimate_payment_date_3,
+                estimate_payment_date: formatToUTC(estimate_payment_date),
+                estimate_payment_date_2: formatToUTC(estimate_payment_date_2),
+                estimate_payment_date_3: formatToUTC(estimate_payment_date_3),
                 comments:comments
 
             });
