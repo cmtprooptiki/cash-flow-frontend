@@ -16,6 +16,7 @@ import { Toast } from 'primereact/toast'; // Import Toast component
 import { Tooltip } from 'primereact/tooltip'; // For optional tooltip on info icon
 import { PrimeIcons } from 'primereact/api';  // Import PrimeIcons
 import CustomToast from '../CustomToast';
+import { format } from 'date-fns';
 
 const FormAddTimologia = () => {
 
@@ -119,16 +120,19 @@ const FormAddTimologia = () => {
     };
 
     const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts(selectedParadoteaDetails);
-
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
     const saveTimologia = async (e) =>{
         e.preventDefault();
         try{
             const response = await axios.post(`${apiBaseUrl}/timologia`, {
-            invoice_date:invoice_date,
+            invoice_date:formatToUTC(invoice_date),
 
             ammount_no_tax:totalAmmount,
             ammount_tax_incl:totalAmmountVat,
-            actual_payment_date: actual_payment_date,
+            actual_payment_date: formatToUTC(actual_payment_date),
             ammount_of_income_tax_incl: totalAmmountTotal,
             ammount_parakratisi_eight:	parEightPercent,
             ammount_parakratisi_eforia: parEfor,

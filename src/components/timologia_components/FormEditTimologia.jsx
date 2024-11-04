@@ -11,7 +11,7 @@ import { Calendar } from 'primereact/calendar';
 import { Divider } from 'primereact/divider';
 import CustomToast from '../CustomToast';
 import { InputNumber } from 'primereact/inputnumber';
-
+import { format } from 'date-fns';
 
 
 const FormEditTimologia = ({id: propId, onHide}) => {
@@ -199,15 +199,18 @@ const FormEditTimologia = ({id: propId, onHide}) => {
         const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
         setSelectedParadoteaDetails(selectedDetails);
     },[selectedOptions,id])
-
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
     const updateTimologio = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.patch(`${apiBaseUrl}/timologia/${id}`, {
-                invoice_date: invoice_date,
+                invoice_date: formatToUTC(invoice_date),
                 ammount_no_tax: totalAmmount,
                 ammount_tax_incl: totalAmmountVat,
-                actual_payment_date: actual_payment_date,
+                actual_payment_date: formatToUTC(actual_payment_date),
                 ammount_of_income_tax_incl: totalAmmountTotal,
                 ammount_parakratisi_eight:	parEightPercent,
                 ammount_parakratisi_eforia: parEfor,

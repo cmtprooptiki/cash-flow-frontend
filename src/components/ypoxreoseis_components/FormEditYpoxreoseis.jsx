@@ -9,6 +9,7 @@ import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
 import { InputNumber } from 'primereact/inputnumber';
+import { format } from 'date-fns';
 
 const FormEditYpoxreoseis = ({ id, onHide }) => {
     const [provider, setProvider] = useState("");
@@ -100,7 +101,10 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
             setTagError("");
         }
     };
-
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
     const updateYpoxreoseis = async (e) => {
         e.preventDefault();
         if (selectedTags.length === 0) {
@@ -112,7 +116,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
             await axios.patch(`${apiBaseUrl}/ypoquery/${id}`, {
                 provider: provider,
                 erga_id: erga_id,
-                invoice_date: invoice_date,
+                invoice_date: formatToUTC(invoice_date),
                 total_owed_ammount: total_owed_ammount,
                 ammount_vat: ammount_vat,
                 tags_id: tagIds

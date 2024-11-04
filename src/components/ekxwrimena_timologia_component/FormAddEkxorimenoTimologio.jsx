@@ -11,6 +11,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
+import { format } from 'date-fns';
 
 const FormAddEkxorimenoTimologio = () =>
 {
@@ -61,7 +62,10 @@ const FormAddEkxorimenoTimologio = () =>
 
 
 
-
+    // Convert dates to UTC format before sending to the server
+    const formatToUTC = (date) => {
+        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+    };
     const saveEkxorimena_Timologia = async (e) =>{
         e.preventDefault();
         const updatedStatusBankPaid = bank_date ? "yes" : "no";
@@ -70,11 +74,11 @@ const FormAddEkxorimenoTimologio = () =>
             await axios.post(`${apiBaseUrl}/ek_tim`, {
             timologia_id: timologia_id,
             bank_ammount: bank_ammount,
-            bank_date: bank_date,
-            bank_estimated_date:bank_estimated_date,
+            bank_date: formatToUTC(bank_date),
+            bank_estimated_date:formatToUTC(bank_estimated_date),
             customer_ammount: customer_ammount,
-            cust_date:cust_date,
-            cust_estimated_date:cust_estimated_date,
+            cust_date:formatToUTC(cust_date),
+            cust_estimated_date:formatToUTC(cust_estimated_date),
             status_bank_paid:updatedStatusBankPaid,
             status_customer_paid:updatedStatusCustomerPaid,
             comments: comments,
