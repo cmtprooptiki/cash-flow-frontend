@@ -52,6 +52,7 @@ import { Avatar } from 'primereact/avatar';
 import { Ripple } from 'primereact/ripple';
 import { StyleClass } from 'primereact/styleclass';
 import cmt from "../logocmt.png";
+import cashflow_logo from "../Images/CashFlow logo-0white.png"
 import { ReactComponent as WizardIcon } from '../icons/wizardicon.svg'; // Import the SVG as a React component
 
 import { Toolbar } from "primereact/toolbar";
@@ -111,15 +112,15 @@ const Navbar =()=>{
                 
                 content={({ closeIconRef, hide }) => (
                     <div className="min-h-screen flex relative lg:static surface-ground">
-                        <div id="app-sidebar-2" className="surface-section h-screen block flex-shrink-0 absolute lg:static left-0 top-0 z-1 border-right-1 surface-border select-none" style={{ width: '280px',backgroundImage: 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }}>
+                        <div id="app-sidebar-2" className="surface-section h-screen block flex-shrink-0 absolute lg:static left-0 top-0 z-1 border-right-1 surface-border select-none" style={{ width: '280px',backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)' }}>
                             <div className="flex flex-column h-full">
                                 <div className="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
                                     <img 
-                                      src={cmt}
+                                      src={cashflow_logo}
                                       width="180" 
                                       alt="logo"
                                     />
-                                    <span>
+                                    <span >
                                         <Button type="button" ref={closeIconRef} onClick={(e) => {hide(e)}} icon="pi pi-times" rounded outlined className="h-2rem w-2rem"></Button>
                                     </span>
                                 </div>
@@ -729,7 +730,7 @@ const Navbar =()=>{
       
         <div className="card" >
             <Toolbar start={startContent} center={centerContent} end={endContent} className="bg-gray-900 shadow-2" 
-            style={{ borderRadius: '3rem', backgroundImage: 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }} />
+            style={{ borderRadius: '3rem', backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)' }} />
         </div>
     )
 }

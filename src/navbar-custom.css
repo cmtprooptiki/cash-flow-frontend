@@ -32,7 +32,9 @@ span {
 }
 
 a > div:hover{
-    background-color:rgb(25, 81, 114);
+    background-color:rgb(53, 176, 247);
+
+    /* background-color:rgb(25, 81, 114); */
 }
 a:hover > .wizard-hover {
     background-color:rgb(107, 18, 18);
@@ -53,9 +55,17 @@ a:hover > .wizard-hover {
 .overflow-y-auto::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: rgba(25, 81, 114,0.8); 
+    background:rgb(39, 134, 189);
+
+    /* background: rgba(25, 81, 114,0.8);  */
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 .overflow-y-auto::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(25, 81, 114,0.4);  
+    background:rgb(53, 176, 247);
+
+    /* background: rgba(25, 81, 114,0.4);   */
+}
+
+.pi-times:before {
+    color: white !important;
 }

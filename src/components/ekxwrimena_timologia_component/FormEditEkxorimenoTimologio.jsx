@@ -127,6 +127,8 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
                 }
                 else
                 {
+                    window.location.reload();
+
                     navigate(-1);
                 }
 
