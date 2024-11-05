@@ -339,6 +339,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
  
 
     const {user} = useSelector((state)=>state.auth)
+
+    const clearLocks = () =>
+        {
+            setFrozenColumns([]); // Clear all frozen columns
+        }
     
   
 
@@ -346,6 +351,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+
+                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -677,6 +684,32 @@ const timologiaItemTemplate = (option) => {
     //     );
     // };
 
+    const [frozenColumns, setFrozenColumns] = useState(['erga.name', 'erga.shortname']); // Initially frozen column(s)
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
+
+
     return(
         <div className="card" >
         <h1 className='title'>Παραδοτέα</h1>
@@ -702,11 +735,12 @@ const timologiaItemTemplate = (option) => {
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
-                <Column header="Έργα" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} frozen />  
-                <Column header="Ακρόνυμο έργου" filterField="erga.shortname" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={shortnameBodyTemplate} filter filterElement={shortnameFilterTemplate} frozen />  
+                <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
+                <Column className="font-bold" header={renderColumnHeader('Έργα', 'erga.name')}
+                frozen={frozenColumns.includes('erga.name')} filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                <Column className="font-bold" header={renderColumnHeader('Ακρόνυμο έργου', 'erga.shortname')} filterField="erga.shortname" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
+                    body={shortnameBodyTemplate} filter filterElement={shortnameFilterTemplate} frozen={frozenColumns.includes('erga.shortname')} />  
 
                 <Column field="part_number"  header="Παραδοτέο (Αριθμός)"  filter filterPlaceholder="Search by part number" style={{ minWidth: '12rem' }}></Column>
                 <Column field="title" header="Τίτλος παραδοτέου"  filter filterPlaceholder="Search by title"  style={{ minWidth: '12rem' }}></Column>

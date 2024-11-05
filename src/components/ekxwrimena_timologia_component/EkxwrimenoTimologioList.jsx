@@ -335,12 +335,17 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
 
     const {user} = useSelector((state) => state.auth);
+    const clearLocks = () =>
+        {
+            setFrozenColumns([]); // Clear all frozen columns
+        }
 
 
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -566,6 +571,32 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         );
     }
 
+    const [frozenColumns, setFrozenColumns] = useState(['ErgaName']); // Initially frozen column(s)
+    const [buttonLabel, setButtonLabel] = useState('Unlock All');
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
+
 
 
     return(
@@ -591,9 +622,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     'comments'
                 ]} header={header}
                 emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
-                <Column field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} frozen />
+                <Column className='font-bold' field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: 'black' }} frozen />
                 {/* <Column field="ErgaName" header="Εργο" filter filterPlaceholder="Search by ergo" style={{ minWidth: '5rem' }} /> */}
-                <Column header="Εργο" filterField="ErgaName" alignFrozen="left" frozen showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" alignFrozen="left" frozen={frozenColumns.includes('ErgaName')}  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
                 
                 <Column header="Εκχώρηση (€)" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
@@ -610,7 +641,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="comments" header="Σχόλια"  filter filterPlaceholder="Search by comment"  style={{ minWidth: '12rem' }}></Column>
 
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
+                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}  />
 
            </DataTable>
 
