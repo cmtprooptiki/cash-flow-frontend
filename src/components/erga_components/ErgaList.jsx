@@ -286,11 +286,19 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const {user} = useSelector((state)=>state.auth)
 
+    const clearLocks = () =>
+        {
+            setFrozenColumns([]); // Clear all frozen columns
+        }
+    
+
 
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+
+                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -583,6 +591,31 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         );
     }
 
+
+    const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage', 'shortname']); // Initially frozen column(s)
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
   
 
   return (
@@ -601,10 +634,11 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             emptyMessage="No customers found.">
                                 
 
-        <Column field="name" header="Έργο" alignFrozen="left" frozen filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem' }} />
-        <Column field="logoImage" header="Λογότυπο" alignFrozen="left" frozen body={imageBodyTemplate}></Column>
+        <Column className="font-bold" field="name"  header={renderColumnHeader('Έργο', 'name')}
+                frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} />
+        <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')} alignFrozen="left" frozen={frozenColumns.includes('logoImage')} body={imageBodyTemplate}></Column>
 
-        <Column field="shortname" header="Ακρώνυμο έργου" alignFrozen="left" frozen filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem' }} />
+        <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
 
         <Column header="Κατάσταση έργου" field="status" filter={true} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />

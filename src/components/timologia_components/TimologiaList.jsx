@@ -421,12 +421,18 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
     };
 
+    const clearLocks = () =>
+        {
+            setFrozenColumns([]); // Clear all frozen columns
+        }
+
 
 
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
                 <Button  type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -568,6 +574,31 @@ const invoice_dateDateFilterTemplate = (options) => {
         );
     }
 
+    const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']); // Initially frozen column(s)
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
+
 
 
     return(
@@ -599,12 +630,12 @@ const invoice_dateDateFilterTemplate = (options) => {
                 ]} 
             header={header} 
             emptyMessage="No timologia found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
+                <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="Εργο" filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen 
-                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
+                <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen={frozenColumns.includes('ErgaName')} 
+                    body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} style={{color: 'black'}} />  
                 
-                <Column field="invoice_number"  header="Αρ. τιμολογίου"  filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem' }} frozen ></Column>
+                <Column className="font-bold" field="invoice_number"  header= {renderColumnHeader('Αρ. τιμολογίου', 'invoice_number')} filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem', color: 'black' }} frozen={frozenColumns.includes('invoice_number')} ></Column>
                 <Column header="Ημερομηνία έκδοσης τιμολογίου" filterField="invoice_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}

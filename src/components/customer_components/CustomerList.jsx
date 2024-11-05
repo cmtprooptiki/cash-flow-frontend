@@ -360,19 +360,28 @@ const customerItemTemplate = (option) => {
 
 
 
+
+    const clearLocks = () =>
+    {
+        setFrozenColumns([]); // Clear all frozen columns
+    }
+
+
+
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
                 
+                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
 
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-                <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
             </div>
         );
     };
@@ -425,6 +434,32 @@ const customerItemTemplate = (option) => {
         );
     }
 
+
+    const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage']); // Initially frozen column(s)
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
+
     
 
   return (
@@ -435,11 +470,6 @@ const customerItemTemplate = (option) => {
         <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle"/></Link>
         )}
         <br />
-        <ToggleButton checked={nameFrozen} onChange={(e) => setNameFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Όνομα Πελάτη" offLabel="Όνομα Πελάτη" className = 'small-toggle'/>
-        <br />
-
-        <ToggleButton checked={logoFrozen} onChange={(e) => setLogoFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Λογότυπο Πελάτη" offLabel="Λογότυπο Πελάτη" className = 'small-toggle' />
-        <br />
 <DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
@@ -449,11 +479,11 @@ const customerItemTemplate = (option) => {
                 ]} 
             header={header} 
             emptyMessage="No customers found.">
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} frozen ></Column>
-                <Column field="logoImage" header="Λογότυπο"  body={imageBodyTemplate} frozen={logoFrozen}></Column>
+                <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
+                <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')}  body={imageBodyTemplate} frozen={frozenColumns.includes('logoImage')}></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
-                <Column header="Πελάτης" filterField="name" className="font-bold" 
-                showFilterMatchModes={false} frozen={nameFrozen}
+                <Column header={renderColumnHeader('Πελάτης', 'name')} filterField="name" className="font-bold" 
+                showFilterMatchModes={false} frozen={frozenColumns.includes('name')}
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: "black" }}
                     body={customerBodyTemplate} 
                     filter filterElement={customerFilterTemplate} />  

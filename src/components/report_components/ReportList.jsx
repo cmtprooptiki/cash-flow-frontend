@@ -129,7 +129,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         });
 
         // Step 6: Save the document
-        doc.save('products.pdf');
+        doc.save('reports.pdf');
                         
                     });
                 });
@@ -196,7 +196,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 type: 'array',
             });
     
-            saveAsExcelFile(excelBuffer, 'products');
+            saveAsExcelFile(excelBuffer, 'reports');
         });
     };
     
@@ -291,9 +291,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
 
-            <Button type="button" icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
-            <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-            <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+            <Button className='action-button' type="button" icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
+            <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+            <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
            
             </div>
 
