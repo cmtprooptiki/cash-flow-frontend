@@ -356,10 +356,45 @@ const customerItemTemplate = (option) => {
 };
 
 
+const allColumnFields = ['name', 'logoImage'];
+const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage']); // Initially frozen column(s)
+const allColumnsFrozen = frozenColumns.length === allColumnFields.length;
+const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
 
 
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
 
+    // Function to lock or unlock all columns based on current state
+    const toggleAllColumns = () => {
+        if (allColumnsFrozen) {
+            // Unlock all columns
+            setFrozenColumns([]);
+        } else {
+            // Lock all columns
+            setFrozenColumns(allColumnFields);
+        }
+    }
 
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
 
     const clearLocks = () =>
     {
@@ -373,7 +408,7 @@ const customerItemTemplate = (option) => {
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
                 
-                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
+                <Button type="button" label={buttonLabel} icon={buttonLabel === 'Unlock All Columns' ? 'pi pi-unlock' : 'pi pi-lock'} outlined onClick={toggleAllColumns} />
 
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
@@ -435,30 +470,9 @@ const customerItemTemplate = (option) => {
     }
 
 
-    const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage']); // Initially frozen column(s)
+    // const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage']); // Initially frozen column(s)
 
-    // Function to toggle a column's frozen state
-    const toggleFreezeColumn = (fieldName) => {
-        setFrozenColumns((prev) =>
-            prev.includes(fieldName)
-                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
-                : [...prev, fieldName]                  // Freeze column if not frozen
-        );
-    };
-
-    const renderColumnHeader = (headerText, fieldName) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            
-            <span
-                onClick={() => toggleFreezeColumn(fieldName)}
-                style={{ cursor: 'pointer', marginRight: '8px' }}
-                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
-            >
-                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
-            </span>
-            <span>{headerText}</span>
-        </div>
-    );
+    
 
     
 
@@ -533,6 +547,7 @@ const customerItemTemplate = (option) => {
         </table> */}
     </div>
   )
+
 }
 
 export default CustomerList

@@ -421,10 +421,48 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
     };
 
-    const clearLocks = () =>
-        {
-            setFrozenColumns([]); // Clear all frozen columns
+    // const clearLocks = () =>
+    //     {
+    //         setFrozenColumns([]); // Clear all frozen columns
+    //     }
+
+    const allColumnFields = ['ErgaName', 'invoice_number'];
+    const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']);
+    const allColumnsFrozen = frozenColumns.length === allColumnFields.length;
+    const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
+
+    // Function to toggle a column's frozen state
+    const toggleFreezeColumn = (fieldName) => {
+        setFrozenColumns((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
+                : [...prev, fieldName]                  // Freeze column if not frozen
+        );
+    };
+
+    const toggleAllColumns = () => {
+        if (allColumnsFrozen) {
+            // If all columns are frozen, unlock them
+            setFrozenColumns([]);
+        } else {
+            // If not all columns are frozen, lock all of them
+            setFrozenColumns(allColumnFields);
         }
+    };
+
+    const renderColumnHeader = (headerText, fieldName) => (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            
+            <span
+                onClick={() => toggleFreezeColumn(fieldName)}
+                style={{ cursor: 'pointer', marginRight: '8px' }}
+                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
+            >
+                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
+            </span>
+            <span>{headerText}</span>
+        </div>
+    );
 
 
 
@@ -432,7 +470,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return (
             <div className="flex justify-content-between">
                 <Button  type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-                <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
+                <Button type="button" outlined label={buttonLabel} icon={buttonLabel === 'Unlock All' ? 'pi pi-unlock' : 'pi pi-lock'} onClick={toggleAllColumns} className="p-mb-3" />
                 <IconField iconPosition="left">
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -574,30 +612,9 @@ const invoice_dateDateFilterTemplate = (options) => {
         );
     }
 
-    const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']); // Initially frozen column(s)
+    // const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']); // Initially frozen column(s)
 
-    // Function to toggle a column's frozen state
-    const toggleFreezeColumn = (fieldName) => {
-        setFrozenColumns((prev) =>
-            prev.includes(fieldName)
-                ? prev.filter(col => col !== fieldName) // Unfreeze column if already frozen
-                : [...prev, fieldName]                  // Freeze column if not frozen
-        );
-    };
-
-    const renderColumnHeader = (headerText, fieldName) => (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            
-            <span
-                onClick={() => toggleFreezeColumn(fieldName)}
-                style={{ cursor: 'pointer', marginRight: '8px' }}
-                title={frozenColumns.includes(fieldName) ? 'Unlock Column' : 'Lock Column'}
-            >
-                {frozenColumns.includes(fieldName) ? <i className="pi pi-lock" style={{ fontSize: '1rem' }}></i> : <i className="pi pi-lock-open" style={{ fontSize: '1rem' }}></i>}
-            </span>
-            <span>{headerText}</span>
-        </div>
-    );
+    
 
 
 
