@@ -28,7 +28,8 @@ import { jsPDF } from "jspdf";
 import FormEditErgo from '../erga_components/FormEditErgo'
 import FormProfileErgo from '../erga_components/FormProfileErgo'
 
-
+import { OverlayPanel } from 'primereact/overlaypanel';
+ 
 
 const ErgaList = () => {
     const [erga,setErga]=useState([]);
@@ -293,23 +294,49 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
 
 
+    // const renderHeader = () => {
+    //     return (
+    //         <div className="flex justify-content-between">
+    //             <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
+
+    //             <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
+    //             <IconField iconPosition="left">
+    //                 <InputIcon className="pi pi-search" />
+    //                 <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+    //             </IconField>
+
+    //             <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+    //             <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+           
+    //         </div>
+    //     );
+    // };
+
     const renderHeader = () => {
         return (
-            <div className="flex justify-content-between">
+            <div className="header-container flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-
+    
                 <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search" />
-                    <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-                </IconField>
-
+                
+                {/* Responsive Search Field */}
+                <div className="responsive-search-field">
+                    <IconField iconPosition="left">
+                        <InputIcon className="pi pi-search" />
+                        <InputText
+                            value={globalFilterValue}
+                            onChange={onGlobalFilterChange}
+                            placeholder="Keyword Search"
+                        />
+                    </IconField>
+                </div>
                 <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
                 <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
-           
+                
             </div>
         );
     };
+
 
    
     
@@ -545,7 +572,105 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
     const header = renderHeader();
 
-    const actionsBodyTemplate=(rowData)=>{
+
+
+//
+const ActionsBodyTemplate = (rowData) => {
+    const id = rowData.id;
+    const op = useRef(null);
+    const [hideTimeout, setHideTimeout] = useState(null);
+
+    // Show overlay on mouse over
+    const handleMouseEnter = (e) => {
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            setHideTimeout(null);
+        }
+        op.current.show(e);
+    };
+
+    // Hide overlay with delay on mouse leave
+    const handleMouseLeave = () => {
+        const timeout = setTimeout(() => {
+            op.current.hide();
+        }, 100); // Adjust delay as needed
+        setHideTimeout(timeout);
+    };
+
+    return (
+        <div className="actions-container">
+            {/* Three dots button */}
+            <Button 
+                icon="pi pi-ellipsis-v" 
+                className="p-button-text"
+                aria-label="Actions"
+                onMouseEnter={handleMouseEnter} // Show overlay on hover
+                onMouseLeave={handleMouseLeave} // Start hide timeout on mouse leave
+            />
+
+            {/* OverlayPanel containing action buttons in a row */}
+            <OverlayPanel 
+                ref={op} 
+                onClick={() => op.current.hide()} 
+                dismissable 
+                onMouseLeave={handleMouseLeave} // Hide on overlay mouse leave
+                onMouseEnter={() => {
+                    if (hideTimeout) clearTimeout(hideTimeout);
+                }} // Clear hide timeout on overlay mouse enter
+            >
+                <div className="flex flex-row gap-2">
+                    {/* Only show the Profile button for non-admin users */}
+                    {user && user.role !== "admin" && (
+                        <Link to={`/erga/profile/${id}`}>
+                            <Button icon="pi pi-eye" severity="info" aria-label="User" />
+                        </Link>
+                    )}
+                    
+                    {/* Show all action buttons for admin users */}
+                    {user && user.role === "admin" && (
+                        <>
+                            <Button 
+                            className='action-button'
+                                icon="pi pi-eye"
+                                severity="info"
+                                aria-label="User"
+                                onClick={() => {
+                                    setSelectedErgaId(id);
+                                    setSelectedType('Profile');
+                                    setDialogVisible(true);
+                                }}
+                            />
+                            <Button
+                            className='action-button'
+                                icon="pi pi-pen-to-square"
+                                severity="info"
+                                aria-label="Edit"
+                                onClick={() => {
+                                    setSelectedErgaId(id);
+                                    setSelectedType('Edit');
+                                    setDialogVisible(true);
+                                }}
+                            />
+                            <Button
+                            className='action-button'
+                                icon="pi pi-trash"
+                                severity="danger"
+                                aria-label="Delete"
+                                onClick={() => deleteErga(id)}
+                            />
+                        </>
+                    )}
+                </div>
+            </OverlayPanel>
+        </div>
+    );
+};
+
+
+
+
+
+    const actionsBodyTemplate2=(rowData)=>{
         const id=rowData.id
         return(
             <div className="flex flex-wrap justify-content-center gap-3">
@@ -656,7 +781,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         
         <Column field="customer.name" header="Όνομα Πελάτη" filter={true} filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
         <Column field="erga_category.name" header="Κατηγορία Έργου" filter={true} filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
-        <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
+        <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
         {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
             body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
         {/* <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
