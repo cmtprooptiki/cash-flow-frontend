@@ -23,6 +23,7 @@ import { Calendar } from 'primereact/calendar';
 import { Tag } from 'primereact/tag';
 import robotoData from '../report_components/robotoBase64.json';
 import { jsPDF } from "jspdf";
+import { OverlayPanel } from 'primereact/overlaypanel';
 
 
 const TimologiaList = () => {
@@ -468,13 +469,20 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const renderHeader = () => {
         return (
-            <div className="flex justify-content-between">
+            <div className="header-container flex justify-content-between">
                 <Button  type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
                 <Button type="button" outlined label={buttonLabel} icon={buttonLabel === 'Unlock All' ? 'pi pi-unlock' : 'pi pi-lock'} onClick={toggleAllColumns} className="p-mb-3" />
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search" />
-                    <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-                </IconField>
+                {/* Responsive Search Field */}
+               <div className="responsive-search-field">
+                    <IconField iconPosition="left">
+                        <InputIcon className="pi pi-search" />
+                        <InputText
+                            value={globalFilterValue}
+                            onChange={onGlobalFilterChange}
+                            placeholder="Keyword Search"
+                        />
+                    </IconField>
+                </div>
 
                 <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
                 <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
@@ -566,6 +574,97 @@ const invoice_dateDateFilterTemplate = (options) => {
     const footer = `In total there are ${Timologia ? Timologia.length : 0} timologia.`;
 
     const header = renderHeader();
+
+    const ActionsBodyTemplate = (rowData) => {
+        const id = rowData.id;
+        const op = useRef(null);
+        const [hideTimeout, setHideTimeout] = useState(null);
+    
+        // Show overlay on mouse over
+        const handleMouseEnter = (e) => {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                setHideTimeout(null);
+            }
+            op.current.show(e);
+        };
+    
+        // Hide overlay with delay on mouse leave
+        const handleMouseLeave = () => {
+            const timeout = setTimeout(() => {
+                op.current.hide();
+            }, 100); // Adjust delay as needed
+            setHideTimeout(timeout);
+        };
+    
+        return (
+            <div className="actions-container">
+                {/* Three dots button */}
+                <Button 
+                    icon="pi pi-ellipsis-v" 
+                    className="p-button-text"
+                    aria-label="Actions"
+                    onMouseEnter={handleMouseEnter} // Show overlay on hover
+                    onMouseLeave={handleMouseLeave} // Start hide timeout on mouse leave
+                />
+    
+                {/* OverlayPanel containing action buttons in a row */}
+                <OverlayPanel 
+                    ref={op} 
+                    onClick={() => op.current.hide()} 
+                    dismissable 
+                    onMouseLeave={handleMouseLeave} // Hide on overlay mouse leave
+                    onMouseEnter={() => {
+                        if (hideTimeout) clearTimeout(hideTimeout);
+                    }} // Clear hide timeout on overlay mouse enter
+                >
+                    <div className="flex flex-row gap-2">
+                        {/* Only show the Profile button for non-admin users */}
+                        {user && user.role !== "admin" && (
+                            <Link to={`/timologia/profile/${id}`}>
+                                <Button icon="pi pi-eye" severity="info" aria-label="User" />
+                            </Link>
+                        )}
+                        
+                        {/* Show all action buttons for admin users */}
+                        {user && user.role === "admin" && (
+                            <>
+                                <Button 
+                                className='action-button'
+                                    icon="pi pi-eye"
+                                    severity="info"
+                                    aria-label="User"
+                                    onClick={() => {
+                                        setSelectedTimologiaId(id);
+                                        setSelectedType('Profile');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-pen-to-square"
+                                    severity="info"
+                                    aria-label="Edit"
+                                    onClick={() => {
+                                        setSelectedTimologiaId(id);
+                                        setSelectedType('Edit');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    aria-label="Delete"
+                                    onClick={() => deleteTimologio(id)}
+                                />
+                            </>
+                        )}
+                    </div>
+                </OverlayPanel>
+            </div>
+        );
+    };
 
     const actionsBodyTemplate=(rowData)=>{
         const id=rowData.id
@@ -673,7 +772,7 @@ const invoice_dateDateFilterTemplate = (options) => {
             <Column field="status_paid" header="Κατάσταση τιμολογίου" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
+                <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
 
  </DataTable>
 

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import {Link} from "react-router-dom"
 import axios from 'axios'
 import { useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dialog } from 'primereact/dialog';
 import FormProfileTags from './FormProfileTags';
 import FormEditTags from './FormEditTags';
+import { OverlayPanel } from 'primereact/overlaypanel';
 
 const TagList = ()=>
 {
@@ -99,12 +100,19 @@ const TagList = ()=>
         }
         const renderHeader = () => {
         return (
-            <div className="flex justify-content-between">
+            <div className="header-container flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search" />
-                    <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-                </IconField>
+                  {/* Responsive Search Field */}
+               <div className="responsive-search-field">
+                    <IconField iconPosition="left">
+                        <InputIcon className="pi pi-search" />
+                        <InputText
+                            value={globalFilterValue}
+                            onChange={onGlobalFilterChange}
+                            placeholder="Keyword Search"
+                        />
+                    </IconField>
+                </div>
             </div>
         );
     };
@@ -134,6 +142,98 @@ const TagList = ()=>
  
     //     );
     // }
+
+    const ActionsBodyTemplate = (rowData) => {
+        const id = rowData.id;
+        const op = useRef(null);
+        const [hideTimeout, setHideTimeout] = useState(null);
+    
+        // Show overlay on mouse over
+        const handleMouseEnter = (e) => {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                setHideTimeout(null);
+            }
+            op.current.show(e);
+        };
+    
+        // Hide overlay with delay on mouse leave
+        const handleMouseLeave = () => {
+            const timeout = setTimeout(() => {
+                op.current.hide();
+            }, 100); // Adjust delay as needed
+            setHideTimeout(timeout);
+        };
+    
+        return (
+            <div className="actions-container">
+                {/* Three dots button */}
+                <Button 
+                    icon="pi pi-ellipsis-v" 
+                    className="p-button-text"
+                    aria-label="Actions"
+                    onMouseEnter={handleMouseEnter} // Show overlay on hover
+                    onMouseLeave={handleMouseLeave} // Start hide timeout on mouse leave
+                />
+    
+                {/* OverlayPanel containing action buttons in a row */}
+                <OverlayPanel 
+                    ref={op} 
+                    onClick={() => op.current.hide()} 
+                    dismissable 
+                    onMouseLeave={handleMouseLeave} // Hide on overlay mouse leave
+                    onMouseEnter={() => {
+                        if (hideTimeout) clearTimeout(hideTimeout);
+                    }} // Clear hide timeout on overlay mouse enter
+                >
+                    <div className="flex flex-row gap-2">
+                        {/* Only show the Profile button for non-admin users */}
+                        {user && user.role !== "admin" && (
+                            <Link to={`/tags/profile/${id}`}>
+                                <Button icon="pi pi-eye" severity="info" aria-label="User" />
+                            </Link>
+                        )}
+                        
+                        {/* Show all action buttons for admin users */}
+                        {user && user.role === "admin" && (
+                            <>
+                                <Button 
+                                className='action-button'
+                                    icon="pi pi-eye"
+                                    severity="info"
+                                    aria-label="User"
+                                    onClick={() => {
+                                        setSelectedTagId(id);
+                                        setSelectedType('Profile');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-pen-to-square"
+                                    severity="info"
+                                    aria-label="Edit"
+                                    onClick={() => {
+                                        setSelectedTagId(id);
+                                        setSelectedType('Edit');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    aria-label="Delete"
+                                    onClick={() => deleteTags(id)}
+                                />
+                            </>
+                        )}
+                    </div>
+                </OverlayPanel>
+            </div>
+        );
+    };
+
 
 
     const actionsBodyTemplate = (rowData) => {
@@ -203,7 +303,7 @@ const TagList = ()=>
                     emptyMessage="No doseis found.">
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column field="name" header="Όνομα Ετικέτας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
-                <Column header="Ένέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen/>
+                <Column header="Ένέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen/>
         </DataTable>
 
         <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>

@@ -290,10 +290,10 @@ const FormEditErgo= ({id, onHide}) => {
                     <p className='has-text-centered'>{msg}</p>
 
                     <div className="grid">
+                    <div className="col-12 md:col-6">
                         <div className="card p-fluid">
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεια Έργου</span></Divider></div>
                         
-                            <div className="">
                                 <div className="field">
                                     <label  className="label">Εργο</label>
                                     <div className="control">
@@ -393,10 +393,10 @@ const FormEditErgo= ({id, onHide}) => {
                                     </div>
                                 </div>
                                 
-                           
+                                
 
                             </div>
-                        </div>
+                        
                         <div className="card p-fluid">
                         <div className=""><Divider><span className="p-tag text-lg">Εκτιμήσεις</span></Divider></div>
                                 
@@ -411,21 +411,23 @@ const FormEditErgo= ({id, onHide}) => {
                         </div>
 
 
+                        </div>        
+                        
 
                         </div>
-
                         </div>
                       
                         {/* <Divider align="center">
                             <span className="p-tag text-lg">Εκτιμήσεις</span>
                         </Divider> */}
-                    <div className='col-12 md:col-6'>
+                    {/* <div className='card p-fluid'> */}
+                    <div className="col-12 md:col-6">
                     <div className="card p-fluid">
                         <div className=""><Divider align="center"><span className="p-tag text-lg">Ποσό Πληρωμής</span></Divider></div>
                                 
                         <div>
 
-                        <div className="field ">
+                        <div className="field">
                             <label  className="label">Ποσό (καθαρή αξία)</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
@@ -451,23 +453,23 @@ const FormEditErgo= ({id, onHide}) => {
 
                             </div>
                         </div>
+
+                        
                        
                         <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>
                             </div>
                         </div>
-
                         </div>
 
                         </div>
                         
-            
+                        </div>
+                        </div>
 
                        
-                       
-                    </div>
-                    </div>
+                    
 
                  
                 </form>
