@@ -123,6 +123,9 @@ const KpisDashboard = () => {
 //pie chart 
 const [chartSeries, setChartSeries] = useState([]);
 
+const [chartSeries_p1, setChartSeriesP1] = useState([]);
+
+
 const [chartSeries4, setChartSeries4] = useState([]);
 
 const [chartOptions4, setChartOptions4] = useState({
@@ -183,6 +186,26 @@ const [chartOptions, setChartOptions] = useState({
    
   });
 
+
+  const [chartOptionsP1, setChartOptionsP1] = useState({
+    chart: {
+      type: 'pie',
+      width: 380,
+      height:350,
+    },
+    labels: [],
+    title: {
+        text: 'Πλήθος Έργων ανα Κατάσταση', // Title of the chart
+        align: 'center', // Aligning the title to the center
+        style: {
+          fontFamily:'Helvetica, Arial, sans-serif',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: '#333',
+        },
+      },
+   
+  });
 
 
 
@@ -348,7 +371,7 @@ const [chartOptions, setChartOptions] = useState({
             }
         }));
 
-        setChartSeries3([{ name: 'Amounts', data: parAmounts }]);
+        setChartSeries3([{ name: 'Ποσό', data: parAmounts }]);
 
         // Extract unique ids
         const uniqueIds = [...new Set(paraData.map(item => item.id))];
@@ -372,6 +395,7 @@ const [chartOptions, setChartOptions] = useState({
 
 
     // Count the number of projects for each erga_category.name
+    //Pie categories
     const categoryCounts = ergaData.reduce((acc, item) => {
         const categoryName = item.erga_category ? item.erga_category.name : 'Χωρίς Κατηγορία';
         if (!acc[categoryName]) {
@@ -395,6 +419,33 @@ const [chartOptions, setChartOptions] = useState({
       }));
 
       setChartSeries(ergaCounts2);
+
+      //Pie data for status count erga
+
+       // Count the number of projects for each erga_category.name
+    const categoryCountsStatus = ergaData.reduce((acc, item) => {
+      const categoryNameStatus = item.status ? item.status : 'Χωρίς Κατάσταση';
+      if (!acc[categoryNameStatus]) {
+        acc[categoryNameStatus] = 0;
+      }
+      acc[categoryNameStatus] += 1; // Increment count for each project in the category
+      return acc;
+    }, {});
+
+    // Prepare data for the chart
+    const ergaNamesStatus = Object.keys(categoryCountsStatus); // erga_category.name as labels
+    const ergaCountsStatus = Object.values(categoryCountsStatus); // count of projects as data
+
+    console.log("Erga Categories:", ergaNamesStatus);
+    console.log("Project Counts:", ergaCountsStatus);
+
+    // Update the chart options and series
+    setChartOptionsP1(prevOptions => ({
+      ...prevOptions,
+      labels: ergaNamesStatus
+    }));
+
+    setChartSeriesP1(ergaCountsStatus);
     
             // Extract names and amounts
             const ergaNames = ergaData.map(item => item.name);
@@ -828,6 +879,16 @@ const [chartOptions, setChartOptions] = useState({
             options={chartOptions4} 
             series={chartSeries4} 
             type="bar" 
+            height={350} 
+      />  </div>
+  </div>
+
+  <div className="col-12 xl:col-6 lg:col-3">
+<div className="card">
+<ApexCharts
+            options={chartOptionsP1} 
+            series={chartSeries_p1} 
+            type="pie" 
             height={350} 
       />  </div>
   </div>
