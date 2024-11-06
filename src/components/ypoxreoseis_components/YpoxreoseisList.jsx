@@ -25,6 +25,7 @@ import FormEditParadotea from '../paradotea_components/FormEditParadotea';
 
 import FormEditYpoxreoseis from './FormEditYpoxreoseis';
 import FormProfileYpoxreoseis from './FormProfileYpoxreoseis';
+import { OverlayPanel } from 'primereact/overlaypanel';
 
 const YpoxreoseisList = () =>
 {
@@ -387,12 +388,19 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const renderHeader = () => {
         return (
-            <div className="flex justify-content-between">
+            <div className="header-container flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search" />
-                    <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-                </IconField>
+                  {/* Responsive Search Field */}
+               <div className="responsive-search-field">
+                    <IconField iconPosition="left">
+                        <InputIcon className="pi pi-search" />
+                        <InputText
+                            value={globalFilterValue}
+                            onChange={onGlobalFilterChange}
+                            placeholder="Keyword Search"
+                        />
+                    </IconField>
+                </div>
 
                 <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
                 <Button className='action-button'  type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
@@ -443,6 +451,99 @@ const invoice_dateDateFilterTemplate = (options) => {
  
     //     );
     // }
+
+    const ActionsBodyTemplate = (rowData) => {
+        const id = rowData.ypoxreoseis?.id;
+        const op = useRef(null);
+        const [hideTimeout, setHideTimeout] = useState(null);
+    
+        // Show overlay on mouse over
+        const handleMouseEnter = (e) => {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                setHideTimeout(null);
+            }
+            op.current.show(e);
+        };
+    
+        // Hide overlay with delay on mouse leave
+        const handleMouseLeave = () => {
+            const timeout = setTimeout(() => {
+                op.current.hide();
+            }, 100); // Adjust delay as needed
+            setHideTimeout(timeout);
+        };
+    
+        return (
+            <div className="actions-container">
+                {/* Three dots button */}
+                <Button 
+                    icon="pi pi-ellipsis-v" 
+                    className="p-button-text"
+                    aria-label="Actions"
+                    onMouseEnter={handleMouseEnter} // Show overlay on hover
+                    onMouseLeave={handleMouseLeave} // Start hide timeout on mouse leave
+                />
+    
+                {/* OverlayPanel containing action buttons in a row */}
+                <OverlayPanel 
+                    ref={op} 
+                    onClick={() => op.current.hide()} 
+                    dismissable 
+                    onMouseLeave={handleMouseLeave} // Hide on overlay mouse leave
+                    onMouseEnter={() => {
+                        if (hideTimeout) clearTimeout(hideTimeout);
+                    }} // Clear hide timeout on overlay mouse enter
+                >
+                    <div className="flex flex-row gap-2">
+                        {/* Only show the Profile button for non-admin users */}
+                        {user && user.role !== "admin" && (
+                            <Link to={`/ypoquery/profile/${id}`}>
+                                <Button icon="pi pi-eye" severity="info" aria-label="User" />
+                            </Link>
+                        )}
+                        
+                        {/* Show all action buttons for admin users */}
+                        {user && user.role === "admin" && (
+                            <>
+                                <Button 
+                                className='action-button'
+                                    icon="pi pi-eye"
+                                    severity="info"
+                                    aria-label="User"
+                                    onClick={() => {
+                                        setSelectedYpoxreoseisId(id);
+                                        setSelectedType('Profile');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-pen-to-square"
+                                    severity="info"
+                                    aria-label="Edit"
+                                    onClick={() => {
+                                        setSelectedYpoxreoseisId(id);
+                                        setSelectedType('Edit');
+                                        setDialogVisible(true);
+                                    }}
+                                />
+                                <Button
+                                className='action-button'
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    aria-label="Delete"
+                                    onClick={() => deleteYpoxreoseis(id)}
+                                />
+                            </>
+                        )}
+                    </div>
+                </OverlayPanel>
+            </div>
+        );
+    };
+
+
     const actionsBodyTemplate = (rowData) => {
         const id=rowData.ypoxreoseis?.id
         return (
@@ -534,7 +635,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
         
                
-                <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}/>
+                <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}/>
 
  </DataTable>
     {/* Dialog for editing Paradotea */}

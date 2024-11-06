@@ -156,17 +156,18 @@ const FormAddErga = () => {
   return (
     <div>
         <h1 className='title'>Προσθήκη Έργου</h1>
-        <div className="card is-shadowless">
-            <div className="card-content">
-                <div className="content">
-                <form onSubmit={saveErgo}>
-                    <p className='has-text-centered'>{msg}</p>
-                    <div className="grid nested-grid">
-                        <div className="col-4 card is-shadowless">
+        <form onSubmit={saveErgo}>
+        <div className="grid">
+            <div className="col-12 md:col-6">
+                {/* <div className="content">
+               
+                    <p className='has-text-centered'>{msg}</p> */}
+                    <div className="card p-fluid">
+                        {/* <div className="col-4 card is-shadowless"> */}
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Έργου</span></Divider></div>
                         
-                            <div className="grid card-content">
-                                <div className="field col-6">
+                            {/* <div className="grid card-content"> */}
+                                <div className="field">
                                     <label  className="label">Έργο</label>
                                     <div className="control">
                                         {/* <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'/> */}
@@ -174,14 +175,14 @@ const FormAddErga = () => {
                                     </div>
                                 </div>
 
-                                <div className="field col-6">
+                                <div className="field">
                                 <label className="label">Λογότυπο Έργου</label> {/* New field for profile image */}
                                 <div className="control">
                                     <input type="file" className="input" onChange={(e) => setLogoImage(e.target.files[0])} accept="image/*" />
                                 </div>
-                            </div>
+                            
 
-                                <div className="field col-6">
+                                <div className="field">
                                     <label  className="label">Χρώμα</label>
                                     <div className="control">
                                     {/* <SketchPicker color={color} onChange={handleColorChange} /> */}
@@ -196,7 +197,7 @@ const FormAddErga = () => {
 
                                     </div>
                                 </div> */}
-                                <div className="field col-6">
+                                <div className="field">
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">
                                         
@@ -207,7 +208,7 @@ const FormAddErga = () => {
                                     </div>
                                 </div>
 
-                                <div className="field col-6">
+                                <div className="field">
                                     <label  className="label">Project Μanager</label>
                                     <div className="control">
                                         {/* <input type="text" className="input" value={project_manager} onChange={(e)=> setProjectManager(e.target.value)} placeholder='PROJECT MANAGER'/> */}
@@ -216,7 +217,7 @@ const FormAddErga = () => {
                                     </div>
                                 </div>
 
-                                <div className="field col-6">
+                                <div className="field">
                                 <label className="label">Όνομα Πελάτη</label>
                                         <div className="control">
                                             {/* <select className="input" onChange={(e) => handleCustomerChange(e)} defaultValue="">
@@ -230,7 +231,7 @@ const FormAddErga = () => {
                                         </div>
                                 </div>
 
-                                <div className="field col-6">
+                                <div className="field">
                                     <label  className="label">Ακρώνυμο Έργου</label>
                                     <div className="control">
                                         {/* <input type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/> */}
@@ -241,7 +242,7 @@ const FormAddErga = () => {
 
                                 
 
-                                <div className="field col-6 ">
+                                <div className="field">
                                     <label className="label" >Κατηγορία Έργου</label>
                                         <div className="control">
                                             {/* <select className="input" onChange={(e) => handleCategoryChange(e)} defaultValue="">
@@ -261,26 +262,33 @@ const FormAddErga = () => {
 
                             </div>
                         </div>
+
+                        <div className="card p-fluid">
+                    <div className=""><Divider><span className="p-tag text-lg">Ημερομηνίες</span></Divider></div>
+                <div className="formgrid grid">
                         
-                        <div className="field col-4">
+                        <div className="field col-12 md:col-8">
                             <label  className="label">Ημερομηνία υπογραφής σύμβασης</label>
                             <div className="control">
                                 {/* <input type="date" className="input" value={sign_date} onChange={(e)=> setSignDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/> */}
                                 <Calendar value={sign_date} onChange={(e) => setSignDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
                             </div>
                         </div>
-                        <div className="field col-4">
+                        <div className="field col-12 md:col-8">
                             <label  className="label">Ημερομηνία έναρξης (εκτίμηση)</label>
                             <div className="control">
                                 {/* <input type="date" className="input" value={estimate_start_date} onChange={(e)=> setEstimateStartDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/> */}
                                 <Calendar value={estimate_start_date} onChange={(e) => setEstimateStartDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/>
                             </div>
                         </div>
+                        </div>
+                        </div>
+                        </div>  
                         {/* <Divider align="center">
                             <span className="p-tag text-lg">Εκτιμήσεις</span>
                         </Divider> */}
-                        <div className="col-12">
-                            <div className="grid">
+                        <div className="col-12 md:col-6">
+                            <div className="card p-fluid">
                                 {/* <div className="field col-4">
                                     <label  className="label">Ημερομηνία πληρωμής (εκτίμηση)</label>
                                     <div className="control">
@@ -308,12 +316,12 @@ const FormAddErga = () => {
                         </div>
                                 </div> */}
                                 
-                            </div>
-                        </div>
+                                
                         <Divider align="center">
                             <span className="p-tag text-lg">Ποσό Πληρωμής</span>
                         </Divider>
-                        <div className="field col-4">
+                        <div>
+                        <div className="field">
                             <label  className="label">Ποσό  (καθαρή αξία)</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
@@ -322,7 +330,7 @@ const FormAddErga = () => {
                             </div>
                         </div>
 
-                        <div className="field col-4">
+                        <div className="field">
                             <label  className="label">Ποσό ΦΠΑ</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/> */}
@@ -331,7 +339,7 @@ const FormAddErga = () => {
                             </div>
                         </div>
 
-                        <div className="field col-4">
+                        <div className="field">
                             <label  className="label">Σύνολο</label>
                             <div className="control">
                                 {/* <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/> */}
@@ -340,18 +348,20 @@ const FormAddErga = () => {
                             </div>
                         </div>
                        
-                        <div className="field col-offset-11">
+                        <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                             </div>
                         </div>
-                    </div>
+                    {/* </div> */}
                     
+                    </div>
+                    </div>
+                    </div>
                 
-                </form>
-                </div>
-            </div>
+          
         </div>
+        </form>
     </div>
   )
 }
