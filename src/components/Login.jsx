@@ -127,7 +127,7 @@ const Login = () => {
                     
                 </div>
             </div>
-            <div className="login-gif-section">
+            <div className="login-gif-section visible-gif">
                 <img src={animatedGif} alt="Animated GIF" className="responsive-gif" />
             </div>
         </div>

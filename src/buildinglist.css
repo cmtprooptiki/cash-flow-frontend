@@ -190,3 +190,31 @@
 }
 
 
+.actions-container .p-overlaypanel .flex {
+    flex-direction: row; /* Set the direction to horizontal */
+    gap: 0.5rem; /* Add spacing between buttons */
+    align-items: center;
+    
+}
+
+
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .responsive-search-field {
+        width: 100%;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Ensure the input text field is full-width on mobile */
+    .responsive-search-field .p-inputtext {
+        width: 100%;
+    }
+}
