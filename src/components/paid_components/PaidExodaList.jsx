@@ -124,7 +124,7 @@ const PaidExodaList = () => {
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            name: { value: null, matchMode: FilterMatchMode.IN },
+            provider: { value: null, matchMode: FilterMatchMode.EQUALS }
 
         });
         setGlobalFilterValue('');
@@ -171,6 +171,7 @@ const formatCurrency = (value) => {
 };
 
 const ammountBodyTemplate = (rowData) => {
+    console.log("hehehe",rowData.income)
     return formatCurrency(rowData.income);
 };
 
@@ -202,8 +203,9 @@ const statusBodyTemplate = (rowData) => {
 
 const NameBodyTemplate = (rowData) =>
 {
-    console.log("RRR data: ", rowData)
-    const provider_name = rowData.provider || 'N/A';  
+    
+    const provider_name = rowData.provider || 'N/A';
+    console.log("RRR data: ", provider_name)  
     return (
         <div className="flex align-items-center gap-2">
             {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
@@ -214,9 +216,19 @@ const NameBodyTemplate = (rowData) =>
 
 const NameFilterTemplate = (options) =>
 {
-    console.log("Provider Options in Filter: ", provider);
+    console.log("Provider Options in Filter: ", options.value);
     // return <Dropdown value={options.value} options={provider} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={NameBodyTemplate} placeholder="Select One" className="p-column-filter" showClear />;
-    return (<Dropdown value={options.value} options={provider} itemTemplate={NameItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    return (<Dropdown
+        value={options.value}
+        options={provider}
+        onChange={(e) => {
+            console.log("Selected providerrrrrrrrrrr:", e.value); // Log the selected value
+            options.filterCallback(e.value); // Apply filter with selected value
+        }}
+        placeholder="Any"
+        className="p-column-filter"
+        showClear
+    />);
 }
 
 const NameItemTemplate = (option) =>
@@ -283,7 +295,7 @@ const idBodyTemplate = (rowData) => {
             // ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
             // ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
             // ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: item.ammount , type: 'doseis', id: item.id, provider: item.ypoxreosei?.provider?.trim() || 'N/A' }))
+            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.id, provider: item.ypoxreosei?.provider?.trim() || 'N/A' }))
         ];
         console.log("Combined Data: ", combinedData2);
         setCombinedData(combinedData2)
@@ -329,7 +341,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type', 'name','id']}
+            globalFilterFields={['date', 'income', 'type', 'provider','id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
@@ -340,7 +352,7 @@ const idBodyTemplate = (rowData) => {
                 {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
                 <Column filterField="income" header="Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Τύπος Εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column  filterField="name" header="Περιγραφή"
+                <Column  filterField="provider" header="Περιγραφή"
                 showFilterMatchModes={false} 
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={NameBodyTemplate} 
