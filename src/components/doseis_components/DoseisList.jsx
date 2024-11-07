@@ -597,6 +597,9 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         {user && user.role ==="admin" && (
         <Link to={"/doseis/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
         )}
+        {user && user.role ==="admin" && (
+        <Link to={"/doseis/multiAdd"} className='button is-primary mb-2'><Button label="Προσθήκη Πολλαπλών Δόσεων" icon="pi pi-plus-circle"/></Link>
+        )}
 
 
 {/* scrollable scrollHeight="600px" */}

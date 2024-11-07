@@ -120,6 +120,8 @@ import BudgetFormPage from "./pages/budget_pages/BudgetFormPage";
 
 import KpisDashboard from "./pages/KpisDashboard";
 import Reports from "./pages/report_pages/Reports";
+import AddMultiDoseis from "./pages/doseis_pages/AddMultiDoseis.jsx";
+
 function App() {
   const value = {
     ripple: true,
@@ -204,6 +206,7 @@ function App() {
           <Route path="/doseis" element={<Doseis/>}></Route>
 
           <Route path="/doseis/add" element={<AddDoseis/>}></Route>
+          <Route path="/doseis/multiAdd" element={<AddMultiDoseis/>}></Route>
 
           <Route path="/doseis/edit/:id" element={<EditDoseis/>}></Route>
 
