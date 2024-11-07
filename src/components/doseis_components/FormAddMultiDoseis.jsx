@@ -17,8 +17,8 @@ import { format } from 'date-fns';
 
 const FormAddMultiDoseis = () => {
     const [ammount, setAmmount] = useState(null);
-    const [actual_payment_date,setActual_Payment_Date] = useState(null)
-    const [estimate_payment_date, setEstimate_Payment_Date] = useState("")
+    const [paramEndDate,setparamEndDate] = useState(null)
+    const [paramStartDate, setParamStartDate] = useState("")
     const [status,setStatus] = useState("no")
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
     const [doseis,setdoseis]=useState([])
@@ -66,6 +66,7 @@ const FormAddMultiDoseis = () => {
 
     //used for ammount to check the limit required for ypoxreoseis
     useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
+    useEffect(() => { console.log("status updated ",paramStatus) }, [paramStatus])
     const CalculateMax= (event)=>{
         const sumYpo=Number(totalOwedAmmount)+Number(ammountVat)
         var sumdoseis=0
@@ -125,20 +126,22 @@ const FormAddMultiDoseis = () => {
 
       // Convert dates to UTC format before sending to the server
       const formatToUTC = (date) => {
-        return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+        // return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
+        return date ? format(date, "yyyy-MM-dd'") : null;
     };
 
     const saveDoseis = async (e) =>{
-        const updatedStatus = actual_payment_date ? "yes" : "no";
+        const updatedStatus = paramEndDate ? "yes" : "no";
 
         e.preventDefault();
         try{
-            await axios.post(`${apiBaseUrl}/doseis`, {
-            ammount:ammount,
-            actual_payment_date:formatToUTC(actual_payment_date),
-            estimate_payment_date:formatToUTC(estimate_payment_date),
-            status:updatedStatus,
-            ypoxreoseis_id:ypoxreoseis_id
+            await axios.post(`${apiBaseUrl}/multidoseis`, {
+            paramAmmount:ammount,
+            paramStartDate:formatToUTC(paramStartDate),
+            paramEndDate:formatToUTC(paramEndDate),
+            paramStatus:paramStatus.name,
+            paramYpoxreoseisId:parseInt(ypoxreoseis_id),
+            paramDay:paramDay
             });
             navigate("/doseis");
         }catch(error){
@@ -150,7 +153,7 @@ const FormAddMultiDoseis = () => {
 
     const clearDate = (e) => {
         e.preventDefault();  // Prevent form submission
-        setActual_Payment_Date(null); // Clear the calendar date
+        setparamEndDate(null); // Clear the calendar date
     };
 
 
@@ -163,7 +166,7 @@ const FormAddMultiDoseis = () => {
     return(
 
         <div >
-        <h1 className='title'>Προσθήκη Δόσης</h1>
+        <h1 className='title'>Προσθήκη Δόσεων</h1>
       <form onSubmit={saveDoseis}>
       <div className="grid">
       <div className="col-12 md:col-6">
@@ -202,21 +205,21 @@ const FormAddMultiDoseis = () => {
               </div>
 
                 <div className="field">
-                    <label htmlFor="estimate_payment_date">Εκτιμώμενη ημερομηνία πληρωμής</label>
+                    <label htmlFor="estimate_payment_date">Επιλέξτε ημερομηνία Δόσης απο : </label>
                     <div className="control">
 
                     {/* <Calendar id="estimate_payment_date"  value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} inline showWeek /> */}
-                    <Calendar id="paramaStartDate" value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} showIcon />
+                    <Calendar id="paramaStartDate" value={paramStartDate} onChange={(e)=> setParamStartDate(e.target.value)} showIcon />
                     </div>
                 </div>
 
 
                 <div className="field">
-                    <label htmlFor="actual_payment_date">Πραγματική ημερομηνία πληρωμής</label>
+                    <label htmlFor="actual_payment_date">έως</label>
                     <div className="control">
 
                     {/* <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek /> */}
-                    <Calendar id="paramaEndDate" value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} showIcon />
+                    <Calendar id="paramaEndDate" value={paramEndDate ? new Date(paramEndDate) : null} onChange={(e)=> setparamEndDate(e.target.value)} showIcon />
 
                     </div>
                     
@@ -235,7 +238,7 @@ const FormAddMultiDoseis = () => {
                 </div> */}
             
                 <div className="field">
-                  <label htmlFor="name1">Μερα Πληρωμης</label>
+                  <label htmlFor="name1">Μερα Πληρωμης Δόσης</label>
                   <div className="control">
 
                   {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
@@ -250,7 +253,7 @@ const FormAddMultiDoseis = () => {
                   <div className="control">
 
                   <Dropdown value={paramStatus} onChange={(e) => setParamStatus(e.value)} options={statusOptions} optionLabel="name" 
-                placeholder="Select a City" className="w-full md:w-14rem" />
+                placeholder="Επιλέξτε κατάσταση Δόσης" className="w-full md:w-14rem" />
 
 
                   </div>
