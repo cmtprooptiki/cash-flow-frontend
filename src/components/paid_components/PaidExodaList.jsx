@@ -61,8 +61,8 @@ const PaidExodaList = () => {
     }
     const getYpoxreoseis = async() =>
     {
-        const response = await axios.get(`${apiBaseUrl}/ypo`, {timeout: 5000})
-        const uniqueNames = [...new Set(response.data.map(item => item.provider || 'N/A'))];
+        const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
+        const uniqueNames = [...new Set(response.data.filter(item=>item.status==="no").map(item => item.ypoxreosei.provider || 'N/A'))];
         console.log("Unique names:",uniqueNames);
         setProvider(uniqueNames);
         // setCustomer(response.data);

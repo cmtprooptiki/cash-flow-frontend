@@ -33,6 +33,8 @@ const DoseisList = () => {
     const [ypoxreoseis, setYpoxreoseis]=useState([]);
     const {user} = useSelector((state) => state.auth)
     const [statuses] = useState(['yes', 'no']);
+    const [filtercalled,setfiltercalled]=useState(false)
+    const [totalincome, setTotalIncome] = useState(0)
 
     const [filteredDoseis, setFilteredDoseis] = useState([]);
 
@@ -544,6 +546,33 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
  
     //     );
     // }
+
+    const calculateTotalIncome = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ammount), 0);
+    };
+
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        // console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ammount || 0)), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+    };
+
+    useEffect(() => {
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(doseis)));
+        }
+        
+    }, [doseis]);
+
     const actionsBodyTemplate = (rowData) => {
         const id = rowData.id;
         return (
@@ -603,7 +632,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
 
 {/* scrollable scrollHeight="600px" */}
-<DataTable value={doseis} ref = {dt} onValueChange={(doseis) => setFilteredDoseis(doseis)} paginator stripedRows
+<DataTable value={doseis} ref = {dt} onValueChange={(doseis) => {setFilteredDoseis(doseis); handleValueChange(doseis)}} paginator stripedRows
  rows={20}  loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -620,7 +649,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />  
-               <Column header="Ποσό Δόσης" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+               <Column header="Ποσό Δόσης" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome} />
                <Column header="Πραγματική ημερομηνία πληρωμής" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
                 <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} ></Column>
 
