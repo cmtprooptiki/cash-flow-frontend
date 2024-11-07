@@ -28,6 +28,7 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 
 const TimologiaList = () => {
     const [Timologia, setTimologia] = useState([]);
+    const [totalincome, setTotalIncome] = useState(0)
     const {user} = useSelector((state) => state.auth)
 
     const [statuses] = useState(['yes', 'no']);
@@ -43,6 +44,7 @@ const TimologiaList = () => {
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
 
+    const [filtercalled,setfiltercalled]=useState(false)
 
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedTimologiaId, setSelectedTimologiaId] = useState(null);
@@ -569,6 +571,32 @@ const invoice_dateDateFilterTemplate = (options) => {
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
+    const calculateTotalIncome = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ammount_of_income_tax_incl), 0);
+    };
+
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        // console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ammount_of_income_tax_incl || 0)), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+    };
+
+    useEffect(() => {
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(Timologia)));
+        }
+        
+    }, [Timologia]);
+
 
 
     const footer = `In total there are ${Timologia ? Timologia.length : 0} timologia.`;
@@ -728,8 +756,10 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 
-<DataTable value={Timologia} ref = {dt} onValueChange={(timologia) => setFilteredTimologia(timologia)} paginator 
- rows={20} stripedRows scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+<DataTable value={Timologia} ref = {dt} onValueChange={(timologia) => {
+    setFilteredTimologia(timologia);
+    handleValueChange(timologia);}} paginator 
+ rows={20} stripedRows scrollable scrollHeight="600px" loading={loading} dataKey="id"  
             filters={filters} 
             globalFilterFields={[
                 'id', 
@@ -760,7 +790,7 @@ const invoice_dateDateFilterTemplate = (options) => {
                 <Column header="Ποσό ΦΠΑ" filterField="ammount_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
 
-                <Column header="Πληρωτέο" filterField="ammount_of_income_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_of_income_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Πληρωτέο" filterField="ammount_of_income_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_of_income_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} footer = {totalincome} />
 
                 
             

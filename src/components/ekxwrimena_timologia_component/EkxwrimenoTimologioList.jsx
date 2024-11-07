@@ -35,6 +35,10 @@ const EkxwrimenoTimologioList = () =>
     const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [totalincome, setTotalIncome] = useState(0)
+    const [totalIncome_cust, setTotalIncomeCust] = useState(0)
+
+    const [filtercalled,setfiltercalled]=useState(false)
 
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedEkxoriseisId, setSelectedEkxoriseisId] = useState(null);
@@ -569,6 +573,41 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const footer = `In total there are ${EkxwrimenoTimologio ? EkxwrimenoTimologio.length : 0} paradotea.`;
 
+    const calculateTotalIncome = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.bank_ammount), 0);
+    };
+
+    const calculateTotalIncomeCust = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.customer_ammount), 0);
+    };
+
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        // console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.bank_ammount || 0)), 0);
+        const incomesum_cust = visibleRows.reduce((sum, row) => sum + Number((row.customer_ammount || 0)), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+        setTotalIncomeCust(formatCurrency(incomesum_cust))
+    };
+
+    useEffect(() => {
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(EkxwrimenoTimologio)));
+            setTotalIncomeCust(formatCurrency(calculateTotalIncomeCust(EkxwrimenoTimologio)))
+        }
+        
+    }, [EkxwrimenoTimologio]);
+
     const header = renderHeader();
 
     const ActionsBodyTemplate = (rowData) => {
@@ -718,7 +757,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         {user && user.role ==="admin" && (
         <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
         )}
-        <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => setFilteredEkxoriseis(ekxoriseis)} stripedRows paginator  rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
+        <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => {setFilteredEkxoriseis(ekxoriseis);
+            handleValueChange(ekxoriseis);}} stripedRows paginator  rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[
                     'id',
                     'ErgaName',
@@ -740,8 +780,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" alignFrozen="left" frozen={frozenColumns.includes('ErgaName')}  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
                 
-                <Column header="Εκχώρηση (€)" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
-                <Column header="Υπόλοιπο από πελάτη (€)" filterField="customer_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={customer_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Εκχώρηση (€)" filterField="bank_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={bank_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome} />
+                <Column header="Υπόλοιπο από πελάτη (€)" filterField="customer_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={customer_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome_cust} />
                 <Column header="Ημερομηνία πληρωμής από τράπεζα (εκτίμηση)" filterField="bank_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_estimated_dateDateBodyFilterTemplate} filter filterElement={bank_estimated_dateDateFilterTemplate} ></Column>
                 <Column header="Ημερομηνία πληρωμής από τράπεζα" filterField="bank_date" dataType="date" style={{ minWidth: '5rem' }} body={bank_dateDateBodyFilterTemplate} filter filterElement={bank_dateDateFilterTemplate} ></Column>
 
