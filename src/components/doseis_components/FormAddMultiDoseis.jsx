@@ -148,7 +148,7 @@ const FormAddMultiDoseis = () => {
             paramEndDate:formatToUTC(paramEndDate),
             paramStatus:paramStatus.name,
             paramYpoxreoseisId:parseInt(ypoxreoseis_id),
-            paramDay:paramDay
+            paramDay:parseInt(paramDay)
             });
             navigate("/doseis");
         }catch(error){
@@ -263,7 +263,7 @@ const FormAddMultiDoseis = () => {
                   <div className="control">
 
                   {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
-                  <InputNumber id="paramDay" type='int' value={paramDay} onChange={(e)=> setParamDay(e.target)} />
+                  <InputNumber id="paramDay" type='int' value={paramDay} onChange={(e)=> setParamDay(e.value)} />
 
 
                   </div>
