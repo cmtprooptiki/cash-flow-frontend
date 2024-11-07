@@ -34,6 +34,9 @@ const DaneiaList = () => {
     const [statuses] = useState(['yes', 'no']);
     const [filteredDaneia, setFilteredDaneia] = useState([]);
 
+    const [filtercalled,setfiltercalled]=useState(false)
+    const [totalincome, setTotalIncome] = useState(0)
+
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedDaneiaId, setSelectedDaneiaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
@@ -338,6 +341,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     };
     const header = renderHeader();
 
+
+
     const ActionsBodyTemplate = (rowData) => {
         const id = rowData.id;
         const op = useRef(null);
@@ -429,6 +434,32 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         );
     };
 
+    const calculateTotalIncome = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ammount), 0);
+    };
+
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        // console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ammount || 0)), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+    };
+
+    useEffect(() => {
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(daneia)));
+        }
+        
+    }, [daneia]);
+
     const actionsBodyTemplate2=(rowData)=>{
         const id=rowData.id
         return(
@@ -488,7 +519,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         
         
         
-        <DataTable value={daneia} paginator ref = {dt} onValueChange={(daneia) => setFilteredDaneia(daneia)}
+        <DataTable value={daneia} paginator ref = {dt} onValueChange={(daneia) => {setFilteredDaneia(daneia);handleValueChange(daneia)}}
          rows={20} stripedRows scrollable scrollHeight="600px" loading={loading} dataKey="id" 
                     filters={filters} 
                     globalFilterFields={[
@@ -504,7 +535,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                         <Column field="name" header="Ονομα δανείου"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                        
-                        <Column header="Ποσό δανείου" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                        <Column header="Ποσό δανείου" filterField="daneia.ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome} />
                        
                         <Column header=" Πληρωμή Δανείου(εκτίμηση)" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
                         <Column header="Πληρωμή Δανείου" filterField="daneia.actual_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={ActualPaymentDateBodyTemplate} filter filterElement={ActualPaymentDateFilterTemplate} ></Column>
