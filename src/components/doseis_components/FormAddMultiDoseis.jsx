@@ -22,6 +22,7 @@ const FormAddMultiDoseis = () => {
     const [status,setStatus] = useState("no")
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
     const [doseis,setdoseis]=useState([])
+    const [doseisSum,setdoseisSum]=useState(0)
     const [paramDay,setParamDay]=useState(1);
     const [paramStatus,setParamStatus]=useState("no")
     const statusOptions = [
@@ -60,13 +61,19 @@ const FormAddMultiDoseis = () => {
     const getdoseis = async() =>{
         const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
         const doseisData = response.data.filter(item => item.ypoxreoseis_id === parseInt(ypoxreoseis_id)  )
-
+        var sumdoseis=0
         setdoseis(doseisData);
+        doseisData.map((dosi)=>{
+            sumdoseis+=parseFloat(dosi.ammount)
+
+        })
+        setdoseisSum(sumdoseis)
+
     }
 
     //used for ammount to check the limit required for ypoxreoseis
-    useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
-    useEffect(() => { console.log("status updated ",paramStatus) }, [paramStatus])
+    // useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
+    // useEffect(() => { console.log("status updated ",paramStatus) }, [paramStatus])
     const CalculateMax= (event)=>{
         const sumYpo=Number(totalOwedAmmount)+Number(ammountVat)
         var sumdoseis=0
@@ -189,7 +196,21 @@ const FormAddMultiDoseis = () => {
                   <label htmlFor="name1">Συνολικό Ποσο Υποχρέωσης</label>
                   <div className="control">
 
-                 <h2>{formatCurrency(Number(totalOwedAmmount)+Number(ammountVat))}</h2> 
+                 <span><h2>{formatCurrency(Number(totalOwedAmmount)+Number(ammountVat))}</h2> </span>
+                  </div>
+              </div>
+              <div className="field">
+                  <label htmlFor="name1">Συνολικό Ποσο Δόσεων</label>
+                  <div className="control">
+
+                 <span><h2>{formatCurrency(Number(doseisSum))}</h2> </span>
+                  </div>
+              </div>
+              <div className="field">
+                  <label htmlFor="name1">Υπόλοιπο</label>
+                  <div className="control">
+
+                 <span><p>Ποσο Υποχρεωσης({formatCurrency(Number(totalOwedAmmount)+Number(ammountVat))}) - Ποσο Δόσεων({formatCurrency(Number(doseisSum))}) = Υπόλοιπο({formatCurrency(Number(totalOwedAmmount)+Number(ammountVat)-Number(doseisSum))}) </p> </span>
                   </div>
               </div>
 
