@@ -44,6 +44,7 @@ const FormAddTimologia = () => {
 
     const[parEightPercent,setparEightPercent]=useState(0.0)
     const[parEfor,setParEfor]=useState(0.0)
+    const[loipaExo,setLoipaExo]=useState(0.0)
     // const toast = useRef(""); // Reference for the toast
 
 
@@ -110,7 +111,7 @@ const FormAddTimologia = () => {
             totalAmmountVat += Number(item.ammount_vat);
             totalAmmountTotal += Number(item.ammount_total);
         });
-        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor;
+        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor-loipaExo;
 
         return {
             totalAmmount,
@@ -136,6 +137,7 @@ const FormAddTimologia = () => {
             ammount_of_income_tax_incl: totalAmmountTotal,
             ammount_parakratisi_eight:	parEightPercent,
             ammount_parakratisi_eforia: parEfor,
+            ammount_loipa_exoda:loipaExo,
             comments: comments,
             invoice_number: invoice_number,
             status_paid:status_paid
@@ -238,6 +240,13 @@ const FormAddTimologia = () => {
                     <label className="label">Παρακράτηση Εφορία</label>
                     <div className="control">
                     <InputNumber className="input" value={parEfor} mode="decimal" minFractionDigits={2}  onChange={(e)=> setParEfor(e.value)} placeholder='Παρακράτηση Εφορία'  />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label className="label">Λοιπά Έξοδα</label>
+                    <div className="control">
+                    <InputNumber className="input" value={loipaExo} mode="decimal" minFractionDigits={2}  onChange={(e)=> setLoipaExo(e.value)} placeholder='Λοιπά έξοδα'  />
                     </div>
                 </div>
 
