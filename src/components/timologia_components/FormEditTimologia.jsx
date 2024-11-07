@@ -40,6 +40,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
     //Parakratiseis
     const[parEightPercent,setparEightPercent]=useState([])
     const[parEfor,setParEfor]=useState([])
+    const[loipaExo,setLoipaExo]=useState([])
 
     const[fullParadotea,setFullParadotea]=useState([])
 
@@ -131,7 +132,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
             totalAmmountTotal += Number(item.ammount_total);
         });
 
-        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor;
+        totalAmmountTotal=totalAmmountTotal - parEightPercent - parEfor - loipaExo;
 
         
 
@@ -181,6 +182,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
                 setActual_Payment_Date(timologioData.actual_payment_date);
                 setAmmount_Of_Income_Tax_Incl(timologioData.ammount_of_income_tax_incl);
                 setparEightPercent(timologioData.ammount_parakratisi_eight);
+                setLoipaExo(timologioData.ammount_loipa_exoda);
                 setParEfor(timologioData.ammount_parakratisi_eforia);
                 setComments(timologioData.comments);
                 setInvoice_Number(timologioData.invoice_number);
@@ -214,6 +216,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
                 ammount_of_income_tax_incl: totalAmmountTotal,
                 ammount_parakratisi_eight:	parEightPercent,
                 ammount_parakratisi_eforia: parEfor,
+                ammount_loipa_exoda:loipaExo,
                 comments: comments,
                 invoice_number: invoice_number,
                 status_paid: status_paid
@@ -409,7 +412,12 @@ const FormEditTimologia = ({id: propId, onHide}) => {
                                 <InputNumber className="input" value={parEfor} mode="decimal" minFractionDigits={2}  onChange={(e)=> setParEfor(e.value)} placeholder='Παρακράτηση Εφορία'  />
                                 </div>
                             </div>
-
+                            <div className="field">
+                                <label className="label">Λοιπά Έξοδα</label>
+                                <div className="control">
+                                <InputNumber className="input" value={loipaExo} mode="decimal" minFractionDigits={2}  onChange={(e)=> setLoipaExo(e.value)} placeholder='Λοιπά Έξοδα'  />
+                                </div>
+                            </div>
 
 
                             <div className="field">
