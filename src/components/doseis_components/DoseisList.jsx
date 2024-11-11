@@ -25,6 +25,7 @@ import { Dialog } from 'primereact/dialog';
 import FormEditDoseis from '../doseis_components/FormEditDoseis';
 import FormProfileDoseis from '../doseis_components/FormProfileDoseis';
 import { OverlayPanel } from 'primereact/overlaypanel';
+
 const DoseisList = () => {
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
@@ -240,10 +241,34 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         }
     }
 
-    const deleteDoseis = async(doseisId)=>{
-        await axios.delete(`${apiBaseUrl}/doseis/${doseisId}`);
-        getDoseis();
-    }
+    // const deleteDoseis = async(doseisId)=>{
+    //     await axios.delete(`${apiBaseUrl}/doseis/${doseisId}`);
+    //     getDoseis();
+    // }
+
+    const deleteDoseis = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting Dosi with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/doseis/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting Dosi with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setDoseis((prevDoseis) => prevDoseis.filter((dosi) => !ids.includes(dosi.id)));
+        setSelectedDoseis([]); // Clear selection after deletion
+    };
+    
 
     const onGlobalFilterChange = (e) => {
         
@@ -618,10 +643,17 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         );
     };
 
+    const [selectedDoseis, setSelectedDoseis] = useState([]);
+
+
+
+
+    
      return(
 
 
 <div className="card" >
+    
         <h1 className='title'>Δόσεις</h1>
         {user && user.role ==="admin" && (
         <Link to={"/doseis/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
@@ -630,9 +662,17 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         <Link to={"/doseis/multiAdd"} className='button is-primary mb-2'><Button label="Προσθήκη Πολλαπλών Δόσεων" icon="pi pi-plus-circle"/></Link>
         )}
 
+{selectedDoseis.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteDoseis(selectedDoseis.map(dosi => dosi.id))} // Pass an array of selected IDs
+            />
+        )}
 
 {/* scrollable scrollHeight="600px" */}
-<DataTable value={doseis} ref = {dt} onValueChange={(doseis) => {setFilteredDoseis(doseis); handleValueChange(doseis)}} paginator stripedRows
+{/* <DataTable value={doseis} ref = {dt} onValueChange={(doseis) => {setFilteredDoseis(doseis); handleValueChange(doseis)}} paginator stripedRows
  rows={20}  loading={loading} dataKey="id" 
             filters={filters} 
             globalFilterFields={[
@@ -645,7 +685,35 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 'status'
                 ]} 
             header={header} 
-            emptyMessage="No doseis found.">
+            emptyMessage="No doseis found."> */}
+
+                    <DataTable 
+                        value={doseis} 
+                        ref={dt} 
+                        onValueChange={(doseis) => { setFilteredDoseis(doseis); handleValueChange(doseis); }}
+                        paginator 
+                        stripedRows
+                        rows={20}  
+                        loading={loading} 
+                        dataKey="id" 
+                        filters={filters} 
+                        globalFilterFields={[
+                            'id',
+                            'ypoxreosei.provider', 
+                            'ammount', 
+                            'actual_payment_date',
+                            'estimate_payment_date',
+                            'ammount_no_tax',
+                            'status'
+                        ]}
+                        header={header} 
+                        emptyMessage="No doseis found."
+                        selection={selectedDoseis} 
+                        onSelectionChange={(e) => setSelectedDoseis(e.value)} // Updates state when selection changes
+                        selectionMode="checkbox"
+                    >
+                         <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column> {/* Checkbox column */}
+                         {/* Other columns remain as before */}
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />  
