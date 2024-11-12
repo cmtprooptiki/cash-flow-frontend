@@ -25,6 +25,9 @@ import { Dialog } from 'primereact/dialog';
 import FormEditDoseis from '../doseis_components/FormEditDoseis';
 import FormProfileDoseis from '../doseis_components/FormProfileDoseis';
 import { OverlayPanel } from 'primereact/overlaypanel';
+import { SpeedDial } from 'primereact/speeddial';
+import { Toast } from 'primereact/toast';
+
 
 const DoseisList = () => {
     const [doseis, setDoseis] = useState([]);
@@ -45,6 +48,9 @@ const DoseisList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedDosiId, setSelectedDosiId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+
+    const [selectedDoseis, setSelectedDoseis] = useState([]);
+
 
     const cols = [
         { field: 'ypoxreosei.provider', header: 'Προμηθευτής-έξοδο' },
@@ -241,10 +247,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         }
     }
 
-    // const deleteDoseis = async(doseisId)=>{
-    //     await axios.delete(`${apiBaseUrl}/doseis/${doseisId}`);
-    //     getDoseis();
-    // }
+    const deleteDosi = async(doseisId)=>{
+        await axios.delete(`${apiBaseUrl}/doseis/${doseisId}`);
+        getDoseis();
+    }
 
     const deleteDoseis = (ids) => {
         // Assuming you have an API call or logic for deletion
@@ -326,6 +332,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     };
 
     const statusFilterTemplate = (options) => {
+        console.log("no error here 2")
         return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
     };
 
@@ -337,6 +344,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return formatCurrency(rowData.ammount);
     };
     const ammountFilterTemplate = (options) => {
+        console.log("error not here")
         return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
     };
     const renderHeader = () => {
@@ -387,7 +395,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 };
 
 const estimate_payment_dateDateFilterTemplate = (options) => {
-    // console.log('Current filter value:', options);
+    console.log('Current filter value:', options);
 
     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
 };
@@ -434,7 +442,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     };
     
     const actual_payment_dateDateFilterTemplate = (options) => {
-        // console.log('Current filter value:', options);
+        console.log('Current filter value:', options);
     
         return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
@@ -460,9 +468,10 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         const id = rowData.id;
         const op = useRef(null);
         const [hideTimeout, setHideTimeout] = useState(null);
-    
+        // console.log("error here 3")
         // Show overlay on mouse over
         const handleMouseEnter = (e) => {
+            // console.log("mouse enter")
             if (hideTimeout) {
                 clearTimeout(hideTimeout);
                 setHideTimeout(null);
@@ -472,15 +481,15 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     
         // Hide overlay with delay on mouse leave
         const handleMouseLeave = () => {
+            // console.log("mouse exit")
             const timeout = setTimeout(() => {
                 op.current.hide();
             }, 100); // Adjust delay as needed
             setHideTimeout(timeout);
         };
-    
+        
         return (
             <div className="actions-container">
-                {/* Three dots button */}
                 <Button 
                     icon="pi pi-ellipsis-v" 
                     className="p-button-text"
@@ -489,7 +498,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                     onMouseLeave={handleMouseLeave} // Start hide timeout on mouse leave
                 />
     
-                {/* OverlayPanel containing action buttons in a row */}
                 <OverlayPanel 
                     ref={op} 
                     onClick={() => op.current.hide()} 
@@ -500,14 +508,12 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                     }} // Clear hide timeout on overlay mouse enter
                 >
                     <div className="flex flex-row gap-2">
-                        {/* Only show the Profile button for non-admin users */}
                         {user && user.role !== "admin" && (
                             <Link to={`/doseis/profile/${id}`}>
                                 <Button icon="pi pi-eye" severity="info" aria-label="User" />
                             </Link>
                         )}
                         
-                        {/* Show all action buttons for admin users */}
                         {user && user.role === "admin" && (
                             <>
                                 <Button 
@@ -537,7 +543,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                                     icon="pi pi-trash"
                                     severity="danger"
                                     aria-label="Delete"
-                                    onClick={() => deleteDoseis(id)}
+                                    onClick={() => deleteDosi(id)}
                                 />
                             </>
                         )}
@@ -546,6 +552,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             </div>
         );
     };
+    
 
     // const actionsBodyTemplate=(rowData)=>{
     //     const id=rowData.id
@@ -598,52 +605,51 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         
     }, [doseis]);
 
-    const actionsBodyTemplate = (rowData) => {
-        const id = rowData.id;
-        return (
-            <div className="flex flex-wrap justify-content-center gap-3">
-                {user && user.role !== "admin" && (
-                    <div>
-                        <Link to={`/doseis/profile/${id}`} >
-                            <Button severity="info" label="Προφίλ" text raised />
-                        </Link>
-                    </div>
-                )}
-                {user && user.role === "admin" && (
-                    <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
+    // const actionsBodyTemplate = (rowData) => {
+    //     const id = rowData.id;
+    //     return (
+    //         <div className="flex flex-wrap justify-content-center gap-3">
+    //             {user && user.role !== "admin" && (
+    //                 <div>
+    //                     <Link to={`/doseis/profile/${id}`} >
+    //                         <Button severity="info" label="Προφίλ" text raised />
+    //                     </Link>
+    //                 </div>
+    //             )}
+    //             {user && user.role === "admin" && (
+    //                 <span className='flex gap-1'>
+    //                     {/* <Link to={`/paradotea/profile/${id}`} > */}
 
-                            <Button className='action-button' 
-                            icon="pi pi-eye" 
-                            severity="info" 
+    //                         <Button className='action-button' 
+    //                         icon="pi pi-eye" 
+    //                         severity="info" 
 
-                            aria-label="User" 
-                            onClick={() => {
-                                setSelectedDosiId(id);
-                                setSelectedType('Profile');
-                                setDialogVisible(true);
-                            }}
-                            />
-                        {/* </Link> */}
-                        <Button
-                            className='action-button'
-                            icon="pi pi-pen-to-square"
-                            severity="info"
-                            aria-label="Edit"
-                            onClick={() => {
-                                setSelectedDosiId(id);
-                                setSelectedType('Edit');
-                                setDialogVisible(true);
-                            }}
-                        />
-                        <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteDoseis(id)} />
-                    </span>
-                )}
-            </div>
-        );
-    };
+    //                         aria-label="User" 
+    //                         onClick={() => {
+    //                             setSelectedDosiId(id);
+    //                             setSelectedType('Profile');
+    //                             setDialogVisible(true);
+    //                         }}
+    //                         />
+    //                     {/* </Link> */}
+    //                     <Button
+    //                         className='action-button'
+    //                         icon="pi pi-pen-to-square"
+    //                         severity="info"
+    //                         aria-label="Edit"
+    //                         onClick={() => {
+    //                             setSelectedDosiId(id);
+    //                             setSelectedType('Edit');
+    //                             setDialogVisible(true);
+    //                         }}
+    //                     />
+    //                     <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteDosi(id)} />
+    //                 </span>
+    //             )}
+    //         </div>
+    //     );
+    // };
 
-    const [selectedDoseis, setSelectedDoseis] = useState([]);
 
 
 
@@ -712,7 +718,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         onSelectionChange={(e) => setSelectedDoseis(e.value)} // Updates state when selection changes
                         selectionMode="checkbox"
                     >
-                         <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column> {/* Checkbox column */}
+                         <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
                          {/* Other columns remain as before */}
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
@@ -730,6 +736,8 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         
                
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
+                {/* <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} /> */}
+                {/* <Column header="Ενέργειες" field="id" body={thirdActionBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} /> */}
 
  </DataTable>
 

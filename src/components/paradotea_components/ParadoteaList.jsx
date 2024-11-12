@@ -40,6 +40,7 @@ const ParadoteaList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedParadoteaId, setSelectedParadoteaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedParadotea, setSelectedParadotea] = useState([]);
 
 
     const dt = useRef(null);
@@ -285,9 +286,31 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
 
     const deleteParadotea = async(ParadoteoId)=>{
-        await axios.delete(`${apiBaseUrl}/paradotea/${ParadoteoId}`);
+        await axios.delete(`${apiBaseUrl}//${ParadoteoId}`);
         getParadotea();
     }
+    const deleteParadoteaSelected = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting Dosi with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/paradotea/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting Dosi with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setParadotea((prevParadotea) => prevParadotea.filter((paradoteo) => !ids.includes(paradoteo.id)));
+        setSelectedParadotea([]); // Clear selection after deletion
+    };
 
 
 
@@ -830,6 +853,15 @@ const timologiaItemTemplate = (option) => {
         <Link to={"/paradotea/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Παραδοτέου" icon="pi pi-plus-circle"/></Link>
         )}
 
+        {selectedParadotea.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteParadoteaSelected(selectedParadotea.map(paradoteo => paradoteo.id))} // Pass an array of selected IDs
+            />
+        )}
+
 
 
 <DataTable value={paradotea} ref = {dt} onValueChange={(paradotea) => setFilteredParadotea(paradotea)} paginator stripedRows
@@ -847,7 +879,13 @@ const timologiaItemTemplate = (option) => {
                 'timologia.invoice_number'
                 ]} 
             header={header} 
-            emptyMessage="No customers found.">
+            emptyMessage="No customers found."
+            selection={selectedParadotea} 
+            onSelectionChange={(e) => setSelectedParadotea(e.value)} // Updates state when selection changes
+            selectionMode="checkbox"
+            >
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
+
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 <Column className="font-bold" header={renderColumnHeader('Έργα', 'erga.name')}
                 frozen={frozenColumns.includes('erga.name')} filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
