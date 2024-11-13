@@ -33,6 +33,7 @@ const TagList = ()=>
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedTagId, setSelectedTagId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([])
 
 
     const {user} = useSelector((state) => state.auth)
@@ -71,6 +72,30 @@ const TagList = ()=>
         await axios.delete(`${apiBaseUrl}/tags/${tagsId}`);
         getTags();
     }
+
+    const deleteMultipleTags = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting Tag with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/tags/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting tags with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setTags((prevTags) => prevTags.filter((tags) => !ids.includes(tags.id)));
+        setSelectedTags([]); // Clear selection after deletion
+    };
+
 
     const onGlobalFilterChange = (e) => {
         
@@ -289,6 +314,14 @@ const TagList = ()=>
         {user && user.role ==="admin" && (
         <Link to={"/tags/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Tag" icon="pi pi-plus-circle"/></Link>
         )}
+        {selectedTags.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleTags(selectedTags.map(tags => tags.id))} // Pass an array of selected IDs
+            />
+        )}
 
 
 
@@ -300,7 +333,11 @@ const TagList = ()=>
                         'name'
                     ]}
                     header={header} 
-                    emptyMessage="No doseis found.">
+                    emptyMessage="No doseis found."
+                    selection={selectedTags} 
+                        onSelectionChange={(e) => setSelectedTags(e.value)} // Updates state when selection changes
+                        selectionMode="checkbox">
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }} ></Column>
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column field="name" header="Όνομα Ετικέτας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                 <Column header="Ένέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen/>

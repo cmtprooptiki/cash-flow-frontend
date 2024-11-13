@@ -44,6 +44,7 @@ const YpoxreoseisList = () =>
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedYpoxreoseisId, setSelectedYpoxreoseisId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedYpoxreoseis, setSelectedYpoxreoseis] = useState([])
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -261,6 +262,29 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         await axios.delete(`${apiBaseUrl}/ypoquery/${YpoxreoseisId}`);
         getYpoxreoseis();
     }
+
+    const deleteMultipleYpoxreoseis = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting Ypoxreoseis with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/ypoquery/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting ypoxreoseis with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setYpoxreoseis((prevYpoxreoseis) => prevYpoxreoseis.filter((ypoxreoseis) => !ids.includes(ypoxreoseis.ypoxreoseis.id)));
+        setSelectedYpoxreoseis([]); // Clear selection after deletion
+    };
 
     const clearFilter = () => {
         initFilters();
@@ -601,11 +625,19 @@ const invoice_dateDateFilterTemplate = (options) => {
         {user && user.role ==="admin" && (
         <Link to={"/ypoquery/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Υποχρέωσης" icon="pi pi-plus-circle"/></Link>
         )}
+        {selectedYpoxreoseis.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleYpoxreoseis(selectedYpoxreoseis.map(ypoxreoseis => ypoxreoseis.ypoxreoseis.id))} // Pass an array of selected IDs
+            />
+        )}
 
 
 
 <DataTable value={ypoxreoseis} ref = {dt} onValueChange={(ypoxreoseis) => setFilteredYpoxreoseis(ypoxreoseis)} paginator stripedRows
- rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
+ rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="ypoxreoseis.id" 
             filters={filters} 
             globalFilterFields={[
                 'ypoxreoseis.id', 
@@ -618,7 +650,11 @@ const invoice_dateDateFilterTemplate = (options) => {
 
                 ]} 
             header={header} 
-            emptyMessage="No timologia found.">
+            emptyMessage="No timologia found."
+            selection={selectedYpoxreoseis} 
+            onSelectionChange={(e) => setSelectedYpoxreoseis(e.value)} // Updates state when selection changes
+            selectionMode="checkbox">
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }} ></Column>
                 <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={providersBodyTemplate} filter filterElement={providersFilterTemplate} />
