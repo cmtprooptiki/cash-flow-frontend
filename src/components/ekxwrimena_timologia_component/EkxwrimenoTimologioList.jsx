@@ -43,6 +43,7 @@ const EkxwrimenoTimologioList = () =>
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedEkxoriseisId, setSelectedEkxoriseisId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedEkxorimena, setSelectedEkxorimena] = useState([])
     
     const [statuses] = useState(['yes', 'no']);
 
@@ -289,6 +290,29 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const deleteEkxorimeno_Timologio = async(ek_timologioId)=>{
         await axios.delete(`${apiBaseUrl}/ek_tim/${ek_timologioId}`);
         getEkxorimena_Timologia();
+    };
+
+    const deleteMultipleEkxorimena = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting ekxorimena with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/ek_tim/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting Ekxorrr with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setEkxorimena_Timologia((prevEkxoriemna) => prevEkxoriemna.filter((ekxorimena) => !ids.includes(ekxorimena.id)));
+        setSelectedEkxorimena([]); // Clear selection after deletion
     };
 
 
@@ -757,6 +781,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         {user && user.role ==="admin" && (
         <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
         )}
+         {selectedEkxorimena.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleEkxorimena(selectedEkxorimena.map(ekxorimena => ekxorimena.id))} // Pass an array of selected IDs
+            />
+        )}
         <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => {setFilteredEkxoriseis(ekxoriseis);
             handleValueChange(ekxoriseis);}} stripedRows paginator  rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[
@@ -774,7 +806,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     'status_customer_paid',
                     'comments'
                 ]} header={header}
-                emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια.">
+                emptyMessage="Δεν βρέθηκαν εκχωριμένα τιμολόγια."
+                selection={selectedEkxorimena} 
+                onSelectionChange={(e) => setSelectedEkxorimena(e.value)} // Updates state when selection changes
+                selectionMode="checkbox">
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                 <Column className='font-bold' field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: 'black' }} frozen />
                 {/* <Column field="ErgaName" header="Εργο" filter filterPlaceholder="Search by ergo" style={{ minWidth: '5rem' }} /> */}
                 <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" alignFrozen="left" frozen={frozenColumns.includes('ErgaName')}  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}

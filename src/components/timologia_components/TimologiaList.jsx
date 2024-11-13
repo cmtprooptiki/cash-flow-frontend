@@ -49,6 +49,7 @@ const TimologiaList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedTimologiaId, setSelectedTimologiaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedTimologia, setSelectedTimologia] = useState([])
 
     const cols = [
         { field: 'ErgaName', header: 'Έργο' },
@@ -318,6 +319,30 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         await axios.delete(`${apiBaseUrl}/timologia/${timologioId}`);
         getTimologia();
     }
+
+    const deleteMultipleTimologia = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting timologia with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/timologia/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting timol with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setTimologia((prevTimologia) => prevTimologia.filter((timologia) => !ids.includes(timologia.id)));
+        setSelectedTimologia([]); // Clear selection after deletion
+    };
+
 
 
 
@@ -753,6 +778,14 @@ const invoice_dateDateFilterTemplate = (options) => {
         {user && user.role ==="admin" && (
         <Link to={"/timologia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
         )}
+         {selectedTimologia.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleTimologia(selectedTimologia.map(timologia => timologia.id))} // Pass an array of selected IDs
+            />
+        )}
 
 
 
@@ -775,7 +808,11 @@ const invoice_dateDateFilterTemplate = (options) => {
 
                 ]} 
             header={header} 
-            emptyMessage="No timologia found.">
+            emptyMessage="No timologia found."
+            selection={selectedTimologia} 
+            onSelectionChange={(e) => setSelectedTimologia(e.value)} // Updates state when selection changes
+            selectionMode="checkbox">
+            <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>    
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
                 <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen={frozenColumns.includes('ErgaName')} 

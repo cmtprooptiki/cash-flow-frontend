@@ -40,6 +40,7 @@ const DaneiaList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedDaneiaId, setSelectedDaneiaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedDaneia, setSelectedDaneia] = useState([])
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -199,6 +200,30 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         await axios.delete(`${apiBaseUrl}/daneia/${daneiaId}`);
         getDaneia();
     }
+
+    const deleteMultipleDaneia = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting Dosi with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/daneia/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting Daneia with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setDaneia((prevDaneia) => prevDaneia.filter((daneia) => !ids.includes(daneia.id)));
+        setSelectedDaneia([]); // Clear selection after deletion
+    };
+
     const clearFilter = () => {
         initFilters();
     };
@@ -516,6 +541,15 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 {user && user.role ==="admin" && (
                 <Link to={"/daneia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Δανείου" icon="pi pi-plus-circle"/></Link>
                 )}
+
+                {selectedDaneia.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleDaneia(selectedDaneia.map(daneia => daneia.id))} // Pass an array of selected IDs
+            />
+        )}
         
         
         
@@ -531,7 +565,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         'status'
                         ]} 
                     header={header} 
-                    emptyMessage="No daneia found.">
+                    emptyMessage="No daneia found."
+                    selection={selectedDaneia} 
+                        onSelectionChange={(e) => setSelectedDaneia(e.value)} // Updates state when selection changes
+                        selectionMode="checkbox">
+                        <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                         <Column field="name" header="Ονομα δανείου"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                        

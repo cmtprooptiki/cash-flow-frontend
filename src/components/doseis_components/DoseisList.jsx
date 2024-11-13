@@ -718,7 +718,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         onSelectionChange={(e) => setSelectedDoseis(e.value)} // Updates state when selection changes
                         selectionMode="checkbox"
                     >
-                         <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
+                         <Column selectionMode="multiple" headerStyle={{ width: '3em' }} alignFrozen="left" frozen></Column>
                          {/* Other columns remain as before */}
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}

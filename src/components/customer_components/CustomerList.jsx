@@ -49,7 +49,7 @@ const CustomerList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-
+    const [selectedCustomers, setSelectedCustomers] = useState([])
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
 
@@ -262,6 +262,28 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         getCustomer();
     }
     
+    const deleteMultipleCustomers = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting customer with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/customer/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting customers with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setCustomer((prevCustomers) => prevCustomers.filter((customer) => !ids.includes(customer.id)));
+        setSelectedCustomers([]); // Clear selection after deletion
+    };
 
     
     const clearFilter = () => {
@@ -583,6 +605,16 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
         <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle"/></Link>
         )}
         <br />
+
+         {selectedCustomers.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleCustomers(selectedCustomers.map(customer => customer.id))} // Pass an array of selected IDs
+            />
+        )}
+        
 <DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
@@ -591,7 +623,11 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                 'address','postal_code','website'
                 ]} 
             header={header} 
-            emptyMessage="No customers found.">
+            emptyMessage="No customers found."
+            selection={selectedCustomers} 
+                        onSelectionChange={(e) => setSelectedCustomers(e.value)} // Updates state when selection changes
+                        selectionMode="checkbox">
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')}  body={imageBodyTemplate} frozen={frozenColumns.includes('logoImage')}></Column>
                 {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}

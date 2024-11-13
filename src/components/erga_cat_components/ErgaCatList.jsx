@@ -32,6 +32,7 @@ const ErgaCatList = () => {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedErgaCatId, setSelectedErgaCatId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
+    const [selectedErgaCats, setSelectedErgaCats] = useState([])
 
     const {user} = useSelector((state)=>state.auth)
     useEffect(()=>{
@@ -48,6 +49,30 @@ const ErgaCatList = () => {
         await axios.delete(`${apiBaseUrl}/ergacat/${ergaId}`);
         getErgaCat();
     }
+
+    const deleteMultipleErgaCats = (ids) => {
+        // Assuming you have an API call or logic for deletion
+        // Example: If using a REST API for deletion, you might perform a loop or bulk deletion
+        if (Array.isArray(ids)) {
+            // Handle multiple deletions
+            ids.forEach(async (id) => {
+                // Existing logic to delete a single Dosi by id, e.g., an API call
+                console.log(`Deleting ErgaCat with ID: ${id}`);
+                await axios.delete(`${apiBaseUrl}/ergacat/${id}`);
+
+                // Add your deletion logic here
+            });
+        } else {
+            // Fallback for single ID deletion (just in case)
+            console.log(`Deleting Erga cats with ID: ${ids}`);
+            // Add your deletion logic here
+        }
+    
+        // Optionally update your state after deletion to remove the deleted items from the UI
+        setErgaCat((prevErgaCat) => prevErgaCat.filter((ergacat) => !ids.includes(ergacat.id)));
+        setSelectedErgaCats([]); // Clear selection after deletion
+    };
+
     const onGlobalFilterChange = (e) => {
         
         const value = e.target.value;
@@ -234,6 +259,15 @@ const ErgaCatList = () => {
                 {user && user.role ==="admin" && (
                 <Link to={"/ergacat/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Κατηγορίας" icon="pi pi-plus-circle"/></Link>
                 )}
+
+            {selectedErgaCats.length > 0 && (
+            <Button 
+                label="Delete Selected" 
+                icon="pi pi-trash" 
+                severity="danger" 
+                onClick={() => deleteMultipleErgaCats(selectedErgaCats.map(ergacat => ergacat.id))} // Pass an array of selected IDs
+            />
+        )}
         
         
         
@@ -245,7 +279,11 @@ const ErgaCatList = () => {
                         'name'
                     ]}
                     header={header} 
-                    emptyMessage="No categories found.">
+                    emptyMessage="No categories found."
+                    selection={selectedErgaCats} 
+                        onSelectionChange={(e) => setSelectedErgaCats(e.value)} // Updates state when selection changes
+                        selectionMode="checkbox">
+                        <Column selectionMode="multiple" headerStyle={{ width: '3em' }} ></Column>
                         <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                         <Column field="name" header="'Ονομα Κατηγορίας"  filter filterPlaceholder="Search by name"  style={{ minWidth: '12rem' }}></Column>
                         <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate}  alignFrozen="right" frozen headerStyle={{ backgroundColor: 'rgb(25, 81, 114)', color: '#ffffff' }} />
