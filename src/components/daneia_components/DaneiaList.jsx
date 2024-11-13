@@ -538,18 +538,22 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         
         <div className="card" >
                 <h1 className='title'>Δάνεια</h1>
+                <div className='d-flex align-items-center gap-4'>
                 {user && user.role ==="admin" && (
-                <Link to={"/daneia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Δανείου" icon="pi pi-plus-circle"/></Link>
+                <Link to={"/daneia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Δανείου" className='rounded' icon="pi pi-plus-circle"/></Link>
                 )}
 
                 {selectedDaneia.length > 0 && (
-            <Button 
+            <Button
+                className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleDaneia(selectedDaneia.map(daneia => daneia.id))} // Pass an array of selected IDs
             />
         )}
+
+        </div>
         
         
         

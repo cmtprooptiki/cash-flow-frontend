@@ -785,18 +785,21 @@ const ActionsBodyTemplate = (rowData) => {
   return (
     <div className="card" >
     <h1 className='title'>Εργα</h1>
+    <div className='d-flex align-items-center gap-4'>
     {user && user.role ==="admin" && (
-    <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
+    <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" className='rounded' icon="pi pi-plus-circle"/></Link>
     )}
 
     {selectedErga.length > 0 && (
-            <Button 
+            <Button
+            className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleErga(selectedErga.map(erga => erga.id))} // Pass an array of selected IDs
             />
         )}
+        </div>
     <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows  rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'

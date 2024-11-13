@@ -661,21 +661,24 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 <div className="card" >
     
         <h1 className='title'>Δόσεις</h1>
+        <div className='d-flex align-items-center gap-4 '>
         {user && user.role ==="admin" && (
-        <Link to={"/doseis/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεας Δόσης" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/doseis/add"} className='button is-primary mb-2 '><Button label="Προσθήκη Νεας Δόσης" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
         {user && user.role ==="admin" && (
-        <Link to={"/doseis/multiAdd"} className='button is-primary mb-2'><Button label="Προσθήκη Πολλαπλών Δόσεων" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/doseis/multiAdd"} className='button is-primary mb-2 rounded-pill'><Button label="Προσθήκη Πολλαπλών Δόσεων" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
 
 {selectedDoseis.length > 0 && (
             <Button 
+                className='button is-primary mb-2 rounded'
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteDoseis(selectedDoseis.map(dosi => dosi.id))} // Pass an array of selected IDs
             />
         )}
+        </div>
 
 {/* scrollable scrollHeight="600px" */}
 {/* <DataTable value={doseis} ref = {dt} onValueChange={(doseis) => {setFilteredDoseis(doseis); handleValueChange(doseis)}} paginator stripedRows
