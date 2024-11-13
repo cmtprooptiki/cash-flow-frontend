@@ -884,7 +884,7 @@ const timologiaItemTemplate = (option) => {
             onSelectionChange={(e) => setSelectedParadotea(e.value)} // Updates state when selection changes
             selectionMode="checkbox"
             >
-                <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
+                <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
 
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 <Column className="font-bold" header={renderColumnHeader('Έργα', 'erga.name')}
