@@ -286,7 +286,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
 
     const deleteParadotea = async(ParadoteoId)=>{
-        await axios.delete(`${apiBaseUrl}//${ParadoteoId}`);
+        await axios.delete(`${apiBaseUrl}/paradotea/${ParadoteoId}`);
         getParadotea();
     }
     const deleteParadoteaSelected = (ids) => {
