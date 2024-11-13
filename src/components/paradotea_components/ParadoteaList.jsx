@@ -849,18 +849,22 @@ const timologiaItemTemplate = (option) => {
     return(
         <div className="card" >
         <h1 className='title'>Παραδοτέα</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/paradotea/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Παραδοτέου" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/paradotea/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Παραδοτέου" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
 
         {selectedParadotea.length > 0 && (
-            <Button 
+            <Button
+                className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteParadoteaSelected(selectedParadotea.map(paradoteo => paradoteo.id))} // Pass an array of selected IDs
             />
         )}
+
+        </div>
 
 
 

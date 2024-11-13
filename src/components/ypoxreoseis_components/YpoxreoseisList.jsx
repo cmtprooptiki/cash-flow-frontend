@@ -622,17 +622,21 @@ const invoice_dateDateFilterTemplate = (options) => {
         
 <div className="card" >
         <h1 className='title'>Υποχρέωσεις</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/ypoquery/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Υποχρέωσης" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/ypoquery/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Υποχρέωσης" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
         {selectedYpoxreoseis.length > 0 && (
-            <Button 
+            <Button
+                className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleYpoxreoseis(selectedYpoxreoseis.map(ypoxreoseis => ypoxreoseis.ypoxreoseis.id))} // Pass an array of selected IDs
             />
         )}
+
+        </div>
 
 
 

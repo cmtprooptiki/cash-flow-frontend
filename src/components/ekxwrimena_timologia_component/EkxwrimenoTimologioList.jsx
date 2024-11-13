@@ -778,17 +778,21 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     return(
         <div className="card" >
         <h1 className='title'>Εκχωρημένα τιμολόγια</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/ek_tim/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Εκχωρημένου Τιμολογίου" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
          {selectedEkxorimena.length > 0 && (
             <Button 
+                className='button is-primary mb-2 rounded'
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleEkxorimena(selectedEkxorimena.map(ekxorimena => ekxorimena.id))} // Pass an array of selected IDs
             />
         )}
+
+        </div>
         <DataTable ref = {dt} value={EkxwrimenoTimologio} onValueChange={(ekxoriseis) => {setFilteredEkxoriseis(ekxoriseis);
             handleValueChange(ekxoriseis);}} stripedRows paginator  rows={10} scrollable scrollHeight="400px" loading={loading} dataKey="id" 
                 filters={filters} globalFilterFields={[

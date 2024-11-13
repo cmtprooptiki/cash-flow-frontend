@@ -775,17 +775,20 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 <div className="card" >
         <h1 className='title'>Τιμολόγια</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/timologia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Τιμολογίου" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/timologia/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Τιμολογίου" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
          {selectedTimologia.length > 0 && (
             <Button 
+                className='button is-primary mb-2 rounded'
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleTimologia(selectedTimologia.map(timologia => timologia.id))} // Pass an array of selected IDs
             />
         )}
+        </div>
 
 
 

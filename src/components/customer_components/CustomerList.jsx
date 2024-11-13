@@ -601,19 +601,23 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
      <div className="card" >
         
         <h1 className='title'>Πελάτες</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle" className='rounded'/></Link>
         )}
+        
         <br />
 
          {selectedCustomers.length > 0 && (
             <Button 
+                className='button is-primary mb-2 rounded'
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleCustomers(selectedCustomers.map(customer => customer.id))} // Pass an array of selected IDs
             />
         )}
+        </div>
         
 <DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 

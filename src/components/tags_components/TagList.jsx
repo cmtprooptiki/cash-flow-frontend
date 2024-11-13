@@ -311,17 +311,21 @@ const TagList = ()=>
 
 <div className="card" >
         <h1 className='title'>Tags</h1>
+        <div className='d-flex align-items-center gap-4'>
         {user && user.role ==="admin" && (
-        <Link to={"/tags/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Tag" icon="pi pi-plus-circle"/></Link>
+        <Link to={"/tags/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Tag" className = 'rounded' icon="pi pi-plus-circle"/></Link>
         )}
         {selectedTags.length > 0 && (
-            <Button 
+            <Button
+                className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
                 onClick={() => deleteMultipleTags(selectedTags.map(tags => tags.id))} // Pass an array of selected IDs
             />
         )}
+
+        </div>
 
 
 
