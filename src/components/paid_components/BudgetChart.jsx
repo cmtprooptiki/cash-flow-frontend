@@ -5,7 +5,6 @@ import '../../buildinglist.css';
 import apiBaseUrl from '../../apiConfig';
 import { DataTable } from 'primereact/datatable';
 import ApexCharts from 'react-apexcharts';
-
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -16,7 +15,6 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
-
 const BudgetChart = (props) => {
     const [paradotea, setIncomeParadotea] = useState([]);
     const [ekxorimena, setEkxorimena] = useState([]);
@@ -30,17 +28,17 @@ const BudgetChart = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
     const [combinedData,setCombinedData]=useState([])
-
+ 
     const scenario =props.scenario
-
+ 
     const { user } = useSelector((state) => state.auth);
-
+ 
     useEffect(() => {
         fetchData();
         setLoading(false);
         initFilters();
     }, []);
-
+ 
     const fetchData = async () => {
         await getDoseis();
         await getEkxorimena();
@@ -52,25 +50,25 @@ const BudgetChart = (props) => {
         const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
         setDoseis(response.data)
     }
-
+ 
     const getEkxorimena = async () => {
         const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
         setEkxorimena(response.data);
     };
-
+ 
     const getIncomePar = async () => {
         const response = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
         setIncomeParadotea(response.data);
     };
-
+ 
     const getIncomeTim = async () => {
         const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
         const data = response.data;
-
+ 
         // Filter to ensure unique timologia.id values
         const uniqueTimologia = [];
         const seenTimologiaIds = new Set();
-
+ 
         data.forEach(item => {
             if (!seenTimologiaIds.has(item.timologia.id)) {
                 seenTimologiaIds.add(item.timologia.id);
@@ -83,11 +81,11 @@ const BudgetChart = (props) => {
         const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
         setDaneia(response.data);
     }
-
+ 
     const clearFilter = () => {
         initFilters();
     };
-
+ 
     const onGlobalFilterChange = (e) => {
         const value = e.target.value;
         let _filters = { ...filters };
@@ -95,18 +93,18 @@ const BudgetChart = (props) => {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
-
+ 
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-
+ 
         });
         setGlobalFilterValue('');
     };
-
+ 
     const formatDate = (value) => {
         let date = new Date(value);
         // console.log("invalid date is: ",date)
@@ -122,21 +120,21 @@ const BudgetChart = (props) => {
                 year: 'numeric'
             });
         } else {
-            
+           
             return "Invalid date";
         }
     };
-
-
-
+ 
+ 
+ 
 const formatCurrency = (value) => {
     return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between">
@@ -148,17 +146,17 @@ const formatCurrency = (value) => {
             </div>
         );
     };
-
+ 
     const calculateTotalIncome = (data) => {
-        
+       
         if (!data || data.length === 0) return 0;
         return data.reduce((acc, item) => formatCurrency(Number(acc + item.income)), 0);
     };
-    
-
-    
-    
-
+   
+ 
+   
+   
+ 
     useEffect(()=>{
         console.log("scenario ",scenario)
             const combinedData2 = [
@@ -172,29 +170,29 @@ const formatCurrency = (value) => {
             setCombinedData(combinedData2)
             const total = calculateTotalIncome(combinedData2);
             setTotalIncome(formatCurrency(total));
-        
-
+       
+ 
     },[paradotea,ekxorimena,incomeTim,daneia,doseis,scenario])
-
+ 
     const aggregatedData = {}; // Assuming this is defined somewhere earlier
-
+ 
     combinedData.forEach(item => {
         const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'short' }); // Use 'short' for month
         if (!aggregatedData[monthYear]) {
-            aggregatedData[monthYear] = { 
-                x: monthYear, 
-                y: 0, 
-                goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 3, strokeDashArray: 2, strokeColor: 'red' }] 
+            aggregatedData[monthYear] = {
+                x: monthYear,
+                y: 0,
+                goals: [{ name: 'Έξοδα', value: 0, strokeHeight: 3, strokeDashArray: 2, strokeColor: 'red' }]
             };
         }
-        
+       
         if (item.type !== 'doseis') {
             aggregatedData[monthYear].y += item.income;
         } else {
             aggregatedData[monthYear].goals[0].value += item.income;
         }
     });
-    
+   
     // Sort keys by date (convert monthYear string to date object)
     const sortedKeys = Object.keys(aggregatedData).sort((a, b) => {
         // Convert 'MMM YYYY' format to date objects for comparison
@@ -202,14 +200,14 @@ const formatCurrency = (value) => {
         const dateB = new Date(b);
         return dateA - dateB;
     });
-    
+   
     // Convert sorted keys back to an array of values
     const result = sortedKeys.map(key => aggregatedData[key]);
-    
-    console.log(JSON.stringify(result, null, 2));
-
    
-
+    console.log(JSON.stringify(result, null, 2));
+ 
+   
+ 
     const final = {
         series: [
           {
@@ -229,19 +227,19 @@ const formatCurrency = (value) => {
               position:"top",
             }
           },
-          
+         
           title: {
             text: 'Μηνιαίος Προϋπολογισμός',
             align: 'center',
             floating: true
         },
-        
+       
           colors: ['#00E396'],
           dataLabels: {
             enabled: false,
-            
+           
           },
-        
+       
         // Format tooltips when hovering over the bars
         tooltip: {
             y: {
@@ -269,44 +267,44 @@ const formatCurrency = (value) => {
           }
         },
       };
-      
-
-    
-
-
+     
+ 
+   
+ 
+ 
     useEffect(() => {
         if(!filtercalled){
             setTotalIncome(formatCurrency(calculateTotalIncome(combinedData)));
         }
-        
+       
     }, [combinedData]);
-
-
+ 
+ 
     const handleValueChange = (e) => {
         const visibleRows = e;
         // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
-
+ 
         // // Calculate total income for the visible rows
         const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.income || 0)), 0);
-        
+       
         setTotalIncome(formatCurrency(incomeSum));
-        
+       
     };
-
+ 
     const header = renderHeader();
     console.log("Totlal incomes111 = ", totalIncome)
-
+ 
     return (
         <div>
-
+ 
             <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
-
+ 
             {console.log("comb data ",final.series)}
         </div>
     );
 };
-
+ 
 export default BudgetChart;

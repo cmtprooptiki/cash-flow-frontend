@@ -28,6 +28,9 @@ import {ReactComponent as LoanIcon } from '../icons/loand.svg';
 import {ReactComponent as BudgetIcon } from '../icons/budget.svg';
 
 import BudgetChart from '../components/paid_components/BudgetChart';
+import BudgetChart2 from '../components/paid_components/BudgetChart2';
+
+import { TabView, TabPanel } from 'primereact/tabview';
 
 // Importing calendar library
 
@@ -859,7 +862,14 @@ const [chartOptions, setChartOptions] = useState({
   </div>
   <div className="col-12 xl:col-6 lg:col-3">
 <div className="card">
-  <BudgetChart/>
+  <TabView>
+  <TabPanel header="Προβολή 1">
+    <BudgetChart/>
+  </TabPanel>
+  <TabPanel header = "Προβολή 2">
+    <BudgetChart2></BudgetChart2>
+  </TabPanel>
+  </TabView>
   </div>
   </div>
 

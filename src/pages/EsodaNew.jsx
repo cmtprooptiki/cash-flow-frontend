@@ -34,7 +34,7 @@ import InfoBoxAntonis from '../components/InfoBoxAntonis';
 import PaidList from '../components/paid_components/PaidLists';
 import BudgetChart from '../components/paid_components/BudgetChart';
 // import { FaUnderline } from 'react-icons/fa';
-
+import BudgetChart2 from '../components/paid_components/BudgetChart2';
 
 const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
@@ -584,7 +584,7 @@ const getDaneia = async () =>{
         </div> */}
         <div className="row">
           <div className="col-md-12">
-            <BudgetChart key={refresh}></BudgetChart>
+            <BudgetChart2 key={refresh}></BudgetChart2>
           </div>
         </div>
       </div>
