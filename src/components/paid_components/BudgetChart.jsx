@@ -218,7 +218,7 @@ const formatCurrency = (value) => {
         options: {
           chart: {
             height: 350,
-            type: 'bar'
+            type: 'bar',
           },
           plotOptions: {
             bar: {
@@ -247,7 +247,29 @@ const formatCurrency = (value) => {
                     return formatCurrency(val);  // Format the tooltip values as currency
                 }
             }
-        },
+        },//xaxis tick is for zoom
+        xaxis: {
+            tickPlacement: 'on'
+          },//events is for zoom
+          events: {
+            zoomed: function(chartContext, {xaxis, yaxis}) {
+              console.log('zoom', xaxis);
+              
+              var newSeries = result.map(function (series) {
+                var newData = [];
+                series.result.forEach(function (row, index) {
+                  if ((index >= xaxis.min) && (index <= xaxis.max)) {
+                    newData.push(row);
+                  }
+                });
+                return {
+                  name: series.name,
+                  data: newData
+                };
+              });
+              ApexCharts.exec('thisChart', 'updateSeries', newSeries, true);              
+            }
+          },
         yaxis: {
             min:0,
             tickAmmount:5,
@@ -264,9 +286,13 @@ const formatCurrency = (value) => {
             markers: {
               fillColors: ['#00E396', 'red']
             }
-          }
+          },
         },
+        
       };
+
+      
+        
      
  
    
@@ -301,7 +327,8 @@ const formatCurrency = (value) => {
         <div>
  
             <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
- 
+           
+            
             {console.log("comb data ",final.series)}
         </div>
     );
