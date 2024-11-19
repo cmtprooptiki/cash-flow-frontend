@@ -225,7 +225,8 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                     <div className="control">
 
                     {/* <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2} value={ammount}  onChange={(e)=> setAmmount(e.value)}/> */}
-                    <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
+                    {/* <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/> */}
+                    <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> setAmmount(e.value)} />
 
              </div>
                 </div>
