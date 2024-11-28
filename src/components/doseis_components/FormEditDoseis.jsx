@@ -16,7 +16,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
     const[ypoxreoseis_id,setYpoxreoseis_Id] = useState("");
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
     const[msg,setMsg]=useState("");
-
+    const [comment, setComment] = useState(null)
 
     const [totalOwedAmmount, setTotal_Owed_Ammount] = useState("");
     const [ammountVat, setAmmount_Vat] = useState("");
@@ -51,6 +51,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                 setAmmount(response.data.ammount);
                 setStatus(response.data.status);
                 setEstimate_Payment_Date(formatDateToInput(response.data.estimate_payment_date));
+                setComment(response.data.comment)
             }
             catch (error)
             {
@@ -95,8 +96,8 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                 actual_payment_date:formatToUTC(actual_payment_date),
                 estimate_payment_date: formatToUTC(estimate_payment_date),
                 status:updatedStatus,
-                ypoxreoseis_id:ypoxreoseis_id
-
+                ypoxreoseis_id:ypoxreoseis_id,
+                comment: comment
             });
             if(paramId === undefined)
                 {
@@ -258,6 +259,13 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                             <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                     </div>
+
+                    <div className="field">
+                <label  className="label">Comment</label>
+                <div className="control">
+                    <InputText  id="doy" className="input" value={comment} onChange={(e)=>setComment(e.target.value)} placeholder='' />
+                </div>
+                </div>
 
 
                     {/* <div className="field">

@@ -40,6 +40,8 @@ const DoseisList = () => {
     const [filtercalled,setfiltercalled]=useState(false)
     const [totalincome, setTotalIncome] = useState(0)
 
+    const [month, setMonth] = useState("")
+
     const [filteredDoseis, setFilteredDoseis] = useState([]);
 
     const dt = useRef(null);
@@ -236,6 +238,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             }));
     
             console.log(doseisDataWithDates); // Optionally log the transformed data
+
+            
     
             // Assuming you have a state setter like setErga defined somewhere
             setDoseis(doseisDataWithDates);
@@ -389,6 +393,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         }
     };
 
+
        //delivery Date
  const estimate_payment_dateDateBodyTemplate = (rowData) => {
     return formatDate(rowData.estimate_payment_date);
@@ -461,6 +466,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
+
 
     const header = renderHeader();
 
@@ -726,6 +732,17 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />  
+                 <Column field = "month" header = "Month"  style={{ minWidth: '5rem' }} body={(rowData) => {
+            const date = new Date(rowData.estimate_payment_date); // Parse the date
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December",
+            ];
+            return isNaN(date.getTime())
+                ? "Invalid Date" // Handle invalid date
+                : monthNames[date.getMonth()]; // Get the month name
+        }}></Column>
+                <Column field="comment" header='comment' style={{ minWidth: '12rem' }}></Column>
                <Column header="Ποσό Δόσης" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome} />
                <Column header="Πραγματική ημερομηνία πληρωμής" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
                 <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} ></Column>
@@ -735,8 +752,8 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
             {/* <Column field="status_paid" header="status_paid"  filter filterPlaceholder="Search by status_paid"  style={{ minWidth: '12rem' }}></Column> */}
-
-        
+            
+               
                
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
                 {/* <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} /> */}
