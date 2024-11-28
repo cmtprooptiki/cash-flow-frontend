@@ -19,6 +19,8 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
     const [ypoxreoseis_id,setYpoxreoseis_Id] = useState("")
     const[msg,setMsg]=useState("");
 
+    const [comment, setComment] = useState("")
+
     const navigate = useNavigate();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
@@ -34,6 +36,7 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
                 setEstimate_Payment_Date(formatDateToInput(response.data.estimate_payment_date));
                 setStatus(response.data.status);
                 setYpoxreoseis_Id(response.data.ypoxreoseis_id);
+                setComment(response.data.comment);
             }
             catch(error)
             {
@@ -162,6 +165,15 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
             <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δόσης</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={status} className="mr-2" />
+               
+            </div>
+          
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Comment</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={comment} className="mr-2" />
                
             </div>
           

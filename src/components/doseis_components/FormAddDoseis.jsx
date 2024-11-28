@@ -22,6 +22,7 @@ const FormAddDoseis = () => {
     const [status,setStatus] = useState("no")
     const [ypoxreoseis_id,setYpoxreoseisId] = useState("")
     const[doseis,setdoseis]=useState([])
+    const [comment, setComment] = useState(null);
 
     const [totalOwedAmmount, setTotal_Owed_Ammount] = useState(0.0);
     const [ammountVat, setAmmount_Vat] = useState(0.0);
@@ -131,7 +132,8 @@ const FormAddDoseis = () => {
             actual_payment_date:formatToUTC(actual_payment_date),
             estimate_payment_date:formatToUTC(estimate_payment_date),
             status:updatedStatus,
-            ypoxreoseis_id:ypoxreoseis_id
+            ypoxreoseis_id:ypoxreoseis_id,
+            comment: comment
             });
             navigate("/doseis");
         }catch(error){
@@ -209,6 +211,14 @@ const FormAddDoseis = () => {
 
                     <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />
                     </div>
+
+                    <div className="field">
+              <label  className="label">Comment</label>
+              <div className="control">
+                <InputText  id="comment" type="text" className="input" value={comment} onChange={(e)=> setComment(e.target.value)} placeholder='comment'/>
+              </div>
+            </div>
+
                     <div className="controll">
                         <div className="card">
                             <Inplace closable>
