@@ -32,6 +32,7 @@ const YpoxreoseisList = () =>
     const [ypoxreoseis, setYpoxreoseis] = useState([]);
 
     const [providers, setProvider]=useState([]);
+    const [tags, setTag]=useState([]);
 
     const {user} = useSelector((state)=>state.auth)
 
@@ -208,6 +209,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             const uniqueProviders= [...new Set(paraData.map(item => item.ypoxreoseis?.provider || 'N/A'))];
             setProvider(uniqueProviders);
+
+            const uniqueTags=[...new Set(paraData.map(item => item?.tags || 'N/A'))];
+            setTag(uniqueTags)
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
@@ -316,6 +320,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             
             'ypoxreoseis.ammount_vat': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
 
+            'tags':  { value: null, matchMode: FilterMatchMode.IN },
+
           
 
         });
@@ -407,6 +413,39 @@ const invoice_dateDateFilterTemplate = (options) => {
         );
     };
 
+    const tagsBodyTemplate = (rowData) => {
+    
+        const tag = rowData?.tags || 'N/A';        // console.log("repsBodytempl",timologio)
+        console.log("timologio",tag," type ",typeof(tag));
+        console.log("rep body template: ",tag)
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+                <span>{tag}</span>
+            </div>
+        );
+    };
+        
+    const tagsFilterTemplate = (options) => {
+        console.log('Current timologia filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={tags} itemTemplate={tagsItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+
+    const tagsItemTemplate = (option) => {
+        // console.log("itemTemplate",option)
+        console.log("rep Item template: ",option)
+        console.log("rep Item type: ",typeof(option))
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+                <span>{option}</span>
+            </div>
+        );
+    };
 
 
 
@@ -650,7 +689,8 @@ const invoice_dateDateFilterTemplate = (options) => {
                 'ypoxreoseis.invoice_date',
                 'ypoxreoseis.total_owed_ammount',
                 'ypoxreoseis.ammount_vat',
-             
+                'tags'
+                
 
                 ]} 
             header={header} 
@@ -671,8 +711,11 @@ const invoice_dateDateFilterTemplate = (options) => {
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
                 <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                
                 <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
-
+                
+                <Column field="tags"  header="tags"  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={tagsBodyTemplate} filter filterElement={tagsFilterTemplate}></Column>
         
                
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}/>
