@@ -263,8 +263,21 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     }
 
     const deleteYpoxreoseis = async(YpoxreoseisId)=>{
-        await axios.delete(`${apiBaseUrl}/ypoquery/${YpoxreoseisId}`);
-        getYpoxreoseis();
+        // Show a confirmation prompt before proceeding with the deletion
+    const userConfirmed = window.confirm('Θέλεις σίγουρα να διαγράψεις αυτην την υποχρέωση');
+
+    if (userConfirmed) {
+        try {
+            // Proceed with the deletion if the user confirms
+            await axios.delete(`${apiBaseUrl}/ypoquery/${YpoxreoseisId}`);
+            getYpoxreoseis();  // Refresh the list after deletion
+        } catch (error) {
+            // Handle any errors that occur during the deletion process
+            console.error('Error deleting the item:', error);
+        }
+    } else {
+        console.log('Deletion canceled.');
+    }
     }
 
     const deleteMultipleYpoxreoseis = (ids) => {
@@ -322,6 +335,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             'tags':  { value: null, matchMode: FilterMatchMode.IN },
 
+            'ypoxreoseis.doseisCount' : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+
           
 
         });
@@ -378,6 +393,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
 
+
     const providersBodyTemplate = (rowData) => {
         
         const provider = rowData.ypoxreoseis?.provider || 'N/A';        // console.log("repsBodytempl",timologio)
@@ -385,7 +401,7 @@ const invoice_dateDateFilterTemplate = (options) => {
         console.log("rep body template: ",provider)
     
         return (
-            <div className="flex align-items-center gap-2">
+            <div className="flex align-items-center gap-2" >
                 {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
                 <span>{provider}</span>
             </div>
@@ -689,7 +705,8 @@ const invoice_dateDateFilterTemplate = (options) => {
                 'ypoxreoseis.invoice_date',
                 'ypoxreoseis.total_owed_ammount',
                 'ypoxreoseis.ammount_vat',
-                'tags'
+                'tags',
+                'ypoxreoseis.doseisCount'
                 
 
                 ]} 
@@ -697,11 +714,15 @@ const invoice_dateDateFilterTemplate = (options) => {
             emptyMessage="No timologia found."
             selection={selectedYpoxreoseis} 
             onSelectionChange={(e) => setSelectedYpoxreoseis(e.value)} // Updates state when selection changes
-            selectionMode="checkbox">
+            selectionMode="checkbox"
+            rowClassName={(data) => data.ypoxreoseis.doseisCount === 0 ? 'bg-red-500' : ''}
+>
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }} ></Column>
-                <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem',  }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={providersBodyTemplate} filter filterElement={providersFilterTemplate} />
+
+                <Column header= "Αριθμός των Δόσεων" field='ypoxreoseis.doseisCount' filter filterField='ypoxreoseis.doseisCount' dataType="numeric" ></Column>
                 <Column field="ypoxreoseis.erga_id"  header="erga_id"  filter filterPlaceholder="Search by erga_id" style={{ minWidth: '12rem' }}></Column>
                
                
