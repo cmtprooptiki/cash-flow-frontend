@@ -715,7 +715,7 @@ const invoice_dateDateFilterTemplate = (options) => {
             selection={selectedYpoxreoseis} 
             onSelectionChange={(e) => setSelectedYpoxreoseis(e.value)} // Updates state when selection changes
             selectionMode="checkbox"
-            rowClassName={(data) => data.ypoxreoseis.doseisCount === 0 ? 'bg-red-500' : ''}
+            rowClassName={(data) => data.ypoxreoseis.doseisCount === 0 ? 'bg-red-300' : ''}
 >
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }} ></Column>
                 <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem',  }} ></Column>
