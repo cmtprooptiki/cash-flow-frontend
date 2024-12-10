@@ -7,6 +7,12 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
+import { Toast } from 'primereact/toast';
+
+import { ConfirmDialog } from 'primereact/confirmdialog'; // For <ConfirmDialog /> component
+import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog method
+        
+
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
@@ -41,6 +47,8 @@ const YpoxreoseisList = () =>
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
     const [filteredypoxreoseis, setFilteredYpoxreoseis] = useState([]);
+
+    const toast = useRef(null)
 
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedYpoxreoseisId, setSelectedYpoxreoseisId] = useState(null);
@@ -189,6 +197,41 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return Number(value);
     };
 
+    
+
+    const accept = (id) => {
+        try {
+            deleteYpoxreoseis(id);
+            toast.current.show({ severity: 'success', summary: 'Deleted Successfully', detail: `Item ${id} has been deleted.` });
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to delete the item. Please try again.',
+                life: 3000,
+            });
+        } 
+    };
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        getYpoxreoseis()
+    }
+
+    const confirm = (id) => {
+        confirmDialog({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => accept(id),
+            reject: () => reject() // Optional
+        });
+    };
+
+
     useEffect(()=>{
         getYpoxreoseis();
         setLoading(false);
@@ -263,21 +306,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     }
 
     const deleteYpoxreoseis = async(YpoxreoseisId)=>{
-        // Show a confirmation prompt before proceeding with the deletion
-    const userConfirmed = window.confirm('Θέλεις σίγουρα να διαγράψεις αυτην την υποχρέωση');
-
-    if (userConfirmed) {
-        try {
-            // Proceed with the deletion if the user confirms
             await axios.delete(`${apiBaseUrl}/ypoquery/${YpoxreoseisId}`);
             getYpoxreoseis();  // Refresh the list after deletion
-        } catch (error) {
-            // Handle any errors that occur during the deletion process
-            console.error('Error deleting the item:', error);
-        }
-    } else {
-        console.log('Deletion canceled.');
-    }
     }
 
     const deleteMultipleYpoxreoseis = (ids) => {
@@ -487,6 +517,37 @@ const invoice_dateDateFilterTemplate = (options) => {
         );
     };
 
+    const confirmMultipleDelete = () => {
+        confirmDialog({
+            message: 'Are you sure you want to delete the selected records?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => {
+                // Delete all selected items after confirmation
+                deleteMultipleYpoxreoseis(selectedYpoxreoseis.map(ypoxreoseis => ypoxreoseis.ypoxreoseis.id));
+                
+                // Show success toast
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Deleted Successfully',
+                    detail: 'Selected items have been deleted.',
+                    life: 3000,
+                });
+            },
+            reject: () => {
+                // Show cancellation toast
+                toast.current.show({
+                    severity: 'info',
+                    summary: 'Cancelled',
+                    detail: 'Deletion was cancelled.',
+                    life: 3000,
+                });
+            },
+        });
+    };
+
 
 
     const formatCurrency = (value) => {
@@ -607,17 +668,20 @@ const invoice_dateDateFilterTemplate = (options) => {
                                         setDialogVisible(true);
                                     }}
                                 />
+                                {/* <Toast ref={toast} /> */}
+                                
                                 <Button
                                 className='action-button'
                                     icon="pi pi-trash"
                                     severity="danger"
                                     aria-label="Delete"
-                                    onClick={() => deleteYpoxreoseis(id)}
+                                    onClick={() => confirm(id)}
                                 />
                             </>
                         )}
                     </div>
                 </OverlayPanel>
+                
             </div>
         );
     };
@@ -672,6 +736,8 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     return(
 
+        
+
 
 
         
@@ -681,20 +747,23 @@ const invoice_dateDateFilterTemplate = (options) => {
         {user && user.role ==="admin" && (
         <Link to={"/ypoquery/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Υποχρέωσης" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
+        {/* <Toast ref={toast} />
+        <ConfirmDialog /> */}
         {selectedYpoxreoseis.length > 0 && (
             <Button
                 className='button is-primary mb-2 rounded' 
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
-                onClick={() => deleteMultipleYpoxreoseis(selectedYpoxreoseis.map(ypoxreoseis => ypoxreoseis.ypoxreoseis.id))} // Pass an array of selected IDs
+                onClick={confirmMultipleDelete} // Pass an array of selected IDs
             />
         )}
 
         </div>
 
 
-
+        <Toast ref={toast} />
+        <ConfirmDialog />
 <DataTable value={ypoxreoseis} ref = {dt} onValueChange={(ypoxreoseis) => setFilteredYpoxreoseis(ypoxreoseis)} paginator stripedRows
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="ypoxreoseis.id" 
             filters={filters} 
