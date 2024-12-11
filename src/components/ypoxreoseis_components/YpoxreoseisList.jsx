@@ -253,7 +253,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const uniqueProviders= [...new Set(paraData.map(item => item.ypoxreoseis?.provider || 'N/A'))];
             setProvider(uniqueProviders);
 
-            const uniqueTags=[...new Set(paraData.map(item => item?.tags || 'N/A'))];
+            const uniqueTags=[...new Set(paraData.map(item => item?.tags || 'N/A'))]
             setTag(uniqueTags)
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
@@ -461,7 +461,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const tagsBodyTemplate = (rowData) => {
     
-        const tag = rowData?.tags || 'N/A';        // console.log("repsBodytempl",timologio)
+        const tag = rowData?.tags?.length ? rowData.tags.join(', ') : 'N/A';
         console.log("timologio",tag," type ",typeof(tag));
         console.log("rep body template: ",tag)
     
