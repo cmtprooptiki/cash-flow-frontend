@@ -5,6 +5,11 @@ import { useSelector } from 'react-redux';
 import '../../buildinglist.css';
 import apiBaseUrl from '../../apiConfig'; // Update the path accordingly
 
+import { Toast } from 'primereact/toast';
+
+import { ConfirmDialog } from 'primereact/confirmdialog'; // For <ConfirmDialog /> component
+import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog method
+
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -560,6 +565,40 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         initFilters();
     },[]);
 
+    const toast = useRef(null)
+
+    const accept = (id) => {
+        try {
+            deleteErga(id);
+            toast.current.show({ severity: 'success', summary: 'Deleted Successfully', detail: `Item ${id} has been deleted.` });
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to delete the item. Please try again.',
+                life: 3000,
+            });
+        } 
+    };
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        getErga()
+    }
+
+    const confirm = (id) => {
+        confirmDialog({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => accept(id),
+            reject: () => reject() // Optional
+        });
+    };
+
     const getErga = async() =>{
         try {
             const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
@@ -608,6 +647,38 @@ const estimatePaymentDateFilterTemplate3= (options) => {
         await axios.delete(`${apiBaseUrl}/erga/${ergaId}`);
         getErga();
     }
+
+    const confirmMultipleDelete = () => {
+        confirmDialog({
+            message: 'Are you sure you want to delete the selected records?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => {
+                // Delete all selected items after confirmation
+                deleteMultipleErga(selectedErga.map(erga => erga.id));
+                
+                // Show success toast
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Deleted Successfully',
+                    detail: 'Selected items have been deleted.',
+                    life: 3000,
+                });
+            },
+            reject: () => {
+                // Show cancellation toast
+                toast.current.show({
+                    severity: 'info',
+                    summary: 'Cancelled',
+                    detail: 'Deletion was cancelled.',
+                    life: 3000,
+                });
+            },
+        });
+    };
+
 
     const deleteMultipleErga = (ids) => {
         // Assuming you have an API call or logic for deletion
@@ -718,7 +789,7 @@ const ActionsBodyTemplate = (rowData) => {
                                 icon="pi pi-trash"
                                 severity="danger"
                                 aria-label="Delete"
-                                onClick={() => deleteErga(id)}
+                                onClick={() => confirm(id)}
                             />
                         </>
                     )}
@@ -796,10 +867,13 @@ const ActionsBodyTemplate = (rowData) => {
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
-                onClick={() => deleteMultipleErga(selectedErga.map(erga => erga.id))} // Pass an array of selected IDs
+                onClick={confirmMultipleDelete} // Pass an array of selected IDs
             />
         )}
         </div>
+
+        <Toast ref={toast} />
+        <ConfirmDialog />
     <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows  rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'

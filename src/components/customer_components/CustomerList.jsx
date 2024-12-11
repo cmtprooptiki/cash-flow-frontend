@@ -15,6 +15,11 @@ import { MultiSelect } from 'primereact/multiselect';
 import { PrimeIcons } from 'primereact/api';
 import { ToggleButton } from 'primereact/togglebutton';
 
+import { Toast } from 'primereact/toast';
+
+import { ConfirmDialog } from 'primereact/confirmdialog'; // For <ConfirmDialog /> component
+import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog method
+
 import FormEditCustomer from '../customer_components/FormEditCustomer'
 import FormProfileCustomer from '../customer_components/FormProfileCustomer'
 
@@ -222,6 +227,40 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const formatCurrencyReport = (value) => {
         return Number(value);
+    };
+
+    const toast = useRef(null)
+
+    const accept = (id) => {
+        try {
+            deleteCustomer(id);
+            toast.current.show({ severity: 'success', summary: 'Deleted Successfully', detail: `Item ${id} has been deleted.` });
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to delete the item. Please try again.',
+                life: 3000,
+            });
+        } 
+    };
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        getCustomer()
+    }
+
+    const confirm = (id) => {
+        confirmDialog({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => accept(id),
+            reject: () => reject() // Optional
+        });
     };
     
     useEffect(()=>{
@@ -453,6 +492,37 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
     };
     const header = renderHeader();
 
+    const confirmMultipleDelete = () => {
+        confirmDialog({
+            message: 'Are you sure you want to delete the selected records?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => {
+                // Delete all selected items after confirmation
+                deleteMultipleCustomers(selectedCustomers.map(customer => customer.id));
+                
+                // Show success toast
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Deleted Successfully',
+                    detail: 'Selected items have been deleted.',
+                    life: 3000,
+                });
+            },
+            reject: () => {
+                // Show cancellation toast
+                toast.current.show({
+                    severity: 'info',
+                    summary: 'Cancelled',
+                    detail: 'Deletion was cancelled.',
+                    life: 3000,
+                });
+            },
+        });
+    };
+
 
     const ActionsBodyTemplate = (rowData) => {
         const id = rowData.id;
@@ -535,7 +605,7 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                                     icon="pi pi-trash"
                                     severity="danger"
                                     aria-label="Delete"
-                                    onClick={() => deleteCustomer(id)}
+                                    onClick={() => confirm(id)}
                                 />
                             </>
                         )}
@@ -614,10 +684,13 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
-                onClick={() => deleteMultipleCustomers(selectedCustomers.map(customer => customer.id))} // Pass an array of selected IDs
+                onClick={confirmMultipleDelete} // Pass an array of selected IDs
             />
         )}
         </div>
+
+        <Toast ref={toast} />
+        <ConfirmDialog />
         
 <DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 

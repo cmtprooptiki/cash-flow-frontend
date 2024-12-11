@@ -8,6 +8,11 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
+import { Toast } from 'primereact/toast';
+
+import { ConfirmDialog } from 'primereact/confirmdialog'; // For <ConfirmDialog /> component
+import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog method
+
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
@@ -119,6 +124,40 @@ const ErgaCatList = () => {
     };
     const header = renderHeader();
 
+    const toast = useRef(null)
+
+    const accept = (id) => {
+        try {
+            deleteErgaCat(id)
+            toast.current.show({ severity: 'success', summary: 'Deleted Successfully', detail: `Item ${id} has been deleted.` });
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to delete the item. Please try again.',
+                life: 3000,
+            });
+        } 
+    };
+
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        getErgaCat()
+    }
+
+    const confirm = (id) => {
+        confirmDialog({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => accept(id),
+            reject: () => reject() // Optional
+        });
+    };
+
     const ActionsBodyTemplate = (rowData) => {
         const id = rowData.id;
         const op = useRef(null);
@@ -200,7 +239,7 @@ const ErgaCatList = () => {
                                     icon="pi pi-trash"
                                     severity="danger"
                                     aria-label="Delete"
-                                    onClick={() => deleteErgaCat(id)}
+                                    onClick={() => confirm(id)}
                                 />
                             </>
                         )}
@@ -209,6 +248,38 @@ const ErgaCatList = () => {
             </div>
         );
     };
+
+    const confirmMultipleDelete = () => {
+        confirmDialog({
+            message: 'Are you sure you want to delete the selected records?',
+            header: 'Delete Confirmation',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            accept: () => {
+                // Delete all selected items after confirmation
+                deleteMultipleErgaCats(selectedErgaCats.map(ErgaCatList => ErgaCatList.id));
+                
+                // Show success toast
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Deleted Successfully',
+                    detail: 'Selected items have been deleted.',
+                    life: 3000,
+                });
+            },
+            reject: () => {
+                // Show cancellation toast
+                toast.current.show({
+                    severity: 'info',
+                    summary: 'Cancelled',
+                    detail: 'Deletion was cancelled.',
+                    life: 3000,
+                });
+            },
+        });
+    };
+
 
     const actionsBodyTemplate=(rowData)=>{
         const id=rowData.id
@@ -267,10 +338,13 @@ const ErgaCatList = () => {
                 label="Delete Selected" 
                 icon="pi pi-trash" 
                 severity="danger" 
-                onClick={() => deleteMultipleErgaCats(selectedErgaCats.map(ergacat => ergacat.id))} // Pass an array of selected IDs
+                onClick={confirmMultipleDelete} // Pass an array of selected IDs
             />
         )}
         </div>
+
+        <Toast ref={toast} />
+        <ConfirmDialog />
         
         
         
