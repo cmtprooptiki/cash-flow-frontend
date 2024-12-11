@@ -11,9 +11,11 @@ import { Toast } from 'primereact/toast';
 
 import { ConfirmDialog } from 'primereact/confirmdialog'; // For <ConfirmDialog /> component
 import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog method
+
+import { FilterMatchMode, FilterOperator, FilterService } from 'primereact/api';
         
 
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+// import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
@@ -50,10 +52,13 @@ const YpoxreoseisList = () =>
 
     const toast = useRef(null)
 
+    const [filtercalled,setfiltercalled]=useState(false)
+
     const [dialogVisible, setDialogVisible] = useState(false);
     const [selectedYpoxreoseisId, setSelectedYpoxreoseisId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
     const [selectedYpoxreoseis, setSelectedYpoxreoseis] = useState([])
+    const [totalincome, setTotalIncome] = useState(0)
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -253,8 +258,18 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const uniqueProviders= [...new Set(paraData.map(item => item.ypoxreoseis?.provider || 'N/A'))];
             setProvider(uniqueProviders);
 
-            const uniqueTags=[...new Set(paraData.map(item => item?.tags || 'N/A'))]
-            setTag(uniqueTags)
+            const uniqueTags = [
+                ...new Set(
+                  paraData
+                    .map(item => item?.tags || []) // Ensure `tags` is always an array
+                    .flatMap(value => 
+                      Array.isArray(value) 
+                        ? value.map(v => v.trim()) // Trim each element if it's an array
+                        : [] // Handle non-array values gracefully
+                    )
+                )
+              ];
+              setTag(uniqueTags);
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
@@ -363,7 +378,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             
             'ypoxreoseis.ammount_vat': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
 
-            'tags':  { value: null, matchMode: FilterMatchMode.IN },
+            'tags':  { value: null, matchMode: FilterMatchMode.CUSTOM },
 
             'ypoxreoseis.doseisCount' : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
 
@@ -461,24 +476,36 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const tagsBodyTemplate = (rowData) => {
     
-        const tag = rowData?.tags?.length ? rowData.tags.join(', ') : 'N/A';
-        console.log("timologio",tag," type ",typeof(tag));
-        console.log("rep body template: ",tag)
-    
-        return (
-            <div className="flex align-items-center gap-2">
-                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
-                <span>{tag}</span>
-            </div>
-        );
+        const tag = Array.isArray(rowData?.tags) 
+        ? rowData.tags.join(', ') 
+        : 'N/A'; // Ensure a proper string representation
+    console.log("Rendered Tags:", tag);
+
+    return (
+        <div className="flex align-items-center gap-2">
+            <span>{tag}</span>
+        </div>
+    );
     };
         
     const tagsFilterTemplate = (options) => {
-        console.log('Current timologia filter value:', options.value);
+        console.log('Current Filter Value:', options.value);
+        console.log('Available Tags:', tags);
     
-            return (<MultiSelect value={options.value} options={tags} itemTemplate={tagsItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
-    
-        };
+        return (
+            <MultiSelect
+                value={options.value} // Currently applied filters
+                options={tags} // All unique tags
+                itemTemplate={tagsItemTemplate}
+                onChange={(e) => {
+                    console.log('Selected Filters:', e.value);
+                    options.filterCallback(e.value); // Pass selected values back to the DataTable
+                }}
+                placeholder="Any"
+                className="p-column-filter"
+            />
+        );
+    };
 
     const tagsItemTemplate = (option) => {
         // console.log("itemTemplate",option)
@@ -686,6 +713,32 @@ const invoice_dateDateFilterTemplate = (options) => {
         );
     };
 
+    const calculateTotalIncome = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ypoxreoseis.total_owed_ammount), 0);
+    };
+
+    const handleValueChange = (e) => {
+        const visibleRows = e;
+        // console.log("visisble rows:",e);
+        if(e.length>0){
+            setfiltercalled(true)
+        }
+
+        // // Calculate total income for the visible rows
+        const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ypoxreoseis.total_owed_ammount || 0)), 0);
+        
+        setTotalIncome(formatCurrency(incomeSum));
+    };
+
+    useEffect(() => {
+        if(!filtercalled){
+            setTotalIncome(formatCurrency(calculateTotalIncome(ypoxreoseis)));
+        }
+        
+    }, [ypoxreoseis]);
+
 
     const actionsBodyTemplate = (rowData) => {
         const id=rowData.ypoxreoseis?.id
@@ -731,6 +784,26 @@ const invoice_dateDateFilterTemplate = (options) => {
             </div>
         );
     };
+
+    FilterService.register('tags', (value, filter) => {
+        console.log('Row Tags (value):', value); // Debugging log
+        console.log('Active Filter (filter):', filter); // Debugging log
+    
+        // If no filter is applied, show all rows
+        if (!filter || filter.length === 0) {
+            return true;
+        }
+    
+        // Ensure value is treated as an array
+        const valueArray = Array.isArray(value) 
+            ? value 
+            : (value ? value.split(',').map((v) => v.trim()) : []);
+
+        
+    
+        // Compare filter values against the row's tags
+        return filter.some((f) => valueArray.includes(f.trim()));
+    });
 
 
 
@@ -800,12 +873,12 @@ const invoice_dateDateFilterTemplate = (options) => {
 
                 {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
-                <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
+                <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
                 
                 <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 
                 <Column field="tags"  header="tags"  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={tagsBodyTemplate} filter filterElement={tagsFilterTemplate}></Column>
+                    body={tagsBodyTemplate} filter filterElement={tagsFilterTemplate} filterFunction={(value, filter) => FilterService.filters.tags(value, filter)} ></Column>
         
                
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}/>
