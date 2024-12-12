@@ -62,7 +62,7 @@ const PaidExodaList = () => {
     const getYpoxreoseis = async() =>
     {
         const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
-        const uniqueNames = [...new Set(response.data.filter(item=>item.status==="no").map(item => item.ypoxreosei.provider || 'N/A'))];
+        const uniqueNames = [...new Set(response.data.filter(item=>item.status==="no").map(item => item.provider))];
         console.log("Unique names:",uniqueNames);
         setProvider(uniqueNames);
         // setCustomer(response.data);
@@ -103,6 +103,7 @@ const PaidExodaList = () => {
     const getDosiId = async(id)=>{
         console.log("id scenario id ",id)
         const response = await axios.get(`${apiBaseUrl}/doseis/${id}`, {timeout: 5000})
+        console.log("eeeeeeeee: ", response)
         setSelectedRowData(response.data)
     }
 
@@ -253,6 +254,7 @@ const statusItemTemplate = (option) => {
 const handleRowData = (rowData) => {
     //setSelectedRowData(rowData);
     setSelectedIdType(rowData.type)
+    console.log("rowdataaaaaaa: ", rowData)
     getDosiId(rowData.id)
     
     
@@ -295,9 +297,9 @@ const idBodyTemplate = (rowData) => {
             // ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
             // ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
             // ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.id, provider: item.ypoxreosei?.provider?.trim() || 'N/A' }))
+            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.doseis_id, provider: item.provider?.trim() || 'N/A' }))
         ];
-        console.log("Combined Data: ", combinedData2);
+        console.log("Combined Data: ", doseis);
         setCombinedData(combinedData2)
 
         const uniqueProviders = [...new Set(combinedData2.map(item => item.provider?.trim() || 'N/A'))];
@@ -335,7 +337,9 @@ const idBodyTemplate = (rowData) => {
     const header = renderHeader();
 
     return (
+        
         <div>
+            {console.log("Got you: " , selectedRowData)}
             <DataTable value={combinedData} paginator rows={10} 
             header={header} 
             filters={filters} 
@@ -364,7 +368,7 @@ const idBodyTemplate = (rowData) => {
                 {selectedRowData && selectedIdType==="doseis" && (
                     
                     <div>
-                        {console.log(selectedRowData)}
+                        {console.log("Rowdata selectedeeeeee: ", selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
                         {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
@@ -372,7 +376,7 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id Yποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
-                        <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei.provider}</p>
                         {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
                         {/* Render other fields as needed */}
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>

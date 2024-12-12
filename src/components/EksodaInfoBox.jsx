@@ -82,9 +82,10 @@ const formatDate = (value) => {
     const fetchData = async () => {
       try {
         // Fetching ypoxreoseis data using item.ypoxreoseis_id
-        console.log(item.ammount)
-        const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`, {timeout: 5000});
-        setYpoxreoseis(ypoxreoseisResponse.data);
+        console.log("The Item: ", item)
+        // const ypoxreoseisResponse = await axios.get(`${apiBaseUrl}/ypo/${item.ypoxreoseis_id}`, {timeout: 5000});
+        setYpoxreoseis(item.provider);
+        console.log(ypoxreoseis);
       } catch (error) {
         setError("Error fetching data");
         console.error("Error fetching data:", error);
@@ -99,13 +100,16 @@ const formatDate = (value) => {
   }
 
   if (!ypoxreoseis) {
+    {console.log("ypoxreoseis structure: ",ypoxreoseis)}
     return <div>Loading...</div>;
+    
   }
 
   return (
     <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round'>
       <h5>Πληροφορίες Εκροής</h5>
-      <strong>Προμηθευτής-έξοδο: </strong> {ypoxreoseis.provider}<br/>
+      <strong>Προμηθευτής-έξοδο: </strong> {ypoxreoseis}<br/>
+      
       <strong>Ποσό: </strong> {formatCurrency(item.ammount)}<br/>
       <strong>Πραγματική ημερομηνία πληρωμής: </strong>{formatDate(item.actual_payment_date)}<br/>
       <strong>Εκτιμώμενη ημερομηνία πληρωμής: </strong> {formatDate(date)}<br/>

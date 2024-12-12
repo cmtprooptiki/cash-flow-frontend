@@ -8,11 +8,13 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode, FilterOperator, FilterService } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
+
+
 
 
 
@@ -44,6 +46,7 @@ const DoseisList = () => {
     const [statuses] = useState(['yes', 'no']);
     const [filtercalled,setfiltercalled]=useState(false)
     const [totalincome, setTotalIncome] = useState(0)
+    const [tags, setTag]=useState([]);
 
     const [month, setMonth] = useState("")
 
@@ -60,7 +63,7 @@ const DoseisList = () => {
 
 
     const cols = [
-        { field: 'ypoxreosei.provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'provider', header: 'Προμηθευτής-έξοδο' },
         { field: 'ammount', header: 'Ποσό Δόσης' },
         { field: 'estimate_payment_date', header: 'Εκτιμώμενη ημερομηνία πληρωμής' },
         { field: 'actual_payment_date', header: 'Πραγματική ημερομηνία πληρωμής' },
@@ -115,7 +118,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         doc.autoTable({
         columns: exportColumns,
         body: formattedReportData.map((product) => [
-            product.ypoxreosei.provider,
+            product.provider,
             product.ammount,
             product.estimate_payment_date,
             product.actual_payment_date,
@@ -209,8 +212,16 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const doseis_data = response.data;
             console.log("ParaData:",doseis_data);
 
-            const uniqueYpoxreoseis= [...new Set(doseis_data.map(item => item.ypoxreosei?.provider || 'N/A'))];
+            const uniqueYpoxreoseis= [...new Set(doseis_data.map(item => item.provider ))];
             setYpoxreoseis(uniqueYpoxreoseis);
+
+
+            const uniqueTags = [...new Set(
+                doseis_data
+                    .map(item => item.tag_name || '') // Extract values
+                    .flatMap(value => value.split(',').map(v => v.trim())) // Split by comma and trim spaces
+            )];
+            setTag(uniqueTags)
             // Extract unique statuses
             //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
@@ -224,11 +235,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             // Convert sign_date to Date object for each item in ergaData
             const doseisDataWithDates = doseis_data.map(item => ({
                 ...item,
-                ypoxreoseis:
-                {
-                    ...item.ypoxreoseis,
-                    provider: item.ypoxreoseis?.provider || 'N/A'
-                },
+                // ypoxreoseis:
+                // {
+                //     ...item.ypoxreoseis,
+                //     provider: item.ypoxreoseis?.provider || 'N/A'
+                // },
                 // erga: {
                 //     ...item.erga,
                 //     name: item.erga?.name || 'N/A'
@@ -393,7 +404,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             
 
             // status_paid: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            'ypoxreosei.provider':{ value: null, matchMode: FilterMatchMode.IN },
+            'provider':{ value: null, matchMode: FilterMatchMode.IN },
+            'tag_name': { value: null, matchMode: FilterMatchMode.CUSTOM },
             
 
         });
@@ -478,7 +490,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
     const ProviderBodyTemplate = (rowData) => {
         
-        const provider = rowData.ypoxreosei?.provider || 'N/A';        // console.log("repsBodytempl",timologio)
+        const provider = rowData.provider || 'N/A';        // console.log("repsBodytempl",timologio)
         // console.log("timologio",ergo," type ",typeof(ergo));
         // console.log("rep body template: ",ergo)
 
@@ -498,6 +510,50 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         };
 
         const ProviderItemTemplate = (option) => {
+            // console.log("itemTemplate",option)
+            console.log("rep Item template: ",option)
+            console.log("rep Item type: ",typeof(option))
+        
+            return (
+                <div className="flex align-items-center gap-2">
+                    {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
+                    <span>{option}</span>
+                </div>
+            );
+        };
+
+        const tagsBodyTemplate = (rowData) => {
+            console.log("RRRRRRRR :", rowData.tag_name);
+            let tag = rowData.tag_name
+            tag = tag.replace(',', ', ');
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{tag}</span>
+            </div>
+        );
+        };
+            
+        const tagsFilterTemplate = (options) => {
+            console.log('Current Filter Value:', options.value);
+            console.log('Available Tags:', tags);
+        
+            return (
+                <MultiSelect
+                    value={options.value} // Currently applied filters
+                    options={tags} // All unique tags
+                    itemTemplate={tagsItemTemplate}
+                    onChange={(e) => {
+                        console.log('Selected Filters:', e.value);
+                        options.filterCallback(e.value); // Pass selected values back to the DataTable
+                    }}
+                    placeholder="Any"
+                    className="p-column-filter"
+                />
+            );
+        };
+    
+        const tagsItemTemplate = (option) => {
             // console.log("itemTemplate",option)
             console.log("rep Item template: ",option)
             console.log("rep Item type: ",typeof(option))
@@ -728,6 +784,22 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     // };
 
 
+    FilterService.register('tag_name', (value, filter) => {
+        if (!filter || filter.length === 0) {
+            return true; // Show all rows when no filter is set
+        }
+        
+        // If the value is null, undefined, or an empty string, check if empty value is selected in the filter
+        if (!value) {
+            // If filter contains an empty string or null, allow the row to be displayed
+            return filter.includes('') || filter.includes(null);
+        }
+    
+        // Otherwise, split and trim the value to compare with the filter
+        const valueArray = value.split(',').map((v) => v.trim()); // Split and trim any extra spaces
+        return filter.some((f) => valueArray.includes(f.trim()) || (f === '' && valueArray.length === 0)); // Check if any filter value matches
+    });
+
 
 
 
@@ -788,12 +860,13 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         filters={filters} 
                         globalFilterFields={[
                             'id',
-                            'ypoxreosei.provider', 
+                            'provider', 
                             'ammount', 
                             'actual_payment_date',
                             'estimate_payment_date',
                             'ammount_no_tax',
-                            'status'
+                            'status',
+                            'tag_name'
                         ]}
                         header={header} 
                         emptyMessage="No doseis found."
@@ -804,8 +877,11 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                          <Column selectionMode="multiple" headerStyle={{ width: '3em' }} alignFrozen="left" frozen></Column>
                          {/* Other columns remain as before */}
                 <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
-                <Column header="Προμηθευτής-έξοδο" filterField="ypoxreosei.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                    body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />  
+                <Column header="Προμηθευτής-έξοδο" filterField="provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />
+
+<Column field="tag_name"  header="tags"  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={tagsBodyTemplate} filter filterElement={tagsFilterTemplate} filterFunction={(value, filter) => FilterService.filters.tag_name(value, filter)}  ></Column>  
                  <Column field = "month" header = "Month"  style={{ minWidth: '5rem' }} body={(rowData) => {
             const date = new Date(rowData.estimate_payment_date); // Parse the date
             const monthNames = [
