@@ -103,6 +103,7 @@ const BudgetPage = () => {
 
     const getDoseis = async () =>{
         const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
+        console.log("Doseika:::::: ", response.data)
         setDoseis(response.data)
     }
 
@@ -163,7 +164,7 @@ const BudgetPage = () => {
                 ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: parseFloat(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id })),
                 ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: parseFloat(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
                 ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: parseFloat(item.ammount), type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.id }))
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id }))
             ];
             setCombinedData(combinedData2)
         // }else if(scenario==="table2"){
@@ -298,7 +299,7 @@ const BudgetPage = () => {
       }));
       //Style Colors for Calendar Esoda with Color green E3oda with Color Red
       const eventStyleGetter =(event, start, end, isSelected)=> {
-        console.log("isnide styler",event);
+        // console.log("isnide styler",event);
         let backgroundColor = "black";
         let color = "white"
         if (event.test==="Timologia"){
@@ -498,7 +499,7 @@ const BudgetPage = () => {
                 {selectedRowData && selectedIdType==="doseis" && (
                     
                     <div>
-                        {console.log(selectedRowData)}
+                        {console.log("Daneikaaaa: ", selectedRowData)}
                         <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}>
                             <h3>Δόση</h3>
 

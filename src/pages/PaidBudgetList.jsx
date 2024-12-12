@@ -159,9 +159,9 @@ const PaidBudgetList = (props) => {
     };
 
     const formatDate = (value) => {
-        console.log(value)
+        // console.log(value)
         if(value===null || value===''){
-                console.log("mpike edw")
+                // console.log("mpike edw")
             return ''
         }
         let date = new Date(value);
@@ -172,7 +172,7 @@ const PaidBudgetList = (props) => {
             //     month: '2-digit',
             //     year: 'numeric'
             // }))
-            console.log("mpike edw",date)
+            // console.log("mpike edw",date)
 
             return date.toLocaleDateString('en-UK', {
                 day: '2-digit',
@@ -188,14 +188,14 @@ const PaidBudgetList = (props) => {
 
   //Sign Date
   const DateBodyTemplate = (rowData) => {
-    console.log("value date",formatDate(rowData.date))
+    // console.log("value date",formatDate(rowData.date))
     return formatDate(rowData.date);
 };
 
 
 
 const dateFilterTemplate = (options) => {
-    console.log('Current filter value:', options);
+    // console.log('Current filter value:', options);
 
     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="dd/mm/yyyy" mask="99/99/9999" />;
 };
@@ -286,7 +286,7 @@ const idBodyTemplate = (rowData) => {
         if (!data || data.length === 0) return 0;
         const final= data.reduce((acc, item) => Number(acc) + Number(item.income), 0);
         // return data.reduce((acc, item) => acc + item.income, 0);
-        console.log("type: ",typeof(final)," final: ",final)
+        // console.log("type: ",typeof(final)," final: ",final)
         return parseFloat(final)+parseFloat(budget);
     };
     
