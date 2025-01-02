@@ -14,8 +14,6 @@ import { confirmDialog } from 'primereact/confirmdialog'; // For confirmDialog m
 
 import { FilterMatchMode, FilterOperator, FilterService } from 'primereact/api';
         
-
-// import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
@@ -148,9 +146,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredypoxreoseis.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'total_owed_ammount' or any other amount field that needs formatting
                         if (col.field === 'ypoxreoseis.total_owed_ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_owed_ammount'
                         }
 
                         if (col.field === 'ypoxreoseis.ammount_vat')
@@ -160,7 +158,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
                         if (col.field === 'ypoxreoseis.provider')
                         {
-                            return product.ypoxreoseis ? product.ypoxreoseis.provider : '';  // Return the value as is for other fields
+                            return product.ypoxreoseis ? product.ypoxreoseis.provider : ''; 
                         }
                         return product[col.field];
                     })
@@ -246,9 +244,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     },[]);
 
     const getYpoxreoseis = async() =>{
-        // const response = await axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000});
-        // setYpoxreoseis(response.data);
-
         try {
             const response = await axios.get(`${apiBaseUrl}/ypoquery`, {timeout: 5000});
             const paraData = response.data;
@@ -270,31 +265,12 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 )
               ];
               setTag(uniqueTags);
-            // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-            // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
-        
-            // console.log("Unique Timologia:",uniqueTimologia);
-            // setTimologio(uniqueTimologia);
-
-            // const uniqueErga= [...new Set(paraData.map(item => item.erga?.name || 'N/A'))];
-            // setErgo(uniqueErga);
-
             // Convert sign_date to Date object for each item in ergaData
             const parDataWithDates = paraData.map(item => ({
                 ...item,
-                // erga: {
-                //     ...item.erga,
-                //     name: item.erga?.name || 'N/A'
-                // },
-                // timologia: {
-                //     ...item.timologia,
-                //     invoice_number: item.timologia?.invoice_number || 'N/A'
-                // },
                 'ypoxreoseis.invoice_date': new Date(item.ypoxreoseis?.invoice_date),
                 'ypoxreoseis.total_owed_ammount': parseFloat(item.ypoxreoseis.total_owed_ammount),
                 'ypoxreoseis.ammount_vat': parseFloat(item.ypoxreoseis.ammount_vat)
-                // actual_payment_date: new Date(item.actual_payment_date)
             }));
             // Sort parDataWithDates by ypoxreoseis.invoice_date in ascending order
             const sortedParData = parDataWithDates.sort((a, b) => {
@@ -334,13 +310,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 // Existing logic to delete a single Dosi by id, e.g., an API call
                 console.log(`Deleting Ypoxreoseis with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/ypoquery/${id}`);
-
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting ypoxreoseis with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -441,13 +414,12 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const providersBodyTemplate = (rowData) => {
         
-        const provider = rowData.ypoxreoseis?.provider || 'N/A';        // console.log("repsBodytempl",timologio)
+        const provider = rowData.ypoxreoseis?.provider || 'N/A'; 
         console.log("timologio",provider," type ",typeof(provider));
         console.log("rep body template: ",provider)
     
         return (
             <div className="flex align-items-center gap-2" >
-                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
                 <span>{provider}</span>
             </div>
         );
@@ -462,13 +434,11 @@ const invoice_dateDateFilterTemplate = (options) => {
     
     
     const providersItemTemplate = (option) => {
-        // console.log("itemTemplate",option)
         console.log("rep Item template: ",option)
         console.log("rep Item type: ",typeof(option))
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                 <span>{option}</span>
             </div>
         );
@@ -508,13 +478,11 @@ const invoice_dateDateFilterTemplate = (options) => {
     };
 
     const tagsItemTemplate = (option) => {
-        // console.log("itemTemplate",option)
         console.log("rep Item template: ",option)
         console.log("rep Item type: ",typeof(option))
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                 <span>{option}</span>
             </div>
         );
@@ -585,40 +553,7 @@ const invoice_dateDateFilterTemplate = (options) => {
 
 
     const footer = `In total there are ${ypoxreoseis ? ypoxreoseis.length : 0} ypoxrewseis.`;
-
-
-
-
-
-
     const header = renderHeader();
-
-
-    // const actionsBodyTemplate=(rowData)=>{
-    //     const id=rowData.ypoxreoseis?.id
-    //     return(
-    //         <div className=" flex flex-wrap justify-content-center gap-3">
-               
-    //         {user && user.role!=="admin" &&(
-    //             <div>
-    //                 <Link to={`/ypoquery/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-    //             </div>
-    //         )}
-    //         {user && user.role ==="admin" && (
-    //         <span className='flex gap-1'>
-    //             <Link to={`/ypoquery/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-    //             </Link>
-    //             <Link to={`/ypoquery/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-    //             <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteYpoxreoseis(id)} />
-    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-    //         </span>
-           
-    //         )}
-    //         </div>
- 
-    //     );
-    // }
-
     const ActionsBodyTemplate = (rowData) => {
         const id = rowData.ypoxreoseis?.id;
         const op = useRef(null);
@@ -721,12 +656,11 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
 
-        // // Calculate total income for the visible rows
+        // Calculate total income for the visible rows
         const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ypoxreoseis.total_owed_ammount || 0)), 0);
         
         setTotalIncome(formatCurrency(incomeSum));
@@ -753,7 +687,6 @@ const invoice_dateDateFilterTemplate = (options) => {
                 )}
                 {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
 
                             <Button className='action-button' 
                             icon="pi pi-eye" 
@@ -766,7 +699,6 @@ const invoice_dateDateFilterTemplate = (options) => {
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -820,8 +752,6 @@ const invoice_dateDateFilterTemplate = (options) => {
         {user && user.role ==="admin" && (
         <Link to={"/ypoquery/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέας Υποχρέωσης" className='rounded' icon="pi pi-plus-circle"/></Link>
         )}
-        {/* <Toast ref={toast} />
-        <ConfirmDialog /> */}
         {selectedYpoxreoseis.length > 0 && (
             <Button
                 className='button is-primary mb-2 rounded' 
@@ -870,9 +800,6 @@ const invoice_dateDateFilterTemplate = (options) => {
                
                
                 <Column header="Ημερομηνία τιμολογίου" filterField="ypoxreoseis.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
-
-                {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
-
                 <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
                 
                 <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
@@ -896,60 +823,6 @@ const invoice_dateDateFilterTemplate = (options) => {
     
        
     </div>
-
-    //     <div style={{ overflowX: 'auto', maxWidth: '800px'}}>
-    //     <div>
-    //     <h1 className='title'>ΥΠΟΧΡΕΩΣΕΙΣ</h1>
-    //     {user && user.role ==="admin" && (
-    //     <Link to={"/ypoquery/add"} className='button is-primary mb-2'>Προσθήκη Νέας Υποχρέωσεις</Link>
-    //     )}
-    //     <div className="table-responsive-md">
-
-    //     <table className='table is-stripped is-fullwidth'>
-    //         <thead>
-    //             <tr>
-
-    //                 <th>#</th>
-
-    //                 <th>ΠΑΡΟΧΟΣ</th>
-    //                 <th>ΕΡΓΟ ΥΠΟΧΡΕΩΣΗΣ ID</th>
-    //                 <th>ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</th>
-    //                 <th>ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΟΦΕΛΗΣ</th>
-    //                 <th>ΠΟΣΟ ΦΠΑ</th>
-    //                 <th>TAGS</th>
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //             {ypoxreoseis.map((ypoxreosh,index)=>(
-    //                 <tr key={ypoxreosh.ypoxreoseis.id}>
-    //                     <td>{index+1}</td>
-    //                     <td>{ypoxreosh.ypoxreoseis.provider}</td>
-    //                     <td>{ypoxreosh.ypoxreoseis.erga_id}</td>
-    //                     <td>{ypoxreosh.ypoxreoseis.invoice_date}</td>
-    //                     <td>{ypoxreosh.ypoxreoseis.total_owed_ammount}</td>
-    //                     <td>{ypoxreosh.ypoxreoseis.ammount_vat}</td>
-    //                     <td>{ypoxreosh.tags.join(' ')}</td>
-
-
-    //                     <td>
-    //                         <Link to={`/ypoquery/profile/${ypoxreosh.ypoxreoseis.id}`} className='button is-small is-info'>Προφίλ</Link>
-    //                         {user && user.role ==="admin" && (
-    //                         <div>
-    //                             <Link to={`/ypoquery/edit/${ypoxreosh.ypoxreoseis.id}`} className='button is-small is-info'>Επεξεργασία</Link>
-    //                             <button onClick={()=>deleteYpoxreoseis(ypoxreosh.ypoxreoseis.id)} className='button is-small is-danger'>Διαγραφή</button>
-                                
-    //                         </div>
-    //                         )}
-                            
-    //                     </td>
-    //                 </tr>
-    //             ))}
-                
-    //         </tbody>
-    //     </table>
-    //     </div>
-    // </div>
-    // </div>
     )
 
     

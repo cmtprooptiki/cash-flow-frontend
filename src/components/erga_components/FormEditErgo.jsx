@@ -70,17 +70,12 @@ const FormEditErgo= ({id, onHide}) => {
         setErga_cat_id(e.target.value);
     };
 
-    // const navigate = useNavigate();
-
-    // const{id} = useParams();
-
     useEffect(()=>{
         const getErgoById = async()=>{
             try {
                 const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
                 setName(response.data.name);
                 setColor(response.data.color);
-                // setSignAmmountNoTax(response.data.sign_ammount_no_tax);
                 setSignDate(response.data.sign_date);
 
                 setStatus(response.data.status);
@@ -114,15 +109,6 @@ const FormEditErgo= ({id, onHide}) => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
                 setCustomers(response.data);
-                // setCustomerName(response.data)
-                // console.log(response.data)
-                // for(let i in response.data){
-                //     if(response.data[i].id==customer_id){
-                //         setCustomerName(response.data[i])
-                        
-                //     }
-                    
-                // }
             } catch (error) {
                 if (error.response) {
                     setMsg(error.response.data.msg);
@@ -135,7 +121,6 @@ const FormEditErgo= ({id, onHide}) => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/ergacat`, {timeout: 5000});
                 setErgo_Cat(response.data);
-                // setErga_cat_name(response.data)
             } catch (error) {
                 if (error.response) {
                     setMsg(error.response.data.msg);
@@ -237,7 +222,6 @@ const FormEditErgo= ({id, onHide}) => {
         window.location.reload();
 
 
-            // navigate("/erga");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -297,7 +281,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Εργο</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'/> */}
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ' />
                                     </div>
                                 </div>
@@ -323,7 +306,6 @@ const FormEditErgo= ({id, onHide}) => {
 
                                 <div className="control">
                                     <input type="file" className="input"  onChange={handleImageChange} accept="image/*" />
-                                {/* {console.log(logoImage.name)} */}
                                 </div>
                             </div>
 
@@ -332,7 +314,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Χρώμα</label>
                                     <div className="control">
-                                    {/* <SketchPicker color={color} onChange={handleColorChange} /> */}
                                         <ColorPicker format="hex" value={color} onChange={(e) => setColor(e.value)} />
                                     </div>
                                 </div>
@@ -340,7 +321,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/> */}
                                         <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
                                         placeholder="Select Status" className="w-full md:w-14rem" required/>
 
@@ -350,7 +330,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Project Μanager</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={project_manager} onChange={(e)=> setProjectManager(e.target.value)} placeholder='PROJECT MANAGER'/> */}
                                         <InputText type="text" className="input" value={project_manager} onChange={(e)=> setProjectManager(e.target.value)} placeholder='PROJECT MANAGER'/>
 
                                     </div>
@@ -368,7 +347,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Ακρώνυμο Έργου</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/> */}
                                         <InputText type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/>
 
                                     </div>
@@ -388,7 +366,6 @@ const FormEditErgo= ({id, onHide}) => {
                                 <div className="field">
                                     <label  className="label">Ημερομηνία υπογραφής σύμβασης</label>
                                     <div className="control">
-                                        {/* <input type="date" className="input" value={sign_date} onChange={(e)=> setSignDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/> */}
                                         <Calendar value={new Date(sign_date)} onChange={(e) => setSignDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
                                     </div>
                                 </div>
@@ -405,7 +382,6 @@ const FormEditErgo= ({id, onHide}) => {
                         <div className="field">
                             <label  className="label">Ημερομηνία έναρξης (εκτίμηση)</label>
                             <div className="control">
-                                {/* <input type="date" className="input" value={estimate_start_date} onChange={(e)=> setEstimateStartDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/> */}
                                 <Calendar value={new Date(estimate_start_date)} onChange={(e) => setEstimateStartDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/>
                             </div>
                         </div>
@@ -416,11 +392,6 @@ const FormEditErgo= ({id, onHide}) => {
 
                         </div>
                         </div>
-                      
-                        {/* <Divider align="center">
-                            <span className="p-tag text-lg">Εκτιμήσεις</span>
-                        </Divider> */}
-                    {/* <div className='card p-fluid'> */}
                     <div className="col-12 md:col-6">
                     <div className="card p-fluid">
                         <div className=""><Divider align="center"><span className="p-tag text-lg">Ποσό Πληρωμής</span></Divider></div>
@@ -430,7 +401,6 @@ const FormEditErgo= ({id, onHide}) => {
                         <div className="field">
                             <label  className="label">Ποσό (καθαρή αξία)</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
                                 <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> HandleAmmountChange(e)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
 
                             </div>
@@ -439,7 +409,6 @@ const FormEditErgo= ({id, onHide}) => {
                         <div className="field">
                             <label  className="label">Ποσό ΦΠΑ</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/> */}
                                 <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> HandleAmmountVatChange(e)} placeholder='ΠΟΣΟ ΦΠΑ'/>
 
                             </div>
@@ -448,7 +417,6 @@ const FormEditErgo= ({id, onHide}) => {
                         <div className="field">
                             <label  className="label">Σύνολο</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/> */}
                                 <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ' readOnly/>
 
                             </div>

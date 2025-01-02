@@ -34,8 +34,6 @@ const ReportList = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
-
-    // const [project_managers, setProjectManager]=useState([]);
    
     //Export functionaliy code
     const dt = useRef(null);
@@ -54,10 +52,6 @@ const ReportList = () => {
 
         { field: 'demands', header: 'Απαιτήσεις' },
         { field: 'future_demands', header: 'Μελλοντικές Απαιτήσεις' }
-
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -135,20 +129,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 });
     };
 
-    // const exportExcel = () => {
-    //     import('xlsx').then((xlsx) => {
-    //         const worksheet = xlsx.utils.json_to_sheet(reportData);
-    //         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-    //         const excelBuffer = xlsx.write(workbook, {
-    //             bookType: 'xlsx',
-    //             type: 'array'
-    //         });
-
-    //         saveAsExcelFile(excelBuffer, 'products');
-    //     });
-    // };
-
-
     const exportExcel = () => {
         import('xlsx').then((xlsx) => {
             // Create the headers based on the 'cols' array
@@ -160,24 +140,24 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredData.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'ammount_total' or any other amount field that needs formatting
                         if (col.field === 'ammount_total') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_total'
                         }
                         if (col.field === 'total_yes_timologia') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_yes_timologia'
                         }
                         if (col.field === 'total_no_timologia') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_no_timologia'
                         }
                         if (col.field === 'demands_no_tim') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'demands_no_tim'
                         }
                         if (col.field === 'demands') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'demands'
                         }
                         if (col.field === 'future_demands') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'future_demands'
                         }
 
                         
@@ -313,23 +293,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const footerTemplate = (data) => {
         return (
             <React.Fragment>
-                
-                {/* <td colSpan="1">
-                    <div className="font-bold w-full" style={{color:'black'}}>Σύνολο Έργων: {calculateCustomerTotal(data.customer_name)}</div>
-                
-                </td>
-                <td colSpan="3">
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικο Ποσο Έργων: {calculateAmmount_Total(data.customer_name)}</div>
-                    
-                </td>
-                <td colSpan="6">
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολο Εισπράξεων: {calculateTotalYesTim(data.customer_name)}</div>
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις Εισπράξεων: {calculateTotalNoTim(data.customer_name)}</div>
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις Μη Τιμολογιμένων: {calculateTotalDemandsNoTim(data.customer_name)}</div>
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Απαιτήσεις: {calculateTotalDemands(data.customer_name)}</div>
-                    <div className="font-bold w-full" style={{color:'black'}}>Συνολικες Μελλοντικές Απαιτήσεις: {calculateTotalFutureDemands(data.customer_name)}</div>
-
-                </td> */}
                 <td colSpan={8}>
                 <table className='reportsTable'>
                     <thead>
@@ -571,10 +534,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 future_demands:parseFloat(item.future_demands),
 
                 sign_date: new Date(item.sign_date)
-                // estimate_start_date: new Date(item.estimate_start_date),
-                // estimate_payment_date:new Date(item.estimate_payment_date),
-                // estimate_payment_date_2:new Date(item.estimate_payment_date_2),
-                // estimate_payment_date_3:new Date(item.estimate_payment_date_3)
             }));
     
 
@@ -602,9 +561,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
   return (
     <div className="card" >
     <h1 className='title'>Αναφορές</h1>
-    {/* {user && user.role ==="admin" && (
-    <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" icon="pi pi-plus-circle"/></Link>
-    )} */}
    <DataTable ref={dt} value={reportData} onValueChange={(reportData) => setFilteredData(reportData)} rowGroupMode="subheader" groupRowsBy="customer_name" sortMode="single" sortField="customer_name"
                     sortOrder={1} scrollable scrollHeight="600px" loading={loading} 
                     filters={filters}

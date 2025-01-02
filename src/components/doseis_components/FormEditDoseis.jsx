@@ -110,7 +110,6 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
 
                     navigate(-1);
                 }
-            // navigate("/doseis");
         }
         catch(error)
         {
@@ -136,13 +135,10 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
         const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
         var doseisData = response.data.filter(item => {
             if(item.ypoxreoseis_id === parseInt(ypoxreoseis_id) && item.id!==parseInt(id)){
-                // console.log(" found")
                 return true
             }
             return false
         })
-        // console.log("doseis data",doseisData)
-        // doseisData= doseisData.filter(item => item.id!==29)
         setdoseis(doseisData);
     }   
     const getYpoxreoseisId = async()=>{
@@ -161,34 +157,12 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
 
         })
         const total=sumYpo-sumdoseis
-        // var max = 0
-        // console.log("============================")
         if(keyInputs>total){
-            // console.log("bigger")
             setAmmount(total)
-            // max=total
-            // console.log("bigger max",max)
-            // console.log("ammount ",ammount)
         }else{
-            // console.log("smaller")
             setAmmount(Number(keyInputs))
-            // max=event.value;
-            // console.log("ammount ",ammount)
         }
-        // const maxvalue=max;
-        // setAmmount(maxvalue);
-        // console.log("max ",max)
-        // console.log("doseis ",doseis)
-        // console.log("sumYpo ",sumYpo)
-        // console.log("sumdoseis ",sumdoseis)
-        // console.log("total is ",total)
-        // console.log("event value ",keyInputs)
-        
-        // console.log("ammount ",ammount)
-        // console.log("============================")
-
     }
-    ///////////////
 
 
     return(
@@ -213,20 +187,9 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                         </div>
                     </div>
 
-
-                    {/* <div className="field">
-                        <label  className="label">ΠΟΣΟ ΤΡΑΠΕΖΑΣ</label>
-                        <div className="control">
-                            <input type="text" className="input" value={bank_ammount} onChange={(e)=> setBank_Ammount(e.target.value)} readOnly placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ'/>
-                        </div>
-                    </div> */}
-
                     <div className="field">
                     <label htmlFor="percentage">Ποσό Δόσης</label>
                     <div className="control">
-
-                    {/* <InputNumber  id="ammount" className="input" mode="decimal" minFractionDigits={2} value={ammount}  onChange={(e)=> setAmmount(e.value)}/> */}
-                    {/* <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/> */}
                     <InputNumber id="ammount" className="input" keyfilter="pnum" mode="decimal" minFractionDigits={2}  value={ammount} onChange={(e)=> setAmmount(e.value)} />
 
              </div>
@@ -240,14 +203,6 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                     </div>
                 
                     </div>
-
-{/* 
-                    <div className="field">
-                        <label  className="label">ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
-                        <div className="control">
-                            <input type="date" className="input" value={bank_estimated_date} onChange={(e)=> setEstimated_Bank_Date(e.target.value)} placeholder='ΕΚΤΙΜΩΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ'/>
-                        </div>
-                    </div> */}
 
                     <div className="field">
                         <label  className="label">Πραγματική ημερομηνία πληρωμής</label>
@@ -265,18 +220,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                 <div className="control">
                     <InputText  id="doy" className="input" value={comment} onChange={(e)=>setComment(e.target.value)} placeholder='' />
                 </div>
-                </div>
-
-
-                    {/* <div className="field">
-                    <label htmlFor="status">Kατάσταση Δόσης</label>
-                    <div className="control">
-
-                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
-                    </div>
-                </div> */}
-
-                    
+                </div>                    
                     <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>

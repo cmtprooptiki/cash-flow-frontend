@@ -10,43 +10,28 @@ import { InputText } from 'primereact/inputtext';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
-// import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import apiBaseFrontUrl from '../apiFrontConfig';
-// import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-// import {  momentLocalizer} from 'react-big-calendar';
 import { Calendar } from 'primereact/calendar';
-// import { Calendar  }  from 'react-big-calendar';
-// import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Divider } from 'primereact/divider';
 import {ReactComponent as IncomeIcon } from '../icons/income_icon.svg';
 import {ReactComponent as CostIcon } from '../icons/cost_icon.svg';
 
 
-// const localizer = momentLocalizer(moment);
 
-// const DragAndDropCalendar = withDragAndDrop(Calendar);
 const PaidBudgetList = (props) => {
-    // const [paradotea, setIncomeParadotea] = useState([]);
-    // const [ekxorimena, setEkxorimena] = useState([]);
-    // const [incomeTim, setIncomeTim] = useState([]);
-    // const [daneia,setDaneia]=useState([]);
-    // const [doseis,setDoseis]=useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia','doseis','Daneia']);
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false);
-    // const [combinedData,setCombinedData]=useState([]);
-    // const [paradoteoId,setparadoteoId]=useState([])
 
     const budget = props.budget
-    // const scenario=props.scenario
     const combinedData3=props.combinedData3
     console.log("combined prop: ",combinedData3)
 
@@ -55,8 +40,6 @@ const PaidBudgetList = (props) => {
     const [visible, setVisible] = useState(false); // State to control the visibility of the popup
     const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
     
-    // const localizer = momentLocalizer(moment);
-    // const [calendarDate, setCalendarDate] = useState(new Date());
 
     const { user } = useSelector((state) => state.auth);
 
@@ -66,49 +49,6 @@ const PaidBudgetList = (props) => {
         initFilters();
     }, []);
 
-    // const fetchData = async () => {
-    //     await getDoseis();
-    //     await getEkxorimena();
-    //     await getIncomePar();
-    //     await getIncomeTim();
-    //     await getDaneia();
-    // };
-
-    // const getDoseis = async () =>{
-    //     const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000})
-    //     setDoseis(response.data)
-    // }
-
-    // const getEkxorimena = async () => {
-    //     const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
-    //     setEkxorimena(response.data);
-    // };
-
-    // const getIncomePar = async () => {
-    //     const response = await axios.get(`${apiBaseUrl}/income_par`, {timeout: 5000});
-    //     setIncomeParadotea(response.data);
-    // };
-
-    // const getIncomeTim = async () => {
-    //     const response = await axios.get(`${apiBaseUrl}/income_tim`, {timeout: 5000});
-    //     const data = response.data;
-
-    //     // Filter to ensure unique timologia.id values
-    //     const uniqueTimologia = [];
-    //     const seenTimologiaIds = new Set();
-
-    //     data.forEach(item => {
-    //         if (!seenTimologiaIds.has(item.timologia.id)) {
-    //             seenTimologiaIds.add(item.timologia.id);
-    //             uniqueTimologia.push(item);
-    //         }
-    //     });
-    //     setIncomeTim(uniqueTimologia);
-    // };
-    // const getDaneia = async () =>{
-    //     const response = await axios.get(`${apiBaseUrl}/daneia`, {timeout: 5000})
-    //     setDaneia(response.data);
-    // }
     const getParadoteoId = async(id)=>{
         console.log("id scenario id ",id)
         const response = await axios.get(`${apiBaseUrl}/paradotea/${id}`, {timeout: 5000})
@@ -159,21 +99,11 @@ const PaidBudgetList = (props) => {
     };
 
     const formatDate = (value) => {
-        // console.log(value)
         if(value===null || value===''){
-                // console.log("mpike edw")
             return ''
         }
         let date = new Date(value);
-        // console.log("invalid date is: ",date)
         if (!isNaN(date)) {
-            // console.log("show date ",date.toLocaleDateString('en-US', {
-            //     day: '2-digit',
-            //     month: '2-digit',
-            //     year: 'numeric'
-            // }))
-            // console.log("mpike edw",date)
-
             return date.toLocaleDateString('en-UK', {
                 day: '2-digit',
                 month: '2-digit',
@@ -188,14 +118,12 @@ const PaidBudgetList = (props) => {
 
   //Sign Date
   const DateBodyTemplate = (rowData) => {
-    // console.log("value date",formatDate(rowData.date))
     return formatDate(rowData.date);
 };
 
 
 
 const dateFilterTemplate = (options) => {
-    // console.log('Current filter value:', options);
 
     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="dd/mm/yyyy" mask="99/99/9999" />;
 };
@@ -379,9 +307,7 @@ const idBodyTemplate = (rowData) => {
             onValueChange={handleValueChange}
             
             >
-                {/* {console.log("combined data: ",combinedData)} */}
                 <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
-                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
                 <Column filterField="income" header="Εισροές/Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Τύπος εισροής/εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
@@ -401,7 +327,6 @@ const idBodyTemplate = (rowData) => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Τίτλος παραδοτέου:</strong> {selectedRowData.title}</p>
                         <p><strong>Παραδοτέο (Αριθμός): </strong>{selectedRowData.part_number}</p>
                         <p><strong>Ημερομηνία υποβολής: </strong>{formatDate(selectedRowData.delivery_date)}</p>
@@ -421,14 +346,10 @@ const idBodyTemplate = (rowData) => {
                     <div>
                         {console.log(selectedRowData)}
                         <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
-                        {/* <div className="inline-flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}> */}
-                            {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                             <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
-                        {/* </div> */}
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Αρ. τιμολογίου:</strong> {selectedRowData.invoice_number}</p>
                         <p><strong>Ημερομηνία έκδοσης τιμολογίου:</strong> {formatDate(selectedRowData.invoice_date)}</p>
                         <p><strong>Ποσό τιμολογίου  (καθαρή αξία):</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
@@ -437,8 +358,6 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/timologia/edit/${selectedRowData.id}`}>Επεξεργασία τιμολογίου</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/timologia/profile/${selectedRowData.id}`}>Πληροφορίες τιμολογίου</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="doseis" && (
@@ -452,7 +371,6 @@ const idBodyTemplate = (rowData) => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
@@ -461,8 +379,6 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="Daneia" && (
@@ -476,14 +392,11 @@ const idBodyTemplate = (rowData) => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Περιγραφή:</strong> {selectedRowData.name}</p>
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής δανείου(εκτίμηση):</strong> {formatDate(selectedRowData.payment_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/daneia/edit/${selectedRowData.id}`}>Επεξεργασία δανείου</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/daneia/profile/${selectedRowData.id}`}>Πληροφορίες δανείου</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
@@ -497,7 +410,6 @@ const idBodyTemplate = (rowData) => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Συσχέτιση με τιμολόγιο Id:</strong> {selectedRowData.timologia_id}</p>
                         <p><strong>Εκχώρηση (€): </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
@@ -505,8 +417,6 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία εκχώρησης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες εκχώρησης</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
             </Dialog>

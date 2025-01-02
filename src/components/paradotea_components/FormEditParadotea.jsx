@@ -41,7 +41,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
 
     const navigate = useNavigate();
 
-    // const{id} = useParams();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
 
@@ -150,7 +149,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
                 navigate(-1);
             }
 
-            // navigate("/paradotea");
         }
         catch(error)
         {
@@ -217,13 +215,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
                 <div className="field">
             <label className="label">Εργα</label>
             <div className="control">
-                {/* <Dropdown 
-                    value={erga_name} 
-                    options={erga} 
-                    onChange={(e)=> {handleErgaChange(e)}} 
-                    optionLabel="name" 
-                    placeholder="Επιλέξτε Εργο"
-                /> */}
                   <select className="input" onChange={(e) => handleErgaChange(e)} value={erga_id}  disabled={true} >
                                     <option value="" disabled>Επιλέξτε Εργο</option>
                                         {erga.map((ergo, index) => (
@@ -232,17 +223,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
                                 </select>
             </div>
         </div>
-
-                {/* <div className="field">
-                        <label htmlFor="state">Ανήκει στο Εργο</label>
-                        <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)}
-                        options={dropdownItems} optionLabel="name" placeholder="Select One">
-
-                        </Dropdown>
-
-
-                    </div> */}
-
                 <div className="field">
                     <label htmlFor="deliverydate1">Ημερομηνία υποβολής</label>
                     <div className="control">
@@ -256,7 +236,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
             <div className=""><Divider><span className="p-tag text-lg">Εκτιμήσεις</span></Divider></div>
             <div >
                 
-
                     <div className="field">
                    
                     <label htmlFor="estimate_payment_date">Ημερομηνία πληρωμής (εκτίμηση)</label>
@@ -325,7 +304,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
                     <label htmlFor="ammount_vat">Ποσό ΦΠΑ</label>
                     <div className="control">
                     <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)} placeholder='ΠΟΣΟ ΦΠΑ' readOnly/>
-                    {/* <InputNumber  id="ammount_vat" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} readOnly /> */}
                </div>
                 </div>
 
@@ -350,14 +328,6 @@ const FormEditParadotea = ({ id: propId, onHide }) => {
                                 <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>
                             </div>
                         </div>
-
-                
-                {/* <div className="field">
-                <div className="control">
-
-                    <button type="submit" label="Προσθήκη" onSubmit={saveParadotea} className="button is-success is-fullwidth">Προσθήκη</button>
-                    </div>
-                </div> */}
             </div>
 
            

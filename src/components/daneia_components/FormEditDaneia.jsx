@@ -21,8 +21,6 @@ const FormEditDaneia= ({id: propId, onHide}) => {
 
     const navigate = useNavigate();
 
-    // const{id} = useParams();
-
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
 
@@ -42,7 +40,6 @@ const FormEditDaneia= ({id: propId, onHide}) => {
 
     useEffect(()=>{
         const getDaneiaById = async()=>{
-            //const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/daneia/${id}`, {timeout: 5000});
@@ -93,8 +90,6 @@ const FormEditDaneia= ({id: propId, onHide}) => {
 
                 }
 
-
-            // navigate("/daneia");
         }
         catch(error){
             if(error.response){
@@ -151,15 +146,6 @@ const FormEditDaneia= ({id: propId, onHide}) => {
                             <Button label="Clear" onClick={clearActualDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                 </div>
-
-                    {/* <div className="field">
-                    <label htmlFor="status">Kατάσταση Δανείου</label>
-                    <div className="control">
-
-                    <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
-                                        placeholder="Επιλέξτε Κατάσταση" className="w-full md:w-14rem" required/>
-                    </div>
-                </div> */}
 
                 <div className="field">
                             <div className="control">

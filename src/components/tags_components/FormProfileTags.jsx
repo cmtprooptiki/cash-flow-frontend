@@ -16,7 +16,6 @@ const FormProfileTags = ({ id, onHide }) =>
 
     const[msg,setMsg]=useState("");
 
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getTagsById = async()=>{

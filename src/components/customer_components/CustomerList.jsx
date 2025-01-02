@@ -72,9 +72,6 @@ const CustomerList = () => {
         { field: 'twitterUrl', header: 'twitterPage'},
         { field: 'instagramUrl', header: 'Instagram Page'},
         { field: 'linkedInUrl', header: 'LinkedIn Page'}
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -115,11 +112,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         const formattedReportData = filteredCustomer.map((product) => {
             return {
                 ...product
-                // ammount_total: formatCurrency(product.ammount_total),
-                // sign_date: formatDate(product.sign_date),
-                // ammount: formatCurrency(product.ammount),
-                // ammount_total: formatCurrency(product.ammount_total), // Format the quantity as currency
-                // estimate_start_date:formatDate(product.estimate_start_date)
             };
         });
 
@@ -166,29 +158,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const data = [
                 headers,  // First row with headers
                 ...filteredCustomer.map((product) =>
-                    cols.map((col) => {
-                     
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
-                        // if (col.field === 'ammount_total') {
-                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
-                        // }
-                        // if (col.field === 'ammount') {
-                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
-                        // }
-                        // if (col.field === 'ammount_vat') {
-                        //     return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
-                        // }
-
-                        // if (col.field === 'customer.name')
-                        // {
-                        //     return product.customer ? product.customer.name : '';
-                        // }
-
-                        // if (col.field === 'erga_category.name')
-                        //     {
-                        //         return product.erga_category ? product.erga_category.name : '';
-                        //     }
-                        
+                    cols.map((col) => {                        
                         return product[col.field];  // Return the value as is for other fields
                     })
                 )
@@ -278,7 +248,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         const uniqueNames = [...new Set(paraData.map(item => item.name || 'N/A'))];
         console.log("Unique names:",uniqueNames);
         setCustomerNames(uniqueNames);
-        // setCustomer(response.data);
 
         const parDataWithDates = paraData.map(item => ({
             ...item,
@@ -392,7 +361,6 @@ const customerBodyTemplate = (rowData) => {
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
             <span>{customer}</span>
         </div>
     );
@@ -407,13 +375,11 @@ const customerFilterTemplate = (options) => {
 
 
 const customerItemTemplate = (option) => {
-    // console.log("itemTemplate",option)
     console.log("rep Item template: ",option)
     console.log("rep Item type: ",typeof(option))
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{option}</span>
         </div>
     );
@@ -627,8 +593,6 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
             )}
             {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
                             <Button className='action-button' 
                             icon="pi pi-eye" 
                             severity="info" 
@@ -640,7 +604,6 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -659,11 +622,6 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
  
         );
     }
-
-
-    // const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage']); // Initially frozen column(s)
-
-    
 
     
 
@@ -707,7 +665,6 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')}  body={imageBodyTemplate} frozen={frozenColumns.includes('logoImage')}></Column>
-                {/* <Column field="name"  header="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }}></Column> */}
                 <Column header={renderColumnHeader('Πελάτης', 'name')} filterField="name" className="font-bold" 
                 showFilterMatchModes={false} frozen={frozenColumns.includes('name')}
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: "black" }}
@@ -739,24 +696,6 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
             <FormProfileCustomer id={selectedCustomerId} onHide={() => setDialogVisible(false)} />
             )}
         </Dialog>
-
-
-   
-                        {/* <td>
-                            <Link to={`/customer/profile/${customer.id}`} className='button is-small is-info'>Προφίλ</Link>
-                             {user && user.role ==="admin" && (
-                            <div>
-                                <Link to={`/customer/edit/${customer.id}`} className='button is-small is-info'>Επεξεργασία</Link>
-                                <button onClick={()=>deleteCustomer(customer.id)} className='button is-small is-danger'>Διαγραφή</button>
-                            </div>
-                            )}
-                            
-                        </td>
-                    </tr>
-                ))}
-                
-            </tbody>
-        </table> */}
     </div>
   )
 

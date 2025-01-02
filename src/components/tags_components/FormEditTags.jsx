@@ -12,7 +12,6 @@ const FormEditTags = ({ id, onHide })=>
     const[name,setName]=useState("");
     const[msg,setMsg]=useState("");
     const navigate = useNavigate();
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getTagsById = async()=>{
@@ -37,7 +36,6 @@ const FormEditTags = ({ id, onHide })=>
             });
             onHide();
             window.location.reload();
-            // navigate("/tags");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

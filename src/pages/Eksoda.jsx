@@ -9,7 +9,6 @@ import axios from 'axios';
 import ApexCharts from 'react-apexcharts';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
-// import BuildingMetricsTable from '../components/BuildingMetricsTable';
 import { IconContext } from "react-icons";
 import { GiBubbles } from "react-icons/gi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -28,7 +27,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { Modal, Button } from 'react-bootstrap';
 
-// import InfoBox from '../components/InfoBox';
 
 
 import EksodaInfoBox from '../components/EksodaInfoBox';
@@ -58,8 +56,6 @@ const Eksoda = ()=>
     // Logic that needs to run when `someState` changes
     // For example, you might want to fetch new data or trigger a re-render
     setRefresh(prev => !prev); // Toggle `refresh` state to force a re-render of PaidList
-    // console.log("event dropped: ",event_is_dropped)
-    // console.log("refresh: ",refresh)
   }, [event_is_dropped]);
 
 
@@ -109,13 +105,13 @@ const Eksoda = ()=>
         const dateTypeKey = "estimate_payment_date";
       
         try {
-          const response = await axios.patch(`${apiBaseUrl}/doseis/${event.item.id}`, {
+          const response = await axios.patch(`${apiBaseUrl}/doseis/${event.item.doseis_id}`, {
             [dateTypeKey]: updatedDate
           });
           if (response.status === 200) {
             setDoseis((prev) =>
               prev.map((item) =>
-                item.id === event.item.id ? { ...item, [dateTypeKey]: updatedDate } : item
+                item.doseis_id === event.item.doseis_id ? { ...item, [dateTypeKey]: updatedDate } : item
               )
             );
           }
@@ -131,10 +127,7 @@ const Eksoda = ()=>
     }
     
     const filteredoseis =doseis.filter((item)=>item.status==="no");
-    //console.log("filtered doseis",filteredoseis)
-
     const eventStyleGetter =(event, start, end, isSelected)=> {
-        //console.log(event);
         if (event.test==="timologia"){
           var backgroundColor = "ForestGreen";
           var color="white";
@@ -178,10 +171,6 @@ const Eksoda = ()=>
               <div >
                 <div
                   className="circle"
-                  // style={{
-                  //   backgroundColor: "red",
-                  //   // boxShadow: '0px 0px 4px 2px ' + item.paradotea.erga.color,
-                  // }}
                 ></div>
                 {Number(item.ammount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
               </div>
@@ -199,32 +188,12 @@ const Eksoda = ()=>
 
       return (
         <div className="boxclass">
-          {/* <h1 className = "Scenario" style = {{textAlign: "center", marginBottom: 20}}>{selectedButton === 'estimate_payment_date' ? 'Best-Case Scenario' :
-             selectedButton === 'estimate_payment_date_2' ? 'Medium-Case Scenario' :
-             selectedButton === 'estimate_payment_date_3' ? 'Worst-Case Scenario' : ''}</h1> */}
-
-             
           <div className="container">
           <h1 style = {{fontSize: "22px",fontWeight: "bold", textAlign: "left", marginBottom: "25px", marginTop: "25px"}}>Προβλεπόμενα Έξοδα</h1>
             
             <div className="row">
               <div className="col-md-4">
               {eventClickedFirst === true && <EksodaInfoBox item={boxData} />}
-
-                {/* <div className="scrollable-list">
-                  {ypoxreoseis.map((item, index) => (
-                    <div key={index} className="list-item">
-                      <div
-                        className="circle"
-                        style={{
-                       
-                        }}
-                      ></div>
-                      <h4>{item.ypoxreoseis.provider}</h4>
-                    </div>
-                  ))}
-                </div> */}
-                
               </div>
               
               <div className="col-md-8">
@@ -255,8 +224,6 @@ const Eksoda = ()=>
                 </div>
               </div>
             </div>
-            {/* <div className="row">
-            </div> */}
             <div className="row">
               <div class="col-md-12">
                 <BudgetChart key={refresh}></BudgetChart>
@@ -268,22 +235,9 @@ const Eksoda = ()=>
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                {/* {MyEvents.forEach(item => {
-      console.log(item.Ekxorimena_Timologium); // Access Ekxorimena_Timologium property for each object
-    })} */}
-                {/* {MyEvents.length > 0 && (
-      <WeeksTableEksoda
-      eventsWithActualPaymentDate={eventsWithActualPaymentDate}
-      eventsWithoutActualPaymentDate={eventsWithoutActualPaymentDate}
-        calendarDate={calendarDate}
-        onDateChange={handleDateChange}
-      />
-    )} */}
-                {/* <WeeksTable income_paradotea={income_paradotea} selectedDateType={selectedDateType} calendarDate={calendarDate} onDateChange={handleDateChange}/> */}
               </div>
             </div>
           </div>
-          
           <PaidExodaList key={refresh}/>
           <br></br>
           </div>

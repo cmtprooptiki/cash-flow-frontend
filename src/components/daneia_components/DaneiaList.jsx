@@ -216,12 +216,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 console.log(`Deleting Dosi with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/daneia/${id}`);
 
-                // Add your deletion logic here
+                
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting Daneia with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -352,19 +351,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return <Tag value={option} severity={getSeverity(option)} />;
     };
 
-
-    // const formatDate = (value) => {
-    //     let date = new Date(value);
-    //     if (!isNaN(date)) {
-    //         return date.toLocaleDateString('en-GB', {
-    //             day: '2-digit',
-    //             month: '2-digit',
-    //             year: 'numeric'
-    //         });
-    //     } else {
-    //         return "Invalid date";
-    //     }
-    // };
     const formatDate = (value) => {
         let date = new Date(value);
         let epochDate = new Date('1970-01-01T00:00:00Z');
@@ -569,8 +555,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             )}
             {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
+                        
                             <Button className='action-button' 
                             icon="pi pi-eye" 
                             severity="info" 
@@ -582,7 +567,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -655,9 +639,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                        
                         <Column header=" Πληρωμή Δανείου(εκτίμηση)" filterField="daneia.payment_date" dataType="date" style={{ minWidth: '5rem' }} body={PaymentDateBodyTemplate} filter filterElement={PaymentDateFilterTemplate} ></Column>
                         <Column header="Πληρωμή Δανείου" filterField="daneia.actual_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={ActualPaymentDateBodyTemplate} filter filterElement={ActualPaymentDateFilterTemplate} ></Column>
-        
-                        {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
-        
+                
                         <Column field="status" header="Κατάσταση Δανείου" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
         
                 

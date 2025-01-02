@@ -1,12 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios to fetch the budget from the backend
-// import WeeksTableBudget from "../components/WeeksTableBudget";
-// import WeeksTableBudget_Est2 from "../components/WeeksTableBudget_Est2";
-// import WeeksTableBudget_Est3 from "../components/WeeksTableBudget_Est3";
 import Layout from './Layout';
 import PaidBudgetList from './PaidBudgetList';
-// import apiBaseUrl from '../../apiConfig'; // Assuming you have an apiBaseUrl defined for your backend
 import apiBaseUrl from '../apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -34,8 +30,6 @@ const localizer = momentLocalizer(moment);
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 const BudgetPage = () => {
-    // State for selected table, budget value, and date
-    //const [selectedTable, setSelectedTable] = useState('table1');
     const [budget, setBudget] = useState(null); // Set initial state to null to indicate loading
     const [date, setDate] = useState(null); // State to store the budget date
     const [msg, setMsg] = useState("");
@@ -45,14 +39,7 @@ const BudgetPage = () => {
     const [incomeTim, setIncomeTim] = useState([]);
     const [daneia,setDaneia]=useState([]);
     const [doseis,setDoseis]=useState([]);
-    //const [filters, setFilters] = useState(null);
-    //const [loading, setLoading] = useState(false);
-    //const [globalFilterValue, setGlobalFilterValue] = useState('');
-    //const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia','doseis','Daneia']);
-    // const [totalIncome, setTotalIncome] = useState(0);
-    // const [filtercalled,setfiltercalled]=useState(false);
     const [combinedData,setCombinedData]=useState([]);
-    //const [paradoteoId,setparadoteoId]=useState([]);
     const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
 
     const [calendarDate, setCalendarDate] = useState(new Date());
@@ -147,9 +134,7 @@ const BudgetPage = () => {
     };
     
     useEffect(() => {
-        fetchData();
-        //setLoading(false);
-       
+        fetchData();       
     }, []);
 
 
@@ -157,7 +142,6 @@ const BudgetPage = () => {
     useEffect(()=>{
         let combinedData2 = [];
         console.log("scenario ",scenario)
-        // if(scenario==="table1"){
             combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: parseFloat(item.bank_ammount), type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: parseFloat(item.customer_ammount), type: 'Customer', id: item.id})),
@@ -167,30 +151,6 @@ const BudgetPage = () => {
                 ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id }))
             ];
             setCombinedData(combinedData2)
-        // }else if(scenario==="table2"){
-        //     combinedData2 = [
-        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
-        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id})),
-        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-        //     ];
-        //     setCombinedData(combinedData2)
-        // }else if(scenario==="table3"){
-        //     combinedData2 = [
-        //         ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-        //         ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-        //         ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.paradotea_id })),
-        //         ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.timologia_id })),
-        //         ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
-        //         ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: (-1)*item.ammount , type: 'doseis', id: item.id }))
-        //     ];
-        //     setCombinedData(combinedData2)
-        // }
-        
-        
-
     },[paradotea,ekxorimena,incomeTim,daneia,doseis])
 
     // Convert the fetched budget to a float for calculations
@@ -214,7 +174,6 @@ const BudgetPage = () => {
     }
 
     const formatCurrency = (value) => {
-        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
@@ -275,13 +234,8 @@ const BudgetPage = () => {
     };
 
     const handleEventClick = (event, item) => {
-        // setEventClickedFirst(true);
-        // console.log("event here ",event)
         handleRowData(item)
         console.log("type tests: event.item here ",item)
-        
-        // setBoxData(item);
-        // setSecondBoxData(event);
       };
 
     const MyEvents=combinedData.map((item) => ({
@@ -299,7 +253,6 @@ const BudgetPage = () => {
       }));
       //Style Colors for Calendar Esoda with Color green E3oda with Color Red
       const eventStyleGetter =(event, start, end, isSelected)=> {
-        // console.log("isnide styler",event);
         let backgroundColor = "black";
         let color = "white"
         if (event.test==="Timologia"){
@@ -369,11 +322,6 @@ const BudgetPage = () => {
         <Layout>
             <div >
                 {msg && <p>{msg}</p>}
-                {/* <div className="budget-display">
-                    <h3>Current Budget: {formatCurrency(validBudget)}</h3> 
-                    <h3>Submission Date: {formatDate(date)}</h3> 
-                </div> */}
-
                 <div className="col-12 md:col-6 lg:col-3">
       <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
           <div className="flex justify-content-between mb-5">
@@ -383,41 +331,12 @@ const BudgetPage = () => {
                   <small className="m-0 text-gray-800 ">Τελευταία Ενημέρωση: {formatDate(date)}</small>
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <BudgetIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
           
       </div>
   </div>
-                {/* <div className="button-group">
-                    <button
-                        className="Filters"
-                        style={{ margin: "10px" }}
-                        onClick={() => setSelectedTable('table1')}
-                    >
-                        ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario
-                    </button>
-                    <button
-                        className="Filters"
-                        style={{ margin: "10px" }}
-                        onClick={() => setSelectedTable('table2')}
-                    >
-                        ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario
-                    </button>
-                    <button
-                        className="Filters"
-                        style={{ margin: "10px" }}
-                        onClick={() => setSelectedTable('table3')}
-                    >
-                        ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-case Scenario
-                    </button>
-                </div> */}
-
-                {/* Render the appropriate table based on the selected scenario */}
-                {/* {selectedTable === 'table1' && <WeeksTableBudget budget={validBudget} />}
-                {selectedTable === 'table2' && <WeeksTableBudget_Est2 budget={validBudget} />}
-                {selectedTable === 'table3' && <WeeksTableBudget_Est3 budget={validBudget} />} */}
             </div>
             <br></br>
             
@@ -425,24 +344,16 @@ const BudgetPage = () => {
                 localizer={localizer}
                 date={calendarDate}
                 onNavigate={(date) => setCalendarDate(date)}
-                
                 events={MyEvents}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: "600px"}}
-                // onEventDrop={handleEventDrop}
                 onSelectEvent={(event) => handleEventClick(event, event.item)}
                 popup
                 resizable
                 messages={defaultMessages}
-                
-                
-                
-                
-
                 draggableAccessor={() => true}
                 eventPropGetter={eventStyleGetter}
-                
               />
             
             <Dialog header="Πληροφορίες" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
@@ -456,7 +367,6 @@ const BudgetPage = () => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Τίτλος παραδοτέου:</strong> {selectedRowData.title}</p>
                         <p><strong>Παραδοτέο (Αριθμός): </strong>{selectedRowData.part_number}</p>
                         <p><strong>Ημερομηνία υποβολής: </strong>{formatDate(selectedRowData.delivery_date)}</p>
@@ -476,14 +386,10 @@ const BudgetPage = () => {
                     <div>
                         {console.log(selectedRowData)}
                         <span style={{display:"flex",flexDirection:"row-reverse",justifyContent:"flex-end",alignItems:"center"}}><h3>Τιμολόγιο</h3>  
-                        {/* <div className="inline-flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}> */}
-                            {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                             <IncomeIcon style={{ width: '4.5em', height: '4.5em' ,fill:'black'}}  className="" />
-                        {/* </div> */}
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Αρ. τιμολογίου:</strong> {selectedRowData.invoice_number}</p>
                         <p><strong>Ημερομηνία έκδοσης τιμολογίου:</strong> {formatDate(selectedRowData.invoice_date)}</p>
                         <p><strong>Ποσό τιμολογίου  (καθαρή αξία):</strong> {formatCurrency(selectedRowData.ammount_no_tax)}</p>
@@ -492,8 +398,6 @@ const BudgetPage = () => {
                         <p><strong>Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/timologia/edit/${selectedRowData.id}`}>Επεξεργασία τιμολογίου</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/timologia/profile/${selectedRowData.id}`}>Πληροφορίες τιμολογίου</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="doseis" && (
@@ -507,7 +411,6 @@ const BudgetPage = () => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
@@ -516,8 +419,6 @@ const BudgetPage = () => {
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && selectedIdType==="Daneia" && (
@@ -531,14 +432,11 @@ const BudgetPage = () => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Περιγραφή:</strong> {selectedRowData.name}</p>
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής δανείου(εκτίμηση):</strong> {formatDate(selectedRowData.payment_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/daneia/edit/${selectedRowData.id}`}>Επεξεργασία δανείου</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/daneia/profile/${selectedRowData.id}`}>Πληροφορίες δανείου</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
                 {selectedRowData && (selectedIdType==="Bank" || selectedIdType==="Customer") && (
@@ -552,7 +450,6 @@ const BudgetPage = () => {
                         </span>
                         <Divider/>
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>related with invoice:</strong> {selectedRowData.timologia_id}</p>
                         <p><strong>Εκχώρηση (€): </strong>{formatCurrency(selectedRowData.bank_ammount)}</p>
                         <p><strong>Ημερομηνία πληρωμής από τράπεζα (εκτίμηση): </strong>{formatDate(selectedRowData.bank_estimated_date)}</p>
@@ -560,8 +457,6 @@ const BudgetPage = () => {
                         <p><strong>Ημερομηνία πληρωμής από πελάτη (εκτίμηση): </strong>{formatDate(selectedRowData.cust_estimated_date)}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/edit/${selectedRowData.id}`}>Επεξεργασία εκχώρησης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/ek_tim/profile/${selectedRowData.id}`}>Πληροφορίες εκχώρησης</a></strong></p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                     </div>
                 )}
             </Dialog>

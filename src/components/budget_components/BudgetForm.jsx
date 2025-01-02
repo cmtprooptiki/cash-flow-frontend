@@ -119,19 +119,6 @@ const BudgetForm = () => {
                                     <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={ammount} onChange={(e) => setAmmount(e.value)} />
                                     </div>
                                 </div>
-
-                                {/* <div className="field">
-                                    <label htmlFor="date">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ</label>
-                                    <div className="control">
-                                        <Calendar
-                                            id="date"
-                                            value={date}
-                                            onChange={(e) => setDate(e.value)}
-                                            inline
-                                            showWeek
-                                        />
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="field">
                                 <div className="control">
@@ -161,19 +148,6 @@ const BudgetForm = () => {
                                     <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={ammount} onChange={(e) => setAmmount(e.value)} />
                                     </div>
                                 </div>
-
-                                {/* <div className="field">
-                                    <label htmlFor="date">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ</label>
-                                    <div className="control">
-                                        <Calendar
-                                            id="date"
-                                            value={date}
-                                            onChange={(e) => setDate(e.value)}
-                                            inline
-                                            showWeek
-                                        />
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="field">
                                 <div className="control">

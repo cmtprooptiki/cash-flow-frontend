@@ -30,13 +30,6 @@ const FormProfileCustomer= ({id, onHide}) => {
 
     const[msg,setMsg]=useState("");
 
-    // const navigate = useNavigate();
-
-    // const{id} = useParams();
-
-
-
-
     useEffect(()=>{
       const getCustomerById = async()=>{
         try {

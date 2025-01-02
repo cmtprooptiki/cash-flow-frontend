@@ -107,13 +107,7 @@ const BudgetChart = (props) => {
  
     const formatDate = (value) => {
         let date = new Date(value);
-        // console.log("invalid date is: ",date)
         if (!isNaN(date)) {
-            // console.log("show date ",date.toLocaleDateString('en-US', {
-            //     day: '2-digit',
-            //     month: '2-digit',
-            //     year: 'numeric'
-            // }))
             return date.toLocaleDateString('en-UK', {
                 day: '2-digit',
                 month: '2-digit',
@@ -174,7 +168,7 @@ const formatCurrency = (value) => {
  
     },[paradotea,ekxorimena,incomeTim,daneia,doseis,scenario])
  
-    const aggregatedData = {}; // Assuming this is defined somewhere earlier
+    const aggregatedData = {}; 
  
     combinedData.forEach(item => {
         const monthYear = item.date.toLocaleString('default', { year: 'numeric', month: 'short' }); // Use 'short' for month
@@ -308,7 +302,6 @@ const formatCurrency = (value) => {
  
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }

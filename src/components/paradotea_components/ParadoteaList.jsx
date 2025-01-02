@@ -66,9 +66,6 @@ const ParadoteaList = () => {
         {field: 'estimate_payment_date_3', header: 'Ημερομηνία πληρωμής (εκτίμηση 3)' },
         {field: 'comments', header: 'Σχόλια' },
         { field: 'timologia.invoice_number', header: 'Τιμολόγια' }
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -128,7 +125,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.part_number,
             product.title,
             product.delivery_date,
-            product.percentage, // Now this is formatted as currency
+            product.percentage, 
             product.ammount,
             product.ammount_vat, // Now this is formatted as currency
             product.ammount_total, // Now this is formatted as currency
@@ -163,15 +160,15 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredParadotea.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'ammount' or any other amount field that needs formatting
                         if (col.field === 'ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
                         }
                         if (col.field === 'ammount_vat') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_vat'
                         }
                         if (col.field === 'ammount_total') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_total'
                         }
 
                         if (col.field === 'erga.name')
@@ -275,7 +272,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const paraData = response.data;
             console.log("ParaData:",paraData);
             // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
         
             console.log("Unique Timologia:",uniqueTimologia);
@@ -338,12 +334,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 console.log(`Deleting Dosi with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/paradotea/${id}`);
 
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting Dosi with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -402,11 +396,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
  
 
     const {user} = useSelector((state)=>state.auth)
-
-    // const clearLocks = () =>
-    //     {
-    //         setFrozenColumns([]); // Clear all frozen columns
-    //     }
 
         const allColumnFields = ['erga.name', 'erga.shortname'];
         const [frozenColumns, setFrozenColumns] = useState(['erga.name', 'erga.shortname']); // Initially frozen column(s)
@@ -603,13 +592,12 @@ const estimatePaymentDateFilterTemplate3= (options) => {
 
 const ergaBodyTemplate = (rowData) => {
         
-    const ergo = rowData.erga?.name || 'N/A';        // console.log("repsBodytempl",timologio)
+    const ergo = rowData.erga?.name || 'N/A';        
     console.log("timologio",ergo," type ",typeof(ergo));
     console.log("rep body template: ",ergo)
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
             <span>{ergo}</span>
         </div>
     );
@@ -624,13 +612,11 @@ const ergaFilterTemplate = (options) => {
 
 
 const ergaItemTemplate = (option) => {
-    // console.log("itemTemplate",option)
     console.log("rep Item template: ",option)
     console.log("rep Item type: ",typeof(option))
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{option}</span>
         </div>
     );
@@ -640,13 +626,12 @@ const ergaItemTemplate = (option) => {
 
 const shortnameBodyTemplate = (rowData) => {
         
-    const ergo = rowData.erga?.shortname || 'N/A';        // console.log("repsBodytempl",timologio)
+    const ergo = rowData.erga?.shortname || 'N/A';       
     console.log("timologio",ergo," type ",typeof(ergo));
     console.log("rep body template: ",ergo)
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
             <span>{ergo}</span>
         </div>
     );
@@ -661,13 +646,11 @@ const shortnameFilterTemplate = (options) => {
 
 
 const shortnameItemTemplate = (option) => {
-    // console.log("itemTemplate",option)
     console.log("rep Item template: ",option)
     console.log("rep Item type: ",typeof(option))
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{option}</span>
         </div>
     );
@@ -678,13 +661,12 @@ const shortnameItemTemplate = (option) => {
 
 const timologiaBodyTemplate = (rowData) => {
         
-    const timologio = rowData.timologia?.invoice_number || 'N/A';        // console.log("repsBodytempl",timologio)
+    const timologio = rowData.timologia?.invoice_number || 'N/A';      
     console.log("timologio",timologio," type ",typeof(timologio));
     console.log("rep body template: ",timologio)
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
             <span>{timologio}</span>
         </div>
     );
@@ -699,13 +681,11 @@ const timologiaFilterTemplate = (options) => {
 
 
 const timologiaItemTemplate = (option) => {
-    // console.log("itemTemplate",option)
     console.log("rep Item template: ",option)
     console.log("rep Item type: ",typeof(option))
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{option}</span>
         </div>
     );
@@ -716,31 +696,6 @@ const timologiaItemTemplate = (option) => {
 
     const header = renderHeader();
 
-
-    // const actionsBodyTemplate=(rowData)=>{
-    //     const id=rowData.id
-    //     return(
-    //         <div className=" flex flex-wrap justify-content-center gap-3">
-               
-    //         {user && user.role!=="admin" &&(
-    //             <div>
-    //                 <Link to={`/paradotea/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-    //             </div>
-    //         )}
-    //         {user && user.role ==="admin" && (
-    //         <span className='flex gap-1'>
-    //             <Link to={`/paradotea/profile/${id}`} ><Button icon="pi pi-eye" severity="info" aria-label="User" />
-    //             </Link>
-    //             <Link to={`/paradotea/edit/${id}`}><Button icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-    //             <Button icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteParadotea(id)} />
-    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-    //         </span>
-           
-    //         )}
-    //         </div>
- 
-    //     );
-    // }
 
     const ActionsBodyTemplate = (rowData) => {
         const id = rowData.id;
@@ -847,8 +802,6 @@ const timologiaItemTemplate = (option) => {
                 )}
                 {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
                             <Button className='action-button' 
                             icon="pi pi-eye" 
                             severity="info" 
@@ -860,7 +813,6 @@ const timologiaItemTemplate = (option) => {
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -878,44 +830,6 @@ const timologiaItemTemplate = (option) => {
             </div>
         );
     };
-
-
-    // const actionsBodyTemplate = (rowData) => {
-    //     const id = rowData.id;
-    //     return (
-    //         <div className="relative actions-menu-container">
-    //             {/* Three dots icon */}
-    //             <Button
-    //                 icon="pi pi-ellipsis-v" 
-    //                 className="actions-menu-button"
-    //                 aria-label="Actions Menu"
-    //             />
-    //             {/* Buttons that will appear on hover */}
-    //             <div className="hidden-buttons">
-    //                 <Link to={`/paradotea/profile/${id}`}>
-    //                     <Button icon="pi pi-eye" severity="info" aria-label="User" />
-    //                 </Link>
-    //                 {user && user.role === "admin" && (
-    //                     <>
-    //                         <Button
-    //                             icon="pi pi-pen-to-square"
-    //                             severity="info"
-    //                             aria-label="Edit"
-    //                             onClick={() => {
-    //                                 setSelectedParadoteaId(id);
-    //                                 setDialogVisible(true);
-    //                             }}
-    //                         />
-    //                         <Button icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteParadotea(id)} />
-    //                     </>
-    //                 )}
-    //             </div>
-    //         </div>
-    //     );
-    // };
-   
-
-
     return(
         <div className="card" >
         <h1 className='title'>Παραδοτέα</h1>
@@ -975,7 +889,6 @@ const timologiaItemTemplate = (option) => {
                 <Column header="Ημερομηνία υποβολής" filterField="delivery_date" dataType="date" style={{ minWidth: '5rem' }} body={deliveryDateBodyTemplate} filter filterElement={deliveryDateFilterTemplate} ></Column>
 
                 <Column field="percentage" header="Ποσοστό σύμβασης"  style={{ minWidth: '12rem' }}></Column>
-                {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
 
                 <Column header="Ποσό  (καθαρή αξία)" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Ποσό ΦΠΑ " filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
@@ -986,15 +899,6 @@ const timologiaItemTemplate = (option) => {
                 <Column header="Ημερομηνία πληρωμής  (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column>
                
                 <Column field="comments" header="Σχόλιο"  filter filterPlaceholder="Search by comments"  style={{ minWidth: '12rem' }}></Column>
-
-                {/* <Column  field="delivery_date" header="delivery_date" dataType="date" style={{ minWidth: '10rem' }} ></Column> */}
-                {/* <Column field="erga_id" header="erga_id" dataType="numeric"  sortable style={{ minWidth: '2rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate}  ></Column> */}
-                {/* <Column header="erga.name" filterField="erga.name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-                   ></Column>
-                 */}
-
-            
-
              <Column header="Τιμολόγια" filterField="timologia.invoice_number" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={timologiaBodyTemplate} filter filterElement={timologiaFilterTemplate} />
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }}/>

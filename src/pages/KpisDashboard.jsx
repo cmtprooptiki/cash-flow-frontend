@@ -10,7 +10,6 @@ import axios from 'axios';
 import ApexCharts from 'react-apexcharts';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
-// import BuildingMetricsTable from '../components/BuildingMetricsTable';
 import { IconContext } from "react-icons";
 import { GiBubbles } from "react-icons/gi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -31,14 +30,6 @@ import BudgetChart from '../components/paid_components/BudgetChart';
 import BudgetChart2 from '../components/paid_components/BudgetChart2';
 
 import { TabView, TabPanel } from 'primereact/tabview';
-
-// Importing calendar library
-
-// import moment from 'moment';
-
-
-
-// const localizer = momentLocalizer(moment);
 
 const KpisDashboard = () => {
 
@@ -338,12 +329,8 @@ const [chartOptions, setChartOptions] = useState({
 
     setBudget(budgetData[0].ammount);
     setBudgetDate(budgetData[0].date);
-
-
-    // Assuming you have a state setter like setErga defined somewhere
 } catch (error) {
     console.error('Error fetching data:', error);
-    // Handle errors as needed
 }
 }
 
@@ -483,36 +470,8 @@ const [chartOptions, setChartOptions] = useState({
     
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Handle errors as needed
         }
     };
-
-
-
-
-
-    
-    // const getErga = async() =>{
-    //     try {
-    //         const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
-    //         const ergaData = response.data;
-    //         // Extract unique statuses
-    //         //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-    //         const uniqueIds= [...new Set(ergaData.map(item => item.id))];
-    //         const uniqueIdsCount = uniqueIds.length;
-    //         console.log("Total Count of Unique Erga Ids:", uniqueIdsCount);
-    //         setErga(uniqueIdsCount);
-            
-    //         setChartSeries2([{ name: ergaData.name, data: ergaData.map((item) => item.ammount_total) }]);
-
-           
-    
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //         // Handle errors as needed
-    //     }
-    // }
-
 
     const getCustomer = async() =>{
         try {
@@ -683,24 +642,6 @@ const [chartOptions, setChartOptions] = useState({
         <Welcome />
 
         <div className="grid">
-
-        {/* <div className="col-12 md:col-6 lg:col-3">
-      <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-          <div className="flex justify-content-between mb-3">
-              <div>
-                  <span className="block text-500 font-medium mb-3">Συνολικός Αριθμός Πελατών</span>
-                  <div className="text-900 font-medium text-xl">{customer}</div>
-              </div>
-              <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                  <i className="pi pi-map-marker text-orange-500 text-xl"></i>
-              </div>
-          </div>
-          <span className="text-green-500 font-medium">%52+ </span>
-          <span className="text-500">since last week</span>
-      </div>
-  </div> */}
-
-
 <div className="col-12 md:col-6 lg:col-3">
       <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
           <div className="flex justify-content-between mb-5">
@@ -710,7 +651,6 @@ const [chartOptions, setChartOptions] = useState({
                   <small className="m-0 text-gray-800 ">Τελευταία Ενημέρωση: {formatDate(budgetDate)}</small>
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <BudgetIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -726,7 +666,6 @@ const [chartOptions, setChartOptions] = useState({
                   <h1 className="m-0 text-gray-800 ">{customer} </h1>
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <CustomerIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -744,7 +683,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <ProjectIcon style={{ width: '2.5em', height: '2.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -762,7 +700,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <DeliverablesIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -781,7 +718,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <InvoiceIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -801,7 +737,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <InstallmentsIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
 
               </div>
@@ -821,7 +756,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <EktimIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>
@@ -841,7 +775,6 @@ const [chartOptions, setChartOptions] = useState({
 
               </div>
               <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
-                  {/* <i className="pi pi-map-marker text-orange-500 text-xl"></i> */}
                   <LoanIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
               </div>
           </div>

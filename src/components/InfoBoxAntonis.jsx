@@ -16,13 +16,7 @@ const formatDate = (value) => {
       return ""
   } 
   let date = new Date(value);
-  // console.log("invalid date is: ",date)
   if (!isNaN(date)) {
-      // console.log("show date ",date.toLocaleDateString('en-US', {
-      //     day: '2-digit',
-      //     month: '2-digit',
-      //     year: 'numeric'
-      // }))
       return date.toLocaleDateString('en-UK', {
           day: '2-digit',
           month: '2-digit',

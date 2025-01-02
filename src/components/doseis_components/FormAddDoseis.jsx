@@ -69,32 +69,11 @@ const FormAddDoseis = () => {
 
         })
         const total=sumYpo-sumdoseis
-        // var max = 0
-        // console.log("============================")
         if(keyInputs>total){
-            // console.log("bigger")
             setAmmount(total)
-            // max=total
-            // console.log("bigger max",max)
-            // console.log("ammount ",ammount)
         }else{
-            // console.log("smaller")
             setAmmount(Number(keyInputs))
-            // max=event.value;
-            // console.log("ammount ",ammount)
         }
-        // const maxvalue=max;
-        // setAmmount(maxvalue);
-        // console.log("max ",max)
-        // console.log("doseis ",doseis)
-        // console.log("sumYpo ",sumYpo)
-        // console.log("sumdoseis ",sumdoseis)
-        // console.log("total is ",total)
-        // console.log("event value ",keyInputs)
-        
-        // console.log("ammount ",ammount)
-        // console.log("============================")
-
     }
     
 
@@ -150,7 +129,6 @@ const FormAddDoseis = () => {
 
 
     const formatCurrency = (value) => {
-        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
@@ -189,7 +167,6 @@ const FormAddDoseis = () => {
                   <label htmlFor="name1">Ποσό Δόσης</label>
                   <div className="control">
 
-                  {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
                   <InputNumber id="ammount"  keyfilter="pnum" mode="decimal" minFractionDigits={2} value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
 
 
@@ -235,19 +212,6 @@ const FormAddDoseis = () => {
                     </div>
                 </div>
 
-                {/* <div className="field">
-                    <label className="label">Status</label>
-                    <div className="control">
-                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
-
-                    </div>
-                </div> */}
-
-
-
-           
-
-           
           </div>
 
 

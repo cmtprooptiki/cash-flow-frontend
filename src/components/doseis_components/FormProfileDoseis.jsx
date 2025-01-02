@@ -24,7 +24,6 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
     const navigate = useNavigate();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getDoseisById = async()=>{
@@ -86,9 +85,7 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
         <div className="col-12 lg:col-4">
             <div className="p-3 h-full">
                 <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-                    <div className="text-900 font-medium text-xl mb-2">Εκτιμώμενη ημερομηνία πληρωμής</div>
-                    {/* <div className="text-600">Plan description</div> */}
-                    
+                    <div className="text-900 font-medium text-xl mb-2">Εκτιμώμενη ημερομηνία πληρωμής</div>                    
                     <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
                     <div className="flex align-items-center">
                       
@@ -105,9 +102,7 @@ const FormProfileDoseis = ({ id: propId, onHide }) =>
         <div className="col-12 lg:col-4">
             <div className="p-3 h-full">
                 <div className="shadow-2 p-3 h-full flex flex-column" style={{ borderRadius: '6px' }}>
-                    <div className="text-900 font-medium text-xl mb-2">Πραγματική Ημερομηνία Πληρωμής</div>
-                    {/* <div className="text-600">Plan description</div> */}
-                    
+                    <div className="text-900 font-medium text-xl mb-2">Πραγματική Ημερομηνία Πληρωμής</div>                 
                     <hr className="my-3 mx-0 border-top-1 border-bottom-none border-300" />
                     <div className="flex align-items-center">
                       

@@ -52,7 +52,6 @@ const FormAddYpoxreoseis = () => {
 
     const handleTagChange = (selectedOptions) => {
         setSelectedTags(selectedOptions);
-        // console.log('Selected tags:', selectedOptions);
         if (selectedOptions.length > 0) {
             setTagError("");
         }
@@ -68,7 +67,6 @@ const FormAddYpoxreoseis = () => {
             return;
         }
         try {
-            // console.log(selectedTags.map(tag=> tag.value))
             const tagIds = selectedTags.map(tag => tag.value);
             console.log(tagIds)
             await axios.post(`${apiBaseUrl}/ypoquery`, {
@@ -158,13 +156,6 @@ const FormAddYpoxreoseis = () => {
                 <div className="field">
             <label className="label">Εργα</label>
             <div className="control">
-                {/* <Dropdown 
-                    value={erga_name} 
-                    options={erga} 
-                    onChange={(e)=> {handleErgaChange(e)}} 
-                    optionLabel="name" 
-                    placeholder="Επιλέξτε Εργο"
-                /> */}
                   <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
                                     <option value="" disabled>Επιλέξτε Εργο</option>
                                         {erga.map((ergo, index) => (
@@ -178,19 +169,7 @@ const FormAddYpoxreoseis = () => {
 
             
 
-        </div>
-
-                {/* <div className="field">
-                        <label htmlFor="state">Ανήκει στο Εργο</label>
-                        <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)}
-                        options={dropdownItems} optionLabel="name" placeholder="Select One">
-
-                        </Dropdown>
-
-
-                    </div> */}
-
-                
+        </div>                
             </div>
 
 
@@ -201,14 +180,6 @@ const FormAddYpoxreoseis = () => {
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                             </div>
                         </div>
-
-                
-                {/* <div className="field">
-                <div className="control">
-
-                    <button type="submit" label="Προσθήκη" onSubmit={saveParadotea} className="button is-success is-fullwidth">Προσθήκη</button>
-                    </div>
-                </div> */}
             </div>
 
            

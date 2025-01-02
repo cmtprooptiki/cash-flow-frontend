@@ -27,7 +27,6 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
     const [timologia, setTimologia] = useState([])
     const[msg,setMsg]=useState("");
     const navigate = useNavigate();
-    // const{id} = useParams();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
 
@@ -67,9 +66,6 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
                 setTimologia_Id(response.data.timologia_id);
                 setBank_Ammount(response.data.bank_ammount);
                 setEstimated_Bank_Date(formatDateToInput(response.data.bank_estimated_date));
-                // var bank_est=formatDateToInput(response.data.bank_estimated_date);
-                // bank_est=formatDateToDisplay(bank_est);
-                //setEstimated_Bank_Date(bank_est);
                 setBank_Date(formatDateToInput(response.data.bank_date));
                 setCustomer_Ammount(response.data.customer_ammount);
                 setEstimated_Cust_Date(formatDateToInput(response.data.cust_estimated_date));
@@ -234,44 +230,6 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
                                     <InputTextarea value={comments} onChange={(e) => setComments(e.target.value)} />
                                 </div>
                             </div>
-
-                {/* <div className="field">
-                                <label className="label">Kατάσταση πληρωμής πελάτη</label>
-                                <div className="control">
-                                    <Dropdown
-                                        id="status_customer_paid"
-                                        value={status_customer_paid}
-                                        options={[
-                                            { label: "Πληρωμένο", value: "yes" },
-                                            { label: "Απλήρωτο", value: "no" },
-                                        ]}
-                                        onChange={(e) => setStatusCustomerPaid(e.value)}
-                                        placeholder="Επιλέξτε Κατάσταση Πληρωμής απο Πελάτη"
-                                    />
-                                </div>
-                            </div> */}
-
-
-
-
-
-                {/* <div className="field">
-                                <label className="label">Kατάσταση πληρωμής τράπεζας</label>
-                                <div className="control">
-                                    <Dropdown
-                                        id="status_bank_paid"
-                                        value={status_bank_paid}
-                                        options={[
-                                            { label: "Πληρωμένο", value: "yes" },
-                                            { label: "Απλήρωτο", value: "no" },
-                                        ]}
-                                        onChange={(e) => setStatusBankPaid(e.value)}
-                                        placeholder="Επιλέξτε Κατάσταση Πληρωμής απο Τράπεζα"
-                                    />
-                                </div>
-                            </div> */}
-                    
-                  
                     <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>

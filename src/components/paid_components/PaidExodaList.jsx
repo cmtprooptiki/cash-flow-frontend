@@ -65,7 +65,6 @@ const PaidExodaList = () => {
         const uniqueNames = [...new Set(response.data.filter(item=>item.status==="no").map(item => item.provider))];
         console.log("Unique names:",uniqueNames);
         setProvider(uniqueNames);
-        // setCustomer(response.data);
         setYpoxreoseis(response.data)
     }
 
@@ -136,13 +135,7 @@ const PaidExodaList = () => {
             return ""
         } 
         let date = new Date(value);
-        // console.log("invalid date is: ",date)
         if (!isNaN(date)) {
-            // console.log("show date ",date.toLocaleDateString('en-US', {
-            //     day: '2-digit',
-            //     month: '2-digit',
-            //     year: 'numeric'
-            // }))
             return date.toLocaleDateString('en-UK', {
                 day: '2-digit',
                 month: '2-digit',
@@ -156,13 +149,10 @@ const PaidExodaList = () => {
 
   //Sign Date
   const DateBodyTemplate = (rowData) => {
-    // console.log("date data: ",rowData)
     return formatDate(rowData.date);
 };
 
 const dateFilterTemplate = (options) => {
-    // console.log('Current filter value:', options);
-
     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
 };
 
@@ -209,7 +199,6 @@ const NameBodyTemplate = (rowData) =>
     console.log("RRR data: ", provider_name)  
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{provider_name}</span>
         </div>
     );
@@ -218,7 +207,6 @@ const NameBodyTemplate = (rowData) =>
 const NameFilterTemplate = (options) =>
 {
     console.log("Provider Options in Filter: ", options.value);
-    // return <Dropdown value={options.value} options={provider} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={NameBodyTemplate} placeholder="Select One" className="p-column-filter" showClear />;
     return (<Dropdown
         value={options.value}
         options={provider}
@@ -236,7 +224,6 @@ const NameItemTemplate = (option) =>
 {
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
             <span>{option}</span>
         </div>
     );
@@ -252,7 +239,6 @@ const statusItemTemplate = (option) => {
 
 
 const handleRowData = (rowData) => {
-    //setSelectedRowData(rowData);
     setSelectedIdType(rowData.type)
     console.log("rowdataaaaaaa: ", rowData)
     getDosiId(rowData.id)
@@ -291,12 +277,6 @@ const idBodyTemplate = (rowData) => {
     useEffect(()=>{
         
         const combinedData2 = [
-            
-            // ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: item.bank_ammount, type: 'Bank', id: item.id })),
-            // ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: item.customer_ammount, type: 'Customer', id: item.id })),
-            // ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: item.paradotea.ammount_total, type: 'Paradotea', id: item.id })),
-            // ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: item.timologia.ammount_of_income_tax_incl, type: 'Timologia', id: item.id })),
-            // ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: item.ammount, type: 'Daneia', id: item.id })),
             ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.doseis_id, provider: item.provider?.trim() || 'N/A' }))
         ];
         console.log("Combined Data: ", doseis);
@@ -323,7 +303,6 @@ const idBodyTemplate = (rowData) => {
 
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
@@ -346,14 +325,10 @@ const idBodyTemplate = (rowData) => {
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
             globalFilterFields={['date', 'income', 'type', 'provider','id']}
-            // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
             >
-
-                {/* {console.log("combined data: ",combinedData)} */}
                 <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
-                {/* <Column filterField="income" header="income" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={formatCurrency(totalIncome)}></Column> */}
                 <Column filterField="income" header="Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Τύπος Εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column  filterField="provider" header="Περιγραφή"
@@ -370,15 +345,12 @@ const idBodyTemplate = (rowData) => {
                     <div>
                         {console.log("Rowdata selectedeeeeee: ", selectedRowData)}
                         <p><strong>ID:</strong> {selectedRowData.id}</p>
-                        {/* <p><strong>Date:</strong> {formatDate(selectedRowData.date)}</p> */}
                         <p><strong>Ποσό:</strong> {formatCurrency(selectedRowData.ammount)}</p>
                         <p><strong>Πραγματική ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.actual_payment_date)}</p>
                         <p><strong>Εκτιμώμενη ημερομηνία πληρωμής:</strong> {formatDate(selectedRowData.estimate_payment_date)}</p>
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id Yποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei.provider}</p>
-                        {/* <p><strong>Type:</strong> {selectedRowData.type}</p> */}
-                        {/* Render other fields as needed */}
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                     </div>

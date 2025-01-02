@@ -32,10 +32,6 @@ const FormProfileTimologia = ({ id: propId, onHide }) => {
 
 
     const[msg,setMsg]=useState("");
-
-    // const navigate = useNavigate();
-
-    // const{id} = useParams();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
 
@@ -70,9 +66,6 @@ const FormProfileTimologia = ({ id: propId, onHide }) => {
                 );
     
                 console.log(unselectedParadotea)
-                
-    
-                // console.log("Done")
 
             }
             catch(error)
@@ -167,12 +160,6 @@ const FormProfileTimologia = ({ id: propId, onHide }) => {
             handleErgaStart(uniqueErga2[0]);
         }
     },[uniqueErga2,id])
-    // handleErgaStart(uniqueErga2[0]);
-        // .map(id2 => {
-        //     return erga.find(ergo => (ergo.erga.id === id2 && ergo.timologia_id === id));
-        // })
-        // .filter(ergo => ergo !== undefined); 
-
         const formatCurrency = (value) => {
             return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         };
@@ -307,82 +294,6 @@ const FormProfileTimologia = ({ id: propId, onHide }) => {
            
         </li>
 </div>
-
-//         <div>
-// 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-// <div className="container">
-//     <div className="row">
-//       <div className="col-lg-5 col-md-6">
-//         <div className="mb-2 d-flex" style={{zIndex:"10"}}>
-//         </div>
-//         <div className="mb-2 d-flex">
-
-//         </div>
-
-        
-        
-//       </div>
-//       <div className="col-lg-7 col-md-6 pl-xl-3">
-        
-//         <div className='box'>
-//           <div className="mb-2 d-flex">
-//             <h2 style={{fontWeight:'bolder', fontSize:'35px'}} >ΤΙΜΟΛΟΓΙΟ</h2>
-            
-//           </div>
-        
-//         <div className="mb-2 d-flex">
-          
-//           <ul className="list-unstyled">
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ: &nbsp;</span><label className="media-body"> {invoice_date}</label>
-//             </li>
-          
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΧΩΡΙΣ Φ.Π.Α: &nbsp;</span>
-//               <label className="media-body"> {ammount_no_tax}</label>
-//             </li>
-           
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΜΕ Φ.Π.Α: &nbsp;</span>
-//               <label className="media-body"> {ammount_tax_incl}</label>
-//             </li>
-
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΡΑΓΜΑΤΙΚΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ: &nbsp;</span>
-//               <label className="media-body"> {actual_payment_date}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΟΣΟ ΕΙΣΠΡΑΞΗΣ με Φ.Π.Α: &nbsp;</span>
-//               <label className="media-body"> {ammount_of_income_tax_incl}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΠΑΡΑΤΗΡΗΣΕΙΣ: &nbsp;</span>
-//               <label className="media-body"> {comments}</label>
-//             </li>
-
-//             <li className="media">
-//               <span className="w-5 text-black font-weight-normal">ΑΡΙΘΜΟΣ ΤΙΜΟΛΟΓΗΣΗΣ: &nbsp;</span>
-//               <label className="media-body"> {invoice_number}</label>
-//             </li>
-
-//           </ul>
-//         </div>
-        
-       
-          
-
-//           </div>
-    
-//       </div>
-
-
-      
-//     </div>
-//   </div>
-// 		</div>
     )
 }
 

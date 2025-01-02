@@ -100,15 +100,6 @@ const FormAddDaneia = () => {
                             <Button label="Clear" onClick={clearActualDate} className="p-button-secondary mt-2" type="button"/>
                         </div>
                 </div>
-
-                {/* <div className="field">
-                    <label className="label">Status</label>
-                    <div className="control">
-                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
-
-                    </div>
-                </div> */}
-
           </div>
           <div className="field">
                             <div className="control">

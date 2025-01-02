@@ -19,7 +19,7 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputNumber } from 'primereact/inputnumber';
 
-import { Dialog } from 'primereact/dialog'; // Import Dialog
+import { Dialog } from 'primereact/dialog'; 
 import FormEditTimologia from '../timologia_components/FormEditTimologia'
 import FormProfileTimologia from '../timologia_components/FormProfileTimologia'
 import { Dropdown } from 'primereact/dropdown';
@@ -43,7 +43,6 @@ const TimologiaList = () => {
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-    // const [timologia, setTimologio]=useState([]);
     const [erga, setErgo]=useState([]);
 
     const dt = useRef(null);
@@ -70,9 +69,6 @@ const TimologiaList = () => {
 
         { field: 'ammount_parakratisi_eight', header: 'Παρακράτηση 8%' },
         { field: 'ammount_parakratisi_eforia', header: 'Παρακράτηση εφορίας' }
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -164,35 +160,24 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredTimologia.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'ammount_no_tax' or any other amount field that needs formatting
                         if (col.field === 'ammount_no_tax') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_no_tax'
                         }
                         if (col.field === 'ammount_tax_incl') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_tax_incl'
                         }
                         if (col.field === 'ammount_of_income_tax_incl') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_of_income_tax_incl'
                         }
 
                         if (col.field === 'ammount_parakratisi_eight') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_parakratisi_eight'
                         }
 
                         if (col.field === 'ammount_parakratisi_eforia') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_parakratisi_eforia'
                         }
-
-                        // if (col.field === 'customer.name')
-                        // {
-                        //     return product.customer ? product.customer.name : '';
-                        // }
-
-                        // if (col.field === 'erga_category.name')
-                        //     {
-                        //         return product.erga_category ? product.erga_category.name : '';
-                        //     }
-                        
                         return product[col.field];  // Return the value as is for other fields
                     })
                 )
@@ -277,34 +262,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     }, []);
 
     const getTimologia = async() =>{
-        // const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
-        // setTimologia(response.data);
-
         try {
             const response = await axios.get(`${apiBaseUrl}/timologia`, {timeout: 5000});
             const paraData = response.data;
             console.log("ParaData:",paraData);
-            // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-            // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
-        
-            // console.log("Unique Timologia:",uniqueTimologia);
-            // setTimologio(uniqueTimologia);
-
-            // const uniqueErga= [...new Set(paraData.map(item => item.erga?.name || 'N/A'))];
-            // setErgo(uniqueErga);
 
             // Convert sign_date to Date object for each item in ergaData
             const parDataWithDates = paraData.map(item => ({
                 ...item,
-                // erga: {
-                //     ...item.erga,
-                //     name: item.erga?.name || 'N/A'
-                // },
-                // timologia: {
-                //     ...item.timologia,
-                //     invoice_number: item.timologia?.invoice_number || 'N/A'
-                // },
                 invoice_date: new Date(item.invoice_date),
                 ammount_no_tax: parseFloat(item.ammount_no_tax),
                 ammount_tax_incl: parseFloat(item.ammount_tax_incl),
@@ -319,8 +284,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 const mergedTimParData=parDataWithDates.map(parDataWithDates=>{
                     parDataWithDates.ErgaName=paraErgaData.find(paraErgaData=>paraErgaData.timologia_id===parDataWithDates.id).erga.name
                 })
-                // console.log("merged ",mergedTimParData)
-
             } catch (error) {
                 console.error('Error fetching data2:', error);
             }
@@ -328,10 +291,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const uniqueErgaNames = [...new Set(parDataWithDates.map(item =>item.ErgaName))];
             setErgo(uniqueErgaNames);
             console.log("ddsadasdasda",uniqueErgaNames)
-            // const a3 = a1.map(it1 => {
-            //     it1.test = a2.find(it2 => it2.id === it1.id).test
-            //     return it1
-            //   })
     
             const sortedParaData = parDataWithDates.sort((a, b) => a.actual_payment_date - b.actual_payment_date);
 
@@ -369,13 +328,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 // Existing logic to delete a single Dosi by id, e.g., an API call
                 console.log(`Deleting timologia with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/timologia/${id}`);
-
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting timol with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -439,13 +395,12 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const ergaBodyTemplate = (rowData) => {
         
-        const ergo = rowData.ErgaName || 'N/A';        // console.log("repsBodytempl",timologio)
+        const ergo = rowData.ErgaName || 'N/A';    
         console.log("timologio",ergo," type ",typeof(ergo));
         console.log("rep body template: ",ergo)
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
                 <span>{ergo}</span>
             </div>
         );
@@ -460,13 +415,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
     
     const ergaItemTemplate = (option) => {
-        // console.log("itemTemplate",option)
         console.log("rep Item template: ",option)
         console.log("rep Item type: ",typeof(option))
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                 <span>{option}</span>
             </div>
         );
@@ -490,11 +443,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     const ammountFilterTemplate = (options) => {
         return <InputNumber value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} mode="currency" currency="EUR" locale="en-US" />;
     };
-
-    // const clearLocks = () =>
-    //     {
-    //         setFrozenColumns([]); // Clear all frozen columns
-    //     }
 
     const allColumnFields = ['ErgaName', 'invoice_number'];
     const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']);
@@ -616,8 +564,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 };
 
 const invoice_dateDateFilterTemplate = (options) => {
-    // console.log('Current filter value:', options);
-
     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
 };
 
@@ -629,9 +575,7 @@ const invoice_dateDateFilterTemplate = (options) => {
     };
     
     const actual_payment_dateDateFilterTemplate = (options) => {
-        // console.log('Current filter value:', options);
-    
-        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+            return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="dd/mm/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
     
 
@@ -676,12 +620,11 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
 
-        // // Calculate total income for the visible rows
+        // Calculate total income for the visible rows
         const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ammount_of_income_tax_incl || 0)), 0);
         
         setTotalIncome(formatCurrency(incomeSum));
@@ -803,8 +746,6 @@ const invoice_dateDateFilterTemplate = (options) => {
             )}
             {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
                             <Button className='action-button' 
                             icon="pi pi-eye" 
                             severity="info" 
@@ -816,7 +757,6 @@ const invoice_dateDateFilterTemplate = (options) => {
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -835,13 +775,6 @@ const invoice_dateDateFilterTemplate = (options) => {
  
         );
     }
-
-    // const [frozenColumns, setFrozenColumns] = useState(['ErgaName', 'invoice_number']); // Initially frozen column(s)
-
-    
-
-
-
     return(
 
 
@@ -892,27 +825,18 @@ const invoice_dateDateFilterTemplate = (options) => {
             selectionMode="checkbox">
             <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>    
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
-                {/* <Column field="ErgaName"  header="Εργο"  filter filterPlaceholder="Search by Ergo" style={{ minWidth: '12rem' }}></Column> */}
                 <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" showFilterMatchModes={false} alignFrozen="left" frozen={frozenColumns.includes('ErgaName')} 
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} style={{color: 'black'}} />  
                 
                 <Column className="font-bold" field="invoice_number"  header= {renderColumnHeader('Αρ. τιμολογίου', 'invoice_number')} filter filterPlaceholder="Search by invoice_number" style={{ minWidth: '12rem', color: 'black' }} frozen={frozenColumns.includes('invoice_number')} ></Column>
                 <Column header="Ημερομηνία έκδοσης τιμολογίου" filterField="invoice_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
-
-                {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}
-
                 <Column header="Ποσό τιμολογίου  (καθαρή αξία)" filterField="ammount_no_tax" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_no_taxBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Ποσό ΦΠΑ" filterField="ammount_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 <Column header="Ημερομηνία πληρωμής τιμολογίου (εκτίμηση)" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
 
                 <Column header="Πληρωτέο" filterField="ammount_of_income_tax_incl" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_of_income_tax_inclBodyTemplate} filter filterElement={ammountFilterTemplate} footer = {totalincome} />
 
-                
-            
-
             <Column field="comments" header="Σχόλια"  filter filterPlaceholder="Search by comment"  style={{ minWidth: '12rem' }}></Column>
-
-            {/* <Column field="status_paid" header="status_paid"  filter filterPlaceholder="Search by status_paid"  style={{ minWidth: '12rem' }}></Column> */}
 
             <Column field="status_paid" header="Κατάσταση τιμολογίου" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
         

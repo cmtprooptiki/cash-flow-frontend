@@ -19,8 +19,6 @@ const FormAddParadotea = () => {
     const[delivery_date,setDelivery_Date]=useState("");
     const[percentage,setPercentage]=useState(0);
     const[erga_id,setErga_id]=useState("");
-    // const[erga_name,setErgaName]=useState(null);
-
     const[timologia_id,setTimologia_id]=useState(null);
     const[ammount,setAmmount]=useState(0);
     const[ammount_vat,setAmmount_Vat]=useState(0);
@@ -46,30 +44,6 @@ const FormAddParadotea = () => {
         getErga();
     }, []);
 
-    // const [dropdownItem, setDropdownItem] = useState(null);
-    
-
-    // const dropdownItems = useMemo(
-    //     () => erga.map(ergo => ({ name: ergo.name, code: ergo.id })),
-    //     [erga]
-    // );
-    // const dropdownItems = useMemo(
-    //     () => [
-    //         { name: 'Option 1', code: 'Option 1' },
-    //         { name: 'Option 2', code: 'Option 2' },
-    //         { name: 'Option 3', code: 'Option 3' }
-    //     ],
-    //     []
-    // );
-
-    // useEffect(() => {
-    //     if (dropdownItems.length > 0) {
-    //         setDropdownItem(dropdownItems[0]);
-    //     }
-    // }, [dropdownItems]);
-
-
-
     useEffect(() => {
         // Recalculate VAT whenever the percentage or ammount changes
         const vat = parseFloat(ammount) * parseFloat(percentage_vat);
@@ -82,24 +56,12 @@ const FormAddParadotea = () => {
         console.log(filtered_response)
         setErga(filtered_response);
     }
-    // const handleErgaChange = async (e) => {
-    //     // const selectedId = e.value;
-    //     // setTempErga(selectedId);
-    //     // console.log(selectedId)
-    //     // setErga_id(selectedId)
-    //     setDropdownItem(e.value);
-
-        
-    // }
 
     const handleErgaChange = async (e) => {
         const selectedId = e.target.value;
-        // const selectedName=e.value;
         setTempErga(selectedId);
         console.log("Erga id",selectedId)
         setErga_id(selectedId);
-        // setErgaName(selectedName);
-        // console.log("name",selectedName)
     }
 
 
@@ -193,13 +155,6 @@ const FormAddParadotea = () => {
                 <div className="field">
             <label className="label">Εργα</label>
             <div className="control">
-                {/* <Dropdown 
-                    value={erga_name} 
-                    options={erga} 
-                    onChange={(e)=> {handleErgaChange(e)}} 
-                    optionLabel="name" 
-                    placeholder="Επιλέξτε Εργο"
-                /> */}
                   <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
                                     <option value="" disabled>Επιλέξτε Εργο</option>
                                         {erga.map((ergo, index) => (
@@ -208,17 +163,6 @@ const FormAddParadotea = () => {
                                 </select>
             </div>
         </div>
-
-                {/* <div className="field">
-                        <label htmlFor="state">Ανήκει στο Εργο</label>
-                        <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)}
-                        options={dropdownItems} optionLabel="name" placeholder="Select One">
-
-                        </Dropdown>
-
-
-                    </div> */}
-
                 <div className="field">
                     <label htmlFor="deliverydate1">Ημερομηνία υποβολής</label>
                     <div className="control">
@@ -301,7 +245,6 @@ const FormAddParadotea = () => {
                     <label htmlFor="ammount_vat">Ποσό ΦΠΑ</label>
                     <div className="control">
                     <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.value)} placeholder='ΠΟΣΟ ΦΠΑ' readOnly/>
-                    {/* <InputNumber  id="ammount_vat" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} readOnly /> */}
                </div>
                 </div>
 
@@ -327,14 +270,6 @@ const FormAddParadotea = () => {
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                             </div>
                         </div>
-
-                
-                {/* <div className="field">
-                <div className="control">
-
-                    <button type="submit" label="Προσθήκη" onSubmit={saveParadotea} className="button is-success is-fullwidth">Προσθήκη</button>
-                    </div>
-                </div> */}
             </div>
 
            

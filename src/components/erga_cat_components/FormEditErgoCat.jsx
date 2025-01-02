@@ -11,12 +11,6 @@ import { InputTextarea } from 'primereact/inputtextarea';
 const FormEditErgoCat= ({id, onHide}) => {
     const[name,setName]=useState("");
     const[msg,setMsg]=useState("");
-
-
-    // const navigate = useNavigate();
-
-    // const{id} = useParams();
-
     useEffect(()=>{
         const getErgoCatById = async()=>{
             try {
@@ -40,8 +34,6 @@ const FormEditErgoCat= ({id, onHide}) => {
 
             onHide();
             window.location.reload();
-
-            // navigate("/ergacat");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

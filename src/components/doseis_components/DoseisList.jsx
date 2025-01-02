@@ -149,12 +149,12 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredDoseis.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'ammount' or any other amount field that needs formatting
                         if (col.field === 'ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
                         }
                         if (col.field === 'ypoxreosei.provider') {
-                            return product.ypoxreosei ? product.ypoxreosei.provider : '';  // Apply the currency format to the 'quantity'
+                            return product.ypoxreosei ? product.ypoxreosei.provider : '';  
                         }
                         
                         
@@ -222,32 +222,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     .flatMap(value => value.split(',').map(v => v.trim())) // Split by comma and trim spaces
             )];
             setTag(uniqueTags)
-            // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-            // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
-        
-            // console.log("Unique Timologia:",uniqueTimologia);
-            // setTimologio(uniqueTimologia);
-
-            // const uniqueErga= [...new Set(paraData.map(item => item.erga?.name || 'N/A'))];
-            // setErgo(uniqueErga);
-
-            // Convert sign_date to Date object for each item in ergaData
             const doseisDataWithDates = doseis_data.map(item => ({
                 ...item,
-                // ypoxreoseis:
-                // {
-                //     ...item.ypoxreoseis,
-                //     provider: item.ypoxreoseis?.provider || 'N/A'
-                // },
-                // erga: {
-                //     ...item.erga,
-                //     name: item.erga?.name || 'N/A'
-                // },
-                // timologia: {
-                //     ...item.timologia,
-                //     invoice_number: item.timologia?.invoice_number || 'N/A'
-                // },
                 ammount: parseFloat(item.ammount),
                 actual_payment_date: new Date(item.actual_payment_date),
                 estimate_payment_date: new Date(item.estimate_payment_date)
@@ -282,16 +258,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 console.log(`Deleting Dosi with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/doseis/${id}`);
 
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting Dosi with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
-        setDoseis((prevDoseis) => prevDoseis.filter((dosi) => !ids.includes(dosi.id)));
+        setDoseis((prevDoseis) => prevDoseis.filter((dosi) => !ids.includes(dosi.doseis_id)));
         setSelectedDoseis([]); // Clear selection after deletion
     };
 
@@ -338,7 +312,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             acceptClassName: 'p-button-danger',
             accept: () => {
                 // Delete all selected items after confirmation
-                deleteDoseis(selectedDoseis.map(doseis => doseis.id));
+                deleteDoseis(selectedDoseis.map(doseis => doseis.doseis_id));
                 
                 // Show success toast
                 toast.current.show({
@@ -390,20 +364,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             estimate_payment_date	: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
 
             status: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-
-            // ammount_no_tax: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            
-            
-            // ammount_tax_incl: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-
-            
-           
-            // ammount_of_income_tax_incl: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-
-            
-            
-
-            // status_paid: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             'provider':{ value: null, matchMode: FilterMatchMode.IN },
             'tag_name': { value: null, matchMode: FilterMatchMode.CUSTOM },
             
@@ -490,13 +450,10 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
     const ProviderBodyTemplate = (rowData) => {
         
-        const provider = rowData.provider || 'N/A';        // console.log("repsBodytempl",timologio)
-        // console.log("timologio",ergo," type ",typeof(ergo));
-        // console.log("rep body template: ",ergo)
+        const provider = rowData.provider || 'N/A';
 
     return (
         <div className="flex align-items-center gap-2">
-            {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
             <span>{provider}</span>
         </div>
         );
@@ -510,13 +467,11 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         };
 
         const ProviderItemTemplate = (option) => {
-            // console.log("itemTemplate",option)
             console.log("rep Item template: ",option)
             console.log("rep Item type: ",typeof(option))
         
             return (
                 <div className="flex align-items-center gap-2">
-                    {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                     <span>{option}</span>
                 </div>
             );
@@ -554,13 +509,11 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         };
     
         const tagsItemTemplate = (option) => {
-            // console.log("itemTemplate",option)
             console.log("rep Item template: ",option)
             console.log("rep Item type: ",typeof(option))
         
             return (
                 <div className="flex align-items-center gap-2">
-                    {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                     <span>{option}</span>
                 </div>
             );
@@ -590,7 +543,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         }
     };
     const formatCurrency = (value) => {
-        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
@@ -598,13 +550,11 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     const header = renderHeader();
 
     const ActionsBodyTemplate = (rowData) => {
-        const id = rowData.id;
+        const id = rowData.doseis_id;
         const op = useRef(null);
         const [hideTimeout, setHideTimeout] = useState(null);
-        // console.log("error here 3")
         // Show overlay on mouse over
         const handleMouseEnter = (e) => {
-            // console.log("mouse enter")
             if (hideTimeout) {
                 clearTimeout(hideTimeout);
                 setHideTimeout(null);
@@ -614,7 +564,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     
         // Hide overlay with delay on mouse leave
         const handleMouseLeave = () => {
-            // console.log("mouse exit")
             const timeout = setTimeout(() => {
                 op.current.hide();
             }, 100); // Adjust delay as needed
@@ -685,33 +634,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             </div>
         );
     };
-    
-
-    // const actionsBodyTemplate=(rowData)=>{
-    //     const id=rowData.id
-    //     return(
-    //         <div className=" flex flex-wrap justify-content-center gap-3">
-               
-    //         {user && user.role!=="admin" &&(
-    //             <div>
-    //                 <Link to={`/doseis/profile/${id}`} ><Button severity="info" label="Προφίλ" text raised /></Link>
-    //             </div>
-    //         )}
-    //         {user && user.role ==="admin" && (
-    //         <span className='flex gap-1'>
-    //             <Link to={`/doseis/profile/${id}`} ><Button className='action-button'  icon="pi pi-eye" severity="info" aria-label="User" />
-    //             </Link>
-    //             <Link to={`/doseis/edit/${id}`}><Button className='action-button'  icon="pi pi-pen-to-square" severity="info" aria-label="Εdit" /></Link>
-    //             <Button className='action-button'  icon="pi pi-trash" severity="danger" aria-label="Εdit"onClick={()=>deleteDoseis(id)} />
-    //             {/* <Button label="Διαγραφή" severity="danger" onClick={()=>deleteParadotea(id)} text raised /> */}
-    //         </span>
-           
-    //         )}
-    //         </div>
- 
-    //     );
-    // }
-
     const calculateTotalIncome = (data) => {
         
         if (!data || data.length === 0) return 0;
@@ -720,7 +642,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
@@ -737,53 +658,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         }
         
     }, [doseis]);
-
-    // const actionsBodyTemplate = (rowData) => {
-    //     const id = rowData.id;
-    //     return (
-    //         <div className="flex flex-wrap justify-content-center gap-3">
-    //             {user && user.role !== "admin" && (
-    //                 <div>
-    //                     <Link to={`/doseis/profile/${id}`} >
-    //                         <Button severity="info" label="Προφίλ" text raised />
-    //                     </Link>
-    //                 </div>
-    //             )}
-    //             {user && user.role === "admin" && (
-    //                 <span className='flex gap-1'>
-    //                     {/* <Link to={`/paradotea/profile/${id}`} > */}
-
-    //                         <Button className='action-button' 
-    //                         icon="pi pi-eye" 
-    //                         severity="info" 
-
-    //                         aria-label="User" 
-    //                         onClick={() => {
-    //                             setSelectedDosiId(id);
-    //                             setSelectedType('Profile');
-    //                             setDialogVisible(true);
-    //                         }}
-    //                         />
-    //                     {/* </Link> */}
-    //                     <Button
-    //                         className='action-button'
-    //                         icon="pi pi-pen-to-square"
-    //                         severity="info"
-    //                         aria-label="Edit"
-    //                         onClick={() => {
-    //                             setSelectedDosiId(id);
-    //                             setSelectedType('Edit');
-    //                             setDialogVisible(true);
-    //                         }}
-    //                     />
-    //                     <Button className='action-button' icon="pi pi-trash" severity="danger" aria-label="Delete" onClick={() => deleteDosi(id)} />
-    //                 </span>
-    //             )}
-    //         </div>
-    //     );
-    // };
-
-
     FilterService.register('tag_name', (value, filter) => {
         if (!filter || filter.length === 0) {
             return true; // Show all rows when no filter is set
@@ -832,22 +706,6 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         <Toast ref={toast} />
         <ConfirmDialog />
 
-{/* scrollable scrollHeight="600px" */}
-{/* <DataTable value={doseis} ref = {dt} onValueChange={(doseis) => {setFilteredDoseis(doseis); handleValueChange(doseis)}} paginator stripedRows
- rows={20}  loading={loading} dataKey="id" 
-            filters={filters} 
-            globalFilterFields={[
-                'id',
-                'ypoxreosei.provider', 
-                'ammount', 
-                'actual_payment_date',
-                'estimate_payment_date',
-                'ammount_no_tax',
-                'status'
-                ]} 
-            header={header} 
-            emptyMessage="No doseis found."> */}
-
                     <DataTable 
                         value={doseis} 
                         ref={dt} 
@@ -856,10 +714,10 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         stripedRows
                         rows={20}  
                         loading={loading} 
-                        dataKey="id" 
+                        dataKey="doseis_id" 
                         filters={filters} 
                         globalFilterFields={[
-                            'id',
+                            'doseis_id',
                             'provider', 
                             'ammount', 
                             'actual_payment_date',
@@ -876,7 +734,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                     >
                          <Column selectionMode="multiple" headerStyle={{ width: '3em' }} alignFrozen="left" frozen></Column>
                          {/* Other columns remain as before */}
-                <Column field="id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
+                <Column field="doseis_id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />
 
@@ -897,17 +755,13 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                <Column header="Πραγματική ημερομηνία πληρωμής" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
                 <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} ></Column>
 
-                {/* <Column field="ammount" header="ammount"  style={{ minWidth: '12rem' }} body={priceBodyTemplate}></Column> */}     
 
             <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
 
-            {/* <Column field="status_paid" header="status_paid"  filter filterPlaceholder="Search by status_paid"  style={{ minWidth: '12rem' }}></Column> */}
             
                
                
                 <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
-                {/* <Column header="Ενέργειες" field="id" body={actionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} /> */}
-                {/* <Column header="Ενέργειες" field="id" body={thirdActionBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} /> */}
 
  </DataTable>
 

@@ -67,8 +67,6 @@ const FormAddErga = () => {
     const handleCustomerChange = async (e) => {
         const selectedId = e.target.value.id;
         const selectedName = e.value;
-        // console.log("selected id: ",selectedId)
-        // console.log("selected name: ",selectedName)
 
         setCustomerId(selectedId)
         setCustomerName(selectedName)
@@ -159,18 +157,12 @@ const FormAddErga = () => {
         <form onSubmit={saveErgo}>
         <div className="grid">
             <div className="col-12 md:col-6">
-                {/* <div className="content">
-               
-                    <p className='has-text-centered'>{msg}</p> */}
                     <div className="card p-fluid">
-                        {/* <div className="col-4 card is-shadowless"> */}
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Έργου</span></Divider></div>
                         
-                            {/* <div className="grid card-content"> */}
                                 <div className="field">
                                     <label  className="label">Έργο</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'/> */}
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'  />
                                     </div>
                                 </div>
@@ -185,23 +177,13 @@ const FormAddErga = () => {
                                 <div className="field">
                                     <label  className="label">Χρώμα</label>
                                     <div className="control">
-                                    {/* <SketchPicker color={color} onChange={handleColorChange} /> */}
                                         <ColorPicker format="hex" value={color} onChange={(e) => setColor(e.value)} />
                                     </div>
                                 </div>
-
-                                {/* <div className="field col-6">
-                                    <label  className="label ">Συμβατική αξία (καθαρό ποσό)</label>
-                                    <div className="control">
-                                        <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={sign_ammount_no_tax} onChange={(e)=> setSignAmmountNoTax(e.value)} placeholder='ΠΟΣΟ ΣΥΜΒΑΣΗΣ (€) ΧΩΡΙΣ Φ.Π.Α.'/>
-
-                                    </div>
-                                </div> */}
                                 <div className="field">
                                     <label  className="label">Κατάσταση έργου</label>
                                     <div className="control">
                                         
-                                        {/* <input type="text" className="input" value={status} onChange={(e)=> setStatus(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΕΡΓΟΥ'/> */}
                                         <Dropdown value={status} onChange={(e) => handleStatusChange(e)} options={statuses} virtualScrollerOptions={{ itemSize: 38 }} 
                                         placeholder="Επιλέξτε Κατάσταση" className="w-full md:w-14rem" required/>
 
@@ -211,7 +193,6 @@ const FormAddErga = () => {
                                 <div className="field">
                                     <label  className="label">Project Μanager</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={project_manager} onChange={(e)=> setProjectManager(e.target.value)} placeholder='PROJECT MANAGER'/> */}
                                         <InputText type="text" className="input" value={project_manager} onChange={(e)=> setProjectManager(e.target.value)} placeholder='PROJECT MANAGER'/>
 
                                     </div>
@@ -220,12 +201,6 @@ const FormAddErga = () => {
                                 <div className="field">
                                 <label className="label">Όνομα Πελάτη</label>
                                         <div className="control">
-                                            {/* <select className="input" onChange={(e) => handleCustomerChange(e)} defaultValue="">
-                                                <option value="" disabled>Επιλέξτε ΠΕΛΑΤΗ</option>
-                                                    {customer.map((specific_customer, index) => (
-                                                        <option key={index} value={specific_customer.id}>{specific_customer.name}</option>
-                                                    ))}
-                                            </select> */}
                                             <Dropdown value={customer_name} onChange={(e) => {handleCustomerChange(e)}} options={customer} optionLabel="name" 
                                             placeholder="Επιλέξτε ΠΕΛΑΤΗ" className="w-full md:w-14rem" />
                                         </div>
@@ -234,7 +209,6 @@ const FormAddErga = () => {
                                 <div className="field">
                                     <label  className="label">Ακρώνυμο Έργου</label>
                                     <div className="control">
-                                        {/* <input type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/> */}
                                         <InputText type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/>
 
                                     </div>
@@ -245,12 +219,6 @@ const FormAddErga = () => {
                                 <div className="field">
                                     <label className="label" >Κατηγορία Έργου</label>
                                         <div className="control">
-                                            {/* <select className="input" onChange={(e) => handleCategoryChange(e)} defaultValue="">
-                                                <option value="" disabled>Επιλέξτε Κατηγορία</option>
-                                                    {erga_cat.map((ergo_cat, index) => (
-                                                        <option key={index} value={ergo_cat.id}>{ergo_cat.name}</option>
-                                                    ))}
-                                            </select> */}
                                             <Dropdown value={erga_cat_name} onChange={(e) => {handleCategoryChange(e)}} options={erga_cat} optionLabel="name" 
                                             placeholder="Επιλέξτε Κατηγορία" className="w-full md:w-14rem" />
                                         </div>
@@ -270,53 +238,20 @@ const FormAddErga = () => {
                         <div className="field col-12 md:col-8">
                             <label  className="label">Ημερομηνία υπογραφής σύμβασης</label>
                             <div className="control">
-                                {/* <input type="date" className="input" value={sign_date} onChange={(e)=> setSignDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/> */}
                                 <Calendar value={sign_date} onChange={(e) => setSignDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
                             </div>
                         </div>
                         <div className="field col-12 md:col-8">
                             <label  className="label">Ημερομηνία έναρξης (εκτίμηση)</label>
                             <div className="control">
-                                {/* <input type="date" className="input" value={estimate_start_date} onChange={(e)=> setEstimateStartDate(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/> */}
                                 <Calendar value={estimate_start_date} onChange={(e) => setEstimateStartDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΕΝΑΡΞΗΣ(εκτίμηση)'/>
                             </div>
                         </div>
                         </div>
                         </div>
                         </div>  
-                        {/* <Divider align="center">
-                            <span className="p-tag text-lg">Εκτιμήσεις</span>
-                        </Divider> */}
                         <div className="col-12 md:col-6">
                             <div className="card p-fluid">
-                                {/* <div className="field col-4">
-                                    <label  className="label">Ημερομηνία πληρωμής (εκτίμηση)</label>
-                                    <div className="control">
-                                        <Calendar value={estimate_payment_date} onChange={(e) => setEstimate_Payment_Date(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 1'/>
-                                    </div>
-                                </div>
-
-                                <div className="field col-4">
-                                    <label  className="label">Ημερομηνία πληρωμής (εκτίμηση 2)</label>
-                                    <div className="control">
-                                        <Calendar value={estimate_payment_date_2} onChange={(e) => setEstimate_Payment_Date_2(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 2'/>
-                                    </div>
-                                    <div className="control">
-                            <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
-                        </div>
-                                </div>
-
-                                <div className="field col-4">
-                                    <label  className="label">Ημερομηνία πληρωμής (εκτίμηση 3)</label>
-                                    <div className="control">
-                                        <Calendar value={estimate_payment_date_3} onChange={(e) => setEstimate_Payment_Date_3(e.target.value)} inline showWeek placeholder='ΠΡΟΒΛΕΠΟΜΕΝΗ ΗΜΕΡΟΜΗΝΙΑ ΠΛΗΡΩΜΗΣ 3'/>
-                                    </div>
-                                    <div className="control">
-                            <Button label="Clear" onClick={clearDate2} className="p-button-secondary mt-2" type="button"/>
-                        </div>
-                                </div> */}
-                                
-                                
                         <Divider align="center">
                             <span className="p-tag text-lg">Ποσό Πληρωμής</span>
                         </Divider>
@@ -324,8 +259,6 @@ const FormAddErga = () => {
                         <div className="field">
                             <label  className="label">Ποσό  (καθαρή αξία)</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount} onChange={(e)=> setAmmount(e.target.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ'/> */}
-                                {/* <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> setAmmount(e.value)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' /> */}
                                 <InputNumber className="input" value={ammount} mode="decimal" minFractionDigits={2}  onChange={(e)=> HandleAmmountChange(e)} placeholder='ΠΟΣΟ ΧΩΡΙΣ ΦΠΑ' />
                             </div>
                         </div>
@@ -333,7 +266,6 @@ const FormAddErga = () => {
                         <div className="field">
                             <label  className="label">Ποσό ΦΠΑ</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount_vat} onChange={(e)=> setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ'/> */}
                                 <InputNumber  className="input" mode="decimal" minFractionDigits={2} value={ammount_vat} onChange={(e)=> HandleAmmountVatChange(e)} placeholder='ΠΟΣΟ ΦΠΑ'/>
 
                             </div>
@@ -342,7 +274,6 @@ const FormAddErga = () => {
                         <div className="field">
                             <label  className="label">Σύνολο</label>
                             <div className="control">
-                                {/* <input type="text" className="input" value={ammount_total} onChange={(e)=> setAmmount_Total(e.target.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ'/> */}
                                 <InputNumber className="input" mode="decimal" minFractionDigits={2} value={ammount_total} onChange={(e)=> setAmmount_Total(e.value)} placeholder='ΠΟΣΟ ΣΥΝΟΛΙΚΟ' readOnly/>
 
                             </div>
@@ -352,9 +283,7 @@ const FormAddErga = () => {
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
                             </div>
-                        </div>
-                    {/* </div> */}
-                    
+                        </div>                    
                     </div>
                     </div>
                     </div>

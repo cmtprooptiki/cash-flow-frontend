@@ -130,7 +130,6 @@ const FormAddEkxorimenoTimologio = () =>
                     <div className="field">
                         <label className="label">Εκχώρηση (€)</label>
                         <div className="control">
-                            {/* <input type="text" className="input" value={bank_ammount} onChange={(e) => setBank_Ammount(e.target.value)} placeholder='ΠΟΣΟ ΤΡΑΠΕΖΑΣ' /> */}
                             <InputNumber  id="bank_ammount" className="input" mode="decimal" minFractionDigits={2} value={bank_ammount}  onChange={(e)=> setBank_Ammount(e.value)}/>
                         </div>
                     </div>
@@ -185,50 +184,7 @@ const FormAddEkxorimenoTimologio = () =>
                     <InputText id="comments" type="text" value={comments} onChange={(e)=> setComments(e.target.value)} />
 
                     </div>
-                </div>
-
-                    {/* <div className="field">
-                        <label  className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
-                        <div className="control">
-                            <InputText id="status_customer_paid" type="text" value={status_customer_paid} onChange={(e)=> setStatusCustomerPaid(e.target.value)} />
-                        </div>
-                    </div> */}
-
-                    {/* <div className="field">
-    <label className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΠΕΛΑΤΗ</label>
-    <div className="control">
-        <Dropdown
-            id="status_customer_paid"
-            value={status_customer_paid}
-            options={[
-                { label: "Πληρωμένο", value: "yes" },
-                { label: "Απλήρωτο", value: "no" },
-            ]}
-            onChange={(e) => setStatusCustomerPaid(e.value)}
-            placeholder="Επιλέξτε Κατάσταση Πληρωμής Πελάτη"
-        />
-    </div>
-</div> */}
-
-              
-
-                    {/* <div className="field">
-    <label className="label">ΚΑΤΑΣΤΑΣΗ ΠΛΗΡΩΜΗΣ ΤΡΑΠΕΖΑΣ</label>
-    <div className="control">
-        <Dropdown
-            id="status_bank_paid"
-            value={status_bank_paid}
-            options={[
-                { label: "Πληρωμένο", value: "yes" },
-                { label: "Απλήρωτο", value: "no" },
-            ]}
-            onChange={(e) => setStatusBankPaid(e.value)}
-            placeholder="Επιλέξτε Κατάσταση Πληρωμής απο Τράπεζα"
-        />
-    </div>
-</div> */}
-
-                    
+                </div>                    
                     <div className="field">
                         <div className="control">
                         <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>

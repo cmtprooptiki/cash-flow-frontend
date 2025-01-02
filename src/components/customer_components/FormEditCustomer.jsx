@@ -30,17 +30,7 @@ const FormEditCustomer= ({id, onHide}) => {
     const [isValid, setIsValid] = useState(true);
     const [isValidPostal, setIsValidPostal] = useState(true);
 
-
-
-
-
     const[msg,setMsg]=useState("");
-
-
-
-    // const navigate = useNavigate();
-
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getCustomerById = async()=>{
@@ -104,7 +94,6 @@ const FormEditCustomer= ({id, onHide}) => {
         onHide();
         window.location.reload();
 
-            // navigate("/customer");
         }catch(error){
             if(error.response){
                 setMsg(error.response.data.msg);

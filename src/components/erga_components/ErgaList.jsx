@@ -68,9 +68,6 @@ const ErgaList = () => {
 
         { field: 'ammount_vat', header: 'Ποσό ΦΠΑ' },
         { field: 'estimate_start_date', header: 'Ημερομηνία έναρξης (εκτίμηση)' }
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -128,9 +125,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.erga_category.name,
             product.ammount_total,
             product.status,
-            product.sign_date, // Now this is formatted as currency
+            product.sign_date, 
             product.project_manager,
-            product.shortname, // Now this is formatted as currency
+            product.shortname, 
             product.ammount,
             product.ammount_vat,
             product.estimate_start_date
@@ -160,15 +157,15 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredErga.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'ammount_total' or any other amount field that needs formatting
                         if (col.field === 'ammount_total') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_total'
                         }
                         if (col.field === 'ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
                         }
                         if (col.field === 'ammount_vat') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_vat'
                         }
 
                         if (col.field === 'customer.name')
@@ -297,26 +294,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         {
             setFrozenColumns([]); // Clear all frozen columns
         }
-    
-
-
-    // const renderHeader = () => {
-    //     return (
-    //         <div className="flex justify-content-between">
-    //             <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-
-    //             <Button type="button" icon="pi pi-unlock" label="Unlock All" outlined onClick={clearLocks} />
-    //             <IconField iconPosition="left">
-    //                 <InputIcon className="pi pi-search" />
-    //                 <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-    //             </IconField>
-
-    //             <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-    //             <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
-           
-    //         </div>
-    //     );
-    // };
     const allColumnFields = ['name', 'logoImage', 'shortname'];
     const [frozenColumns, setFrozenColumns] = useState(['name', 'logoImage', 'shortname']); // Initially frozen column(s)
     const allColumnsFrozen = frozenColumns.length === allColumnFields.length;
@@ -604,11 +581,8 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
             const ergaData = response.data;
             // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
             const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-            // .map(name => ({ name }));
             setProjectManager(uniqueProjectManager);
-            // Convert sign_date to Date object for each item in ergaData
             const ergaDataWithDates = ergaData.map(item => ({
                 ...item,
                 sign_ammount_no_tax: parseFloat(item.sign_ammount_no_tax),
@@ -622,23 +596,17 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 estimate_payment_date_3:new Date(item.estimate_payment_date_3)
             }));
     
-            // console.log(ergaDataWithDates); 
-            // Assuming you have a state setter like setErga defined somewhere
-            // setErga(ergaDataWithDates);
-
 
                 // Sort ergaDataWithDates by sign_date in ascending order
         const sortedErgaData = ergaDataWithDates.sort((a, b) => a.sign_date - b.sign_date);
 
         console.log(sortedErgaData); // Optionally log the sorted data
 
-        // Assuming you have a state setter like setErga defined somewhere
         setErga(sortedErgaData);
         setFilteredErga(sortedErgaData)
     
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Handle errors as needed
         }
     }
 
@@ -690,12 +658,10 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 console.log(`Deleting Erga with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/erga/${id}`);
 
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting ergaa with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -816,7 +782,6 @@ const ActionsBodyTemplate = (rowData) => {
             )}
             {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
 
                             <Button className='action-button' 
                             icon="pi pi-eye" 
@@ -829,7 +794,6 @@ const ActionsBodyTemplate = (rowData) => {
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"
@@ -895,27 +859,17 @@ const ActionsBodyTemplate = (rowData) => {
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
 
         <Column header="Κατάσταση έργου" field="status" filter={true} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
-        {/* <Column header="Συμβατική αξία (καθαρό ποσό)" filterField="sign_ammount_no_tax" dataType="numeric" style={{ minWidth: '10rem' }} body={signed_ammount_notaxBodyTemplate} filter filterElement={ammountFilterTemplate} /> */}
  
         <Column header="Ποσό  (καθαρή αξία)" filter={true} filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filterElement={ammountFilterTemplate} />
         <Column header="Ποσό ΦΠΑ" filter={true} filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filterElement={ammountFilterTemplate} />
         <Column header="Σύνολο" filter={true} filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate}  filterElement={ammountFilterTemplate} />
         <Column header="Ημερομηνία έναρξης (εκτίμηση)" filter={true} filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filterElement={estimateStartDateFilterTemplate} ></Column>
-        {/* <Column header="Ημερομηνία πληρωμής (εκτίμηση)" filterField="estimate_payment_date" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate} filter filterElement={estimatePaymentDateFilterTemplate} ></Column>
-        <Column header="Ημερομηνία πληρωμής (εκτίμηση 2)" filterField="estimate_payment_date_2" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate2} filter filterElement={estimatePaymentDateFilterTemplate2} ></Column>
-        <Column header="Ημερομηνία πληρωμής (εκτίμηση 3)" filterField="estimate_payment_date_3" dataType="date" style={{ minWidth: '5rem' }} body={estimatePaymentDateBodyTemplate3} filter filterElement={estimatePaymentDateFilterTemplate3} ></Column> */}
         <Column header="Project Manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter={true} filterElement={projectManagerFilterTemplate} />
         
         <Column field="customer.name" header="Όνομα Πελάτη" filter={true} filterPlaceholder="Search by customer name" style={{ minWidth: '5rem' }}/>
         <Column field="erga_category.name" header="Κατηγορία Έργου" filter={true} filterPlaceholder="Search by erga cat name" style={{ minWidth: '5rem' }} />
         <Column header="Ενέργειες" field="id" body={ActionsBodyTemplate} alignFrozen="right" frozen headerStyle={{ backgroundImage: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#ffffff' }} />
-        {/* <Column header="Agent" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
-            body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} /> */}
-        {/* <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-        <Column header="Balance" filterField="balance" dataType="numeric" style={{ minWidth: '10rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
-        <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
-        <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} /> */}
     </DataTable>
     
     <Dialog  visible={dialogVisible} onHide={() => setDialogVisible(false)} modal style={{ width: '50vw' }} maximizable breakpoints={{ '960px': '80vw', '480px': '100vw' }}>

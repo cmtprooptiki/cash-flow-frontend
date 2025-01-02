@@ -5,21 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from '../features/authSlice';
 
-// import Eksoda from './Eksoda';
 import axios from 'axios';
 import ApexCharts from 'react-apexcharts';
 import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
-// import BuildingMetricsTable from '../components/BuildingMetricsTable';
 import { IconContext } from "react-icons";
 import { GiBubbles } from "react-icons/gi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import '../dashboard.css';
 import { getColorClass2, getLimitAnnotation } from '../components/HelperComponent';
 import apiBaseUrl from '../apiConfig';
-// import WeeksTableBudget from '../components/WeeksTableBudget';
-// import WeeksTableBudget_Est2 from '../components/WeeksTableBudget_Est2';
-// import WeeksTableBudget_Est3 from '../components/WeeksTableBudget_Est3';
 import PaidView from './paid_pages/paidView';
 import EsodaNew from './EsodaNew';
 // Importing calendar library
@@ -44,23 +39,7 @@ const Dashboard = () => {
   return (
     <Layout>
         <Welcome />
-        {/* <Esoda />
-        <Esoda_ippos></Esoda_ippos> */}
         <EsodaNew/>
-        
-        
-        {/* <Eksoda/> */}
-        {/* <div className="boxclass">
-        <div className="button-group">
-        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table1')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Best-case Scenario</button>
-        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table2')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Medium-case Scenario</button>
-        <button className = "Filters" style = {{margin: "10px"}} onClick={() => setSelectedTable('table3')}>ΠΡΟΥΠΟΛΟΓΙΣΜΟΣ Worst-case Scenario</button>
-      </div>
-
-      {selectedTable === 'table1' && <WeeksTableBudget />}
-      {selectedTable === 'table2' && <WeeksTableBudget_Est2 />}
-      {selectedTable === 'table3' && <WeeksTableBudget_Est3 />}
-      </div> */}
     </Layout>
   );
   

@@ -52,25 +52,10 @@ const TagList = ()=>
         try {
             const response = await axios.get(`${apiBaseUrl}/tags`, {timeout: 5000});
             const tags_data = response.data;
-            // Extract unique statuses
-            //const uniqueProjectManager = [...new Set(ergaData.map(item => item.project_manager))];
-            // const uniqueTimologia = [...new Set(paraData.map(item => item.timologia?.invoice_number || 'N/A'))];
-        
-            // console.log("Unique Timologia:",uniqueTimologia);
-            // setTimologio(uniqueTimologia);
-
-            // const uniqueErga= [...new Set(paraData.map(item => item.erga?.name || 'N/A'))];
-            // setErgo(uniqueErga);
-
-           
-
-    
-            // Assuming you have a state setter like setErga defined somewhere
             setTags(tags_data);
     
         } catch (error) {
             console.error('Error fetching data:', error);
-            // Handle errors as needed
         }
     }
     const deleteTags = async(tagsId)=>{
@@ -152,13 +137,10 @@ const TagList = ()=>
                 // Existing logic to delete a single Dosi by id, e.g., an API call
                 console.log(`Deleting Tag with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/tags/${id}`);
-
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting tags with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -344,8 +326,6 @@ const TagList = ()=>
                 )}
                 {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
                             <Button className='action-button' 
                             icon="pi pi-eye" 
                             severity="info" 
@@ -357,7 +337,6 @@ const TagList = ()=>
                                 setDialogVisible(true);
                             }}
                             />
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"

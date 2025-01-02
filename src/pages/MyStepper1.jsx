@@ -10,11 +10,6 @@ import Layout from './Layout';
 
 const MyStepper1 = () => {
     const stepperRef = useRef(null);
-    // const [refresh, setRefresh] = useState(false);
-
-    // const handleAddTagClick = () => {
-    //     setRefresh(prev => !prev); // Toggle state to force a re-render
-    // };
 
     return (
         <Layout>

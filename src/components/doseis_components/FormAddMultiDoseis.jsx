@@ -72,8 +72,6 @@ const FormAddMultiDoseis = () => {
     }
 
     //used for ammount to check the limit required for ypoxreoseis
-    // useEffect(() => { console.log("ammount updated ",ammount) }, [ammount])
-    // useEffect(() => { console.log("status updated ",paramStatus) }, [paramStatus])
     const CalculateMax= (event)=>{
         const sumYpo=Number(totalOwedAmmount)+Number(ammountVat)
         var sumdoseis=0
@@ -83,31 +81,11 @@ const FormAddMultiDoseis = () => {
 
         })
         const total=sumYpo-sumdoseis
-        // var max = 0
-        // console.log("============================")
         if(keyInputs>total){
-            // console.log("bigger")
             setAmmount(total)
-            // max=total
-            // console.log("bigger max",max)
-            // console.log("ammount ",ammount)
         }else{
-            // console.log("smaller")
             setAmmount(Number(keyInputs))
-            // max=event.value;
-            // console.log("ammount ",ammount)
         }
-        // const maxvalue=max;
-        // setAmmount(maxvalue);
-        // console.log("max ",max)
-        // console.log("doseis ",doseis)
-        // console.log("sumYpo ",sumYpo)
-        // console.log("sumdoseis ",sumdoseis)
-        // console.log("total is ",total)
-        // console.log("event value ",keyInputs)
-        
-        // console.log("ammount ",ammount)
-        // console.log("============================")
 
     }
     
@@ -133,7 +111,6 @@ const FormAddMultiDoseis = () => {
 
       // Convert dates to UTC format before sending to the server
       const formatToUTC = (date) => {
-        // return date ? format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : null;
         return date ? format(date, "yyyy-MM-dd'") : null;
     };
 
@@ -165,7 +142,6 @@ const FormAddMultiDoseis = () => {
 
 
     const formatCurrency = (value) => {
-        // return value.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
@@ -218,7 +194,6 @@ const FormAddMultiDoseis = () => {
                   <label htmlFor="name1">Ποσό Δόσης</label>
                   <div className="control">
 
-                  {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
                   <InputNumber id="ammount"  keyfilter="pnum" mode="decimal" minFractionDigits={2} value={ammount} onChange={(e)=> CalculateMax(e)} max={Number(ammount)}/>
 
 
@@ -229,7 +204,6 @@ const FormAddMultiDoseis = () => {
                     <label htmlFor="estimate_payment_date">Επιλέξτε ημερομηνία Δόσης απο : </label>
                     <div className="control">
 
-                    {/* <Calendar id="estimate_payment_date"  value={estimate_payment_date} onChange={(e)=> setEstimate_Payment_Date(e.target.value)} inline showWeek /> */}
                     <Calendar id="paramaStartDate" value={paramStartDate} onChange={(e)=> setParamStartDate(e.target.value)} showIcon />
                     </div>
                 </div>
@@ -239,30 +213,15 @@ const FormAddMultiDoseis = () => {
                     <label htmlFor="actual_payment_date">έως</label>
                     <div className="control">
 
-                    {/* <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek /> */}
                     <Calendar id="paramaEndDate" value={paramEndDate ? new Date(paramEndDate) : null} onChange={(e)=> setparamEndDate(e.target.value)} showIcon />
 
                     </div>
-                    
-
-                    {/* <div className="control">
-                        <Button label="Clear" onClick={clearDate} className="p-button-secondary mt-2" type="button"/>
-                    </div> */}
                 </div>
 
-                {/* <div className="field">
-                    <label className="label">Status</label>
-                    <div className="control">
-                    <InputText id="status" type="text" value={status} onChange={(e)=> setStatus(e.target.value)} />
-
-                    </div>
-                </div> */}
-            
                 <div className="field">
                   <label htmlFor="name1">Μερα Πληρωμης Δόσης</label>
                   <div className="control">
 
-                  {/* <InputText id="ammount" type="text" keyfilter="pnum" value={ammount} onChange={(e)=> setAmmount(e.target.value)} maxValue={2} /> */}
                   <InputNumber id="paramDay" type='int' value={paramDay} onChange={(e)=> setParamDay(e.value)} />
 
 

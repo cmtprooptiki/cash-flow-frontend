@@ -12,9 +12,9 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { Divider } from 'primereact/divider';
 
-import { Toast } from 'primereact/toast'; // Import Toast component
+import { Toast } from 'primereact/toast'; 
 import { Tooltip } from 'primereact/tooltip'; // For optional tooltip on info icon
-import { PrimeIcons } from 'primereact/api';  // Import PrimeIcons
+import { PrimeIcons } from 'primereact/api';  
 import CustomToast from '../CustomToast';
 import { format } from 'date-fns';
 
@@ -45,21 +45,11 @@ const FormAddTimologia = () => {
     const[parEightPercent,setparEightPercent]=useState(0.0)
     const[parEfor,setParEfor]=useState(0.0)
     const[loipaExo,setLoipaExo]=useState(0.0)
-    // const toast = useRef(""); // Reference for the toast
-
 
     useEffect(()=>{
         getErga()
     },[]);
 
-    // const showInfo = (text) => {
-    //     toast.current.show({
-    //         severity: 'info',
-    //         summary: 'Πληροφορία',
-    //         detail: text,
-    //         life: 3000,
-    //     });
-    // };
     const getErga = async() =>{
         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`, {timeout: 5000});
         setErga(response.data);
@@ -259,7 +249,6 @@ const FormAddTimologia = () => {
 
                 <div className="field">
                     <label htmlFor="invoice_date">Ημερομηνία έκδοσης τιμολογίου</label>
-                    {/* <Button icon="pi pi-info-circle" className="p-button-rounded p-button-info p-button-text" onClick={(e)=> showInfo("message test")} /> */}
                     <CustomToast txtmsg="Η ημερομηνία που αναγράφεται πάνω στο τιμόλογιο που θέλουμε να καταχωρίσουμε"/>
 
                     <div className="control">
@@ -285,15 +274,6 @@ const FormAddTimologia = () => {
 
                     </div>
                 </div>
-
-                {/* <div className="field">
-                    <label className="label">Κατασταση Τιμολογίου</label>
-                    <div className="control">
-                    <InputText id="comments" type="text" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} />
-
-                    </div>
-                </div> */}
-
 <div className="field">
     <label className="label">Κατασταση Τιμολογίου</label>
     <div className="control">

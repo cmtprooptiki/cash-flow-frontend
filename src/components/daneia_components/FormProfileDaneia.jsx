@@ -26,7 +26,6 @@ const FormProfileDaneia = ({id: propId, onHide}) => {
 
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getDaneioById = async()=>{
@@ -112,12 +111,6 @@ const formatDate = (value) => {
                     </div>
 
     </ul>
-    {/* <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
-        <div className="text-500 w-6 md:w-2 font-medium">Κατάσταση Δανείου</div>
-        <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-            <Chip label={status} className="mr-2" />
-        </div>
-    </li> */}
     </div>
     <Divider />
     <div className="grid">

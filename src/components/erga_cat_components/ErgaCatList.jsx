@@ -64,13 +64,10 @@ const ErgaCatList = () => {
                 // Existing logic to delete a single Dosi by id, e.g., an API call
                 console.log(`Deleting ErgaCat with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/ergacat/${id}`);
-
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting Erga cats with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -108,7 +105,6 @@ const ErgaCatList = () => {
         return (
             <div className="header-container flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
-                  {/* Responsive Search Field */}
                <div className="responsive-search-field">
                     <IconField iconPosition="left">
                         <InputIcon className="pi pi-search" />
@@ -212,17 +208,6 @@ const ErgaCatList = () => {
                         {/* Show all action buttons for admin users */}
                         {user && user.role === "admin" && (
                             <>
-                                {/* <Button 
-                                className='action-button'
-                                    icon="pi pi-eye"
-                                    severity="info"
-                                    aria-label="User"
-                                    onClick={() => {
-                                        setSelectedErgaCatId(id);
-                                        setSelectedType('Profile');
-                                        setDialogVisible(true);
-                                    }}
-                                /> */}
                                 <Button
                                 className='action-button'
                                     icon="pi pi-pen-to-square"
@@ -288,20 +273,6 @@ const ErgaCatList = () => {
                
                {user && user.role === "admin" && (
                     <span className='flex gap-1'>
-                        {/* <Link to={`/paradotea/profile/${id}`} > */}
-
-                            {/* <Button className='action-button' 
-                            icon="pi pi-eye" 
-                            severity="info" 
-
-                            aria-label="User" 
-                            onClick={() => {
-                                setSelectedErgaCatId(id);
-                                setSelectedType('Profile');
-                                setDialogVisible(true);
-                            }}
-                            /> */}
-                        {/* </Link> */}
                         <Button
                             className='action-button'
                             icon="pi pi-pen-to-square"

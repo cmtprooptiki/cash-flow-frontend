@@ -14,7 +14,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 
-import { Dialog } from 'primereact/dialog'; // Import Dialog
+import { Dialog } from 'primereact/dialog'; 
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
@@ -68,12 +68,7 @@ const EkxwrimenoTimologioList = () =>
         { field: 'cust_estimated_date', header: 'Ημερομηνία πληρωμής από πελάτη (εκτίμηση)' },
         { field: 'status_customer_paid', header: 'Πληρωμή υπολοίπου από πελάτη (κατάσταση)' },
         { field: 'comments', header: 'Σχόλια' },
-
-        
         { field: 'invoice_number', header: 'Αρ. τιμολογίου' }
-
-        // { field: 'totalparadotea', header: 'Σύνολο Τιμ.Παραδοτέων/Έργο' },
-        // { field: 'difference', header: 'Υπόλοιπο Παραδοτέων' }
     ];
 
 
@@ -164,12 +159,12 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...filteredEkxoriseis.map((product) =>
                     cols.map((col) => {
                      
-                        // Check if the field is 'quantity' or any other amount field that needs formatting
+                        // Check if the field is 'bank_ammount' or any other amount field that needs formatting
                         if (col.field === 'bank_ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'bank_ammount'
                         }
                         if (col.field === 'customer_ammount') {
-                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'quantity'
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'customer_ammount'
                         }
                         
                         return product[col.field];  // Return the value as is for other fields
@@ -264,14 +259,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
            
             const parDataWithDates = paraData.map(item => ({
                 ...item,
-                // erga: {
-                //     ...item.erga,
-                //     name: item.erga?.name || 'N/A'
-                // },
-                // timologia: {
-                //     ...item.timologia,
-                //     invoice_number: item.timologia?.invoice_number || 'N/A'
-                // },
                 bank_ammount: parseFloat(item.bank_ammount),
                 customer_ammount: parseFloat(item.customer_ammount),
                 bank_date: new Date(item.bank_date),
@@ -371,12 +358,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 console.log(`Deleting ekxorimena with ID: ${id}`);
                 await axios.delete(`${apiBaseUrl}/ek_tim/${id}`);
 
-                // Add your deletion logic here
             });
         } else {
             // Fallback for single ID deletion (just in case)
             console.log(`Deleting Ekxorrr with ID: ${ids}`);
-            // Add your deletion logic here
         }
     
         // Optionally update your state after deletion to remove the deleted items from the UI
@@ -407,7 +392,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             id: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             ErgaName: { value: null, matchMode: FilterMatchMode.IN} ,
-            // timologia_id: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             invoice_number: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             bank_ammount: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
@@ -433,11 +417,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
 
     const {user} = useSelector((state) => state.auth);
-    // const clearLocks = () =>
-    //     {
-    //         setFrozenColumns([]); // Clear all frozen columns
-    //     }
-
         const allColumnFields = ['ErgaName'];
         const [frozenColumns, setFrozenColumns] = useState(['ErgaName']); // Initially frozen column(s)
         const allColumnsFrozen = frozenColumns.length === allColumnFields.length;
@@ -482,7 +461,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             <div className="header-container flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter} />
                 <Button type="button" outlined label={buttonLabel} icon={buttonLabel === 'Unlock All' ? 'pi pi-unlock' : 'pi pi-lock'} onClick={toggleAllColumns} className="p-mb-3" />
-                 {/* Responsive Search Field */}
                <div className="responsive-search-field">
                     <IconField iconPosition="left">
                         <InputIcon className="pi pi-search" />
@@ -535,13 +513,12 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const ergaBodyTemplate = (rowData) => {
         
-        const ergo = rowData.ErgaName || 'N/A';        // console.log("repsBodytempl",timologio)
+        const ergo = rowData.ErgaName || 'N/A';        
         console.log("timologio",ergo," type ",typeof(ergo));
         console.log("rep body template: ",ergo)
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={representative} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
                 <span>{ergo}</span>
             </div>
         );
@@ -556,13 +533,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
     
     const ergaItemTemplate = (option) => {
-        // console.log("itemTemplate",option)
         console.log("rep Item template: ",option)
         console.log("rep Item type: ",typeof(option))
     
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={option} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" /> */}
                 <span>{option}</span>
             </div>
         );
@@ -680,7 +655,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
     const handleValueChange = (e) => {
         const visibleRows = e;
-        // console.log("visisble rows:",e);
         if(e.length>0){
             setfiltercalled(true)
         }
@@ -889,7 +863,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 selectionMode="checkbox">
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                 <Column className='font-bold' field="id" header="id" filter filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: 'black' }} frozen />
-                {/* <Column field="ErgaName" header="Εργο" filter filterPlaceholder="Search by ergo" style={{ minWidth: '5rem' }} /> */}
                 <Column className="font-bold" header= {renderColumnHeader('Εργο', 'ErgaName')} filterField="ErgaName" alignFrozen="left" frozen={frozenColumns.includes('ErgaName')}  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: 'black' }}
                     body={ergaBodyTemplate} filter filterElement={ergaFilterTemplate} />  
                 
@@ -901,7 +874,6 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 <Column header="Ημερομηνία πληρωμής από πελάτη (εκτίμηση)" filterField="cust_estimated_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_estimated_dateDateBodyFilterTemplate} filter filterElement={cust_estimated_dateDateFilterTemplate} ></Column>
                 <Column header="Ημερομηνία πληρωμής από πελάτη" filterField="cust_date" dataType="date" style={{ minWidth: '5rem' }} body={cust_dateDateBodyFilterTemplate} filter filterElement={cust_dateDateFilterTemplate} ></Column>
 
-                {/* <Column field="timologia_id" header="timologia_id" filter filterPlaceholder="Search by timologia_id" style={{ minWidth: '5rem' }} /> */}
                 <Column field="invoice_number" header="Αρ. τιμολογίου" filter filterPlaceholder="Search by invoice number" style={{ minWidth: '5rem' }} />
                 <Column field="status_bank_paid" header="Εκχώρηση (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBankPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />
                 <Column field="status_customer_paid" header="Πληρωμή υπολοίπου από πελάτη (κατάσταση)" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusCustomerPaidBodyTemplate} filter filterElement={statusPaidFilterTemplate} />

@@ -10,7 +10,7 @@ const FormEditUser = () => {
     const[password,setPassword]=useState("");
     const[confPassword,setConfPassword]=useState("");
     const[role,setRole]=useState("");
-    const [profileImage, setProfileImage] = useState(""); // New state for profile image
+    const [profileImage, setProfileImage] = useState(""); 
     const [previewImage, setPreviewImage] = useState(''); // State for previewing selected image
 
     const[msg,setMsg]=useState("");
@@ -108,7 +108,6 @@ const FormEditUser = () => {
 
                     <div className="control">
                         <input type="file" className="input"  onChange={handleImageChange} accept="image/*" />
-                    {/* {console.log(profileImage.name)} */}
                     </div>
                 </div>
 

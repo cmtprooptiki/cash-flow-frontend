@@ -32,7 +32,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedParadoteaDetails, setSelectedParadoteaDetails] = useState([]);
 
-    const [filteredErga, setFilteredErga] = useState([]); // State to store unique `erga` data
+    const [filteredErga, setFilteredErga] = useState([]); // State to store Filtered `erga` data
     const [uniqueErga2, setUniqueErga2] = useState([]); // State to store unique `erga` data
 
     const[calcdata,setcalcdata]=useState([])
@@ -44,20 +44,6 @@ const FormEditTimologia = ({id: propId, onHide}) => {
 
     const[fullParadotea,setFullParadotea]=useState([])
 
-    // const handleErgaChange = async (e) => {
-    //     const selectedId = e.target.value;
-    //     setErga_id(selectedId);
-    //     clearFormFields();
-    //     if (selectedId) {
-    //         try {
-    //             const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${selectedId}`, {timeout: 5000});
-    //             const paradoteaByErgoId = response.data;
-    //             setParadoteaByErgo(paradoteaByErgoId)
-    //         } catch (error) {
-    //             console.error("Error fetching timologio data:", error);
-    //         }
-    //     }
-    // };
     const handleErgaStart = async(e) => {
         console.log(e)
         const selectedId = e.erga.id;
@@ -94,15 +80,6 @@ const FormEditTimologia = ({id: propId, onHide}) => {
         setSelectedOptions([]);
         setSelectedParadoteaDetails([]);
     }
-
-    // const handleParadoteaChange = (selectedOptions) => {
-    //     setSelectedOptions(selectedOptions);
-    //     console.log("Selected option paradotea CHANGE", selectedOptions)
-
-    //     const selectedIds = selectedOptions.map(option => option.value);
-    //     const selectedDetails = paradotea.filter(item => selectedIds.includes(item.id));
-    //     setSelectedParadoteaDetails(selectedDetails);
-    // };
     const handleParadoteaChange2 = (selectedOptions) => {
         setSelectedOptions(selectedOptions);
         console.log("Selected option paradotea CHANGE", selectedOptions)
@@ -147,16 +124,11 @@ const FormEditTimologia = ({id: propId, onHide}) => {
 
 
     const { totalAmmount, totalAmmountVat, totalAmmountTotal } = calculateTotalAmounts();
-    
-    // useEffect(()=>{
-    //     setAmmount_Of_Income_Tax_Incl(totalAmmountTotal)
-    // },[totalAmmountTotal])
 
     const [msg, setMsg] = useState("");
 
     const navigate = useNavigate();
 
-    // const { id } = useParams();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
 
@@ -223,11 +195,7 @@ const FormEditTimologia = ({id: propId, onHide}) => {
             });
 
             const timologiaId = response.data.id; // Get the ID of the newly added timologio
-            // console.log("The response: ", response)
-            // console.log("show timid",timologiaId)
             await Promise.all(selectedParadoteaDetails.map(async (paradoteo) => {
-                // console.log("show par test",paradoteo)
-                // console.log("on promise.", paradoteo.id)
                 await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
                     "timologia_id": id
                 });
@@ -245,14 +213,11 @@ const FormEditTimologia = ({id: propId, onHide}) => {
 
             console.log(unselectedParadotea)
             await Promise.all(unselectedParadotea.map(async (paradoteo) => {
-                // console.log("show par test",paradoteo)
-                // console.log("on promise.", paradoteo.id)
                 await axios.patch(`${apiBaseUrl}/UpdateTimologia_idFromParadotea/${paradoteo.id}`, {
                     "timologia_id": null
                 });
             }));
 
-            // console.log("Done")
             if(paramId === undefined)
             {
                 onHide();
@@ -275,13 +240,6 @@ const FormEditTimologia = ({id: propId, onHide}) => {
         }
     };
 
-    // Remove duplicates from erga
-    // const uniqueErga = Array.from(new Set(erga.map(ergo => ergo.erga.id)))
-    //     .map(id => {
-            
-    //         return erga.find(ergo => ergo.erga.id === id);
-    //     });
-
     useEffect(() => {
         if (erga.length > 0) {
             // Step 1: Filter the rows where timologia_id equals the given id
@@ -303,11 +261,6 @@ const FormEditTimologia = ({id: propId, onHide}) => {
             handleErgaStart(uniqueErga2[0]);
         }
     },[uniqueErga2,id])
-    // handleErgaStart(uniqueErga2[0]);
-        // .map(id2 => {
-        //     return erga.find(ergo => (ergo.erga.id === id2 && ergo.timologia_id === id));
-        // })
-        // .filter(ergo => ergo !== undefined); 
 
     return (
         <div >
@@ -325,48 +278,13 @@ const FormEditTimologia = ({id: propId, onHide}) => {
                                     <InputText id="invoice_number" type="text" value={invoice_number} onChange={(e) => setInvoice_Number(e.target.value)} />
                                 </div>
                             </div>
-                            {/* <h1>{console.log(selectedParadoteaDetails)}</h1> */}
-                            {/* <div className="field">
-                                <label className="label">Εργα</label>
-                                <div className="control">
-                                    
-                                    <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
-                                        <option value="" disabled>Επιλέξτε Εργο</option>
-                                        {uniqueErga.map((ergo, index) => (
-                                            <option key={index} value={ergo.erga.id} disabled>{ergo.erga.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div> */}
                             <div className="field">
                                 <label className="label">Εργα</label>
                                 <div className="control">
                                     {uniqueErga2.length>0 && <div><InputText id="ergo"className="input" value={uniqueErga2[0].erga.name} readOnly disabled/>
-                                    {/*<label htmlFor="ergo">{uniqueErga2[0].erga.name}</label>*/}</div>}
-                                    
-                                    
-                                    {/* <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
-                                        <option value="" disabled>Επιλέξτε Εργο</option>
-                                        {uniqueErga.map((ergo, index) => (
-                                            <option key={index} value={ergo.erga.id} disabled>{ergo.erga.name}</option>
-                                        ))}
-                                    </select> */}
+                                </div>}
                                 </div>
                             </div>
-
-                            {/* <div className="field">
-                                <label className="label">Παραδοτεα</label>
-                                <div className="control">
-                                    <Select
-                                        isMulti
-                                        value={selectedOptions}
-                                        onChange={handleParadoteaChange}
-                                        options={options}
-                                        placeholder="Επιλέξτε Παραδοτεα"
-                                        classNamePrefix="react-select"
-                                    />
-                                </div>
-                            </div> */}
                             <div className="field">
                                 <label className="label">Παραδοτεα</label>
                                 <CustomToast  txtmsg="Υπαρχει η δυνατότητα τιμολόγισης ενός η και περισόττερων παραδοτέων που αφορούν το ίδιο Εργο"/>
@@ -440,27 +358,12 @@ const FormEditTimologia = ({id: propId, onHide}) => {
                                 <div className="control">
                                 <Calendar id="actual_payment_date"  value={new Date(actual_payment_date)} onChange={(e)=> setActual_Payment_Date(e.target.value)} inline showWeek />                                </div>
                             </div>
-
-                            {/* <div className="field">
-                                <label className="label">Πληρωτέο</label>
-                                <div className="control">
-                                    <InputText type="text" className="input" value={ammount_of_income_tax_incl} onChange={(e) => setAmmount_Of_Income_Tax_Incl(e.target.value)} />
-                                </div>
-                            </div> */}
-
                             <div className="field">
                                 <label className="label">Σχόλια</label>
                                 <div className="control">
                                     <InputTextarea value={comments} onChange={(e) => setComments(e.target.value)} />
                                 </div>
                             </div>
-
-                            {/* <div className="field">
-                                <label className="label">Κατάσταση Πληρωμής</label>
-                                <div className="control">
-                                <InputText type="text" className="input" value={status_paid} onChange={(e)=> setStatus_Paid(e.target.value)} placeholder='ΚΑΤΑΣΤΑΣΗ ΤΙΜΟΛΟΓΙΟΥ'/>                                </div>
-                            </div> */}
-
                             <div className="field">
                                 <label className="label">Κατασταση Τιμολογίου</label>
                                 <div className="control">

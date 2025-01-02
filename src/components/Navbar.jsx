@@ -33,7 +33,6 @@ import {ReactComponent as BudgetEuroIcon} from '../icons/budgeteuro.svg';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-// import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -59,7 +58,6 @@ import { Toolbar } from "primereact/toolbar";
 
 import {useClickOutside} from "primereact/hooks";
 
-// import apiBaseUrl from '../../apiConfig';
 import apiBaseUrl from "../apiConfig";
 import { InputText } from "primereact/inputtext";
 import { OverlayPanel } from "primereact/overlaypanel";
@@ -98,9 +96,6 @@ const Navbar =()=>{
     useClickOutside(overlayRef, () => {
         setVisible(false);
     });
-    //ref={overlayRef}
-
-
     const startContent = (
         <React.Fragment>
      
@@ -146,7 +141,6 @@ const Navbar =()=>{
                                                 <div className="mr-2 text-gray-50" >
                                                             <StatisticsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
-                                                {/* <i className="pi pi-chart-bar mr-2 text-gray-50"></i> */}
                                                     <span className="font-medium">Στατιστικά</span>
                                                     <Ripple />
 
@@ -160,7 +154,6 @@ const Navbar =()=>{
                                                 <div className="mr-2 text-gray-50" >
                                                             <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
-                                                {/* <i className="pi pi-chart-line mr-2 text-gray-50"></i> */}
                                                     <span className="font-medium">Αναφορές</span>
                                                     <Ripple />
 
@@ -180,42 +173,8 @@ const Navbar =()=>{
                                                     </div>
                                                     </Link>
                                                 </li>
-                                                {/* <li>
-                                                    <a className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-bookmark mr-2"></i>
-                                                        <span className="font-medium">Bookmarks</span>
-                                                        <Ripple />
-                                                    </a>
-                                                </li> */}
-
-                                          
-                                                {/* <li>
-                                                <Link to="/esoda_step1"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                        <a  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full">
-                                                        <i className="pi pi-chart-line mr-2"></i>
-                                                            <span className="font-medium">Οδηγός Εσόδων</span>
-                                                            <Ripple />
-                                                        </a>
-                                                    </Link>
-                                                </li> */}
-                                             
-
-
-                                                {/* <li>
-                                                <Link to="/esoda_step1" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                    <div className="wizard-hover p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" />  
-                                                        <span className="font-medium">Οδηγός Εσόδων</span>
-                                                    </div>
-                                                </Link>
-                                                </li> */}
-
-                                 
-                                          
-
                                                 <li><Link to="/expen" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-calendar-minus mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <CalendarCost style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -224,19 +183,6 @@ const Navbar =()=>{
                                                     </div>
                                                     </Link>
                                                 </li>
-
-                                             
-{/* 
-                                                <li>
-                                                <Link to="/step1" style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                    <div className="wizard-hover p-ripple flex align-items-center cursor-pointer p-3 border-round text-700 transition-duration-150 transition-colors w-full">
-                                                        <WizardIcon style={{ width: '1em', height: '1em' }}  className="mr-2 wizard-icon" /> 
-                                                        <span className="font-medium">Οδηγός Εξόδων</span>
-                                                    </div>
-                                                </Link>
-                                                </li> */}
-
-
                                                 <li><Link to="/budget" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         {/* <i className="pi pi-euro mr-2 text-gray-50"></i> */}
@@ -274,7 +220,6 @@ const Navbar =()=>{
                                             <li><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                             
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                               <div className="mr-2 text-gray-50" >
                   <ProjectCat style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
               </div>
@@ -285,7 +230,6 @@ const Navbar =()=>{
                                                 </li>
                                             <li><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <ProjectSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -297,7 +241,6 @@ const Navbar =()=>{
 
                                                 <li><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <ParSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -309,7 +252,6 @@ const Navbar =()=>{
                                              
                                                 <li><Link to="/timologia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <InvoSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -382,7 +324,6 @@ const Navbar =()=>{
                                                 
                                                 <li><Link to="/tags"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <TagIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -394,7 +335,6 @@ const Navbar =()=>{
                                                 <li>
                                                     <Link to="/ypoquery"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                         <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                            {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                             <div className="mr-2 text-gray-50" >
                                                             <ObliIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -406,7 +346,6 @@ const Navbar =()=>{
 
                                                 <li><Link to="/doseis"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <DoseisIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -440,7 +379,6 @@ const Navbar =()=>{
 
                                             <li><Link to="/users" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-users mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <UsersIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -454,7 +392,6 @@ const Navbar =()=>{
 
                                             <li><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-users mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <CustoEditIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -466,7 +403,6 @@ const Navbar =()=>{
                                              
                                                 <li><Link to="/budgetform"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
-                                                        {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
                                                             <BudgetIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
@@ -485,9 +421,6 @@ const Navbar =()=>{
                                 <div className="mt-auto">
                                     <hr className="mb-3 mx-3 border-top-1 border-none surface-border" />
                                     <a v-ripple className="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700  transition-duration-150 transition-colors p-ripple">
-                                        {/* <Avatar image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png" shape="circle" />
-                                        <span className="font-bold">Amy Elsner</span> */}
-                                        {/* {console.log("here is the profile pci",user?.profileImage)} */}
                                          <Avatar
                                                     image={`${apiBaseUrl}/uploads/${user?.profileImage.split('/').pop()}`}
                                                     shape="circle"
@@ -645,7 +578,6 @@ const Navbar =()=>{
     const select =(event)=>{
         setSelectedCity(event.value)
         if(typeof(event.value)==="object"){
-            //console.log("navigate value: ",event.value.value)
             navigation('/'+event.value.value);
         }
         
@@ -679,11 +611,6 @@ const Navbar =()=>{
 
     const endContent = (
         <React.Fragment>
-            {/* <div className="flex align-items-center gap-2">
-                <Avatar image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png" shape="circle" />
-                <span className="font-bold text-bluegray-50">Amy Elsner</span>
-            </div> */}
-            
             <div>
                 <Avatar
                     image={`${apiBaseUrl}/uploads/${user?.profileImage.split('/').pop()}`}
@@ -695,7 +622,6 @@ const Navbar =()=>{
                     onClick={handleMenu}
                     color="inherit"
                 >
-                {/* <AccountCircle /> */}
                 </Avatar>
                 <Menu
                     id="menu-appbar"

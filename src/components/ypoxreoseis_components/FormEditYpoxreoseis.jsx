@@ -22,7 +22,6 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [msg, setMsg] = useState("");
     const [tagError, setTagError] = useState("");
-    // const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,28 +29,6 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
         getTags();
         getYpoxreoseisById();
     }, []);
-
-    // useEffect(() => {
-    //     if (erga.length > 0) {
-    //         // Step 1: Filter the rows where timologia_id equals the given id
-    //         const filteredErga = erga.filter(ergo => ergo.timologia_id === parseInt(id));
-    
-    //         // Step 2: Create a Set to ensure unique erga names and map the filtered array
-    //         const uniqueErga = Array.from(new Set(filteredErga.map(ergo => ergo.erga.id)))
-    //         .map(id => {      
-    //             return filteredErga.find(ergo => ergo.erga.id === id);
-    //         });
-    
-    //         setUniqueErga2(uniqueErga);
-    //         //console.log(uniqueErga2)
-            
-    //     }
-    //     }, [erga, id]);
-    // useEffect(()=>{
-    //     if(uniqueErga2.length>0){
-    //         handleErgaStart(uniqueErga2[0]);
-    //     }
-    // },[uniqueErga2,id])
 
     const formatDateToInput = (dateString) => {
         console.log("YEEYHAHA: ", dateString)
@@ -123,7 +100,6 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
             });
             onHide();
             window.location.reload();
-            // navigate("/ypoquery");
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);
@@ -173,35 +149,6 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                                     </select>
                                 </div>
                             </div>
-                        {/* <h1>{console.log(selectedParadoteaDetails)}</h1> */}
-                        {/* <div className="field">
-                                <label className="label">Εργα</label>
-                                <div className="control">
-                                    <select className="input" value={erga_id} onChange={(e) => setErga_Id(e.target.value)}>
-                                        <option value="" disabled>Επιλέξτε Εργο</option>
-                                        {erga.map((ergo, index) => (
-                                            <option key={index} value={ergo.id}>{ergo.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-             */}
-
-                        {/* <div className="field">
-                            <label className="label">Παραδοτεα</label>
-                            <div className="control">
-                                <Select
-                                    isMulti
-                                    value={selectedOptions}
-                                    onChange={handleParadoteaChange}
-                                    options={options}
-                                    placeholder="Επιλέξτε Παραδοτεα"
-                                    classNamePrefix="react-select"
-                                />
-                            </div>
-                        </div> */}
-             
-
                         <div className="field">
                             <label className="label">Ποσό (σύνολο)</label>
                             <div className="control">
@@ -261,72 +208,6 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
             </div>
         </form>
     </div>
-        // <div>
-        //     <h1 className='title'>Επεξεργασία Υποχρέωσης</h1>
-        //     <div className="card is-shadowless">
-        //         <div className="card-content">
-        //             <div className="content">
-        //                 <form onSubmit={updateYpoxreoseis}>
-        //                     <p className='has-text-centered'>{msg}</p>
-        //                     <div className="field">
-        //                         <label className="label">Όνομα Παρόχου</label>
-        //                         <div className="control">
-        //                             <input type="text" className="input" value={provider} onChange={(e) => setProvider(e.target.value)} placeholder='Όνομα Παρόχου' />
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <label className="label">ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ</label>
-        //                         <div className="control">
-        //                             <input type="date" className="input" value={invoice_date} onChange={(e) => setInvoice_Date(e.target.value)} placeholder='ΗΜΕΡΟΜΗΝΙΑ ΤΙΜΟΛΟΓΗΣΗΣ' />
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <label className="label">ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ</label>
-        //                         <div className="control">
-        //                             <input type="text" className="input" value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.target.value)} placeholder='ΣΥΝΟΛΙΚΟ ΠΟΣΟ ΧΡΕΩΣΗΣ' />
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <label className="label">Εργα</label>
-        //                         <div className="control">
-        //                             <select className="input" value={erga_id} onChange={(e) => setErga_Id(e.target.value)}>
-        //                                 <option value="" disabled>Επιλέξτε Εργο</option>
-        //                                 {erga.map((ergo, index) => (
-        //                                     <option key={index} value={ergo.id}>{ergo.name}</option>
-        //                                 ))}
-        //                             </select>
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <label className="label">Tags</label>
-        //                         <div className="control">
-        //                             <Select
-        //                                 isMulti
-        //                                 value={selectedTags}
-        //                                 onChange={handleTagChange}
-        //                                 options={tagOptions}
-        //                                 placeholder="Επιλέξτε Tags"
-        //                                 classNamePrefix="react-select"
-        //                             />
-        //                             {tagError && <p className="help is-danger">{tagError}</p>}
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <label className="label">ΠΟΣΟ ΦΠΑ</label>
-        //                         <div className="control">
-        //                             <input type="text" className="input" value={ammount_vat} onChange={(e) => setAmmount_Vat(e.target.value)} placeholder='ΠΟΣΟ ΦΠΑ' />
-        //                         </div>
-        //                     </div>
-        //                     <div className="field">
-        //                         <div className="control">
-        //                             <button type="submit" className="button is-success is-fullwidth">Ενημέρωση</button>
-        //                         </div>
-        //                     </div>
-        //                 </form>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
     );
 };
 

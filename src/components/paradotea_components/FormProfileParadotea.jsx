@@ -36,7 +36,6 @@ const FormProfileParadotea=({ id: propId, onHide }) =>{
     const navigate = useNavigate();
     const { id: paramId } = useParams();
     const id = propId !== undefined ? propId : paramId;
-    // const{id} = useParams();
 
     useEffect(()=>{
         const getParadoteaById = async()=>{
@@ -55,7 +54,6 @@ const FormProfileParadotea=({ id: propId, onHide }) =>{
                 }else{
                     setTimologia_Invoice_Number(null)
                 }
-                // setTimologia_Invoice_Number(response.data.timologia.invoice_number);
                 setAmmount(response.data.ammount);
                 setAmmount_Vat(response.data.ammount_vat);
                 setAmmount_Total(response.data.ammount_total);
@@ -123,12 +121,10 @@ const FormProfileParadotea=({ id: propId, onHide }) =>{
         </ul>
         
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία υποβολής</div>
-            {/* <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1"> */}
 
             <Calendar  value={new Date(delivery_date)} inline showWeek />
 
 
-            {/* </div> */}
      
             <div className="text-500 w-6 md:w-2 font-medium">Εκτιμωμένη Ημερομηνία Πληρωμής</div>
 

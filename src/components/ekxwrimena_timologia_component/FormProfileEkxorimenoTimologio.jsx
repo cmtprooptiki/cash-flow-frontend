@@ -27,7 +27,6 @@ const FormProfileEkxorimenoTimologio = ({ id: propId, onHide }) =>
     const[comments,setComments]=useState("");
 
     const[msg,setMsg]=useState("");
-    // const{id} = useParams();
 
     const formatDateToInput = (dateString) => {
       if(dateString === null || dateString =="" || dateString === NaN){
@@ -216,8 +215,6 @@ const FormProfileEkxorimenoTimologio = ({ id: propId, onHide }) =>
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            {/* <span className="text-green-500 font-medium">%52+ </span>
-            <span className="text-500">since last week</span> */}
         </div>
     </div>
 
