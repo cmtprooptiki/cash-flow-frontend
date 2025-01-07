@@ -101,7 +101,7 @@ const Eksoda = ()=>
       };
 
       const handleEventDrop = async ({ event, start, end }) => {
-        const updatedDate = moment.utc(start).startOf('day').toDate();
+        const updatedDate = moment.utc(start).endOf('day').toDate();
         const dateTypeKey = "estimate_payment_date";
       
         try {
