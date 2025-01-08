@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../buildinglist.css';
@@ -20,6 +20,10 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Divider } from 'primereact/divider';
 import {ReactComponent as IncomeIcon } from '../icons/income_icon.svg';
 import {ReactComponent as CostIcon } from '../icons/cost_icon.svg';
+import { MultiSelect } from 'primereact/multiselect';
+import robotoData from '../components/report_components/robotoBase64.json'
+import { jsPDF } from "jspdf";
+
 
 
 
@@ -33,12 +37,21 @@ const PaidBudgetList = (props) => {
 
     const budget = props.budget
     const combinedData3=props.combinedData3
+
     console.log("combined prop: ",combinedData3)
 
     const[selectedIdType,setSelectedIdType]=useState([])
 
     const [visible, setVisible] = useState(false); // State to control the visibility of the popup
     const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
+
+    const ergo = props.Ergo
+    const customer = props.Customer
+    const provider = props.Provider
+    // const uniqueErga= [...new Set(combinedData3.map(item => item.ergo || 'N/A'))];
+    // setErgo(uniqueErga);
+    //     const uniqueCustomers = [...new Set(combinedData3.map(item => item?.customer || 'N/A'))]
+    //     setCustomer(uniqueCustomers)
     
 
     const { user } = useSelector((state) => state.auth);
@@ -93,7 +106,9 @@ const PaidBudgetList = (props) => {
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-
+            ergo: { value: null, matchMode: FilterMatchMode.IN },
+            customer: { value: null, matchMode: FilterMatchMode.IN },
+            provider: { value: null, matchMode: FilterMatchMode.IN }
         });
         setGlobalFilterValue('');
     };
@@ -120,6 +135,88 @@ const PaidBudgetList = (props) => {
   const DateBodyTemplate = (rowData) => {
     return formatDate(rowData.date);
 };
+
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+    
+    const cols = [
+        { field: 'date', header: 'Ημερομηνία' },
+        { field: 'income', header: 'Εισροές/Εκροές' },
+        { field: 'type', header: 'Τύπος Εισροής/Εκροής' },    
+        { field: 'ergo', header: 'Έργο' },
+        { field: 'customer', header: 'Πελάτης' },
+        { field: 'provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'id', header: 'Id' },
+        ];
+    
+        const callAddFont = function () {
+          this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+          this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+        };
+        
+        // Step 2: Register the font adding event
+        jsPDF.API.events.push(['addFonts', callAddFont]);
+        
+        const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+        const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...combinedData3.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'ammount' or any other amount field that needs formatting
+                        if (col.field === 'income') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
+                        }
+                        
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Budget_Calendar_Table');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
+
 
 
 
@@ -205,6 +302,7 @@ const idBodyTemplate = (rowData) => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
             </div>
         );
     };
@@ -217,6 +315,89 @@ const idBodyTemplate = (rowData) => {
         // console.log("type: ",typeof(final)," final: ",final)
         return parseFloat(final)+parseFloat(budget);
     };
+
+    const ErgoBodyTemplate = (rowData) => {
+        return (
+        <div className="flex align-items-center gap-2">
+            <span>{rowData.ergo}</span>
+        </div>
+    );
+    };
+
+
+    const ProviderBodyTemplate = (rowData) => {
+        return (
+        <div className="flex align-items-center gap-2">
+            <span>{rowData.provider}</span>
+        </div>
+    );
+    };
+
+    const ProviderFilterTemplate = (options) => {
+            console.log('Current timologia filter value:', options.value);
+        
+                return (<MultiSelect value={options.value} options={provider} itemTemplate={ProviderItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+        
+            };
+        
+        
+        const ProviderItemTemplate = (option) => {
+            console.log("rep Item template: ",option)
+            console.log("rep Item type: ",typeof(option))
+        
+            return (
+                <div className="flex align-items-center gap-2">
+                    <span>{option}</span>
+                </div>
+            );
+        };
+
+    const CustomerBodyTemplate = (rowData) => {
+        return (
+        <div className="flex align-items-center gap-2">
+            <span>{rowData.customer}</span>
+        </div>
+    );
+    };
+
+
+     const ergaFilterTemplate = (options) => {
+            console.log('Current timologia filter value:', options.value);
+        
+                return (<MultiSelect value={options.value} options={ergo} itemTemplate={ergaItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+        
+            };
+        
+        
+        const ergaItemTemplate = (option) => {
+            console.log("rep Item template: ",option)
+            console.log("rep Item type: ",typeof(option))
+        
+            return (
+                <div className="flex align-items-center gap-2">
+                    <span>{option}</span>
+                </div>
+            );
+        };
+    
+        const CustomerFilterTemplate = (options) => {
+            console.log('Current timologia filter value:', options.value);
+        
+                return (<MultiSelect value={options.value} options={customer} itemTemplate={CustomerItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+        
+            };
+        
+        
+        const CustomerItemTemplate = (option) => {
+            console.log("rep Item template: ",option)
+            console.log("rep Item type: ",typeof(option))
+        
+            return (
+                <div className="flex align-items-center gap-2">
+                    <span>{option}</span>
+                </div>
+            );
+        };
     
 
     
@@ -301,7 +482,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type','id']}
+            globalFilterFields={['date', 'income', 'type','ergo','customer', 'provider','id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
@@ -310,6 +491,11 @@ const idBodyTemplate = (rowData) => {
                 <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 <Column filterField="income" header="Εισροές/Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Τύπος εισροής/εκροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column header="Εργο" filterField="ergo" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {ErgoBodyTemplate} filter filterElement = {ergaFilterTemplate}/>
+                
+                <Column header="Πελάτης" filterField="customer" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {CustomerBodyTemplate} filter filterElement = {CustomerFilterTemplate}/>
+
+                <Column header="Υποχρέωση" filterField="provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {ProviderBodyTemplate} filter filterElement = {ProviderFilterTemplate}/>
 
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 

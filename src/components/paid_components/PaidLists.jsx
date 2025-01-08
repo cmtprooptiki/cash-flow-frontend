@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../../buildinglist.css';
@@ -16,6 +16,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import apiBaseFrontUrl from '../../apiFrontConfig';
+import { MultiSelect } from 'primereact/multiselect';
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
 
 const PaidList = (props) => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -29,6 +32,8 @@ const PaidList = (props) => {
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false)
     const [combinedData,setCombinedData]=useState([])
+    const [ergo,setErgo] = useState([])
+    const [customer, setCustomer] = useState([])
 
     const scenario =props.scenario
 
@@ -53,7 +58,7 @@ const PaidList = (props) => {
 
 
     const getEkxorimena = async () => {
-        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
+        const response = await axios.get(`${apiBaseUrl}/getekxforesoda`, {timeout: 5000});
         setEkxorimena(response.data);
     };
 
@@ -122,6 +127,8 @@ const PaidList = (props) => {
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            ergo: { value: null, matchMode: FilterMatchMode.IN },
+            customer: { value: null, matchMode: FilterMatchMode.IN }
 
         });
         setGlobalFilterValue('');
@@ -191,6 +198,22 @@ const statusBodyTemplate = (rowData) => {
     return <Tag value={rowData.type} severity={getSeverity(rowData.type)} />;
 };
 
+const ErgoBodyTemplate = (rowData) => {
+    return (
+        <div className="flex align-items-center gap-2">
+            <span>{rowData.ergo}</span>
+        </div>
+    );
+};
+
+const CustomerBodyTemplate = (rowData) => {
+    return(
+    <div className="flex align-items-center gap-2">
+            <span>{rowData.customer}</span>
+    </div>
+    )
+};
+
 const statusFilterTemplate = (options) => {
     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
 };
@@ -230,9 +253,49 @@ const idBodyTemplate = (rowData) => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
             </div>
         );
     };
+
+    const ergaFilterTemplate = (options) => {
+        console.log('Current timologia filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={ergo} itemTemplate={ergaItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+    
+    
+    const ergaItemTemplate = (option) => {
+        console.log("rep Item template: ",option)
+        console.log("rep Item type: ",typeof(option))
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{option}</span>
+            </div>
+        );
+    };
+
+    const CustomerFilterTemplate = (options) => {
+        console.log('Current timologia filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={customer} itemTemplate={CustomerItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+    
+    
+    const CustomerItemTemplate = (option) => {
+        console.log("rep Item template: ",option)
+        console.log("rep Item type: ",typeof(option))
+    
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{option}</span>
+            </div>
+        );
+    };
+    
 
     const calculateTotalIncome = (data) => {
         
@@ -245,36 +308,132 @@ const idBodyTemplate = (rowData) => {
     useEffect(()=>{
         if(scenario==="estimate_payment_date"){
         const combinedData2 = [
-            ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
-            ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
-            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id })),
-            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
-            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id })),
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.bank_estimated_date), income: Number(item.Ekxorimena_Timologium.bank_ammount), type: 'Bank', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.cust_estimated_date), income: Number(item.Ekxorimena_Timologium.customer_ammount), type: 'Customer', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id, ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name })),
+            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.timologia_id })),
+            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id, ergo: 'N/A', customer: 'N/A' })),
         ];
+        const uniqueErga= [...new Set(combinedData2.map(item => item?.ergo || 'N/A'))];
+        setErgo(uniqueErga);
+        const uniqueCustomers = [...new Set(combinedData2.map(item => item?.customer || 'N/A'))]
+        setCustomer(uniqueCustomers)
+        // console.log("airgaaaaa,", ergo)
+        console.log('combined Data ', combinedData2)
         setCombinedData(combinedData2)
         }else if(scenario==="estimate_payment_date_2"){
             const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id })),
-            ];
-            setCombinedData(combinedData2)
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.bank_estimated_date), income: Number(item.Ekxorimena_Timologium.bank_ammount), type: 'Bank', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.cust_estimated_date), income: Number(item.Ekxorimena_Timologium.customer_ammount), type: 'Customer', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_2), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id, ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name })),
+            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.timologia_id })),
+            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id, ergo: 'N/A', customer: 'N/A' })),
+        ];
+        const uniqueErga= [...new Set(combinedData2.map(item => item?.ergo || 'N/A'))];
+        setErgo(uniqueErga);
+        const uniqueCustomers = [...new Set(combinedData2.map(item => item?.customer || 'N/A'))]
+        setCustomer(uniqueCustomers)
+        // console.log("airgaaaaa,", ergo)
+        console.log('combined Data ', combinedData2)
+        setCombinedData(combinedData2)
         }else if(scenario==="estimate_payment_date_3"){
             const combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id})),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id })),
-            ];
-            setCombinedData(combinedData2)
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.bank_estimated_date), income: Number(item.Ekxorimena_Timologium.bank_ammount), type: 'Bank', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.cust_estimated_date), income: Number(item.Ekxorimena_Timologium.customer_ammount), type: 'Customer', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id })),
+            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date_3), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id, ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name })),
+            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.timologia_id })),
+            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id, ergo: 'N/A', customer: 'N/A' })),
+        ];
+        const uniqueErga= [...new Set(combinedData2.map(item => item?.ergo || 'N/A'))];
+        setErgo(uniqueErga);
+        const uniqueCustomers = [...new Set(combinedData2.map(item => item?.customer || 'N/A'))]
+        setCustomer(uniqueCustomers)
+        // console.log("airgaaaaa,", ergo)
+        console.log('combined Data ', combinedData2)
+        setCombinedData(combinedData2)
         }
 
     },[paradotea,ekxorimena,incomeTim,daneia,scenario])
+
+
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+    
+    const cols = [
+        { field: 'date', header: 'Ημερομηνία' },
+        { field: 'income', header: 'Εισροές' },
+        { field: 'type', header: 'Τύπος Εισροής' },    
+        { field: 'ergo', header: 'Έργο' },
+        { field: 'customer', header: 'Πελάτης' },
+        { field: 'id', header: 'Id' },
+        ];
+    
+        const callAddFont = function () {
+          this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+          this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+        };
+        
+        // Step 2: Register the font adding event
+        jsPDF.API.events.push(['addFonts', callAddFont]);
+        
+        const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+        const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...combinedData.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'ammount' or any other amount field that needs formatting
+                        if (col.field === 'income') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
+                        }
+                        
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Incomes_Calendar_Table');
+        });
+    };
     
 
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
 
 
 
@@ -308,7 +467,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type','id']}
+            globalFilterFields={['date', 'income', 'type', 'ergo','id']}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
             
@@ -316,6 +475,9 @@ const idBodyTemplate = (rowData) => {
                 <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 <Column filterField="income" header="Εισροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
                 <Column field="type" header="Τύπος Εισροής" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column header="Εργο" filterField="ergo" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {ErgoBodyTemplate} filter filterElement = {ergaFilterTemplate}/>
+
+                <Column header="Πελάτης" filterField="customer" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {CustomerBodyTemplate} filter filterElement = {CustomerFilterTemplate}/>
 
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 

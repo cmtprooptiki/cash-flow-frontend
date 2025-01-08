@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../../buildinglist.css';
@@ -17,6 +17,9 @@ import { Tag } from 'primereact/tag';
 import { MultiSelect } from 'primereact/multiselect';
 import { Dialog } from 'primereact/dialog';
 import apiBaseFrontUrl from '../../apiFrontConfig';
+import robotoData from '../report_components/robotoBase64.json';
+import { jsPDF } from "jspdf";
+
 
 const PaidExodaList = () => {
     const [paradotea, setIncomeParadotea] = useState([]);
@@ -118,13 +121,17 @@ const PaidExodaList = () => {
         setGlobalFilterValue(value);
     };
 
+    const dt = useRef(null);
+    const robotoBase64 = robotoData.robotoBase64;
+
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             income: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            provider: { value: null, matchMode: FilterMatchMode.EQUALS }
+            provider: { value: null, matchMode: FilterMatchMode.EQUALS },
+            comment: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
         });
         setGlobalFilterValue('');
@@ -262,6 +269,9 @@ const idBodyTemplate = (rowData) => {
                     <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
                 </IconField>
+
+                <Button className='action-button'  type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+
             </div>
         );
     };
@@ -277,7 +287,7 @@ const idBodyTemplate = (rowData) => {
     useEffect(()=>{
         
         const combinedData2 = [
-            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.doseis_id, provider: item.provider?.trim() || 'N/A' }))
+            ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.doseis_id, provider: item.provider?.trim() || 'N/A', comment: item.comment }))
         ];
         console.log("Combined Data: ", doseis);
         setCombinedData(combinedData2)
@@ -287,6 +297,83 @@ const idBodyTemplate = (rowData) => {
         setProvider(uniqueProviders); // Set provider options for the filter
 
     },[doseis])
+
+
+    const cols = [
+        { field: 'income', header: 'Έκροές' },
+        { field: 'date', header: 'Ημερομηνία' },
+        { field: 'provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'comment', header: 'Σχόλιο' },
+        { field: 'id', header: 'Id' },
+    ];
+
+    const callAddFont = function () {
+      this.addFileToVFS('Roboto-Regular-normal.ttf', robotoBase64);
+      this.addFont('Roboto-Regular-normal.ttf', 'Roboto-Regular', 'normal');
+    };
+    
+    // Step 2: Register the font adding event
+    jsPDF.API.events.push(['addFonts', callAddFont]);
+    
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+    const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+            // Create the headers based on the 'cols' array
+            const headers = cols.map(col => col.header);
+    
+            // Create data rows with headers first
+            const data = [
+                headers,  // First row with headers
+                ...combinedData.map((product) =>
+                    cols.map((col) => {
+                     
+                        // Check if the field is 'ammount' or any other amount field that needs formatting
+                        if (col.field === 'income') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount'
+                        }
+                        
+                        
+                        return product[col.field];  // Return the value as is for other fields
+                    })
+                )
+            ];
+    
+            // Convert data to Excel worksheet
+            const worksheet = xlsx.utils.aoa_to_sheet(data);  // 'aoa_to_sheet' takes 2D array with headers
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    
+            // Generate Excel file and save it
+            const excelBuffer = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+    
+            saveAsExcelFile(excelBuffer, 'Expenses_Calendar_Table');
+        });
+    };
+    
+
+
+
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
+    const formatCurrencyReport = (value) => {
+        return Number(value);
+    };
+    
     
 
 
@@ -324,7 +411,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type', 'provider','id']}
+            globalFilterFields={['date', 'income', 'type', 'provider', 'comment' , 'id']}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange={handleValueChange}
             >
@@ -336,6 +423,7 @@ const idBodyTemplate = (rowData) => {
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={NameBodyTemplate} 
                     filter filterElement={NameFilterTemplate} /> 
+                <Column field="comment" header="Comments"  filter filterPlaceholder="Search by comments"  style={{ minWidth: '12rem' }}></Column>
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
             </DataTable>

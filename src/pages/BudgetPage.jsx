@@ -42,6 +42,11 @@ const BudgetPage = () => {
     const [combinedData,setCombinedData]=useState([]);
     const [selectedRowData, setSelectedRowData] = useState(null); // State to store the row data to display
 
+    const [ergo,setErgo] = useState([])
+    const [customer, setCustomer] = useState([])
+
+    const [provider, setProvider] = useState([])
+
     const [calendarDate, setCalendarDate] = useState(new Date());
     const[selectedIdType,setSelectedIdType]=useState([])
 
@@ -95,7 +100,7 @@ const BudgetPage = () => {
     }
 
     const getEkxorimena = async () => {
-        const response = await axios.get(`${apiBaseUrl}/ek_tim`, {timeout: 5000});
+        const response = await axios.get(`${apiBaseUrl}/getekxforesoda`, {timeout: 5000});
         setEkxorimena(response.data);
     };
 
@@ -143,14 +148,23 @@ const BudgetPage = () => {
         let combinedData2 = [];
         console.log("scenario ",scenario)
             combinedData2 = [
-                ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: parseFloat(item.bank_ammount), type: 'Bank', id: item.id })),
-                ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: parseFloat(item.customer_ammount), type: 'Customer', id: item.id})),
-                ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: parseFloat(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id })),
-                ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: parseFloat(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', id: item.timologia_id })),
-                ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: parseFloat(item.ammount), type: 'Daneia', id: item.id })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id }))
+                ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_bank_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.bank_estimated_date), income: Number(item.Ekxorimena_Timologium.bank_ammount), type: 'Bank', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id, provider: 'N/A' })),
+            ...ekxorimena.filter(item => item.Ekxorimena_Timologium.status_customer_paid === "no").map(item => ({ date: new Date(item.Ekxorimena_Timologium.cust_estimated_date), income: Number(item.Ekxorimena_Timologium.customer_ammount), type: 'Customer', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.Ekxorimena_Timologium.id, provider: 'N/A' })),
+            ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id, ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, provider: 'N/A' })),
+            ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.timologia_id, provider: 'N/A' })),
+            ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id, ergo: 'N/A', customer: 'N/A', provider: 'N/A' })),
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id, ergo: 'N/A', customer: 'N/A', provider: item.provider }))
             ];
-            setCombinedData(combinedData2)
+
+        const uniqueErga= [...new Set(combinedData2.map(item => item?.ergo || 'N/A'))];
+        setErgo(uniqueErga);
+        const uniqueCustomers = [...new Set(combinedData2.map(item => item?.customer || 'N/A'))]
+        setCustomer(uniqueCustomers)
+
+        const uniqueProviders = [...new Set(combinedData2.map(item => item?.provider || 'N/A'))]
+        setProvider(uniqueProviders)
+
+        setCombinedData(combinedData2)
     },[paradotea,ekxorimena,incomeTim,daneia,doseis])
 
     // Convert the fetched budget to a float for calculations
@@ -462,7 +476,7 @@ const BudgetPage = () => {
             </Dialog>
 
                 <br></br>
-            <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData}/>
+            <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData} Ergo = {ergo} Customer = {customer} Provider = {provider}/>
         </Layout>
     );
 };
