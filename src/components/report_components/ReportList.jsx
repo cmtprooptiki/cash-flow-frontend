@@ -560,7 +560,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
   return (
     <div className="card" >
-    <h1 className='title'>Αναφορές</h1>
+    <h1 className='title'>Εικόνα Έργων</h1>
    <DataTable ref={dt} value={reportData} onValueChange={(reportData) => setFilteredData(reportData)} rowGroupMode="subheader" groupRowsBy="customer_name" sortMode="single" sortField="customer_name"
                     sortOrder={1} scrollable scrollHeight="600px" loading={loading} 
                     filters={filters}

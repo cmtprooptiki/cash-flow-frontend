@@ -154,7 +154,7 @@ const Navbar =()=>{
                                                 <div className="mr-2 text-gray-50" >
                                                             <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
-                                                    <span className="font-medium">Αναφορές</span>
+                                                    <span className="font-medium">Εικόνα Έργων</span>
                                                     <Ripple />
 
                                                     </div>
