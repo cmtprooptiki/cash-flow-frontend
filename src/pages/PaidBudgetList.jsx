@@ -34,11 +34,13 @@ const PaidBudgetList = (props) => {
     const [statuses] = useState(['Bank', 'Customer','Paradotea','Timologia','doseis','Daneia']);
     const [totalIncome, setTotalIncome] = useState(0);
     const [filtercalled,setfiltercalled]=useState(false);
+    const [filteredData, setFilteredData] = useState([])
 
     const budget = props.budget
     const combinedData3=props.combinedData3
+    
 
-    console.log("combined prop: ",combinedData3)
+    // console.log("combined prop: ",combinedData3)
 
     const[selectedIdType,setSelectedIdType]=useState([])
 
@@ -52,11 +54,14 @@ const PaidBudgetList = (props) => {
     // setErgo(uniqueErga);
     //     const uniqueCustomers = [...new Set(combinedData3.map(item => item?.customer || 'N/A'))]
     //     setCustomer(uniqueCustomers)
+
+
     
 
     const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
+        setFilteredData(combinedData3)
         // fetchData();
         setLoading(false);
         initFilters();
@@ -168,7 +173,7 @@ const PaidBudgetList = (props) => {
             // Create data rows with headers first
             const data = [
                 headers,  // First row with headers
-                ...combinedData3.map((product) =>
+                ...filteredData.map((product) =>
                     cols.map((col) => {
                      
                         // Check if the field is 'ammount' or any other amount field that needs formatting
@@ -485,8 +490,7 @@ const idBodyTemplate = (rowData) => {
             globalFilterFields={['date', 'income', 'type','ergo','customer', 'provider','id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
-            onValueChange={handleValueChange}
-            
+            onValueChange = {(comb) => { setFilteredData(comb); handleValueChange(comb); }}            
             >
                 <Column filterField="date" header="Ημερομηνία" dataType="date" style={{ minWidth: '5rem' }} body={DateBodyTemplate} filter filterElement={dateFilterTemplate} sortable sortField="date" ></Column>
                 <Column filterField="income" header="Εισροές/Εκροές" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalIncome} ></Column>
