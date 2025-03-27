@@ -163,7 +163,8 @@ const DoseisList = () => {
                     newValue = null
                 }
 
-                if (field === 'actual_payment_date' && newValue === null)
+                if (field === 'actual_payment_date' && newValue === null || ( newValue instanceof Date &&
+                    newValue.getTime() === new Date('1970-01-01T00:00:00Z').getTime()))
                 {
                     const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
                         [field]: newValue,
