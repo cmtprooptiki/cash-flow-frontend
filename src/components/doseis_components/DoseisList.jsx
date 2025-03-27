@@ -153,62 +153,106 @@ const DoseisList = () => {
                 }
                 break;
         }
-    
+
         if (validEdit) {
             try {
-                console.log("Data being sent to backend:", rowData);
-
-                if (field === 'comment' && newValue === '')
-                {
-                    newValue = null
-                }
-
-                if (field === 'actual_payment_date' && newValue === null || ( newValue instanceof Date &&
-                    newValue.getTime() === new Date('1970-01-01T00:00:00Z').getTime()))
-                {
-                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
-                        [field]: null,
-                        status: 'no'
-                    });
-                    if (response.status === 200) {
-                        console.log('Update successful');
-                    } else {
-                        console.error(`Update failed with status: ${response.status}`);
-                        
-                    }
-                }
-                else if (field === 'actual_payment_date' && newValue !== null)
-                {
-                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
-                        [field]: newValue,
-                        status: 'yes'
-                    });
-                    if (response.status === 200) {
-                        console.log('Update successful');
-                    } else {
-                        console.error(`Update failed with status: ${response.status}`);
-                        
-                    }
-                }
-                else
-                {
-                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
-                        [field]: newValue,
-                    });
-                    if (response.status === 200) {
-                        console.log('Update successful');
-                    } else {
-                        console.error(`Update failed with status: ${response.status}`);
-                        
-                    }
-                }
+                let updatedFields = { [field]: newValue };
                 
-                
+                if (field === 'actual_payment_date') {
+                    if (newValue === null || (newValue instanceof Date &&
+                        newValue.getTime() === new Date('1970-01-01T00:00:00Z').getTime())) {
+                        updatedFields.status = 'no';
+                    } else {
+                        updatedFields.status = 'yes';
+                    }
+                }
+        
+                const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, updatedFields);
+        
+                if (response.status === 200) {
+                    console.log('Update successful');
+        
+                    // ✅ Update local state (doseis) to trigger DataTable re-render
+                    setDoseis(prevDoseis =>
+                        prevDoseis.map(d =>
+                            d.doseis_id === rowData.doseis_id
+                                ? { ...d, ...updatedFields }
+                                : d
+                        )
+                    );
+
+                    // Update filteredDoseis if it's used for export/filtered views
+                    setFilteredDoseis(prev =>
+                        prev.map(d =>
+                            d.doseis_id === rowData.doseis_id
+                                ? { ...d, ...updatedFields }
+                                : d
+                        )
+                    );
+                } else {
+                    console.error(`Update failed with status: ${response.status}`);
+                }
             } catch (error) {
                 console.error('Error updating the product:', error);
                 event.preventDefault();
             }
         }
+    
+        // if (validEdit) {
+        //     try {
+        //         console.log("Data being sent to backend:", rowData);
+
+        //         if (field === 'comment' && newValue === '')
+        //         {
+        //             newValue = null
+        //         }
+
+        //         if (field === 'actual_payment_date' && newValue === null || ( newValue instanceof Date &&
+        //             newValue.getTime() === new Date('1970-01-01T00:00:00Z').getTime()))
+        //         {
+        //             const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+        //                 [field]: null,
+        //                 status: 'no'
+        //             });
+        //             if (response.status === 200) {
+        //                 console.log('Update successful');
+        //             } else {
+        //                 console.error(`Update failed with status: ${response.status}`);
+                        
+        //             }
+        //         }
+        //         else if (field === 'actual_payment_date' && newValue !== null)
+        //         {
+        //             const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+        //                 [field]: newValue,
+        //                 status: 'yes'
+        //             });
+        //             if (response.status === 200) {
+        //                 console.log('Update successful');
+        //             } else {
+        //                 console.error(`Update failed with status: ${response.status}`);
+                        
+        //             }
+        //         }
+        //         else
+        //         {
+        //             const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+        //                 [field]: newValue,
+        //             });
+        //             if (response.status === 200) {
+        //                 console.log('Update successful');
+        //             } else {
+        //                 console.error(`Update failed with status: ${response.status}`);
+                        
+        //             }
+        //         }
+                
+                
+        //     } catch (error) {
+        //         console.error('Error updating the product:', error);
+        //         event.preventDefault();
+        //     }
+        // }
     };
 
 
