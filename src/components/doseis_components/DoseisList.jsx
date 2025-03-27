@@ -79,8 +79,47 @@ const DoseisList = () => {
     
         switch (field) {
             case 'status':
+                 // Assuming dropdowns or calendar components return an object like { value: actualValue }
+                 if (newValue && newValue.value !== undefined) {
+                    rowData[field] = newValue.value;
+                    newValue = newValue.value;
+                    validEdit = true;
+                } else if (typeof newValue === 'string' || typeof newValue === 'number' || newValue instanceof Date) {
+                    // Handle plain value (non-dropdown or custom component returns)
+                    rowData[field] = newValue;
+                    validEdit = true;
+                } else {
+                    event.preventDefault();
+                }
+                break;
             case 'ammount':
+                 // Assuming dropdowns or calendar components return an object like { value: actualValue }
+                 if (newValue && newValue.value !== undefined) {
+                    rowData[field] = newValue.value;
+                    newValue = newValue.value;
+                    validEdit = true;
+                } else if (typeof newValue === 'string' || typeof newValue === 'number' || newValue instanceof Date) {
+                    // Handle plain value (non-dropdown or custom component returns)
+                    rowData[field] = newValue;
+                    validEdit = true;
+                } else {
+                    event.preventDefault();
+                }
+                break;
             case 'estimate_payment_date':
+                 // Assuming dropdowns or calendar components return an object like { value: actualValue }
+                 if (newValue && newValue.value !== undefined) {
+                    rowData[field] = newValue.value;
+                    newValue = newValue.value;
+                    validEdit = true;
+                } else if (typeof newValue === 'string' || typeof newValue === 'number' || newValue instanceof Date) {
+                    // Handle plain value (non-dropdown or custom component returns)
+                    rowData[field] = newValue;
+                    validEdit = true;
+                } else {
+                    event.preventDefault();
+                }
+                break;
             case 'actual_payment_date':
                 // Assuming dropdowns or calendar components return an object like { value: actualValue }
                 if (newValue && newValue.value !== undefined) {
@@ -111,8 +150,9 @@ const DoseisList = () => {
         if (validEdit) {
             try {
                 console.log("Data being sent to backend:", rowData);
+
     
-                const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.id}`, {
+                const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
                     [field]: newValue,
                 });
     
@@ -120,6 +160,7 @@ const DoseisList = () => {
                     console.log('Update successful');
                 } else {
                     console.error(`Update failed with status: ${response.status}`);
+                    
                 }
             } catch (error) {
                 console.error('Error updating the product:', error);
@@ -612,7 +653,12 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 mode="currency"
                 currency="USD"
                 locale="en-US"
-                onKeyDown={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        options.editorCallback(e.target.value);
+                    }
+                }}
+                autoFocus
             />
         );
     };
@@ -631,6 +677,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
             dateFormat="dd/mm/yy"
             showIcon
             placeholder="Επιλέξτε ημερομηνία"
+            autoFocus
           />
         );
       };
@@ -649,7 +696,12 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 type="text"
                 value={options.value}
                 onChange={(e) => options.editorCallback(e.target.value)}
-                onKeyDown={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        options.editorCallback(e.target.value);
+                    }
+                }}
+                autoFocus
             />
         );
     };
