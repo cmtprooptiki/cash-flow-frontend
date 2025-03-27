@@ -130,7 +130,13 @@ const DoseisList = () => {
                     // Handle plain value (non-dropdown or custom component returns)
                     rowData[field] = newValue;
                     validEdit = true;
-                } else {
+                }
+                else if(newValue === null)
+                {
+                    rowData[field] = newValue;
+                    validEdit = true;
+                } 
+                else {
                     event.preventDefault();
                 }
                 break;
@@ -156,18 +162,47 @@ const DoseisList = () => {
                 {
                     newValue = null
                 }
-                console.log("Heyyy new value: ", newValue)
-                
-                const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
-                    [field]: newValue,
-                });
-    
-                if (response.status === 200) {
-                    console.log('Update successful');
-                } else {
-                    console.error(`Update failed with status: ${response.status}`);
-                    
+
+                if (field === 'actual_payment_date' && newValue === null)
+                {
+                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+                        [field]: newValue,
+                        status: 'no'
+                    });
+                    if (response.status === 200) {
+                        console.log('Update successful');
+                    } else {
+                        console.error(`Update failed with status: ${response.status}`);
+                        
+                    }
                 }
+                else if (field === 'actual_payment_date' && newValue !== null)
+                {
+                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+                        [field]: newValue,
+                        status: 'yes'
+                    });
+                    if (response.status === 200) {
+                        console.log('Update successful');
+                    } else {
+                        console.error(`Update failed with status: ${response.status}`);
+                        
+                    }
+                }
+                else
+                {
+                    const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
+                        [field]: newValue,
+                    });
+                    if (response.status === 200) {
+                        console.log('Update successful');
+                    } else {
+                        console.error(`Update failed with status: ${response.status}`);
+                        
+                    }
+                }
+                
+                
             } catch (error) {
                 console.error('Error updating the product:', error);
                 event.preventDefault();
@@ -669,6 +704,44 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         );
     };
 
+    const dateEditor2 = (options) => {
+        const isEpochDate =
+          options.value instanceof Date &&
+          options.value.getTime() === new Date('1970-01-01T00:00:00Z').getTime();
+      
+        // Show current date only if value is exactly epoch or undefined/null
+        const value = options.value === null
+          ? null
+          : !options.value || isEpochDate
+          ? new Date()
+          : options.value;
+      
+        const clearDate = () => {
+          options.editorCallback(null); // Set it to null and show calendar as empty
+        };
+      
+        return (
+          <div>
+            <Calendar
+              value={value}
+              onChange={(e) => options.editorCallback(e.value)}
+              dateFormat="dd/mm/yy"
+              showIcon
+              placeholder="Επιλέξτε ημερομηνία"
+              autoFocus
+            />
+            <div className="control">
+              <Button
+                label="Clear"
+                onClick={clearDate}
+                className="p-button-secondary mt-2"
+                type="button"
+              />
+            </div>
+          </div>
+        );
+      };
+
     const dateEditor = (options) => {
         const isEpochDate =
         options.value instanceof Date &&
@@ -691,7 +764,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     const cellEditor = (options) => {
         if (options.field === 'ammount') return priceEditor(options);
         else if (options.field === 'status') return dropdownEditor(options, statuses); // Dropdown editor for category
-        else if (options.field === 'actual_payment_date') return dateEditor(options)
+        else if (options.field === 'actual_payment_date') return dateEditor2(options)
         else if (options.field === 'estimate_payment_date') return dateEditor(options)
         else return textEditor(options);
     };
