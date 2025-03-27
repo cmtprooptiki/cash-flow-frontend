@@ -167,7 +167,7 @@ const DoseisList = () => {
                     newValue.getTime() === new Date('1970-01-01T00:00:00Z').getTime()))
                 {
                     const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
-                        [field]: newValue,
+                        [field]: null,
                         status: 'no'
                     });
                     if (response.status === 200) {
