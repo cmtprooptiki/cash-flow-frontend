@@ -57,6 +57,8 @@ const YpoxreoseisList = () =>
     const [selectedType, setSelectedType] = useState(null);
     const [selectedYpoxreoseis, setSelectedYpoxreoseis] = useState([])
     const [totalincome, setTotalIncome] = useState(0)
+    const [totalpaid_doseis, setTotalPaidDoseis] = useState(0)
+    const [total_no_paid_doseis, setTotalNoPaidDoseis] = useState(0)
 
     const dt = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
@@ -690,6 +692,20 @@ const invoice_dateDateFilterTemplate = (options) => {
         return data.reduce((acc, item) => Number(acc) + Number(item.ypoxreoseis.total_owed_ammount), 0);
     };
 
+    const calculateTotalPaidDoseis = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ypoxreoseis.Paid_doseis_ammount), 0);
+    };
+
+    const calculateTotalNoPaidDoseis = (data) => {
+        
+        if (!data || data.length === 0) return 0;
+        return data.reduce((acc, item) => Number(acc) + Number(item.ypoxreoseis.NotPaid_doseis_ammount), 0);
+    };
+
+
+
     const handleValueChange = (e) => {
         const visibleRows = e;
         if(e.length>0){
@@ -698,13 +714,21 @@ const invoice_dateDateFilterTemplate = (options) => {
 
         // Calculate total income for the visible rows
         const incomeSum = visibleRows.reduce((sum, row) => sum + Number((row.ypoxreoseis.total_owed_ammount || 0)), 0);
-        
+        const incomeSumPaidDoseis =visibleRows.reduce((sum, row) => sum + Number((row.ypoxreoseis.Paid_doseis_ammount || 0)), 0);
+        const incomeSumNoPaidDoseis =visibleRows.reduce((sum, row) => sum + Number((row.ypoxreoseis.NotPaid_doseis_ammount || 0)), 0);
+
         setTotalIncome(formatCurrency(incomeSum));
+        setTotalPaidDoseis(formatCurrency(incomeSumPaidDoseis));
+        setTotalNoPaidDoseis(formatCurrency(incomeSumNoPaidDoseis));
+
     };
 
     useEffect(() => {
         if(!filtercalled){
             setTotalIncome(formatCurrency(calculateTotalIncome(ypoxreoseis)));
+            setTotalPaidDoseis(formatCurrency(calculateTotalPaidDoseis(ypoxreoseis)));
+            setTotalNoPaidDoseis(formatCurrency(calculateTotalNoPaidDoseis(ypoxreoseis)));
+
         }
         
     }, [ypoxreoseis]);
@@ -803,7 +827,10 @@ const invoice_dateDateFilterTemplate = (options) => {
 
         <Toast ref={toast} />
         <ConfirmDialog />
-<DataTable value={ypoxreoseis} ref = {dt} onValueChange={(ypoxreoseis) => setFilteredYpoxreoseis(ypoxreoseis)} paginator stripedRows
+<DataTable value={ypoxreoseis} ref = {dt} 
+// onValueChange={(ypoxreoseis) => setFilteredYpoxreoseis(ypoxreoseis)} 
+onValueChange={(ypoxreoseis) => { setFilteredYpoxreoseis(ypoxreoseis); handleValueChange(ypoxreoseis); }}
+paginator stripedRows
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="ypoxreoseis.id" 
             filters={filters} 
             globalFilterFields={[
@@ -840,8 +867,8 @@ const invoice_dateDateFilterTemplate = (options) => {
                
                 <Column header="Ημερομηνία τιμολογίου" filterField="ypoxreoseis.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
                 <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
-                <Column header="Ποσό Πληρωμένων Δόσεων" filterField="ypoxreoseis.Paid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={Paid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
-                <Column header="Ποσό Μη Πληρωμένων Δόσεων" filterField="ypoxreoseis.NotPaid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={NotPaid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
+                <Column header="Ποσό Πληρωμένων Δόσεων" filterField="ypoxreoseis.Paid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={Paid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalpaid_doseis}/>
+                <Column header="Ποσό Μη Πληρωμένων Δόσεων" filterField="ypoxreoseis.NotPaid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={NotPaid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={total_no_paid_doseis}/>
 
                 <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 
