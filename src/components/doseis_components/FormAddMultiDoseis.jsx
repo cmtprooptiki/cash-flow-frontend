@@ -24,7 +24,7 @@ const FormAddMultiDoseis = () => {
     const [doseis,setdoseis]=useState([])
     const [doseisSum,setdoseisSum]=useState(0)
     const [paramDay,setParamDay]=useState(1);
-    const [paramStatus,setParamStatus]=useState("no")
+    const [paramStatus,setParamStatus]=useState({name: "no", code: "no"})
     const statusOptions = [
         { name: 'yes', code: 'yes' },
         { name: 'no', code: 'no' },
@@ -234,6 +234,8 @@ const FormAddMultiDoseis = () => {
 
                   <Dropdown value={paramStatus} onChange={(e) => setParamStatus(e.value)} options={statusOptions} optionLabel="name" 
                 placeholder="Επιλέξτε κατάσταση Δόσης" className="w-full md:w-14rem" />
+
+                {console.log("Here is paramstatus", paramStatus)}
 
 
                   </div>
