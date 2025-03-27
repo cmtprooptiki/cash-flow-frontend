@@ -618,9 +618,15 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
     };
 
     const dateEditor = (options) => {
+        const isEpochDate =
+        options.value instanceof Date &&
+        options.value.getTime() === new Date('1970-01-01T00:00:00Z').getTime();
+
+        const value = !options.value || isEpochDate ? new Date() : options.value;
+
         return (
           <Calendar
-            value={options.value}
+            value={value}
             onChange={(e) => options.editorCallback(e.value)}
             dateFormat="dd/mm/yy"
             showIcon
