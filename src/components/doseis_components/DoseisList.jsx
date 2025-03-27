@@ -138,6 +138,7 @@ const DoseisList = () => {
             default:
                 const trimmedValue = safeTrim(newValue);
                 if (trimmedValue.length > 0 || newValue === '') {
+                    console.log("Still here!!!!")
                     rowData[field] = trimmedValue;
                     validEdit = true;
                 } else {
@@ -151,7 +152,12 @@ const DoseisList = () => {
             try {
                 console.log("Data being sent to backend:", rowData);
 
-    
+                if (field === 'comment' && newValue === '')
+                {
+                    newValue = null
+                }
+                console.log("Heyyy new value: ", newValue)
+                
                 const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.doseis_id}`, {
                     [field]: newValue,
                 });
