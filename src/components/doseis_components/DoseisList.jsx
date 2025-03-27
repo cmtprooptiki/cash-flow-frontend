@@ -70,6 +70,64 @@ const DoseisList = () => {
         { field: 'status', header: 'Κατάσταση Δόσης' }
     ];
 
+    const onCellEditComplete = async (e) => {
+        let { rowData, newValue, field, originalEvent: event } = e;
+        let validEdit = false;
+    
+        // Utility function to safely handle string trimming
+        const safeTrim = (value) => (typeof value === 'string' ? value.trim() : '');
+    
+        switch (field) {
+            case 'status':
+            case 'ammount':
+            case 'estimate_payment_date':
+            case 'actual_payment_date':
+                // Assuming dropdowns or calendar components return an object like { value: actualValue }
+                if (newValue && newValue.value !== undefined) {
+                    rowData[field] = newValue.value;
+                    newValue = newValue.value;
+                    validEdit = true;
+                } else if (typeof newValue === 'string' || typeof newValue === 'number' || newValue instanceof Date) {
+                    // Handle plain value (non-dropdown or custom component returns)
+                    rowData[field] = newValue;
+                    validEdit = true;
+                } else {
+                    event.preventDefault();
+                }
+                break;
+    
+            default:
+                const trimmedValue = safeTrim(newValue);
+                if (trimmedValue.length > 0 || newValue === '') {
+                    rowData[field] = trimmedValue;
+                    validEdit = true;
+                } else {
+                    console.warn(`Empty or invalid value for field ${field}`);
+                    event.preventDefault();
+                }
+                break;
+        }
+    
+        if (validEdit) {
+            try {
+                console.log("Data being sent to backend:", rowData);
+    
+                const response = await axios.patch(`${apiBaseUrl}/doseis/${rowData.id}`, {
+                    [field]: newValue,
+                });
+    
+                if (response.status === 200) {
+                    console.log('Update successful');
+                } else {
+                    console.error(`Update failed with status: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Error updating the product:', error);
+                event.preventDefault();
+            }
+        }
+    };
+
 
 
 // Step 1: Import base64 font string (this is a placeholder, you should replace it with the actual base64 string)
@@ -546,6 +604,62 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
+    const priceEditor = (options) => {
+        return (
+            <InputNumber
+                value={options.value}
+                onValueChange={(e) => options.editorCallback(e.value)}
+                mode="currency"
+                currency="USD"
+                locale="en-US"
+                onKeyDown={(e) => e.stopPropagation()}
+            />
+        );
+    };
+
+    const dateEditor = (options) => {
+        return (
+          <Calendar
+            value={options.value}
+            onChange={(e) => options.editorCallback(e.value)}
+            dateFormat="dd/mm/yy"
+            showIcon
+            placeholder="Επιλέξτε ημερομηνία"
+          />
+        );
+      };
+
+    const cellEditor = (options) => {
+        if (options.field === 'ammount') return priceEditor(options);
+        else if (options.field === 'status') return dropdownEditor(options, statuses); // Dropdown editor for category
+        else if (options.field === 'actual_payment_date') return dateEditor(options)
+        else if (options.field === 'estimate_payment_date') return dateEditor(options)
+        else return textEditor(options);
+    };
+    
+    const textEditor = (options) => {
+        return (
+            <InputText
+                type="text"
+                value={options.value}
+                onChange={(e) => options.editorCallback(e.target.value)}
+                onKeyDown={(e) => e.stopPropagation()}
+            />
+        );
+    };
+
+    const dropdownEditor = (options,list) => {
+        return (
+            <Dropdown
+                value={options.value}
+                options={list} // Use the list of options
+                onChange={(e) => options.editorCallback(e.value)}
+                placeholder="Select option"
+                onKeyDown={(e) => e.stopPropagation()}
+            />
+        );
+    };
+
 
     const header = renderHeader();
 
@@ -715,7 +829,8 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         rows={20}  
                         loading={loading} 
                         dataKey="doseis_id" 
-                        filters={filters} 
+                        filters={filters}
+                        editMode="cell" 
                         globalFilterFields={[
                             'doseis_id',
                             'provider', 
@@ -750,13 +865,13 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 ? "Invalid Date" // Handle invalid date
                 : monthNames[date.getMonth()]; // Get the month name
         }}></Column>
-                <Column field="comment" header='comment' style={{ minWidth: '12rem' }}></Column>
-               <Column header="Ποσό Δόσης" filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome} />
-               <Column header="Πραγματική ημερομηνία πληρωμής" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
-                <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} ></Column>
+                <Column field="comment" header='comment' style={{ minWidth: '12rem' }} onCellEditComplete={onCellEditComplete} editor={(options) => cellEditor(options)}></Column>
+               <Column header="Ποσό Δόσης" filterField="ammount" field = "ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filter filterElement={ammountFilterTemplate} onCellEditComplete={onCellEditComplete} footer={totalincome} editor={(options) => cellEditor(options)} />
+               <Column header="Πραγματική ημερομηνία πληρωμής" field = "actual_payment_date" filterField="actual_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={actual_payment_dateDateBodyTemplate} onCellEditComplete={onCellEditComplete} editor={(options) => cellEditor(options)} filter filterElement={actual_payment_dateDateFilterTemplate} ></Column>
+                <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" field = "estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} editor={(options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} ></Column>
 
 
-            <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+            <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} onCellEditComplete={onCellEditComplete} editor={(options) => cellEditor(options)}/>
 
             
                
