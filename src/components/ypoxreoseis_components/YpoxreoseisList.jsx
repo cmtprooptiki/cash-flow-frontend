@@ -63,7 +63,13 @@ const YpoxreoseisList = () =>
 
     const cols = [
         { field: 'ypoxreoseis.provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'ypoxreoseis.doseisCount', header: 'Αριθμός Δόσεων' },
+
         { field: 'ypoxreoseis.total_owed_ammount', header: 'Ποσό (σύνολο)' },
+        { field: 'ypoxreoseis.Paid_doseis_ammount', header: 'Ποσό πληρωμένων Δόσεων' },
+
+        { field: 'ypoxreoseis.NotPaid_doseis_ammount', header: 'Ποσό Μη πληρωμένων Δόσεων' },
+
         { field: 'ypoxreoseis.invoice_date', header: 'Ημερομηνία τιμολογίου' },
         { field: 'ypoxreoseis.ammount_vat', header: 'ΦΠΑ' }
     ];
@@ -107,6 +113,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             return {
                 ...product.ypoxreoseis,
                 total_owed_ammount: formatCurrency(product.ypoxreoseis.total_owed_ammount),
+                Paid_doseis_ammount: formatCurrency(product.ypoxreoseis.Paid_doseis_ammount),
+                NotPaid_doseis_ammount: formatCurrency(product.ypoxreoseis.NotPaid_doseis_ammount),
+
                 invoice_date: formatDate(product.ypoxreoseis.invoice_date),
                 ammount_vat:formatCurrency(product.ypoxreoseis.ammount_vat)
             };
@@ -117,7 +126,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         columns: exportColumns,
         body: formattedReportData.map((product) => [
             product.provider,
+            product.doseisCount,
             product.total_owed_ammount,
+            product.Paid_doseis_ammount,
+            product.NotPaid_doseis_ammount,
             product.invoice_date,
             product.ammount_vat
         ]),
@@ -151,10 +163,23 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                             return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_owed_ammount'
                         }
 
+                        if (col.field === 'ypoxreoseis.Paid_doseis_ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_owed_ammount'
+                        }
+                        if (col.field === 'ypoxreoseis.NotPaid_doseis_ammount') {
+                            return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'total_owed_ammount'
+                        }
+
                         if (col.field === 'ypoxreoseis.ammount_vat')
                         {
                             return formatCurrencyReport(product[col.field]);
                         }
+
+                        
+                        if (col.field === 'ypoxreoseis.doseisCount')
+                            {
+                                return product.ypoxreoseis ? product.ypoxreoseis.doseisCount : ''; 
+                            }
 
                         if (col.field === 'ypoxreoseis.provider')
                         {
@@ -270,7 +295,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...item,
                 'ypoxreoseis.invoice_date': new Date(item.ypoxreoseis?.invoice_date),
                 'ypoxreoseis.total_owed_ammount': parseFloat(item.ypoxreoseis.total_owed_ammount),
-                'ypoxreoseis.ammount_vat': parseFloat(item.ypoxreoseis.ammount_vat)
+                'ypoxreoseis.ammount_vat': parseFloat(item.ypoxreoseis.ammount_vat),
+                'ypoxreoseis.Paid_doseis_ammount': parseFloat(item.ypoxreoseis.Paid_doseis_ammount),
+                'ypoxreoseis.NotPaid_doseis_ammount': parseFloat(item.ypoxreoseis.NotPaid_doseis_ammount),
             }));
             // Sort parDataWithDates by ypoxreoseis.invoice_date in ascending order
             const sortedParData = parDataWithDates.sort((a, b) => {
@@ -351,9 +378,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             
             'ypoxreoseis.ammount_vat': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
 
+            'ypoxreoseis.doseisCount' : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            'ypoxreoseis.Paid_doseis_ammount': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             'tags':  { value: null, matchMode: FilterMatchMode.CUSTOM },
 
-            'ypoxreoseis.doseisCount' : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            'ypoxreoseis.NotPaid_doseis_ammount': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
 
           
 
@@ -397,6 +426,13 @@ const invoice_dateDateFilterTemplate = (options) => {
 
     const total_owed_ammountBodyTemplate = (rowData) => {
         return formatCurrency(rowData.ypoxreoseis.total_owed_ammount);
+    };
+
+    const Paid_doseis_ammountBodyTemplate = (rowData) => {
+        return formatCurrency(rowData.ypoxreoseis.Paid_doseis_ammount);
+    };
+    const NotPaid_doseis_ammountBodyTemplate = (rowData) => {
+        return formatCurrency(rowData.ypoxreoseis.NotPaid_doseis_ammount);
     };
 
     const ammount_vatBodyTemplate = (rowData) => {
@@ -777,6 +813,9 @@ const invoice_dateDateFilterTemplate = (options) => {
                 'ypoxreoseis.invoice_date',
                 'ypoxreoseis.total_owed_ammount',
                 'ypoxreoseis.ammount_vat',
+                'ypoxreoseis.Paid_doseis_ammount',
+                'ypoxreoseis.NotPaid_doseis_ammount' ,
+
                 'tags',
                 'ypoxreoseis.doseisCount'
                 
@@ -801,7 +840,9 @@ const invoice_dateDateFilterTemplate = (options) => {
                
                 <Column header="Ημερομηνία τιμολογίου" filterField="ypoxreoseis.invoice_date" dataType="date" style={{ minWidth: '5rem' }} body={invoice_dateDateBodyTemplate} filter filterElement={invoice_dateDateFilterTemplate} ></Column>
                 <Column header="Ποσό (σύνολο)" filterField="ypoxreoseis.total_owed_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={total_owed_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
-                
+                <Column header="Ποσό Πληρωμένων Δόσεων" filterField="ypoxreoseis.Paid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={Paid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
+                <Column header="Ποσό Μη Πληρωμένων Δόσεων" filterField="ypoxreoseis.NotPaid_doseis_ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={NotPaid_doseis_ammountBodyTemplate} filter filterElement={ammountFilterTemplate} footer={totalincome}/>
+
                 <Column header="ΦΠΑ" filterField="ypoxreoseis.ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filter filterElement={ammountFilterTemplate} />
                 
                 <Column field="tags"  header="tags"  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
