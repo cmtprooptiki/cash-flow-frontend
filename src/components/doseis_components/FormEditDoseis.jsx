@@ -7,6 +7,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { format } from 'date-fns';
+import { Dropdown } from 'primereact/dropdown';
 const FormEditDoseis = ({ id: propId, onHide }) =>
 {
     const[ammount,setAmmount]=useState("");
@@ -178,12 +179,14 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                         <div className="field">
                             <label className="label">Προμηθευτής-έξοδο</label>
                             <div className="control">
-                                <select className="input" onChange={handleYpoxreoseisChange} value={ypoxreoseis_id}>
+                                <select className="input" style={{width: "-webkit-fill-available"}} onChange={handleYpoxreoseisChange} value={ypoxreoseis_id} disabled>
                                     <option value= "" disabled>Επιλέξτε Προμηθευτή</option>
                                 {ypoxreoseis.map((ypoxreosh, index) => (
-                                <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
+                                <option key={index} value={ypoxreosh.id} disabled>{ypoxreosh.provider}</option>
                                 ))}
                             </select>
+                            {/* <Dropdown options={ypoxreoseis} optionLabel='provider' optionValue='id' onChange={setYpoxreoseis_Id} value={ypoxreoseis_id}></Dropdown>
+                            {ypoxreoseis_id} */}
                         </div>
                     </div>
 
@@ -199,7 +202,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                     <label htmlFor="estimate_payment_date">Εκτιμώμενη ημερομηνία πληρωμής</label>
                     <div className="control">
 
-                    <Calendar id="estimate_payment_date"  value={new Date(estimate_payment_date)} onChange={(e)=> setEstimate_Payment_Date(e.target.value)}  inline showWeek />
+                    <Calendar id="estimate_payment_date"  style={{width: "-webkit-fill-available"}} value={new Date(estimate_payment_date)} onChange={(e)=> setEstimate_Payment_Date(e.target.value)}  inline showWeek />
                     </div>
                 
                     </div>
@@ -207,7 +210,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                     <div className="field">
                         <label  className="label">Πραγματική ημερομηνία πληρωμής</label>
                         <div className="control">
-                        <Calendar id="actual_payment_date"  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
+                        <Calendar id="actual_payment_date"  style={{width: "-webkit-fill-available"}}  value={actual_payment_date ? new Date(actual_payment_date) : null} onChange={(e)=> setActual_Payment_Date(e.target.value)}  inline showWeek />
 
                         </div>
                         <div className="control">
@@ -218,7 +221,7 @@ const FormEditDoseis = ({ id: propId, onHide }) =>
                     <div className="field">
                 <label  className="label">Comment</label>
                 <div className="control">
-                    <InputText  id="doy" className="input" value={comment} onChange={(e)=>setComment(e.target.value)} placeholder='' />
+                    <InputText  id="doy" className="input" value={comment || ""} onChange={(e)=>setComment(e.target.value ||null)} placeholder='' />
                 </div>
                 </div>                    
                     <div className="field">

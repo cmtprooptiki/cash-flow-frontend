@@ -36,7 +36,10 @@ import { SpeedDial } from 'primereact/speeddial';
 import { Toast } from 'primereact/toast';
 
 
-const DoseisList = () => {
+const DoseisList =(props) => {
+    const url = props.url;
+    const id=props.id;
+    console.log("URL prop.url:", id);
     const [doseis, setDoseis] = useState([]);
     const [filters, setFilters] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -386,14 +389,63 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
 
     useEffect(()=>{
-        getDoseis();
+        if(url==="doseis"){
+            getDoseis();
+
+        }else{
+            getDoseisByYpoId();
+
+        }
         setLoading(false);
         initFilters();
     },[]);
 
     const getDoseis = async() =>{
         try {
-            const response = await axios.get(`${apiBaseUrl}/doseis`, {timeout: 5000});
+            
+            const response = await axios.get(`${apiBaseUrl}/${url}`, {timeout: 5000});
+            
+            
+            const doseis_data = response.data;
+            console.log("ParaData:",doseis_data);
+
+            const uniqueYpoxreoseis= [...new Set(doseis_data.map(item => item.provider ))];
+            setYpoxreoseis(uniqueYpoxreoseis);
+
+
+            const uniqueTags = [...new Set(
+                doseis_data
+                    .map(item => item.tag_name || '') // Extract values
+                    .flatMap(value => value.split(',').map(v => v.trim())) // Split by comma and trim spaces
+            )];
+            setTag(uniqueTags)
+            const doseisDataWithDates = doseis_data.map(item => ({
+                ...item,
+                ammount: parseFloat(item.ammount),
+                actual_payment_date: new Date(item.actual_payment_date),
+                estimate_payment_date: new Date(item.estimate_payment_date)
+            }));
+    
+            console.log(doseisDataWithDates); // Optionally log the transformed data
+
+            
+    
+            // Assuming you have a state setter like setErga defined somewhere
+            setDoseis(doseisDataWithDates);
+            setFilteredDoseis(doseisDataWithDates)
+    
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // Handle errors as needed
+        }
+    }
+
+    const getDoseisByYpoId = async() =>{
+        try {
+            
+            const response = await axios.get(`${apiBaseUrl}/${url}/${id}`, {timeout: 5000});
+            
+            
             const doseis_data = response.data;
             console.log("ParaData:",doseis_data);
 
@@ -808,7 +860,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
     const cellEditor = (options) => {
         if (options.field === 'ammount') return priceEditor(options);
-        else if (options.field === 'status') return dropdownEditor(options, statuses); // Dropdown editor for category
+        //else if (options.field === 'status') return dropdownEditor(options, statuses); // Dropdown editor for category
         else if (options.field === 'actual_payment_date') return dateEditor2(options)
         else if (options.field === 'estimate_payment_date') return dateEditor(options)
         else return textEditor(options);
@@ -830,17 +882,17 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         );
     };
 
-    const dropdownEditor = (options,list) => {
-        return (
-            <Dropdown
-                value={options.value}
-                options={list} // Use the list of options
-                onChange={(e) => options.editorCallback(e.value)}
-                placeholder="Select option"
-                onKeyDown={(e) => e.stopPropagation()}
-            />
-        );
-    };
+    // const dropdownEditor = (options,list) => {
+    //     return (
+    //         <Dropdown
+    //             value={options.value}
+    //             options={list} // Use the list of options
+    //             onChange={(e) => options.editorCallback(e.value)}
+    //             placeholder="Select option"
+    //             onKeyDown={(e) => e.stopPropagation()}
+    //         />
+    //     );
+    // };
 
 
     const header = renderHeader();
@@ -978,7 +1030,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
 
 
 <div className="card" >
-    
+{/* {console.log("url:",url)} */}
         <h1 className='title'>Δόσεις</h1>
         <div className='d-flex align-items-center gap-4 '>
         {user && user.role ==="admin" && (
@@ -1053,7 +1105,7 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 <Column header="Εκτιμώμενη ημερομηνία πληρωμής" filterField="estimate_payment_date" field = "estimate_payment_date" dateFormat="dd/mm/yy" dataType="date" style={{ minWidth: '5rem' }} body={estimate_payment_dateDateBodyTemplate} filter filterElement={estimate_payment_dateDateFilterTemplate} editor={(options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} ></Column>
 
 
-            <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} onCellEditComplete={onCellEditComplete} editor={(options) => cellEditor(options)}/>
+            <Column field="status" header="Κατάσταση" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} onCellEditComplete={onCellEditComplete} />
 
             
                

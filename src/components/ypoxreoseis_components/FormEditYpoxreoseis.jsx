@@ -10,6 +10,8 @@ import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
 import { InputNumber } from 'primereact/inputnumber';
 import { format } from 'date-fns';
+import DoseisList from '../doseis_components/DoseisList';
+import { Dropdown } from 'primereact/dropdown';
 
 const FormEditYpoxreoseis = ({ id, onHide }) => {
     const [provider, setProvider] = useState("");
@@ -43,6 +45,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
     const getErga = async () => {
         const response = await axios.get(`${apiBaseUrl}/erga`, {timeout: 5000});
         setErga(response.data);
+        
     };
 
     const getTags = async () => {
@@ -141,12 +144,13 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                         <div className="field">
                                 <label className="label">Εργα</label>
                                 <div className="control">
-                                    <select className="input" value={erga_id} onChange={(e) => setErga_Id(e.target.value)}>
-                                        <option value="" disabled>Επιλέξτε Εργο</option>
+                                    <select style={{width: "-webkit-fill-available"}}  value={erga_id || ""} onChange={(e) => setErga_Id(e.target.value || null)}>
+                                        <option value="">-- None --</option>
                                         {erga.map((ergo, index) => (
                                             <option key={index} value={ergo.id}>{ergo.name}</option>
                                         ))}
                                     </select>
+                                    
                                 </div>
                             </div>
                         <div className="field">
@@ -199,7 +203,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                        
 
                         <div className="field">
-                            <Button type="submit" label="Ενημέρωση Τιμολογίου" />
+                            <Button type="submit" label="Ενημέρωση" />
                         </div>
 
                         {msg && <div className="notification is-danger">{msg}</div>}
@@ -207,6 +211,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                 </div>
             </div>
         </form>
+        <DoseisList url="doseis_by_ypo" id={id}/>
     </div>
     );
 };

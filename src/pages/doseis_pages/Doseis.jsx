@@ -22,7 +22,7 @@ const Doseis = ()=>
   },[isError,navigate]);
   return (
     <Layout>
-        <DoseisList/>
+        <DoseisList  url='doseis' id={22}/>
     </Layout>
   )
 }
