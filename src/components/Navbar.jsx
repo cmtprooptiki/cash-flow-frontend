@@ -161,6 +161,19 @@ const Navbar =()=>{
                                                 </Link>
                                                 </li>
 
+                                                <li>
+                                                <Link to="/ypoxreoseisstats" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                                <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
+                                                <div className="mr-2 text-gray-50" >
+                                                            <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                        </div>
+                                                    <span className="font-medium">Εικόνα Υποχρεώσεων</span>
+                                                    <Ripple />
+
+                                                    </div>
+                                                </Link>
+                                                </li>
+
 
                                                 <li><Link className="link-a-tag" to="/dashboard"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">

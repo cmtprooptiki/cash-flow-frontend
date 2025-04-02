@@ -63,6 +63,8 @@ import EditYpoxreoseis from "./pages/ypoxreoseis_pages/EditYpoxreoseis";
 
 import PaidView from "./pages/paid_pages/paidView";
 
+import YpoxreoseisStatistics from "./pages/YpoxreoseisStatistics.jsx";
+
 
 import { PrimeReactProvider } from 'primereact/api';
 import { Button } from 'primereact/button'; // Importing PrimeReact Button component
@@ -279,6 +281,8 @@ function App() {
 
           <Route path="/budgetForm" element={<BudgetFormPage/>}></Route>
           <Route path="/reports" element={<Reports/>}></Route>
+
+          <Route path = "/ypoxreoseisstats" element={<YpoxreoseisStatistics/>}></Route>
 
         </Routes>
       </BrowserRouter>
