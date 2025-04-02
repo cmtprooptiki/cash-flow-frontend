@@ -30,6 +30,8 @@ import {ReactComponent as ReportsIcon } from '../icons/reportsicon.svg';
 import {ReactComponent as CalendarCost } from '../icons/calendarcost.svg';
 import {ReactComponent as CalendarIncome } from '../icons/calendarincome.svg';
 import {ReactComponent as BudgetEuroIcon} from '../icons/budgeteuro.svg';
+import {ReactComponent as YpoxreoseisStatisticsIcon} from '../icons/YpoxreoseisStatistics.svg';
+
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -165,7 +167,7 @@ const Navbar =()=>{
                                                 <Link to="/ypoxreoseisstats" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                 <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                 <div className="mr-2 text-gray-50" >
-                                                            <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                            <YpoxreoseisStatisticsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
                                                         </div>
                                                     <span className="font-medium">Εικόνα Υποχρεώσεων</span>
                                                     <Ripple />

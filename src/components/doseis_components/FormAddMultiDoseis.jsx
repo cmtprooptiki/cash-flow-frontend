@@ -233,7 +233,7 @@ const FormAddMultiDoseis = () => {
                   <div className="control">
 
                   <Dropdown value={paramStatus} onChange={(e) => setParamStatus(e.value)} options={statusOptions} optionLabel="name" 
-                placeholder="Επιλέξτε κατάσταση Δόσης" className="w-full md:w-14rem" />
+                placeholder="Επιλέξτε κατάσταση Δόσης" className="w-full md:w-14rem" disabled />
 
                 {console.log("Here is paramstatus", paramStatus)}
 
