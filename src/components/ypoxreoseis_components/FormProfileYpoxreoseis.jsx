@@ -295,7 +295,9 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
             <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία τιμολογίου</div>
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
-            <Calendar value={new Date(invoice_date)} inline showWeek />
+            <Chip label={invoice_date || 'N/A'} className="mr-2" />
+
+            {/* <Calendar value={new Date(invoice_date)} inline showWeek /> */}
 
 
             </div>
