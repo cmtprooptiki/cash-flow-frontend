@@ -11,6 +11,9 @@ import { Provider } from 'react-redux';
 import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
 import { Chip } from 'primereact/chip';
+import Chart from 'react-apexcharts';
+import { ReactComponent as InvoiceIcon } from '../../icons/invoice.svg'
+//'../icons/invoice.svg'; // Import the SVG as a React component
 
 const FormProfileYpoxreoseis = ({ id, onHide }) =>
 {
@@ -21,14 +24,17 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
     const[erga_id,setErga_Id]=useState("");
     const[provider, setProvider]=useState("");
 
+    const [doseis,setDoseis] = useState([])
+
     const [tags,setTags] = useState([])
 
     const[msg,setMsg]=useState("");
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        const getYpoxreoseisById = async()=>{
+    useEffect(()=>
+    {
+        const getYpoxreoseiById = async()=>{
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
@@ -38,6 +44,35 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
                 setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
                 setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
                 setTags(response.data.tags)
+
+                // const response=await axios.get(`${apiBaseUrl}/doseis_by_ypo/${id}`, {timeout: 5000});
+                // setDoseis(response.data); // ✅ Save doseis list
+            }
+            catch(error)
+            {
+                if(error.response)
+                {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        };
+        getYpoxreoseiById();
+    }, [id])
+
+    useEffect(()=>{
+        const getYpoxreoseisById = async()=>{
+            try
+            {
+                // const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
+                // setProvider(response.data.ypoxreoseis.provider)
+                // setErga_Id(response.data.ypoxreoseis.erga_id)
+                // setInvoice_date(response.data.ypoxreoseis.invoice_date);
+                // setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
+                // setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
+                // setTags(response.data.tags)
+
+                const response=await axios.get(`${apiBaseUrl}/doseis_by_ypo/${id}`, {timeout: 5000});
+                setDoseis(response.data); // ✅ Save doseis list
             }
             catch(error)
             {
@@ -54,9 +89,141 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
         return Number(value).toLocaleString('en-US', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
+    // ✅ Count completed and not completed doseis
+    const completedCount = doseis.filter(d => d.status === 'yes').length;
+    const notCompletedCount = doseis.filter(d => d.status !== 'yes').length;
+    const totalCompletedCount = doseis.filter(d => (d.status === 'yes')).reduce((sum, d) => sum + (parseFloat(d.ammount) || 0), 0); // Replace 'amount' if needed
+    const totalNotCompletedCount = doseis.filter(d => (d.status === 'no')).reduce((sum, d) => sum + (parseFloat(d.ammount) || 0), 0); // Replace 'amount' if needed
+    const chartOptions = {
+        chart: {
+            type: 'donut',
+        },
+        labels: ['Ολοκληρωμένες Δόσεις', 'Μη Ολοκληρωμένες Δόσεις'],
+        colors: ['#00e396', '#ff4560'],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 300
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    };
+
+    const chartOptions2 = {
+        chart: {
+            type: 'donut',
+        },
+        labels: ['Ολοκληρωμένες Δόσεις', 'Μη Ολοκληρωμένες Δόσεις'],
+        colors: ['#00e396', '#ff4560'],
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val.toLocaleString('el-GR', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2,
+                    });
+                }
+            }
+        },
+        dataLabels: {
+            formatter: function (val, opts) {
+                const amount = opts.w.config.series[opts.seriesIndex];
+                return amount.toLocaleString('el-GR', {
+                    style: 'currency',
+                    currency: 'EUR',
+                    minimumFractionDigits: 2,
+                });
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 300
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    };
+
+
+    const unpaidDoseis = doseis.filter(d => d.status === 'no' && d.estimate_payment_date);
+
+    const groupedByYear = {};
+
+    unpaidDoseis.forEach(dosi => {
+        const date = new Date(dosi.estimate_payment_date);
+        const year = date.getFullYear();
+        const month = date.getMonth(); // 0 = Jan
+        const ammount = parseFloat(dosi.ammount) || 0;
+
+        if (!groupedByYear[year]) {
+            groupedByYear[year] = new Array(12).fill(0);
+        }
+
+        groupedByYear[year][month] += ammount;
+    });
+
+    const monthLabels = ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'];
+
+    const stackedBarSeries = Object.entries(groupedByYear).map(([year, ammounts]) => ({
+        name: year,
+        data: ammounts
+    }));
+
+    const stackedBarOptions = {
+        chart: {
+            type: 'bar',
+            stacked: true,
+            toolbar: { show: true }
+        },
+        xaxis: {
+            categories: monthLabels
+        },
+        yaxis: {
+            labels: {
+                formatter: (val) => val.toLocaleString('el-GR', {
+                    style: 'currency',
+                    currency: 'EUR',
+                    minimumFractionDigits: 0
+                })
+            },
+            title: {
+                text: 'Ποσό (€)'
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: (val) => val.toLocaleString('el-GR', {
+                    style: 'currency',
+                    currency: 'EUR'
+                })
+            }
+        },
+        title: {
+            text: 'Μη Ολοκληρωμένες Δόσεις ανά Μήνα και Έτος',
+            align: 'center'
+        },
+        legend: {
+            position: 'bottom'
+        },
+        colors: ['#FF4560', '#FEB019', '#008FFB', '#D7263D', '#00E396']
+    };
+
+
+    const chartSeries = [completedCount, notCompletedCount];
+    const chartSeries2 = [totalCompletedCount, totalNotCompletedCount]
+
     return(
 <div>
-<div className="surface-0">
+    <div className="surface-0">
     <div className="font-medium text-3xl text-900 mb-3">Υποχρέωση</div>
     <div className="text-500 mb-5">Στοιχεία</div>
     <ul className="list-none p-0 m-0">
@@ -144,6 +311,40 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
  
 
 </div>
+
+    {/* ApexChart Section */}
+    {doseis.length > 0 && (
+        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round mt-4">
+            <div className="col-12 md:col-6 lg:col-3">
+                  <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+                      <div className="flex justify-content-between mb-5" style = {{width: '7rem', height: '7rem'}}>
+                          <div>
+                              <h6 className="m-0 mb-1 text-500 text-gray-800">Σύνολο Δόσεων</h6>
+                              <h1 className="m-0 text-gray-800 ">{completedCount + notCompletedCount} </h1>
+                              <h6 className="m-0 mb-1 text-500 text-green-600">Πληρωμένες:{completedCount}</h6>
+                              <h6 className="m-0 mb-1 text-500 text-red-600">Απλήρωτες:{notCompletedCount}</h6>
+            
+                          </div>
+                          <div className="flex align-items-center justify-content-center bg-bluegray-100" style={{ width: '5rem', height: '5rem',borderRadius:'50%' }}>
+                              <InvoiceIcon style={{ width: '6.5em', height: '6.5em' ,fill:'black'}}  className="" /> 
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
+            
+            <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round mt-4">
+            <div className="font-medium text-xl mb-2">Κατάσταση Δόσεων </div>
+            <Chart options={chartOptions2} series={chartSeries2} type="donut" width="400" />
+        </div>
+
+        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round mt-4">
+        <div className="font-medium text-xl mb-2">Μη Ολοκληρωμένες Δόσεις ανά Μήνα</div>
+        <Chart options={stackedBarOptions} series={stackedBarSeries} type="bar" height={400} />
+    </div>
+        </div>
+        
+    )}
 
 
 </div>
