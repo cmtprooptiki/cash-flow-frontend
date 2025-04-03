@@ -20,7 +20,6 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
     const[invoice_date,setInvoice_date]=useState("");
     const[ammount_vat,setAmmount_Vat]=useState("");
     const[total_owed_ammount,setTotal_Owed_Ammount]=useState("");
-    const[actual_payment_date,setActual_Payment_Date]=useState("");
     const[erga_id,setErga_Id]=useState("");
     const[provider, setProvider]=useState("");
 
@@ -34,7 +33,7 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
 
     useEffect(()=>
     {
-        const getYpoxreoseiById = async()=>{
+        const getdoseisByYpoxreoseisId = async()=>{
             try
             {
                 const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
@@ -44,9 +43,6 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
                 setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
                 setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
                 setTags(response.data.tags)
-
-                // const response=await axios.get(`${apiBaseUrl}/doseis_by_ypo/${id}`, {timeout: 5000});
-                // setDoseis(response.data); // ✅ Save doseis list
             }
             catch(error)
             {
@@ -56,21 +52,13 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
                 }
             }
         };
-        getYpoxreoseiById();
+        getdoseisByYpoxreoseisId();
     }, [id])
 
     useEffect(()=>{
         const getYpoxreoseisById = async()=>{
             try
             {
-                // const response=await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
-                // setProvider(response.data.ypoxreoseis.provider)
-                // setErga_Id(response.data.ypoxreoseis.erga_id)
-                // setInvoice_date(response.data.ypoxreoseis.invoice_date);
-                // setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
-                // setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
-                // setTags(response.data.tags)
-
                 const response=await axios.get(`${apiBaseUrl}/doseis_by_ypo/${id}`, {timeout: 5000});
                 setDoseis(response.data); // ✅ Save doseis list
             }
@@ -94,26 +82,8 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
     const notCompletedCount = doseis.filter(d => d.status !== 'yes').length;
     const totalCompletedCount = doseis.filter(d => (d.status === 'yes')).reduce((sum, d) => sum + (parseFloat(d.ammount) || 0), 0); // Replace 'amount' if needed
     const totalNotCompletedCount = doseis.filter(d => (d.status === 'no')).reduce((sum, d) => sum + (parseFloat(d.ammount) || 0), 0); // Replace 'amount' if needed
+    
     const chartOptions = {
-        chart: {
-            type: 'donut',
-        },
-        labels: ['Ολοκληρωμένες Δόσεις', 'Μη Ολοκληρωμένες Δόσεις'],
-        colors: ['#00e396', '#ff4560'],
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 300
-                },
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }]
-    };
-
-    const chartOptions2 = {
         chart: {
             type: 'donut',
         },
@@ -153,10 +123,19 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
         }]
     };
 
+    const chartColorPalette = [
+        '#FF4560', 
+        '#FEB019', 
+        '#008FFB', 
+        '#D7263D', 
+        '#00E396'
+    ]
+
 
     const unpaidDoseis = doseis.filter(d => d.status === 'no' && d.estimate_payment_date);
 
     const groupedByYear = {};
+    const yearlyUnpaidSums = {};
 
     unpaidDoseis.forEach(dosi => {
         const date = new Date(dosi.estimate_payment_date);
@@ -169,14 +148,93 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
         }
 
         groupedByYear[year][month] += ammount;
+
+        if (!yearlyUnpaidSums[year]) {
+            yearlyUnpaidSums[year] = 0;
+        }
+    
+        yearlyUnpaidSums[year] += ammount;
     });
+
+    const sortedYears = Object.keys(groupedByYear)
+  .map(Number)
+  .sort((a, b) => a - b); // e.g. [2024, 2025, 2026, ...]
+
+    const yearColorMap = {};
+    sortedYears.forEach((year, index) => {
+    yearColorMap[year] = chartColorPalette[index % chartColorPalette.length]; // wrap if > colors
+    });
+    const yearlyLabels = Object.keys(yearlyUnpaidSums).sort();
+
+    
+    const yearlyData = yearlyLabels.map(year => yearlyUnpaidSums[year]);
+
+    console.log("Yearly Data", yearlyLabels)
+
+
+    const horizontalBarOptions = {
+        chart: {
+            type: 'bar',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true
+            }
+        },
+        xaxis: {
+            labels: {
+                formatter: (val) => val.toLocaleString('el-GR', {
+                    style: 'currency',
+                    currency: 'EUR'
+                })
+            },
+            title: {
+                text: 'Σύνολο Ποσού (€)'
+            }
+        },
+        yaxis: {
+            categories: yearlyLabels
+        },
+        tooltip: {
+            x: {
+                show: false
+            },
+            y: {
+                formatter: (val) => val.toLocaleString('el-GR', {
+                    style: 'currency',
+                    currency: 'EUR'
+                })
+            }
+        },
+        title: {
+            text: 'Μη Ολοκληρωμένες Δόσεις ανά Έτος',
+            align: 'center'
+        },
+        colors: ['#FF4560', '#FEB019', '#008FFB', '#D7263D', '#00E396']
+    };
+    
+    const horizontalBarSeries = [{
+        name: 'Σύνολο Δόσεων',
+        data: yearlyLabels.map(year => ({
+            x: year,                    // Year label on Y-axis
+            y: yearlyUnpaidSums[year], // Amount value
+            fillColor: yearColorMap[year]  
+        }))
+        
+    }];
+
+
+    console.log("Xronies, ", horizontalBarSeries)
+
+
 
     const monthLabels = ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'];
 
-    const stackedBarSeries = Object.entries(groupedByYear).map(([year, ammounts]) => ({
-        name: year,
-        data: ammounts
-    }));
+    const stackedBarSeries = sortedYears.map(year => ({
+        name: year.toString(),
+        data: groupedByYear[year]
+      }));
 
     const stackedBarOptions = {
         chart: {
@@ -214,12 +272,10 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
         legend: {
             position: 'bottom'
         },
-        colors: ['#FF4560', '#FEB019', '#008FFB', '#D7263D', '#00E396']
+        colors: sortedYears.map(year => yearColorMap[year]),
     };
 
-
-    const chartSeries = [completedCount, notCompletedCount];
-    const chartSeries2 = [totalCompletedCount, totalNotCompletedCount]
+    const chartSeries = [totalCompletedCount, totalNotCompletedCount]
 
     return(
 <div>
@@ -335,12 +391,23 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
             
             <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round mt-4">
             <div className="font-medium text-xl mb-2">Κατάσταση Δόσεων </div>
-            <Chart options={chartOptions2} series={chartSeries2} type="donut" width="400" />
+            <Chart options={chartOptions} series={chartSeries} type="donut" width="400" />
         </div>
 
-        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round mt-4">
-        <div className="font-medium text-xl mb-2">Μη Ολοκληρωμένες Δόσεις ανά Μήνα</div>
-        <Chart options={stackedBarOptions} series={stackedBarSeries} type="bar" height={400} />
+        <div className="grid mt-5">
+        {/* Left side: Horizontal bar */}
+        <div className="col-12 md:col-5">
+            <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+                <Chart options={horizontalBarOptions} series={horizontalBarSeries} type="bar" height={400} />
+            </div>
+        </div>
+
+        {/* Right side: Stacked month-year bar */}
+        <div className="col-12 md:col-7">
+            <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+                <Chart options={stackedBarOptions} series={stackedBarSeries} type="bar" height={400} />
+            </div>
+        </div>
     </div>
         </div>
         
