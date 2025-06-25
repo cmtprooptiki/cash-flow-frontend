@@ -31,6 +31,7 @@ import BudgetChart2 from '../components/paid_components/BudgetChart2';
 
 import { TabView, TabPanel } from 'primereact/tabview';
 
+
 const YpoxreoseisStatistics = () =>
 {
     const [chartSeries2, setChartSeries2] = useState([]);
@@ -43,6 +44,12 @@ const YpoxreoseisStatistics = () =>
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {isError} = useSelector((state=>state.auth));
+
+    const now = new Date();
+    const monthName = now.toLocaleString('default', { month: 'long' }); // "April"
+    const currentYear = now.getFullYear();
+
+    const currentMonthAndYear = `${monthName} of ${currentYear}`; // "April of 2025"
 
 
     useEffect(()=>{
@@ -267,7 +274,7 @@ const YpoxreoseisStatistics = () =>
                     const provider = item.ypoxreoseis.provider || 'Χωρίς Όνομα';
                     const totalOwed = Number(item.ypoxreoseis.total_owed_ammount || 0);
                     const paid = Number(item.ypoxreoseis.Paid_doseis_ammount || 0);
-                    const unpaid = totalOwed - paid;
+                    const unpaid = Number(item.ypoxreoseis.NotPaid_doseis_ammount || 0);
         
                     if (!providerMap[provider]) {
                         providerMap[provider] = { paid: 0, unpaid: 0 };
@@ -340,7 +347,7 @@ const YpoxreoseisStatistics = () =>
                         formatter: val => val.toFixed(1) + '%'
                     },
                     title: {
-                        text: 'Πληρωμένο vs Απλήρωτο ανά Προμηθευτή',
+                        text: 'Οφειλές ανά Προμηθευτή εως τον μήνα '+currentMonthAndYear,
                         align: 'center'
                     },
                     colors: ['#28a745', '#dc3545'],

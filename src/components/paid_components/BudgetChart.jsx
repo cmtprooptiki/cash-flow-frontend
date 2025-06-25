@@ -30,6 +30,7 @@ const BudgetChart = (props) => {
     const [combinedData,setCombinedData]=useState([])
  
     const scenario =props.scenario
+    const year = props.selected_year
  
     const { user } = useSelector((state) => state.auth);
  
@@ -148,12 +149,17 @@ const formatCurrency = (value) => {
     };
    
  
-   
+    const filterByYear = (data, year) => {
+        return data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === year;
+        });
+      };
    
  
     useEffect(()=>{
         console.log("scenario ",scenario)
-            const combinedData2 = [
+            let combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
                 ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.id })),
@@ -161,6 +167,9 @@ const formatCurrency = (value) => {
                 ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id })),
                 ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: Number(item.ammount) , type: 'doseis', id: item.id }))
             ];
+
+            combinedData2 = filterByYear(combinedData2, year);
+
             setCombinedData(combinedData2)
             const total = calculateTotalIncome(combinedData2);
             setTotalIncome(formatCurrency(total));

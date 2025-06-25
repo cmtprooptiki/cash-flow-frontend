@@ -1,5 +1,6 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
+
 import Login from "./components/Login";
 import Users from "./pages/user_pages/Users";
 
@@ -65,7 +66,6 @@ import PaidView from "./pages/paid_pages/paidView";
 
 import YpoxreoseisStatistics from "./pages/YpoxreoseisStatistics.jsx";
 
-
 import { PrimeReactProvider } from 'primereact/api';
 import { Button } from 'primereact/button'; // Importing PrimeReact Button component
 
@@ -120,7 +120,10 @@ import Stepper_Esoda3 from "./pages/Stepper_Esoda3";
 
 import BudgetFormPage from "./pages/budget_pages/BudgetFormPage";
 
-import KpisDashboard from "./pages/KpisDashboard";
+import KpisDashboard from "./pages/KpisDashboard.jsx";
+// import KpisDashboard from "./pages/KpisDashboardnew.jsx";
+import KpisDashboardTest from "./pages/KpisDashboardTest.jsx";
+import Statistics from "./pages/Statistics.jsx";
 import Reports from "./pages/report_pages/Reports";
 import AddMultiDoseis from "./pages/doseis_pages/AddMultiDoseis.jsx";
 
@@ -277,12 +280,14 @@ function App() {
           <Route path="/esoda_step1" element={<Stepper_Esoda1/>}></Route>
           <Route path="/esoda_step2" element={<Stepper_Esoda2/>}></Route>
           <Route path="/esoda_step3" element={<Stepper_Esoda3/>}></Route>
-          <Route path="/statistics" element={<KpisDashboard/>}></Route>
+          {/* <Route path="/statistics2" element={<KpisDashboard/>}></Route> */}
+          <Route path="/statistics" element={<Statistics/>}></Route>
 
           <Route path="/budgetForm" element={<BudgetFormPage/>}></Route>
           <Route path="/reports" element={<Reports/>}></Route>
 
           <Route path = "/ypoxreoseisstats" element={<YpoxreoseisStatistics/>}></Route>
+          <Route path="/statistics_test" element={<KpisDashboardTest/>}></Route>
 
         </Routes>
       </BrowserRouter>

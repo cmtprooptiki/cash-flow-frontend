@@ -15,6 +15,7 @@ const BudgetChart2 = (props) => {
     const [chartData, setChartData] = useState({ categories: [], incomeSeries: [], goalsSeries: [] });
 
     const scenario = props.scenario;
+    const year = props.selected_year
 
     useEffect(() => {
         fetchData();
@@ -63,9 +64,15 @@ const BudgetChart2 = (props) => {
         const response = await axios.get(`${apiBaseUrl}/daneia`, { timeout: 5000 });
         setDaneia(response.data);
     };
+    const filterByYear = (data, year) => {
+        return data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === year;
+        });
+      };
 
     useEffect(() => {
-        const combinedData2 = [
+        let combinedData2 = [
             ...ekxorimena
                 .filter((item) => item.status_bank_paid === 'no')
                 .map((item) => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
@@ -84,7 +91,11 @@ const BudgetChart2 = (props) => {
                 .map((item) => ({ date: new Date(item.estimate_payment_date), income: Number(item.ammount), type: 'doseis', id: item.id })),
         ];
 
-        setCombinedData(combinedData2);
+        // setCombinedData(combinedData2);
+        // console.log("year,",combinedData2)
+        combinedData2 = filterByYear(combinedData2, year);
+        // setCombinedData(combinedData2);
+        console.log("Filtered for year 2025:", combinedData2);
 
         // Prepare chart data
         const aggregatedData = {};
