@@ -349,8 +349,8 @@ export const ChartParByErgo = () => {
           const ergaNames2 = Object.keys(categoryCounts); // erga_category.name as labels
           const ergaCounts2 = Object.values(categoryCounts); // count of projects as data
     
-          console.log("Erga Categories:", ergaNames2);
-          console.log("Project Counts:", ergaCounts2);
+          // console.log("Erga Categories:", ergaNames2);
+          // console.log("Project Counts:", ergaCounts2);
     
           // Update the chart options and series
           setChartOptions(prevOptions => ({
@@ -426,8 +426,8 @@ export const ChartParByErgo = () => {
             const ergaNamesStatus = Object.keys(categoryCountsStatus); // erga_category.name as labels
             const ergaCountsStatus = Object.values(categoryCountsStatus); // count of projects as data
         
-            console.log("Erga Categories:", ergaNamesStatus);
-            console.log("Project Counts:", ergaCountsStatus);
+            // console.log("Erga Categories:", ergaNamesStatus);
+            // console.log("Project Counts:", ergaCountsStatus);
         
             // Update the chart options and series
             setChartOptionsP1(prevOptions => ({
@@ -662,7 +662,7 @@ export const KpisCards =()=>{
             try {
             const response = await axios.get(`${apiBaseUrl}/paradotea`, {timeout: 5000});
             const paraData = response.data;
-            console.log("ParaData:",paraData);
+            // console.log("ParaData:",paraData);
             
             const timPar = paraData.filter(item => item.timologia_id !== null).length;
     
@@ -671,7 +671,7 @@ export const KpisCards =()=>{
             
             // Get the total count of unique ids
             const uniqueIdsCount = uniqueIds.length;
-            console.log("Total Count of Unique Pardotea Ids:", uniqueIdsCount);
+            // console.log("Total Count of Unique Pardotea Ids:", uniqueIdsCount);
             setParadotea(uniqueIdsCount);
             setTimologimenPar(timPar);
             } catch (error) {
@@ -705,7 +705,7 @@ export const KpisCards =()=>{
             const uniqueIds= [...new Set(custData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
     
-            console.log("Unique Customer names:",uniqueIdsCount);
+            // console.log("Unique Customer names:",uniqueIdsCount);
             setCustomer(uniqueIdsCount);
         
     
@@ -731,7 +731,7 @@ export const KpisCards =()=>{
                 // Count records where status_paid == 'no'
                 const unpaidCount = timData.filter(item => item.status_paid === 'no').length;
         
-                console.log("Unique Customer names:",uniqueIdsCount);         
+                // console.log("Unique Customer names:",uniqueIdsCount);         
                
                 setTimologia(uniqueIdsCount);
                 setPaidTimologia(paidCount);  // Set paid invoices count
@@ -751,7 +751,7 @@ export const KpisCards =()=>{
             const uniqueIds= [...new Set(ektimData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
       
-            console.log("Unique ektimi names:",uniqueIdsCount);
+            // console.log("Unique ektimi names:",uniqueIdsCount);
             setEkxorimena(uniqueIdsCount);
         
       
@@ -771,7 +771,7 @@ export const KpisCards =()=>{
             const uniqueIds= [...new Set(daneiaData.map(item => item.id))];
             const uniqueIdsCount = uniqueIds.length;
         
-            console.log("Unique daneiaData names:",uniqueIdsCount);
+            // console.log("Unique daneiaData names:",uniqueIdsCount);
         
             const unreiceived=daneiaData.filter(item => item.status === 'no').length
             const reiceived=daneiaData.filter(item => item.status === 'yes').length
@@ -794,7 +794,7 @@ export const KpisCards =()=>{
                 const doseisCount = doseis_data.filter(item => item.status === 'no').length;
                 const filteredDoseis=doseis_data.filter(item => item.status === 'no')
                 const totalAmount = filteredDoseis.reduce((sum, item) => sum + Number(item.ammount || 0), 0);
-                console.log("total doseis ammounbt",totalAmount)
+                // console.log("total doseis ammounbt",totalAmount)
                 setDoseis(doseisCount);
                 setTotalDoseisAmmount(totalAmount);
         

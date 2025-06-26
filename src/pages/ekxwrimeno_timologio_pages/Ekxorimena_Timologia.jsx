@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import EkxwrimenoTimologioList from '../../components/ekxwrimena_timologia_component/EkxwrimenoTimologioList'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const Ekxorimena_Timologia = () =>
 {
@@ -22,6 +23,7 @@ const Ekxorimena_Timologia = () =>
   },[isError,navigate]);
   return (
     <Layout>
+      <BreadcrumbsEsoda />
         <EkxwrimenoTimologioList/>
     </Layout>
   )

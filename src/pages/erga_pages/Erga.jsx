@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import ErgaList from '../../components/erga_components/ErgaList'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const Erga = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Erga = () => {
   },[isError,navigate]);
   return (
     <Layout>
+        <BreadcrumbsEsoda />
         <ErgaList/>
     </Layout>
   )

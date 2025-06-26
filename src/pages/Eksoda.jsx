@@ -15,6 +15,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import '../dashboard.css';
 import { getColorClass2, getLimitAnnotation } from '../components/HelperComponent';
 import apiBaseUrl from '../apiConfig';
+import BudgetChart2 from '../components/paid_components/BudgetChart2';
 
 
 
@@ -226,7 +227,7 @@ const Eksoda = ()=>
             </div>
             <div className="row">
               <div class="col-md-12">
-                <BudgetChart key={refresh}></BudgetChart>
+                <BudgetChart2 key={refresh}></BudgetChart2>
               </div>
             </div>
 

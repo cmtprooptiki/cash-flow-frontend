@@ -4,6 +4,7 @@ import FormAddEkxorimenoTimologio from '../../components/ekxwrimena_timologia_co
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const AddEkxorimeno_Timologio = () =>
 {
@@ -22,6 +23,7 @@ const AddEkxorimeno_Timologio = () =>
     },[isError,navigate]);
     return (
         <Layout>
+            <BreadcrumbsEsoda />
             <FormAddEkxorimenoTimologio/>
         </Layout>
     )

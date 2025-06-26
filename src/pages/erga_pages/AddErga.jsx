@@ -4,6 +4,7 @@ import FormAddErga from '../../components/erga_components/FormAddErga'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const AddErga = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const AddErga = () => {
   },[isError,navigate]);
   return (
     <Layout>
+      <BreadcrumbsEsoda />
         <FormAddErga/>
     </Layout>
   )

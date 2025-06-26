@@ -4,6 +4,7 @@ import FormAddtag from "../../components/tags_components/FormAddTags"
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const AddTag = ()=>
     {
@@ -22,6 +23,7 @@ const AddTag = ()=>
   },[isError,navigate]);
   return (
     <Layout>
+        <Breadcrumbs/>
         <FormAddtag/>
     </Layout>
   )

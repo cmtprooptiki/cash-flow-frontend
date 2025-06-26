@@ -158,7 +158,7 @@ const formatCurrency = (value) => {
    
  
     useEffect(()=>{
-        console.log("scenario ",scenario)
+        // console.log("scenario ",scenario)
             let combinedData2 = [
                 ...ekxorimena.filter(item => item.status_bank_paid === "no").map(item => ({ date: new Date(item.bank_estimated_date), income: Number(item.bank_ammount), type: 'Bank', id: item.id })),
                 ...ekxorimena.filter(item => item.status_customer_paid === "no").map(item => ({ date: new Date(item.cust_estimated_date), income: Number(item.customer_ammount), type: 'Customer', id: item.id })),
@@ -207,7 +207,7 @@ const formatCurrency = (value) => {
     // Convert sorted keys back to an array of values
     const result = sortedKeys.map(key => aggregatedData[key]);
    
-    console.log(JSON.stringify(result, null, 2));
+    // console.log(JSON.stringify(result, null, 2));
  
    
  
@@ -256,7 +256,7 @@ const formatCurrency = (value) => {
           },//events is for zoom
           events: {
             zoomed: function(chartContext, {xaxis, yaxis}) {
-              console.log('zoom', xaxis);
+            //   console.log('zoom', xaxis);
               
               var newSeries = result.map(function (series) {
                 var newData = [];
@@ -323,7 +323,7 @@ const formatCurrency = (value) => {
     };
  
     const header = renderHeader();
-    console.log("Totlal incomes111 = ", totalIncome)
+    // console.log("Totlal incomes111 = ", totalIncome)
  
     return (
         <div>
@@ -331,7 +331,7 @@ const formatCurrency = (value) => {
             <ApexCharts options={final.options} series={final.series} type='bar' height={350} />
            
             
-            {console.log("comb data ",final.series)}
+            {/* {console.log("comb data ",final.series)} */}
         </div>
     );
 };

@@ -120,6 +120,13 @@ const FormEditEkxorimenoTimologio = ({ id: propId, onHide }) =>
                 comments: comments,
 
             });
+
+            // Second: if customer is marked as paid, update timologia status
+        if (updatedStatusCustomerPaid === "yes" && timologia_id) {
+            await axios.patch(`${apiBaseUrl}/timologia/${timologia_id}`, {
+                status_paid: "yes",
+            });
+        }
             if(paramId === undefined)
                 {
                     onHide();

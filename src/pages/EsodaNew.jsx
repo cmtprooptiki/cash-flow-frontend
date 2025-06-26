@@ -427,7 +427,7 @@ const getDaneia = async () =>{
             <div className="row">
           {eventClickedFirst === true && <InfoBoxAntonis item={boxData} event={second_boxData} />}
           </div>
-          <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round row'>
+          {/* <div className='surface-0 shadow-2 p-3 border-1 border-50 border-round row'>
             <div className="scrollable-list">
               <h5>Εργα</h5>
               {erganames.map((item, index) => (
@@ -443,7 +443,7 @@ const getDaneia = async () =>{
                 </div>
               ))}
             </div>
-            </div>
+            </div> */}
 
           </div>
           <div className="col-md-8">
@@ -454,7 +454,7 @@ const getDaneia = async () =>{
               <button className="FiltersYear" style={{ marginBottom: 20 }} onClick={() => handleYearChange(1)}>
                 Next Year
               </button>
-              <button className={`Filters ${selectedButton === 'estimate_payment_date' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
+              {/* <button className={`Filters ${selectedButton === 'estimate_payment_date' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date')}>
                 Best-Case
               </button>
               <button className={`Filters ${selectedButton === 'estimate_payment_date_2' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_2')}>
@@ -462,7 +462,7 @@ const getDaneia = async () =>{
               </button>
               <button className={`Filters ${selectedButton === 'estimate_payment_date_3' ? 'selected' : ''}`} style={{ marginBottom: 20, marginLeft: 20 }} onClick={() => handleDateTypeChange('estimate_payment_date_3')}>
                 Worst-Case
-              </button>
+              </button> */}
               
               <DragAndDropCalendar
                 localizer={localizer}

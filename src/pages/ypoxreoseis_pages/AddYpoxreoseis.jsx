@@ -4,6 +4,7 @@ import FormAddYpoxreoseis from '../../components/ypoxreoseis_components/FormAddY
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const AddYpoxreoseis = ()=>
 {
@@ -22,6 +23,7 @@ const AddYpoxreoseis = ()=>
     },[isError,navigate]);
     return (
       <Layout>
+        <Breadcrumbs />
           <FormAddYpoxreoseis/>
       </Layout>
     )
