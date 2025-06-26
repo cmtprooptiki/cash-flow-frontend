@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef} from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 import apiBaseUrl from '../apiConfig';
@@ -18,150 +18,314 @@ import {ReactComponent as LoanIcon } from '../icons/loand.svg';
 import {ReactComponent as BudgetIcon } from '../icons/budget.svg';
 
 
+
+
+
 export const ChartParByErgo = () => {
-    const [chartData, setChartData] = useState({
-        series: [],
-        options: {
-          chart: {
-            type: 'bar',
-            height: 430,
-            stacked: true,
-            toolbar: { show: false }
-          },
-          plotOptions: {
-            bar: {
-              horizontal: true,
-              barHeight: '30%', // try 25%, 20%, etc.
-              dataLabels: {
-                position: 'top',
-              },
+    const [allData, setAllData] = useState({ categories: [], series: [] });
+  const [visibleCount, setVisibleCount] = useState(10);
+  const titleMapRef = useRef({});
+  const chartRef = useRef();
+  const ITEMS_PER_BATCH = 10;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${apiBaseUrl}/erga-paradotea`);
+        const groupedData = res.data;
+
+        const categories = groupedData.map(e => e.name);
+
+        const allTitles = [...new Set(
+          groupedData.flatMap(e =>
+            e.deliverables.map(d => `${d.title} [${d.id}]`)
+          )
+        )];
+
+        const series = allTitles.map(title => ({
+          name: title,
+          data: groupedData.map(ergo => {
+            const match = ergo.deliverables.find(
+              d => `${d.title} [${d.id}]` === title
+            );
+            return match ? parseFloat(match.ammount_total) : 0;
+          })
+        }));
+
+        // Build titleMap for tooltips
+        const titleMap = {};
+        allTitles.forEach((title) => {
+          titleMap[title] = {};
+          groupedData.forEach(ergo => {
+            const match = ergo.deliverables.find(
+              d => `${d.title} [${d.id}]` === title
+            );
+            if (match) {
+              titleMap[title][ergo.name] = match;
             }
-          },
-          dataLabels: {
-            enabled: true,
-            offsetX: -6,
-            style: {
-              fontSize: '12px',
-              colors: ['#fff'],
-            },
-          },
-          stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff'],
-          },
-          xaxis: {
-            categories: [],
-            title: {
-              text: 'Έργα (erga.name)',
-            },
-          },
-          yaxis: {
-            title: {
-              text: 'Ποσό με ΦΠΑ (€)',
-            },
-          },
+          });
+        });
 
-          tooltip: {
-            y: {
-              formatter: function (value) {
-                return Number(value).toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                }) + ' €';
-              }
-            }
-          },
-          legend: {
-            show:false,
-            position: 'bottom',
-            labels: {
-              colors: '#000',
-            },
-          },
-        },
-      });
-    
+        titleMapRef.current = titleMap;
+        setAllData({ categories, series });
+      } catch (err) {
+        console.error('Failed to load chart data:', err);
+      }
+    };
 
+    fetchData();
+  }, []);
 
-
-
-     useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${apiBaseUrl}/paradotea`, { timeout: 5000 });
-      const data = response.data;
-      
-
-      // Step 1: Get unique project names
-      const projectNames = [...new Set(data.map(item => item.erga.name))];
-
-      // Step 2: Get all deliverables
-      const deliverables = data.map(item => ({
-        title: `${item.title} [${item.id}]`,
-        ergaName: item.erga.name,
-        amount: parseFloat(item.ammount_total)
-      }));
-
-      // Step 3: Build a series for each deliverable
-      const series = deliverables.map(deliv => {
-        const dataRow = projectNames.map(name =>
-          name === deliv.ergaName ? deliv.amount : null
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = chartRef.current;
+      if (
+        container &&
+        container.scrollTop + container.clientHeight >= container.scrollHeight - 100
+      ) {
+        setVisibleCount(prev =>
+          Math.min(prev + ITEMS_PER_BATCH, allData.categories.length)
         );
-        return {
-          name: deliv.title,
-          data: dataRow
-        };
-      });
+      }
+    };
 
-      setChartData(prev => ({
-        ...prev,
-        series: series,
-        options: {
-          ...prev.options,
-          xaxis: {
-            ...prev.options.xaxis,
-            categories: projectNames // ✅ one per project only!
-          },
-          tooltip: {
-            custom: function ({ series, seriesIndex, dataPointIndex }) {
-              const value = series[seriesIndex][dataPointIndex];
-              const deliv = deliverables[seriesIndex];
-              return `
-                <div style="padding:8px">
-                  <strong>Έργο:</strong> ${deliv.ergaName}<br/>
-                  <strong>Παραδοτέο:</strong> ${deliv.title}<br/>
-                  <strong>Ποσό:</strong> ${value?.toLocaleString()} €
-                </div>
-              `;
-            }
-          }
-        }
-      }));
-    } catch (error) {
-      console.error('Failed to fetch and process paradotea:', error);
+    const container = chartRef.current;
+    if (container) container.addEventListener('scroll', handleScroll);
+    return () => container?.removeEventListener('scroll', handleScroll);
+  }, [allData.categories.length]);
+
+  const slicedCategories = allData.categories.slice(0, visibleCount);
+  const slicedSeries = allData.series.map(s => ({
+    name: s.name,
+    data: s.data.slice(0, visibleCount)
+  }));
+
+  const options = {
+    chart: {
+      type: 'bar',
+      stacked: true,
+      toolbar: { show: false },
+      animations: { enabled: true }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        barHeight: '30%'
+      }
+    },
+    dataLabels: { enabled: false },
+    xaxis: {
+      categories: slicedCategories,
+      title: { text: 'Έργα' }
+    },
+    yaxis: {
+      title: { text: 'Ποσό με ΦΠΑ (€)' }
+    },
+tooltip: {
+  shared: false,
+  intersect: true,
+  custom: function({ seriesIndex, dataPointIndex, w }) {
+    try {
+      const projectName = w.config.xaxis.categories[dataPointIndex]; // ✅ use exact slice
+      const deliverableKey = w.globals.seriesNames[seriesIndex];     // series name (e.g., "Παραδοτέο 1 [42]")
+      const value = w.globals.series[seriesIndex][dataPointIndex];   // number (ammount_total)
+
+      const deliverable = titleMapRef.current?.[deliverableKey]?.[projectName];
+
+      return `
+        <div style="padding:8px">
+          <strong>Έργο:</strong> ${projectName}<br/>
+          <strong>Παραδοτέο:</strong> ${deliverable?.title || '-'}<br/>
+          <strong>Ποσό:</strong> ${(value || 0).toLocaleString('el-GR')} €
+        </div>
+      `;
+    } catch (err) {
+      console.error("Tooltip error:", err);
+      return `<div style="padding:8px">Σφάλμα στην εμφάνιση του tooltip</div>`;
     }
+  }
+},
+    legend: { show: false }
   };
 
-  fetchData();
-}, []);
+  return (
+    <div>
+      <h3>Κατανομή Παραδοτέων ανά Έργο</h3>
+      <div
+        ref={chartRef}
+        style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}
+      >
+        <ReactApexChart
+          options={options}
+          series={slicedSeries}
+          type="bar"
+          height={Math.max(500, slicedCategories.length * 30)}
+        />
+        {visibleCount < allData.categories.length && (
+          <div style={{ textAlign: 'center', padding: '10px' }}>
+            <em>Φόρτωση περισσότερων...</em>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+
+
+
+
+// export const ChartParByErgo = () => {
+//     const [chartData, setChartData] = useState({
+//         series: [],
+//         options: {
+//           chart: {
+//             type: 'bar',
+//             height: 430,
+//             stacked: true,
+//             toolbar: { show: false }
+//           },
+//           plotOptions: {
+//             bar: {
+//               horizontal: true,
+//               barHeight: '30%', // try 25%, 20%, etc.
+//               dataLabels: {
+//                 position: 'top',
+//               },
+//             }
+//           },
+//           dataLabels: {
+//             enabled: true,
+//             offsetX: -6,
+//             style: {
+//               fontSize: '12px',
+//               colors: ['#fff'],
+//             },
+//           },
+//           stroke: {
+//             show: true,
+//             width: 1,
+//             colors: ['#fff'],
+//           },
+//           xaxis: {
+//             categories: [],
+//             title: {
+//               text: 'Έργα (erga.name)',
+//             },
+//           },
+//           yaxis: {
+//             title: {
+//               text: 'Ποσό με ΦΠΑ (€)',
+//             },
+//           },
+
+//           tooltip: {
+//             y: {
+//               formatter: function (value) {
+//                 return Number(value).toLocaleString('en-US', {
+//                   minimumFractionDigits: 2,
+//                   maximumFractionDigits: 2
+//                 }) + ' €';
+//               }
+//             }
+//           },
+//           legend: {
+//             show:false,
+//             position: 'bottom',
+//             labels: {
+//               colors: '#000',
+//             },
+//           },
+//         },
+//       });
     
-      return (
 
 
-        <div  >
-          <h3>Κατανομή Παραδοτέων ανά Έργο</h3>
-          <ReactApexChart
-            options={chartData.options}
-            series={chartData.series}
-            type="bar"
-            height={chartData.series.length * 50} // less aggressive multiplier
-            />
-        </div>
 
 
-      );
-    };
+//      useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const response = await axios.get(`${apiBaseUrl}/paradotea`, { timeout: 5000 });
+//       const data = response.data;
+      
+
+//       // Step 1: Get unique project names
+//       const projectNames = [...new Set(data.map(item => item.erga.name))];
+
+//       // Step 2: Get all deliverables
+//       const deliverables = data.map(item => ({
+//         title: `${item.title} [${item.id}]`,
+//         ergaName: item.erga.name,
+//         amount: parseFloat(item.ammount_total)
+//       }));
+
+//       // Step 3: Build a series for each deliverable
+//       const series = deliverables.map(deliv => {
+//         const dataRow = projectNames.map(name =>
+//           name === deliv.ergaName ? deliv.amount : null
+//         );
+//         return {
+//           name: deliv.title,
+//           data: dataRow
+//         };
+//       });
+
+//       setChartData(prev => ({
+//         ...prev,
+//         series: series,
+//         options: {
+//           ...prev.options,
+//           xaxis: {
+//             ...prev.options.xaxis,
+//             categories: projectNames // ✅ one per project only!
+//           },
+//           tooltip: {
+//             custom: function ({ series, seriesIndex, dataPointIndex }) {
+//               const value = series[seriesIndex][dataPointIndex];
+//               const deliv = deliverables[seriesIndex];
+//               return `
+//                 <div style="padding:8px">
+//                   <strong>Έργο:</strong> ${deliv.ergaName}<br/>
+//                   <strong>Παραδοτέο:</strong> ${deliv.title}<br/>
+//                   <strong>Ποσό:</strong> ${value?.toLocaleString()} €
+//                 </div>
+//               `;
+//             }
+//           }
+//         }
+//       }));
+//     } catch (error) {
+//       console.error('Failed to fetch and process paradotea:', error);
+//     }
+//   };
+
+//   fetchData();
+// }, []);
+    
+//       return (
+
+
+//         <div  >
+//           <h3>Κατανομή Παραδοτέων ανά Έργο</h3>
+//           <ReactApexChart
+//             options={chartData.options}
+//             series={chartData.series}
+//             type="bar"
+//             height={chartData.series.length * 50} // less aggressive multiplier
+//             />
+//         </div>
+
+
+//       );
+//     };
+
+
+
+
+
+
 
 
     export const ChartErga = () => {

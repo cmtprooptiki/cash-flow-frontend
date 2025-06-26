@@ -230,11 +230,11 @@ const Statistics = () => {
   </div>
 
   
-  <div className="col-12 xl:col-12 lg:col-12">
+  {/* <div className="col-12 xl:col-12 lg:col-12">
     <div className="card" style={{ overflowY: 'auto', maxHeight: '700px' }} >
         <ChartParByErgo/>
     </div>
-  </div>
+  </div> */}
 
   <div className="col-12 xl:col-12 lg:col-12">
     <div className="card" style={{ overflowY: 'auto', maxHeight: '700px' }} >
