@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import DoseisList from '../../components/doseis_components/DoseisList'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const Doseis = ()=>
 {
@@ -22,6 +23,7 @@ const Doseis = ()=>
   },[isError,navigate]);
   return (
     <Layout>
+        <Breadcrumbs /> {/* ← Add it here */}
         <DoseisList  url='doseis' id={22}/>
     </Layout>
   )

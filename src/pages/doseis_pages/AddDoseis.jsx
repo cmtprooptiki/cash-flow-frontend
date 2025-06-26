@@ -4,6 +4,7 @@ import FormAddDoseis from '../../components/doseis_components/FormAddDoseis'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import Breadcrumbs from '../../components/Breadcrumbs'
 
 const AddDoseis = () =>
 {
@@ -22,6 +23,7 @@ const AddDoseis = () =>
   },[isError,navigate]);
   return (
     <Layout>
+        <Breadcrumbs />
         <FormAddDoseis/>
     </Layout>
   )

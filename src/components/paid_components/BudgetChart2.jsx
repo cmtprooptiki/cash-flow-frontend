@@ -15,7 +15,10 @@ const BudgetChart2 = (props) => {
     const [chartData, setChartData] = useState({ categories: [], incomeSeries: [], goalsSeries: [] });
 
     const scenario = props.scenario;
-    const year = props.selected_year
+    let year = props.selected_year
+    if(year === undefined) {
+        year = new Date().getFullYear();
+    }
 
     useEffect(() => {
         fetchData();
@@ -95,7 +98,7 @@ const BudgetChart2 = (props) => {
         // console.log("year,",combinedData2)
         combinedData2 = filterByYear(combinedData2, year);
         // setCombinedData(combinedData2);
-        console.log("Filtered for year 2025:", combinedData2);
+        // console.log("Filtered for year 2025:", combinedData2);
 
         // Prepare chart data
         const aggregatedData = {};

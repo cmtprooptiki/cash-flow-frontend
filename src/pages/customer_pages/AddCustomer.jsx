@@ -4,6 +4,7 @@ import FormAddCustomer from '../../components/customer_components/FormAddCustome
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const AddCustomer = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const AddCustomer = () => {
   },[isError,navigate]);
   return (
     <Layout>
+      <BreadcrumbsEsoda />
         <FormAddCustomer/>
     </Layout>
   )

@@ -156,7 +156,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                         <div className="field">
                             <label className="label">Ποσό (σύνολο)</label>
                             <div className="control">
-                            <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.value)} readOnly disabled/>
+                            <InputNumber id="totalAmmount" className="input" mode="decimal" minFractionDigits={2} value={total_owed_ammount} onChange={(e) => setTotal_Owed_Ammount(e.value)} />
                             </div>
                         </div>
 

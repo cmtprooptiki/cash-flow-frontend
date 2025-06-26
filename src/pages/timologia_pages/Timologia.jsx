@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import TimologiaList from '../../components/timologia_components/TimologiaList'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const Timologia = () => {
 const dispatch = useDispatch();
@@ -21,6 +22,8 @@ const dispatch = useDispatch();
   },[isError,navigate]);
   return (
     <Layout>
+        <BreadcrumbsEsoda />
+         {/* <Breadcrumbs /> */}
         <TimologiaList/>
     </Layout>
   )

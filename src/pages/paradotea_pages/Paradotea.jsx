@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import ParadoteaList from '../../components/paradotea_components/ParadoteaList'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const Paradotea = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Paradotea = () => {
   },[isError,navigate]);
   return (
     <Layout>
+        <BreadcrumbsEsoda />
         <ParadoteaList/>
     </Layout>
   )

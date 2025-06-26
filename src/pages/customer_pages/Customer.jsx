@@ -4,8 +4,8 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getMe } from '../../features/authSlice'
 import CustomerList from '../../components/customer_components/CustomerList'
-import { BreadCrumb } from 'primereact/breadcrumb'
 import { Link } from 'react-router-dom'
+import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
 const Customer = () => {
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const Customer = () => {
   return (
     
     <Layout>
+      <BreadcrumbsEsoda />
         <CustomerList/>
     </Layout>
   )

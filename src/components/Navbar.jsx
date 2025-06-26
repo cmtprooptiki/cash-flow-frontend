@@ -601,15 +601,44 @@ const Navbar =()=>{
 
     const centerContent = (
         <div className="flex flex-wrap align-items-center gap-3">
-            <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+            <Link to="/statistics" title="Στατιστικά" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
                 <i className="pi pi-home text-2xl"></i>
                 <Ripple />
             </Link>
-            <Link to="/users" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+            <Link to="/users" title="Χρήστες" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
                 <i className="pi pi-user text-2xl"></i>
                 <Ripple />
             </Link>
-            <button className="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+
+             <Link to="/reports" title="Εικόνα Έργων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                  <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <Ripple />
+            </Link>
+
+            <Link to="/ypoxreoseisstats" title="Εικόνα Υποχρεώσεων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                 <YpoxreoseisStatisticsIcon style={{ width: '3.8em', height: '3.8em' }}  className="" /> 
+                <Ripple />
+            </Link>
+
+              <Link to="/budget" title="Προυπολογισμός" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <BudgetEuroIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <Ripple />
+            </Link>
+
+            <Link to="/erga" title="Διαχείρηση Έργων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <ProjectSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <Ripple />
+            </Link>
+
+              <Link to="/ypoquery" title="Διαχείρηση Υποχρεώσεων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                 <ObliIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <Ripple />
+            </Link>
+
+
+
+
+            <button title="Αναζήτηση" className="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
                 <i className="pi pi-search text-2xl" onClick={(e) => op.current.toggle(e)}/>
                 
                     <OverlayPanel ref={op} showCloseIcon closeOnEscape dismissable={false}>
