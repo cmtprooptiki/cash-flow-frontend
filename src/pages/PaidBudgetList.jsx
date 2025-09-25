@@ -153,6 +153,7 @@ const PaidBudgetList = (props) => {
         { field: 'customer', header: 'Πελάτης' },
         { field: 'provider', header: 'Προμηθευτής-έξοδο' },
         { field: 'id', header: 'Id' },
+        { field: 'comment', header: 'Σχόλια' }
         ];
     
         const callAddFont = function () {
