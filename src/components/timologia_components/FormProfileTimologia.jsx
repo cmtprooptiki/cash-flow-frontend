@@ -92,7 +92,7 @@ const FormProfileTimologia = ({ id: propId, onHide }) => {
         clearFormFields();
         if (selectedId) {
             try {
-                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${parseInt(e.timologia_id)}`, {timeout: 5000});
+                const response = await axios.get(`${apiBaseUrl}/getParadoteoAndErgoByTimologio/${e.timologia_id}`, {timeout: 5000});
                 const paradoteaByErgoId = response.data;
                 setParadoteaByErgo(paradoteaByErgoId.filter(paradoteo=>paradoteo.erga.id===selectedId))
                 // Filter by timologia_id and then map over the filtered array
