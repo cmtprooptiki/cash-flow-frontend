@@ -59,6 +59,7 @@ const CustomerList = () => {
     const robotoBase64 = robotoData.robotoBase64;
 
     const cols = [
+        { field: 'customer_code', header: 'Κωδικός Πελάτη' },
         { field: 'name', header: 'Όνομα Πελάτη' },
         { field: 'afm', header: 'ΑΦΜ' },
         { field: 'doy', header: 'Δ.Ο.Υ' },
@@ -119,6 +120,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         doc.autoTable({
         columns: exportColumns,
         body: formattedReportData.map((product) => [
+            product.customer_code,
             product.name,
             product.afm,
             product.doy,
@@ -315,6 +317,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 
             name: { value: null, matchMode: FilterMatchMode.IN },
+            customer_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             afm: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             doy: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             epagelma: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
@@ -653,10 +656,10 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
 <DataTable ref = {dt} onValueChange={(customers) => setFilteredCustomer(customers)} value={customer} paginator  stripedRows 
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="id" 
             filters={filters} 
-            globalFilterFields={['id', 'name', 
+            globalFilterFields={['id', 'customer_code', 'name',
                 'afm','doy','epagelma','phone', 'email',
                 'address','postal_code','website'
-                ]} 
+                ]}
             header={header} 
             emptyMessage="No customers found."
             selection={selectedCustomers} 
@@ -665,7 +668,8 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                 <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
                 <Column className='font-bold' field="id" header="id" sortable style={{ minWidth: '2rem', color: 'black' }} frozen ></Column>
                 <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')}  body={imageBodyTemplate} frozen={frozenColumns.includes('logoImage')}></Column>
-                <Column header={renderColumnHeader('Πελάτης', 'name')} filterField="name" className="font-bold" 
+                <Column field="customer_code" header="Κωδικός Πελάτη" filter filterPlaceholder="Search by code" style={{ minWidth: '12rem' }}></Column>
+                <Column header={renderColumnHeader('Πελάτης', 'name')} filterField="name" className="font-bold"
                 showFilterMatchModes={false} frozen={frozenColumns.includes('name')}
                   filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem', color: "black" }}
                     body={customerBodyTemplate} 
