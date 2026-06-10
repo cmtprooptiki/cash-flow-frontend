@@ -13,6 +13,7 @@ import { Avatar } from 'primereact/avatar';
 const FormEditCustomer= ({id, onHide}) => {
     const [previewImage, setPreviewImage] = useState('');
     const [logoImage, setLogoImage] = useState(null);
+    const[customer_code,setCustomerCode]=useState("");
     const[name,setName]=useState("");
     const[afm,setAfm]=useState("");
     const[doy,setDoy]=useState("");
@@ -37,6 +38,7 @@ const FormEditCustomer= ({id, onHide}) => {
             try {
                 const response=await axios.get(`${apiBaseUrl}/customer/${id}`, {timeout: 5000});
                 setLogoImage(response.data.logoImage);
+                setCustomerCode(response.data.customer_code);
                 setName(response.data.name);
                 setAfm(response.data.afm);
                 setDoy(response.data.doy);
@@ -69,6 +71,7 @@ const FormEditCustomer= ({id, onHide}) => {
         try{
             await axios.patch(`${apiBaseUrl}/customer/${id}`, {
                 logoImage:logoImage,
+                customer_code:customer_code,
                 name:name,
                 afm:afm,
                 doy:doy,
@@ -201,6 +204,13 @@ const FormEditCustomer= ({id, onHide}) => {
                 </div>
 
                 <p className='has-text-centered'>{msg}</p>
+                <div className="field">
+                <label htmlFor="customer_code" className="label">Κωδικός Πελάτη</label>
+                <div className="control">
+                    <InputText id="customer_code" type="text" className="input" value={customer_code} onChange={(e) => setCustomerCode(e.target.value)} placeholder='Κωδικός Πελάτη'/>
+                </div>
+                </div>
+
                 <div className="field">
                 <label  htmlFor="name"  className="label">Πελάτης</label>
                 <div className="control">

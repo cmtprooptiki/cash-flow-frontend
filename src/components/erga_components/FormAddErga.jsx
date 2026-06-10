@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 const FormAddErga = () => {
     const [logoImage, setLogoImage] = useState(null); // New state for profile image
 
+    const[erga_code,setErgaCode]=useState("");
     const[name,setName]=useState("");
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
@@ -111,6 +112,7 @@ const FormAddErga = () => {
         try{
             await axios.post(`${apiBaseUrl}/erga`, {
             logoImage:logoImage,
+            erga_code:erga_code,
             name:name,
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
@@ -160,6 +162,13 @@ const FormAddErga = () => {
                     <div className="card p-fluid">
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεία Έργου</span></Divider></div>
                         
+                                <div className="field">
+                                    <label className="label">Κωδικός Έργου</label>
+                                    <div className="control">
+                                        <InputText type="text" className="input" value={erga_code} onChange={(e) => setErgaCode(e.target.value)} placeholder='Κωδικός Έργου'/>
+                                    </div>
+                                </div>
+
                                 <div className="field">
                                     <label  className="label">Έργο</label>
                                     <div className="control">

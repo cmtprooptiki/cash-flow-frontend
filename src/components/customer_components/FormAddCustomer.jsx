@@ -10,6 +10,7 @@ import { Divider } from 'primereact/divider';
 
 const FormAddCustomer = () => {
   const [logoImage, setLogoImage] = useState(null);
+  const[customer_code,setCustomerCode]=useState("");
   const[name,setName]=useState("");
   const[afm,setAfm]=useState("");
   const[doy,setDoy]=useState("");
@@ -81,6 +82,7 @@ const FormAddCustomer = () => {
     try{
         await axios.post(`${apiBaseUrl}/customer`, {
         logoImage:logoImage,
+        customer_code:customer_code,
         name:name,
         afm:afm,
         doy:doy,
@@ -128,6 +130,13 @@ return (
             </div>
 
             <p className='has-text-centered'>{msg}</p>
+            <div className="field">
+              <label htmlFor="customer_code" className="label">Κωδικός Πελάτη</label>
+              <div className="control">
+                <InputText id="customer_code" type="text" className="input" value={customer_code} onChange={(e) => setCustomerCode(e.target.value)} placeholder='Κωδικός Πελάτη'/>
+              </div>
+            </div>
+
             <div className="field">
               <label  htmlFor="name"  className="label">Πελάτης</label>
               <div className="control">

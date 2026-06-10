@@ -57,6 +57,7 @@ const ErgaList = () => {
 
     const cols = [
         { field: 'name', header: 'Έργο' },
+        {field: 'erga_code', header: 'Κωδικός Έργου'},
         { field: 'customer.name', header: 'Όνομα Πελάτη' },
         { field: 'erga_category.name', header: 'Κατηγορία Έργου' },
         { field: 'ammount_total', header: 'Σύνολο Έργου' },
@@ -121,6 +122,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         columns: exportColumns,
         body: formattedReportData.map((product) => [
             product.name,
+            product.erga_code,
             product.customer.name,
             product.erga_category.name,
             product.ammount_total,
@@ -265,6 +267,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            erga_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             shortname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             sign_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
@@ -854,7 +857,7 @@ const ActionsBodyTemplate = (rowData) => {
         <Column className="font-bold" field="name"  header={renderColumnHeader('Έργο', 'name')}
                 frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} />
         <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')} alignFrozen="left" frozen={frozenColumns.includes('logoImage')} body={imageBodyTemplate}></Column>
-
+        <Column className="font-bold" field="erga_code" header={renderColumnHeader('Κωδικός Έργου', 'erga_code')} filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
         <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
 

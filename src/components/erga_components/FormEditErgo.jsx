@@ -15,6 +15,7 @@ import { Avatar } from 'primereact/avatar';
 import {format} from 'date-fns';
 
 const FormEditErgo= ({id, onHide}) => {
+    const[erga_code,setErgaCode]=useState("");
     const[name,setName]=useState("");
     const [logoImage, setLogoImage] = useState(""); // New state for profile image
     const [previewImage, setPreviewImage] = useState(''); // State for previewing selected image
@@ -74,6 +75,7 @@ const FormEditErgo= ({id, onHide}) => {
         const getErgoById = async()=>{
             try {
                 const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
+                setErgaCode(response.data.erga_code);
                 setName(response.data.name);
                 setColor(response.data.color);
                 setSignDate(response.data.sign_date);
@@ -194,6 +196,7 @@ const FormEditErgo= ({id, onHide}) => {
         try{
             await axios.patch(`${apiBaseUrl}/erga/${id}`, {
                 logoImage:logoImage,
+                erga_code:erga_code,
                 name:name,
                 color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
@@ -278,6 +281,13 @@ const FormEditErgo= ({id, onHide}) => {
                         <div className="card p-fluid">
                         <div className=""><Divider><span className="p-tag text-lg">Στοιχεια Έργου</span></Divider></div>
                         
+                                <div className="field">
+                                    <label className="label">Κωδικός Έργου</label>
+                                    <div className="control">
+                                        <InputText type="text" className="input" value={erga_code} onChange={(e) => setErgaCode(e.target.value)} placeholder='Κωδικός Έργου'/>
+                                    </div>
+                                </div>
+
                                 <div className="field">
                                     <label  className="label">Εργο</label>
                                     <div className="control">
