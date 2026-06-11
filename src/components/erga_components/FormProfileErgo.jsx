@@ -30,6 +30,7 @@ const[logoImage,setLogoImage]=useState(null);
   const[estimate_payment_date_2,setEstimate_Payment_Date_2]=useState("")
   const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
   const[erga_cat_id,setErga_cat_id]=useState("")
+  const[erga_code, setErgaCode]= useState("")
 
   const[msg,setMsg]=useState("");
 
@@ -55,6 +56,7 @@ const[logoImage,setLogoImage]=useState(null);
             setEstimate_Payment_Date_2(formatDateToInput(response.data.estimate_payment_date_2))
             setEstimate_Payment_Date_3(formatDateToInput(response.data.estimate_payment_date_3))
             setErga_cat_id(response.data.erga_cat_id)
+            setErgaCode(response.data.erga_code)
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -94,6 +96,12 @@ const[logoImage,setLogoImage]=useState(null);
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Έργο</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Κωδικός Έργου</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{erga_code}</div>
            
         </li>
 

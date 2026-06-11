@@ -26,6 +26,7 @@ const FormProfileCustomer= ({id, onHide}) => {
   const[twitterUrl,setTwitterUrl]=useState("")
   const[linkedInUrl,setLinkedInUrl]=useState("")
   const[instagramUrl,setInstagramUrl]=useState("")
+  const [customer_code, setCustomerCode] = useState("")
 
 
     const[msg,setMsg]=useState("");
@@ -48,6 +49,7 @@ const FormProfileCustomer= ({id, onHide}) => {
             setTwitterUrl(response.data.twitterUrl);
             setLinkedInUrl(response.data.linkedInUrl);
             setInstagramUrl(response.data.instagramUrl);
+            setCustomerCode(response.data.customer_code);
             if (response.data.logoImage) {
                 setPreviewImage(`${apiBaseUrl}/${response.data.logoImage}`); // Construct full image URL
             }
@@ -90,6 +92,11 @@ const FormProfileCustomer= ({id, onHide}) => {
             <div className="text-500 w-6 md:w-2 font-medium">Πελάτης</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{name}</div>
            
+        </li>
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Κωδικός Πελάτη</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{customer_code}</div>
+          
         </li>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">ΑΦΜ:</div>
