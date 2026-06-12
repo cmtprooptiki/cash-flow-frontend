@@ -57,6 +57,7 @@ const ErgaList = () => {
 
     const cols = [
         { field: 'name', header: 'Έργο' },
+        { field: 'description', header: 'Περιγραφή' },
         {field: 'erga_code', header: 'Κωδικός Έργου'},
         { field: 'customer.name', header: 'Όνομα Πελάτη' },
         { field: 'erga_category.name', header: 'Κατηγορία Έργου' },
@@ -124,6 +125,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         columns: exportColumns,
         body: formattedReportData.map((product) => [
             product.name,
+            product.description,
             product.erga_code,
             product.customer.name,
             product.erga_category.name,
@@ -270,6 +272,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS },
             name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+            description: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             erga_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             shortname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
@@ -856,7 +859,7 @@ const ActionsBodyTemplate = (rowData) => {
         <Toast ref={toast} />
         <ConfirmDialog />
     <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows  rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
-            filters={filters} globalFilterFields={['name'
+            filters={filters} globalFilterFields={['name','description'
                 ,'shortname','sign_ammount_no_tax'
                 ,'sign_date', 'end_date', 'status', 'estimate_start_date'
                 ,'project_manager','ammount','ammount_vat','ammount_total'
@@ -870,6 +873,7 @@ const ActionsBodyTemplate = (rowData) => {
         <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
         <Column className="font-bold" field="name"  header={renderColumnHeader('Έργο', 'name')}
                 frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} />
+        <Column className="font-bold" field="description" header="Περιγραφή" filter={true} filterPlaceholder="Search by description" style={{ minWidth: '10rem', color: "black" }} />
         <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')} alignFrozen="left" frozen={frozenColumns.includes('logoImage')} body={imageBodyTemplate}></Column>
         <Column className="font-bold" field="erga_code" header={renderColumnHeader('Κωδικός Έργου', 'erga_code')} filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
         <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} />
