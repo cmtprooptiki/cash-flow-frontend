@@ -63,6 +63,7 @@ const ErgaList = () => {
         { field: 'ammount_total', header: 'Σύνολο Έργου' },
         { field: 'status', header: 'Κατάσταση έργου' },
         { field: 'sign_date', header: 'Ημερομηνία υπογραφής σύμβασης' },
+        { field: 'end_date', header: 'Ημερονημία λήξης έργου' },
         { field: 'project_manager', header: 'Project Manager' },
         { field: 'shortname', header: 'Συντομογραφία' },
         { field: 'ammount', header: 'Ποσό (καθαρή αξία)' },
@@ -111,6 +112,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 ...product,
                 ammount_total: formatCurrency(product.ammount_total),
                 sign_date: formatDate(product.sign_date),
+                end_date: formatDate(product.end_date),
                 ammount: formatCurrency(product.ammount),
                 ammount_total: formatCurrency(product.ammount_total), // Format the quantity as currency
                 estimate_start_date:formatDate(product.estimate_start_date)
@@ -127,7 +129,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.erga_category.name,
             product.ammount_total,
             product.status,
-            product.sign_date, 
+            product.sign_date,
+            product.end_date,
             product.project_manager,
             product.shortname, 
             product.ammount,
@@ -271,6 +274,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             shortname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             sign_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+            end_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             estimate_start_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             project_manager:  { value: null, matchMode: FilterMatchMode.IN },
@@ -399,6 +403,15 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
     };
 
+
+    //End Date
+    const endDateBodyTemplate = (rowData) => {
+        return formatDate(rowData.end_date);
+    };
+
+    const endDateFilterTemplate = (options) => {
+        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+    };
 
     //Estimate_Startdate
     const estimateStartDateBodyTemplate = (rowData) => {
@@ -593,6 +606,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 ammount: parseFloat(item.ammount),
                 ammount_total: parseFloat(item.ammount_total),
                 sign_date: new Date(item.sign_date),
+                end_date: new Date(item.end_date),
                 estimate_start_date: new Date(item.estimate_start_date),
                 estimate_payment_date:new Date(item.estimate_payment_date),
                 estimate_payment_date_2:new Date(item.estimate_payment_date_2),
@@ -844,7 +858,7 @@ const ActionsBodyTemplate = (rowData) => {
     <DataTable ref = {dt} value={erga} onValueChange={(erga) => setFilteredErga(erga)} paginator stripedRows  rows={20} scrollable scrollHeight="800px" loading={loading} dataKey="id" 
             filters={filters} globalFilterFields={['name'
                 ,'shortname','sign_ammount_no_tax'
-                ,'sign_date', 'status', 'estimate_start_date'
+                ,'sign_date', 'end_date', 'status', 'estimate_start_date'
                 ,'project_manager','ammount','ammount_vat','ammount_total'
                 ,'estimate_payment_date','estimate_payment_date_2','estimate_payment_date_3'
                 ,'customer_id','customer.name','erga_cat_id','erga_category.name']} header={header}
@@ -860,6 +874,7 @@ const ActionsBodyTemplate = (rowData) => {
         <Column className="font-bold" field="erga_code" header={renderColumnHeader('Κωδικός Έργου', 'erga_code')} filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
         <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
+        <Column header="Ημερονημία λήξης έργου" filter={true} filterField="end_date" dataType="date" style={{ minWidth: '5rem' }} body={endDateBodyTemplate} filterElement={endDateFilterTemplate} ></Column>
 
         <Column header="Κατάσταση έργου" field="status" filter={true} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
  
