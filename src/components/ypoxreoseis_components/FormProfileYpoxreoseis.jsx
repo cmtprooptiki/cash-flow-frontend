@@ -22,6 +22,7 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
     const[total_owed_ammount,setTotal_Owed_Ammount]=useState("");
     const[erga_id,setErga_Id]=useState("");
     const[provider, setProvider]=useState("");
+    const[iban, setIban] = useState("")
 
     const [doseis,setDoseis] = useState([])
 
@@ -42,7 +43,8 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
                 setInvoice_date(response.data.ypoxreoseis.invoice_date);
                 setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
                 setAmmount_Vat(response.data.ypoxreoseis.ammount_vat);
-                setTags(response.data.tags)
+                setTags(response.data.tags);
+                setIban(response.data.ypoxreoseis.iban);
             }
             catch(error)
             {
@@ -286,6 +288,12 @@ const FormProfileYpoxreoseis = ({ id, onHide }) =>
         <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
             <div className="text-500 w-6 md:w-2 font-medium">Προμηθευτής-έξοδο</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{provider}</div>
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">IBAN</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{iban}</div>
            
         </li>
 

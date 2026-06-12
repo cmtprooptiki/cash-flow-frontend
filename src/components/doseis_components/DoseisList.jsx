@@ -50,6 +50,7 @@ const DoseisList =(props) => {
     const [filtercalled,setfiltercalled]=useState(false)
     const [totalincome, setTotalIncome] = useState(0)
     const [tags, setTag]=useState([]);
+    const [iban,setIban] = useState([])
 
     const [month, setMonth] = useState("")
 
@@ -67,11 +68,13 @@ const DoseisList =(props) => {
 
     const cols = [
         { field: 'provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'iban', header: "IBAN"},
         { field: 'ammount', header: 'Ποσό Δόσης' },
         { field: 'estimate_payment_date', header: 'Εκτιμώμενη ημερομηνία πληρωμής' },
         { field: 'actual_payment_date', header: 'Πραγματική ημερομηνία πληρωμής' },
         { field: 'status', header: 'Κατάσταση Δόσης' },
-        {field: "comment", header: "Σχόλια"},
+        { field: "comment", header: "Σχόλια"},
+        
     ];
 
     const onCellEditComplete = async (e) => {
@@ -308,6 +311,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         columns: exportColumns,
         body: formattedReportData.map((product) => [
             product.provider,
+            product.iban,
             product.ammount,
             product.estimate_payment_date,
             product.actual_payment_date,
@@ -344,6 +348,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         }
                         if (col.field === 'ypoxreosei.provider') {
                             return product.ypoxreosei ? product.ypoxreosei.provider : '';  
+                        }
+
+                        if (col.field === 'ypoxreosei.iban') {
+                            return product.ypoxreosei ? product.ypoxreosei.iban : '';  
                         }
                         
                         
@@ -413,6 +421,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const uniqueYpoxreoseis= [...new Set(doseis_data.map(item => item.provider ))];
             setYpoxreoseis(uniqueYpoxreoseis);
 
+            const uniqueIban= [...new Set(doseis_data.map(item => item.iban).filter(v => v != null && v !== ''))];
+            setIban(uniqueIban);
+
 
             const uniqueTags = [...new Set(
                 doseis_data
@@ -422,6 +433,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             setTag(uniqueTags)
             const doseisDataWithDates = doseis_data.map(item => ({
                 ...item,
+                iban: item.iban,
                 ammount: parseFloat(item.ammount),
                 actual_payment_date: new Date(item.actual_payment_date),
                 estimate_payment_date: new Date(item.estimate_payment_date)
@@ -453,6 +465,9 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const uniqueYpoxreoseis= [...new Set(doseis_data.map(item => item.provider ))];
             setYpoxreoseis(uniqueYpoxreoseis);
 
+            const uniqueIban= [...new Set(doseis_data.map(item => item.iban).filter(v => v != null && v !== ''))];
+            setIban(uniqueIban);
+
 
             const uniqueTags = [...new Set(
                 doseis_data
@@ -462,6 +477,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             setTag(uniqueTags)
             const doseisDataWithDates = doseis_data.map(item => ({
                 ...item,
+                // iban:item.iban,
                 ammount: parseFloat(item.ammount),
                 actual_payment_date: new Date(item.actual_payment_date),
                 estimate_payment_date: new Date(item.estimate_payment_date)
@@ -603,6 +619,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             status: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             'provider':{ value: null, matchMode: FilterMatchMode.IN },
+            'iban':{ value: null, matchMode: FilterMatchMode.IN },
             'tag_name': { value: null, matchMode: FilterMatchMode.CUSTOM },
             
 
@@ -705,6 +722,35 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
         };
 
         const ProviderItemTemplate = (option) => {
+            console.log("rep Item template: ",option)
+            console.log("rep Item type: ",typeof(option))
+        
+            return (
+                <div className="flex align-items-center gap-2">
+                    <span>{option}</span>
+                </div>
+            );
+        };
+
+        const IbanBodyTemplate = (rowData) => {
+        
+        const iban = rowData.iban || 'N/A';
+
+    return (
+        <div className="flex align-items-center gap-2">
+            <span>{iban}</span>
+        </div>
+        );
+    };
+
+    const IbanFilterTemplate = (options) => {
+        console.log('Current Iban filter value:', options.value);
+    
+            return (<MultiSelect value={options.value} options={iban} itemTemplate={IbanItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    
+        };
+
+        const IbanItemTemplate = (option) => {
             console.log("rep Item template: ",option)
             console.log("rep Item type: ",typeof(option))
         
@@ -1068,7 +1114,8 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                         editMode="cell" 
                         globalFilterFields={[
                             'doseis_id',
-                            'provider', 
+                            'provider',
+                            'iban', 
                             'ammount', 
                             'actual_payment_date',
                             'estimate_payment_date',
@@ -1087,6 +1134,9 @@ const estimate_payment_dateDateFilterTemplate = (options) => {
                 <Column field="doseis_id" header="id" sortable style={{ minWidth: '2rem' }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={ProviderBodyTemplate} filter filterElement={ProviderFilterTemplate} />
+
+                <Column field="iban" header="IBAN" filterField="iban" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
+                    body={IbanBodyTemplate} filter filterElement={IbanFilterTemplate} />
 
 <Column field="tag_name"  header="tags"  showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={tagsBodyTemplate} filter filterElement={tagsFilterTemplate} filterFunction={(value, filter) => FilterService.filters.tag_name(value, filter)}  ></Column>  

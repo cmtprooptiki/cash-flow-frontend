@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 
 const FormAddYpoxreoseis = () => {
     const [provider, setProvider] = useState("");
+    const [iban, setIban] = useState("");
     const [erga_id, setErga_Id] = useState(null);
     const [erga, setErga] = useState([]);
     const [invoice_date, setInvoice_Date] = useState(null);
@@ -71,6 +72,7 @@ const FormAddYpoxreoseis = () => {
             console.log(tagIds)
             await axios.post(`${apiBaseUrl}/ypoquery`, {
                 provider,
+                iban,
                 erga_id,
                 invoice_date:formatToUTC(invoice_date),
                 total_owed_ammount,
@@ -106,8 +108,14 @@ const FormAddYpoxreoseis = () => {
             <div className="field">
                     <label htmlFor="name1">Προμηθευτής-έξοδο</label>
                     <div className="control">
-
                     <InputText id="name1" type="text" value={provider} onChange={(e)=> setProvider(e.target.value)} />
+                    </div>
+                </div>
+
+                <div className="field">
+                    <label htmlFor="iban">IBAN</label>
+                    <div className="control">
+                    <InputText id="iban" type="text" value={iban} onChange={(e) => setIban(e.target.value)} />
                     </div>
                 </div>
 
