@@ -23,6 +23,7 @@ const FormEditErgo= ({id, onHide}) => {
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
+    const[end_date,setEndDate]=useState("");
     const[status,setStatus]=useState("");
     const[estimate_start_date,setEstimateStartDate]=useState("");
     const[project_manager,setProjectManager]=useState("")
@@ -79,6 +80,7 @@ const FormEditErgo= ({id, onHide}) => {
                 setName(response.data.name);
                 setColor(response.data.color);
                 setSignDate(response.data.sign_date);
+                setEndDate(response.data.end_date);
 
                 setStatus(response.data.status);
                 setEstimateStartDate(response.data.estimate_start_date);
@@ -201,6 +203,7 @@ const FormEditErgo= ({id, onHide}) => {
                 color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
                 sign_date:formatToUTC(sign_date),
+                end_date:formatToUTC(end_date),
                 status:status,
                 estimate_start_date:formatToUTC(estimate_start_date),
                 project_manager:project_manager,
@@ -377,6 +380,13 @@ const FormEditErgo= ({id, onHide}) => {
                                     <label  className="label">Ημερομηνία υπογραφής σύμβασης</label>
                                     <div className="control">
                                         <Calendar value={new Date(sign_date)} onChange={(e) => setSignDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
+                                    </div>
+                                </div>
+
+                                <div className="field">
+                                    <label  className="label">Ημερομηνία λήξης έργου</label>
+                                    <div className="control">
+                                        <Calendar value={end_date ? new Date(end_date) : null} onChange={(e) => setEndDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΛΗΞΗΣ ΕΡΓΟΥ'/>
                                     </div>
                                 </div>
                                 

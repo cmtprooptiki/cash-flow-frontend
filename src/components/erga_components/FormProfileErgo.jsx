@@ -31,6 +31,7 @@ const[logoImage,setLogoImage]=useState(null);
   const[estimate_payment_date_3,setEstimate_Payment_Date_3]=useState("")
   const[erga_cat_id,setErga_cat_id]=useState("")
   const[erga_code, setErgaCode]= useState("")
+  const[end_date, setEndDate] = useState("")
 
   const[msg,setMsg]=useState("");
 
@@ -57,6 +58,7 @@ const[logoImage,setLogoImage]=useState(null);
             setEstimate_Payment_Date_3(formatDateToInput(response.data.estimate_payment_date_3))
             setErga_cat_id(response.data.erga_cat_id)
             setErgaCode(response.data.erga_code)
+            setEndDate(response.data.end_date)
         } catch (error) {
             if(error.response){
                 setMsg(error.response.data.msg);
@@ -155,6 +157,18 @@ const[logoImage,setLogoImage]=useState(null);
             <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
 
             <Calendar value={new Date(sign_date)} inline showWeek />
+
+
+            </div>
+
+           
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Ημερομηνία λήξης έργου:</div>
+            <div className="text-900 w-full md:w-6 md:flex-order-0 flex-order-1">
+
+            <Calendar value={new Date(end_date)} inline showWeek />
 
 
             </div>

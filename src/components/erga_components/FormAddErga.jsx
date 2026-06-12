@@ -25,6 +25,7 @@ const FormAddErga = () => {
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
+    const[end_date,setEndDate]=useState(null);
     const[status,setStatus]=useState(null);
     const[estimate_start_date,setEstimateStartDate]=useState("");
     const[project_manager,setProjectManager]=useState("")
@@ -117,6 +118,7 @@ const FormAddErga = () => {
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
             sign_date:formatToUTC(sign_date),
+            end_date:formatToUTC(end_date),
             status:status,
             estimate_start_date:formatToUTC(estimate_start_date),
             project_manager:project_manager,
@@ -248,6 +250,12 @@ const FormAddErga = () => {
                             <label  className="label">Ημερομηνία υπογραφής σύμβασης</label>
                             <div className="control">
                                 <Calendar value={sign_date} onChange={(e) => setSignDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΓΡΑΦΗΣ ΣΥΜΒΑΣΗΣ'/>
+                            </div>
+                        </div>
+                        <div className="field col-12 md:col-8">
+                            <label  className="label">Ημερομηνία λήξης έργου</label>
+                            <div className="control">
+                                <Calendar value={end_date} onChange={(e) => setEndDate(e.target.value)} inline showWeek placeholder='ΗΜΕΡΟΜΗΝΙΑ ΛΗΞΗΣ ΕΡΓΟΥ'/>
                             </div>
                         </div>
                         <div className="field col-12 md:col-8">
