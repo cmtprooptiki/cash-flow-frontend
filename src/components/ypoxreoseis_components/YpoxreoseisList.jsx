@@ -65,6 +65,7 @@ const YpoxreoseisList = () =>
 
     const cols = [
         { field: 'ypoxreoseis.provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'ypoxreoseis.iban', header: 'IBAN' },
         { field: 'ypoxreoseis.doseisCount', header: 'Αριθμός Δόσεων' },
 
         { field: 'ypoxreoseis.total_owed_ammount', header: 'Ποσό (σύνολο)' },
@@ -117,7 +118,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                 total_owed_ammount: formatCurrency(product.ypoxreoseis.total_owed_ammount),
                 Paid_doseis_ammount: formatCurrency(product.ypoxreoseis.Paid_doseis_ammount),
                 NotPaid_doseis_ammount: formatCurrency(product.ypoxreoseis.NotPaid_doseis_ammount),
-
+                
                 invoice_date: formatDate(product.ypoxreoseis.invoice_date),
                 ammount_vat:formatCurrency(product.ypoxreoseis.ammount_vat)
             };
@@ -128,6 +129,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         columns: exportColumns,
         body: formattedReportData.map((product) => [
             product.provider,
+            product.iban,
             product.doseisCount,
             product.total_owed_ammount,
             product.Paid_doseis_ammount,
@@ -186,6 +188,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         if (col.field === 'ypoxreoseis.provider')
                         {
                             return product.ypoxreoseis ? product.ypoxreoseis.provider : ''; 
+                        }
+
+                        if (col.field === 'ypoxreoseis.iban')
+                        {
+                            return product.ypoxreoseis ? product.ypoxreoseis.iban : ''; 
                         }
                         return product[col.field];
                     })
@@ -373,6 +380,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             'ypoxreoseis.erga_id': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
 
             'ypoxreoseis.provider':  { value: null, matchMode: FilterMatchMode.IN },
+            'ypoxreoseis.iban': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             
             'ypoxreoseis.invoice_date': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
 
@@ -834,8 +842,9 @@ paginator stripedRows
  rows={20} scrollable scrollHeight="600px" loading={loading} dataKey="ypoxreoseis.id" 
             filters={filters} 
             globalFilterFields={[
-                'ypoxreoseis.id', 
-                'ypoxreoseis.provider', 
+                'ypoxreoseis.id',
+                'ypoxreoseis.provider',
+                'ypoxreoseis.iban',
                 'ypoxreoseis.erga_id',
                 'ypoxreoseis.invoice_date',
                 'ypoxreoseis.total_owed_ammount',
@@ -859,6 +868,7 @@ paginator stripedRows
                 <Column field="ypoxreoseis.id" header="id" sortable style={{ minWidth: '2rem',  }} ></Column>
                 <Column header="Προμηθευτής-έξοδο" filterField="ypoxreoseis.provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={providersBodyTemplate} filter filterElement={providersFilterTemplate} />
+                <Column field="ypoxreoseis.iban" header="IBAN" filter filterPlaceholder="Search by IBAN" style={{ minWidth: '14rem' }} />
 
                 <Column header= "Αριθμός των Δόσεων" field='ypoxreoseis.doseisCount' filter filterField='ypoxreoseis.doseisCount' dataType="numeric" ></Column>
                 <Column field="ypoxreoseis.erga_id"  header="erga_id"  filter filterPlaceholder="Search by erga_id" style={{ minWidth: '12rem' }}></Column>

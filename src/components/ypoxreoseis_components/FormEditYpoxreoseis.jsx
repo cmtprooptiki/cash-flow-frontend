@@ -15,6 +15,7 @@ import { Dropdown } from 'primereact/dropdown';
 
 const FormEditYpoxreoseis = ({ id, onHide }) => {
     const [provider, setProvider] = useState("");
+    const [iban, setIban] = useState("");
     const [erga_id, setErga_Id] = useState(null);
     const [erga, setErga] = useState([]);
     const [invoice_date, setInvoice_Date] = useState("");
@@ -57,6 +58,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
         try {
             const response = await axios.get(`${apiBaseUrl}/ypoquery/${id}`, {timeout: 5000});
             setProvider(response.data.ypoxreoseis.provider);
+            setIban(response.data.ypoxreoseis.iban || "");
             setErga_Id(response.data.ypoxreoseis.erga_id);
             setInvoice_Date(formatDateToInput(response.data.ypoxreoseis.invoice_date));
             setTotal_Owed_Ammount(response.data.ypoxreoseis.total_owed_ammount);
@@ -95,6 +97,7 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
             const tagIds = selectedTags.map(tag => tag.value);
             await axios.patch(`${apiBaseUrl}/ypoquery/${id}`, {
                 provider: provider,
+                iban: iban,
                 erga_id: erga_id,
                 invoice_date: formatToUTC(invoice_date),
                 total_owed_ammount: total_owed_ammount,
@@ -138,6 +141,13 @@ const FormEditYpoxreoseis = ({ id, onHide }) => {
                             <label htmlFor="name1">Προμηθευτής-έξοδο</label>
                             <div className="control">
                                 <InputText id="provider" type="text" value={provider} onChange={(e) => setProvider(e.target.value)} />
+                            </div>
+                        </div>
+
+                        <div className="field">
+                            <label htmlFor="iban">IBAN</label>
+                            <div className="control">
+                                <InputText id="iban" type="text" value={iban} onChange={(e) => setIban(e.target.value)} />
                             </div>
                         </div>
 
