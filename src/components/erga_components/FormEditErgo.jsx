@@ -17,6 +17,7 @@ import {format} from 'date-fns';
 const FormEditErgo= ({id, onHide}) => {
     const[erga_code,setErgaCode]=useState("");
     const[name,setName]=useState("");
+    const[description,setDescription]=useState("");
     const [logoImage, setLogoImage] = useState(""); // New state for profile image
     const [previewImage, setPreviewImage] = useState(''); // State for previewing selected image
 
@@ -78,6 +79,7 @@ const FormEditErgo= ({id, onHide}) => {
                 const response=await axios.get(`${apiBaseUrl}/erga/${id}`, {timeout: 5000});
                 setErgaCode(response.data.erga_code);
                 setName(response.data.name);
+                setDescription(response.data.description);
                 setColor(response.data.color);
                 setSignDate(response.data.sign_date);
                 setEndDate(response.data.end_date);
@@ -200,6 +202,7 @@ const FormEditErgo= ({id, onHide}) => {
                 logoImage:logoImage,
                 erga_code:erga_code,
                 name:name,
+                description:description,
                 color:color,
                 sign_ammount_no_tax:sign_ammount_no_tax,
                 sign_date:formatToUTC(sign_date),
@@ -295,6 +298,13 @@ const FormEditErgo= ({id, onHide}) => {
                                     <label  className="label">Εργο</label>
                                     <div className="control">
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ' />
+                                    </div>
+                                </div>
+
+                                <div className="field">
+                                    <label className="label">Περιγραφή</label>
+                                    <div className="control">
+                                        <InputText type="text" className="input" value={description} onChange={(e) => setDescription(e.target.value)} placeholder='ΠΕΡΙΓΡΑΦΗ' />
                                     </div>
                                 </div>
 

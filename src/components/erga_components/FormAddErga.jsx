@@ -22,6 +22,7 @@ const FormAddErga = () => {
 
     const[erga_code,setErgaCode]=useState("");
     const[name,setName]=useState("");
+    const[description,setDescription]=useState("");
     const [color, setColor] = useState("#ffffff");
     const[sign_ammount_no_tax,setSignAmmountNoTax]=useState(0);
     const[sign_date,setSignDate]=useState("");
@@ -115,6 +116,7 @@ const FormAddErga = () => {
             logoImage:logoImage,
             erga_code:erga_code,
             name:name,
+            description:description,
             color:color,
             sign_ammount_no_tax:sign_ammount_no_tax,
             sign_date:formatToUTC(sign_date),
@@ -175,6 +177,13 @@ const FormAddErga = () => {
                                     <label  className="label">Έργο</label>
                                     <div className="control">
                                         <InputText type="text" className="input" value={name} onChange={(e)=> setName(e.target.value)} placeholder='ΟΝΟΜΑ ΕΡΓΟΥ'  />
+                                    </div>
+                                </div>
+
+                                <div className="field">
+                                    <label className="label">Περιγραφή</label>
+                                    <div className="control">
+                                        <InputText type="text" className="input" value={description} onChange={(e) => setDescription(e.target.value)} placeholder='ΠΕΡΙΓΡΑΦΗ' />
                                     </div>
                                 </div>
 
