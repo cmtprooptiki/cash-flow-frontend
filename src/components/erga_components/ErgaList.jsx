@@ -620,6 +620,8 @@ const estimatePaymentDateFilterTemplate3= (options) => {
             setProjectManager(uniqueProjectManager);
             const ergaDataWithDates = ergaData.map(item => ({
                 ...item,
+                name: toGreekUpperCase(item.name),
+                shortname: toGreekUpperCase(item.shortname),
                 sign_ammount_no_tax: parseFloat(item.sign_ammount_no_tax),
                 ammount_vat: parseFloat(item.ammount_vat),
                 ammount: parseFloat(item.ammount),
@@ -891,8 +893,9 @@ const ActionsBodyTemplate = (rowData) => {
                 frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} body={nameBodyTemplate} />
         <Column className="font-bold" field="description" header="Περιγραφή" filter={true} filterPlaceholder="Search by description" style={{ minWidth: '10rem', color: "black" }} />
         <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')} alignFrozen="left" frozen={frozenColumns.includes('logoImage')} body={imageBodyTemplate}></Column>
-        <Column className="font-bold" field="erga_code" header={renderColumnHeader('Κωδικός Έργου', 'erga_code')} filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
+        
         <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} body={shortnameBodyTemplate} />
+        <Column className="font-bold" field="erga_code" header="Κωδικός Έργου" filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
         <Column header="Ημερονημία λήξης έργου" filter={true} filterField="end_date" dataType="date" style={{ minWidth: '5rem' }} body={endDateBodyTemplate} filterElement={endDateFilterTemplate} ></Column>
 
