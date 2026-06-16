@@ -160,7 +160,10 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             const data = [
                 headers,  // First row with headers
                 ...filteredCustomer.map((product) =>
-                    cols.map((col) => {                        
+                    cols.map((col) => {
+                        if (col.field === 'name') {
+                            return toGreekUpperCase(product.name);
+                        }
                         return product[col.field];  // Return the value as is for other fields
                     })
                 )
@@ -247,18 +250,18 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
         const response = await axios.get(`${apiBaseUrl}/customer`, {timeout: 5000});
         const paraData = response.data;
 
-        const uniqueNames = [...new Set(paraData.map(item => item.name || 'N/A'))];
-        console.log("Unique names:",uniqueNames);
-        setCustomerNames(uniqueNames);
-
         const parDataWithDates = paraData.map(item => ({
             ...item,
+            name: toGreekUpperCase(item.name || 'N/A'),
             customernames: {
                 ...item.customernames,
-                name: item.name || 'N/A'
+                name: toGreekUpperCase(item.name || 'N/A')
             }
-            
         }));
+
+        const uniqueNames = [...new Set(parDataWithDates.map(item => item.name))];
+        console.log("Unique names:",uniqueNames);
+        setCustomerNames(uniqueNames);
 
         console.log(parDataWithDates); // Optionally log the transformed data
 
@@ -336,6 +339,11 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
 //customer
 
+const toGreekUpperCase = (str) => {
+    if (!str) return str;
+    return str.replace(/[''']/g, '').toLocaleUpperCase('el-GR');
+};
+
 const imageBodyTemplate = (rowData) => {
     return <img src={`${apiBaseUrl}/${rowData.logoImage}`} alt={rowData.logoImage} className="w-6rem shadow-2 border-round" />;
 };
@@ -358,7 +366,7 @@ const socialBodyTemplate = (rowData) => {
 
 const customerBodyTemplate = (rowData) => {
         
-    const customer = rowData.name || 'N/A';        // console.log("repsBodytempl",timologio)
+    const customer = toGreekUpperCase(rowData.name || 'N/A');
     console.log("customer",customer," type ",typeof(customer));
     console.log("rep body template: ",customer)
 

@@ -175,6 +175,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                             return formatCurrencyReport(product[col.field]);  // Apply the currency format to the 'ammount_vat'
                         }
 
+                        if (col.field === 'name') {
+                            return toGreekUpperCase(product.name);
+                        }
+
+                        if (col.field === 'shortname') {
+                            return toGreekUpperCase(product.shortname);
+                        }
+
                         if (col.field === 'customer.name')
                         {
                             return product.customer ? product.customer.name : '';
@@ -389,6 +397,14 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             return "Invalid date";
         }
     };
+    const toGreekUpperCase = (str) => {
+        if (!str) return str;
+        return str.replace(/['’‘]/g, '').toLocaleUpperCase('el-GR');
+    };
+
+    const nameBodyTemplate = (rowData) => toGreekUpperCase(rowData.name);
+    const shortnameBodyTemplate = (rowData) => toGreekUpperCase(rowData.shortname);
+
     const imageBodyTemplate = (rowData) => {
         return <img src={`${apiBaseUrl}/${rowData.logoImage}`} alt={rowData.logoImage} className="w-6rem shadow-2 border-round" />;
     };
@@ -872,11 +888,11 @@ const ActionsBodyTemplate = (rowData) => {
                                 
         <Column selectionMode="multiple" headerStyle={{ width: '3em' }} frozen></Column>
         <Column className="font-bold" field="name"  header={renderColumnHeader('Έργο', 'name')}
-                frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} />
+                frozen={frozenColumns.includes('name')} alignFrozen="left" filter={true} filterPlaceholder="Search by name" style={{ minWidth: '5rem', color: "black" }} body={nameBodyTemplate} />
         <Column className="font-bold" field="description" header="Περιγραφή" filter={true} filterPlaceholder="Search by description" style={{ minWidth: '10rem', color: "black" }} />
         <Column field="logoImage" header={renderColumnHeader('Λογότυπο', 'logoImage')} alignFrozen="left" frozen={frozenColumns.includes('logoImage')} body={imageBodyTemplate}></Column>
         <Column className="font-bold" field="erga_code" header={renderColumnHeader('Κωδικός Έργου', 'erga_code')} filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
-        <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} />
+        <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} body={shortnameBodyTemplate} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
         <Column header="Ημερονημία λήξης έργου" filter={true} filterField="end_date" dataType="date" style={{ minWidth: '5rem' }} body={endDateBodyTemplate} filterElement={endDateFilterTemplate} ></Column>
 
