@@ -55,7 +55,11 @@ const CustomerList = () => {
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
     const [selectedCustomers, setSelectedCustomers] = useState([])
+    const [importDialogVisible, setImportDialogVisible] = useState(false);
+    const [importedRows, setImportedRows] = useState([]);
+    const [importLoading, setImportLoading] = useState(false);
     const dt = useRef(null);
+    const xlsxInputRef = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
 
     const cols = [
@@ -185,6 +189,67 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
 
 
+
+    const handleImportClick = () => {
+        xlsxInputRef.current.value = '';
+        xlsxInputRef.current.click();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            import('xlsx').then((xlsx) => {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = xlsx.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = xlsx.utils.sheet_to_json(sheet, { defval: '' });
+                setImportedRows(rows);
+                setImportDialogVisible(true);
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    const confirmImport = async () => {
+        setImportLoading(true);
+        let successCount = 0;
+        let errorCount = 0;
+        for (const row of importedRows) {
+            try {
+                await axios.post(`${apiBaseUrl}/customer`, {
+                    customer_code: row.customer_code || '',
+                    name: row.name || '',
+                    afm: String(row.afm || ''),
+                    doy: row.doy || '',
+                    epagelma: row.epagelma || '',
+                    phone: String(row.phone || ''),
+                    email: row.email || '',
+                    address: row.address || '',
+                    postal_code: String(row.postal_code || ''),
+                    website: row.website || '',
+                    facebookUrl: row.facebookUrl || '',
+                    twitterUrl: row.twitterUrl || '',
+                    linkedInUrl: row.linkedInUrl || '',
+                    instagramUrl: row.instagramUrl || '',
+                });
+                successCount++;
+            } catch {
+                errorCount++;
+            }
+        }
+        setImportLoading(false);
+        setImportDialogVisible(false);
+        setImportedRows([]);
+        getCustomer();
+        toast.current.show({
+            severity: errorCount === 0 ? 'success' : 'warn',
+            summary: 'Import Complete',
+            detail: `${successCount} customers imported${errorCount > 0 ? `, ${errorCount} failed` : ''}.`,
+            life: 4000,
+        });
+    };
 
     const saveAsExcelFile = (buffer, fileName) => {
         import('file-saver').then((module) => {
@@ -641,8 +706,12 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
         
         <h1 className='title'>Πελάτες</h1>
         <div className='d-flex align-items-center gap-4'>
-        {user && user.role ==="admin" && (
-        <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle" className='rounded'/></Link>
+        {user && user.role === "admin" && (
+            <>
+                <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle" className='rounded'/></Link>
+                <Button label="Import Excel" icon="pi pi-upload" severity="success" className='mb-2 rounded' onClick={handleImportClick} />
+                <input ref={xlsxInputRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }} onChange={handleFileChange} />
+            </>
         )}
         
         <br />
@@ -707,6 +776,41 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
              {selectedCustomerId && (selectedType=='Profile') && (
             <FormProfileCustomer id={selectedCustomerId} onHide={() => setDialogVisible(false)} />
             )}
+        </Dialog>
+
+        <Dialog
+            header={`Preview Import — ${importedRows.length} row${importedRows.length !== 1 ? 's' : ''}`}
+            visible={importDialogVisible}
+            onHide={() => !importLoading && setImportDialogVisible(false)}
+            style={{ width: '80vw' }}
+            maximizable
+            footer={
+                <div>
+                    <Button label="Cancel" icon="pi pi-times" outlined onClick={() => setImportDialogVisible(false)} disabled={importLoading} />
+                    <Button label={`Import ${importedRows.length} Customers`} icon="pi pi-check" loading={importLoading} onClick={confirmImport} />
+                </div>
+            }
+        >
+            <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                    <thead>
+                        <tr style={{ background: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#fff' }}>
+                            {['customer_code','name','afm','doy','epagelma','phone','email','address','postal_code','website'].map(h => (
+                                <th key={h} style={{ padding: '7px 10px', border: '1px solid #cdd', whiteSpace: 'nowrap' }}>{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {importedRows.map((row, i) => (
+                            <tr key={i} style={{ background: i % 2 === 0 ? '#fff' : '#f7f7f7' }}>
+                                {['customer_code','name','afm','doy','epagelma','phone','email','address','postal_code','website'].map(f => (
+                                    <td key={f} style={{ padding: '5px 10px', border: '1px solid #ddd' }}>{String(row[f] ?? '')}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </Dialog>
     </div>
   )
