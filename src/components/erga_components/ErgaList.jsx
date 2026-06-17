@@ -49,10 +49,12 @@ const ErgaList = () => {
     const [selectedErgaId, setSelectedErgaId] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
     const [selectedErga, setSelectedErga] = useState([])
-
-
+    const [importDialogVisible, setImportDialogVisible] = useState(false);
+    const [importedRows, setImportedRows] = useState([]);
+    const [importLoading, setImportLoading] = useState(false);
 
     const dt = useRef(null);
+    const xlsxInputRef = useRef(null);
     const robotoBase64 = robotoData.robotoBase64;
 
     const cols = [
@@ -214,6 +216,79 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
     
 
 
+
+    const handleImportClick = () => {
+        xlsxInputRef.current.value = '';
+        xlsxInputRef.current.click();
+    };
+
+    const parseExcelDate = (val) => {
+        if (!val) return null;
+        if (val instanceof Date) return val.toISOString();
+        const d = new Date(val);
+        return isNaN(d.getTime()) ? null : d.toISOString();
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            import('xlsx').then((xlsx) => {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = xlsx.read(data, { type: 'array', cellDates: true });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = xlsx.utils.sheet_to_json(sheet, { defval: '' });
+                setImportedRows(rows);
+                setImportDialogVisible(true);
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    const confirmImport = async () => {
+        setImportLoading(true);
+        let successCount = 0;
+        let errorCount = 0;
+        for (const row of importedRows) {
+            try {
+                await axios.post(`${apiBaseUrl}/erga`, {
+                    erga_code: row.erga_code || '',
+                    name: row.name || '',
+                    description: row.description || '',
+                    color: row.color || '#ffffff',
+                    sign_ammount_no_tax: Number(row.sign_ammount_no_tax) || 0,
+                    sign_date: parseExcelDate(row.sign_date),
+                    end_date: parseExcelDate(row.end_date),
+                    status: row.status || '',
+                    estimate_start_date: parseExcelDate(row.estimate_start_date),
+                    project_manager: row.project_manager || '',
+                    customer_id: Number(row.customer_id) || null,
+                    shortname: row.shortname || '',
+                    ammount: Number(row.ammount) || 0,
+                    ammount_vat: Number(row.ammount_vat) || 0,
+                    ammount_total: Number(row.ammount_total) || 0,
+                    estimate_payment_date: parseExcelDate(row.estimate_payment_date),
+                    estimate_payment_date_2: parseExcelDate(row.estimate_payment_date_2),
+                    estimate_payment_date_3: parseExcelDate(row.estimate_payment_date_3),
+                    erga_cat_id: Number(row.erga_cat_id) || null,
+                });
+                successCount++;
+            } catch {
+                errorCount++;
+            }
+        }
+        setImportLoading(false);
+        setImportDialogVisible(false);
+        setImportedRows([]);
+        getErga();
+        toast.current.show({
+            severity: errorCount === 0 ? 'success' : 'warn',
+            summary: 'Import Complete',
+            detail: `${successCount} erga imported${errorCount > 0 ? `, ${errorCount} failed` : ''}.`,
+            life: 4000,
+        });
+    };
 
     const saveAsExcelFile = (buffer, fileName) => {
         import('file-saver').then((module) => {
@@ -859,8 +934,12 @@ const ActionsBodyTemplate = (rowData) => {
     <div className="card" >
     <h1 className='title'>Εργα</h1>
     <div className='d-flex align-items-center gap-4'>
-    {user && user.role ==="admin" && (
-    <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" className='rounded' icon="pi pi-plus-circle"/></Link>
+    {user && user.role === "admin" && (
+        <>
+            <Link to={"/erga/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νέου Έργου" className='rounded' icon="pi pi-plus-circle"/></Link>
+            <Button label="Import Excel" icon="pi pi-upload" severity="success" className='mb-2 rounded' onClick={handleImportClick} />
+            <input ref={xlsxInputRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }} onChange={handleFileChange} />
+        </>
     )}
 
     {selectedErga.length > 0 && (
@@ -920,6 +999,43 @@ const ActionsBodyTemplate = (rowData) => {
              {selectedErgaId && (selectedType=='Profile') && (
             <FormProfileErgo id={selectedErgaId} onHide={() => setDialogVisible(false)} />
             )}
+        </Dialog>
+
+        <Dialog
+            header={`Preview Import — ${importedRows.length} row${importedRows.length !== 1 ? 's' : ''}`}
+            visible={importDialogVisible}
+            onHide={() => !importLoading && setImportDialogVisible(false)}
+            style={{ width: '85vw' }}
+            maximizable
+            footer={
+                <div>
+                    <Button label="Cancel" icon="pi pi-times" outlined onClick={() => setImportDialogVisible(false)} disabled={importLoading} />
+                    <Button label={`Import ${importedRows.length} Erga`} icon="pi pi-check" loading={importLoading} onClick={confirmImport} />
+                </div>
+            }
+        >
+            <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                    <thead>
+                        <tr style={{ background: 'linear-gradient(to right, #1400B9, #00B4D8)', color: '#fff' }}>
+                            {['erga_code','name','shortname','customer_id','erga_cat_id','status','sign_date','end_date','ammount','ammount_vat','ammount_total','project_manager'].map(h => (
+                                <th key={h} style={{ padding: '7px 10px', border: '1px solid #cdd', whiteSpace: 'nowrap' }}>{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {importedRows.map((row, i) => (
+                            <tr key={i} style={{ background: i % 2 === 0 ? '#fff' : '#f7f7f7' }}>
+                                {['erga_code','name','shortname','customer_id','erga_cat_id','status','sign_date','end_date','ammount','ammount_vat','ammount_total','project_manager'].map(f => (
+                                    <td key={f} style={{ padding: '5px 10px', border: '1px solid #ddd' }}>
+                                        {row[f] instanceof Date ? row[f].toLocaleDateString('el-GR') : String(row[f] ?? '')}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </Dialog>
 
 </div>
