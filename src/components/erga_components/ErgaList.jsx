@@ -361,7 +361,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
 
             sign_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             end_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-            status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+            status: { value: null, matchMode: FilterMatchMode.IN },
             estimate_start_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             project_manager:  { value: null, matchMode: FilterMatchMode.IN },
 
@@ -558,7 +558,7 @@ const estimatePaymentDateFilterTemplate3= (options) => {
     };
 
     const statusFilterTemplate = (options) => {
-        return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
+        return <MultiSelect value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value)} itemTemplate={statusItemTemplate} placeholder="Any" className="p-column-filter" appendTo="self" />;
     };
 
     const statusItemTemplate = (option) => {
@@ -978,7 +978,7 @@ const ActionsBodyTemplate = (rowData) => {
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
         <Column header="Ημερονημία λήξης έργου" filter={true} filterField="end_date" dataType="date" style={{ minWidth: '5rem' }} body={endDateBodyTemplate} filterElement={endDateFilterTemplate} ></Column>
 
-        <Column header="Κατάσταση έργου" field="status" filter={true} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
+        <Column header="Κατάσταση έργου" field="status" filter={true} showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
  
         <Column header="Ποσό  (καθαρή αξία)" filter={true} filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filterElement={ammountFilterTemplate} />
         <Column header="Ποσό ΦΠΑ" filter={true} filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filterElement={ammountFilterTemplate} />
