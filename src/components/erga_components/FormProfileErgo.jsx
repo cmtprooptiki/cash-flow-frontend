@@ -33,6 +33,7 @@ const[logoImage,setLogoImage]=useState(null);
   const[erga_code, setErgaCode]= useState("")
   const[end_date, setEndDate] = useState("")
   const [description, setDescription] = useState("")
+  const [symvallomenos, setSymvallomenos] = useState("");
 
   const[msg,setMsg]=useState("");
 
@@ -45,7 +46,7 @@ const[logoImage,setLogoImage]=useState(null);
             setColor(response.data.color);
             setSignAmmountNoTax(response.data.sign_ammount_no_tax);
             setSignDate(formatDateToInput(response.data.sign_date));
-
+            setSymvallomenos(response.data.symvallomenos);
             setStatus(response.data.status);
             setEstimateStartDate(formatDateToInput(response.data.estimate_start_date));
             setProjectManager(response.data.project_manager);
@@ -119,6 +120,15 @@ const[logoImage,setLogoImage]=useState(null);
             <div className="text-500 w-6 md:w-2 font-medium">Ακρώνυμο έργου</div>
             <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                 <Chip label={shortname} className="mr-2" />
+               
+            </div>
+          
+        </li>
+
+        <li className="flex align-items-center py-3 px-2 border-top-1 border-300 flex-wrap">
+            <div className="text-500 w-6 md:w-2 font-medium">Συμβαλλόμενος</div>
+            <div className="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                <Chip label={symvallomenos} className="mr-2" />
                
             </div>
           

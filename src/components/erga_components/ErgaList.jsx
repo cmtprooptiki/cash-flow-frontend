@@ -70,7 +70,7 @@ const ErgaList = () => {
         { field: 'project_manager', header: 'Project Manager' },
         { field: 'shortname', header: 'Συντομογραφία' },
         { field: 'ammount', header: 'Ποσό (καθαρή αξία)' },
-
+        { field: 'symvallomenos', header: 'Συμβαλλόμενος' },
         { field: 'ammount_vat', header: 'Ποσό ΦΠΑ' },
         { field: 'estimate_start_date', header: 'Ημερομηνία έναρξης (εκτίμηση)' }
     ];
@@ -139,7 +139,8 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             product.shortname, 
             product.ammount,
             product.ammount_vat,
-            product.estimate_start_date
+            product.estimate_start_date,
+            product.symvallomenos
         ]),
         styles: {
             font: 'Roboto-Regular' // Make sure the table uses the Roboto font
@@ -272,6 +273,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                     estimate_payment_date_2: parseExcelDate(row.estimate_payment_date_2),
                     estimate_payment_date_3: parseExcelDate(row.estimate_payment_date_3),
                     erga_cat_id: Number(row.erga_cat_id) || null,
+                    symvallomenos: row.symvallomenos || ''
                 });
                 successCount++;
             } catch {
@@ -358,7 +360,7 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
             description: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             erga_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             shortname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-
+            symvallomenos: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
             sign_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             end_date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
             status: { value: null, matchMode: FilterMatchMode.IN },
@@ -706,7 +708,8 @@ const estimatePaymentDateFilterTemplate3= (options) => {
                 estimate_start_date: new Date(item.estimate_start_date),
                 estimate_payment_date:new Date(item.estimate_payment_date),
                 estimate_payment_date_2:new Date(item.estimate_payment_date_2),
-                estimate_payment_date_3:new Date(item.estimate_payment_date_3)
+                estimate_payment_date_3:new Date(item.estimate_payment_date_3),
+                symvallomenos: item.symvallomenos || 'CMT'
             }));
     
 
@@ -961,7 +964,7 @@ const ActionsBodyTemplate = (rowData) => {
                 ,'sign_date', 'end_date', 'status', 'estimate_start_date'
                 ,'project_manager','ammount','ammount_vat','ammount_total'
                 ,'estimate_payment_date','estimate_payment_date_2','estimate_payment_date_3'
-                ,'customer_id','customer.name','erga_cat_id','erga_category.name']} header={header}
+                ,'customer_id','customer.name','erga_cat_id','erga_category.name, erga.symvallomenos']} header={header}
             emptyMessage="No customers found."
             selection={selectedErga} 
             onSelectionChange={(e) => setSelectedErga(e.value)} // Updates state when selection changes
@@ -975,6 +978,7 @@ const ActionsBodyTemplate = (rowData) => {
         
         <Column className="font-bold" field="shortname" header={renderColumnHeader('Ακρώνυμο έργου', 'shortname')} alignFrozen="left" frozen={frozenColumns.includes('shortname')} filter={true} filterPlaceholder="Search by shortname" style={{ minWidth: '5rem', color: "black" }} body={shortnameBodyTemplate} />
         <Column className="font-bold" field="erga_code" header="Κωδικός Έργου" filter={true} filterPlaceholder="Search by code" style={{ minWidth: '5rem', color: "black" }} />
+        <Column className="font-bold" field="symvallomenos" header="Συμβαλλόμενος" filter={true} filterPlaceholder="Search by symvallomenos" style={{ minWidth: '5rem', color: "black" }} />
         <Column header="Ημερομηνία υπογραφής σύμβασης" filter={true} filterField="sign_date" dataType="date" style={{ minWidth: '5rem' }} body={signDateBodyTemplate} filterElement={dateFilterTemplate} ></Column>
         <Column header="Ημερονημία λήξης έργου" filter={true} filterField="end_date" dataType="date" style={{ minWidth: '5rem' }} body={endDateBodyTemplate} filterElement={endDateFilterTemplate} ></Column>
 

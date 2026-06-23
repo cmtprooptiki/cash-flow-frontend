@@ -34,6 +34,7 @@ const FormAddErga = () => {
     const[customer_name,setCustomerName]=useState(null)
     const[customer,setCustomer]=useState([])
     const[shortname,setShortName]=useState("")
+    const[symvallomenos,setSymvallomenos]=useState("")
     const[ammount,setAmmount]=useState(0)
     const[ammount_vat,setAmmount_Vat]=useState(0)
     const[ammount_total,setAmmount_Total]=useState(0)
@@ -132,7 +133,8 @@ const FormAddErga = () => {
             estimate_payment_date:formatToUTC( estimate_payment_date),
             estimate_payment_date_2: formatToUTC(estimate_payment_date_2),
             estimate_payment_date_3: formatToUTC(estimate_payment_date_3),
-            erga_cat_id:erga_cat_id
+            erga_cat_id:erga_cat_id,
+            symvallomenos:symvallomenos
             },
             {
                 headers: {
@@ -231,6 +233,13 @@ const FormAddErga = () => {
                                     <div className="control">
                                         <InputText type="text" className="input" value={shortname} onChange={(e)=> setShortName(e.target.value)} placeholder='SHORTNAME'/>
 
+                                    </div>
+                                </div>
+
+                                <div className="field">
+                                    <label  className="label">Συμβαλλόμενος</label>
+                                    <div className="control">
+                                        <InputText type="text" className="input" value={symvallomenos} onChange={(e)=> setSymvallomenos(e.target.value)} placeholder='ΣΥΜΒΑΛΛΟΜΕΝΟΣ'/>
                                     </div>
                                 </div>
 
