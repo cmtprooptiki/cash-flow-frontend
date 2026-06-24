@@ -50,6 +50,7 @@ const PaidBudgetList = (props) => {
     const ergo = props.Ergo
     const customer = props.Customer
     const provider = props.Provider
+    const iban = props.Iban || []
     // const uniqueErga= [...new Set(combinedData3.map(item => item.ergo || 'N/A'))];
     // setErgo(uniqueErga);
     //     const uniqueCustomers = [...new Set(combinedData3.map(item => item?.customer || 'N/A'))]
@@ -113,7 +114,8 @@ const PaidBudgetList = (props) => {
             type: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
             ergo: { value: null, matchMode: FilterMatchMode.IN },
             customer: { value: null, matchMode: FilterMatchMode.IN },
-            provider: { value: null, matchMode: FilterMatchMode.IN }
+            provider: { value: null, matchMode: FilterMatchMode.IN },
+            iban: { value: null, matchMode: FilterMatchMode.IN }
         });
         setGlobalFilterValue('');
     };
@@ -148,10 +150,11 @@ const PaidBudgetList = (props) => {
     const cols = [
         { field: 'date', header: 'Ημερομηνία' },
         { field: 'income', header: 'Εισροές/Εκροές' },
-        { field: 'type', header: 'Τύπος Εισροής/Εκροής' },    
+        { field: 'type', header: 'Τύπος Εισροής/Εκροής' },
         { field: 'ergo', header: 'Έργο' },
         { field: 'customer', header: 'Πελάτης' },
         { field: 'provider', header: 'Προμηθευτής-έξοδο' },
+        { field: 'iban', header: 'IBAN' },
         { field: 'id', header: 'Id' },
         { field: 'comment', header: 'Σχόλια' }
         ];
@@ -350,13 +353,33 @@ const idBodyTemplate = (rowData) => {
         const ProviderItemTemplate = (option) => {
             console.log("rep Item template: ",option)
             console.log("rep Item type: ",typeof(option))
-        
+
             return (
                 <div className="flex align-items-center gap-2">
                     <span>{option}</span>
                 </div>
             );
         };
+
+    const IbanBodyTemplate = (rowData) => {
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{rowData.iban || 'N/A'}</span>
+            </div>
+        );
+    };
+
+    const IbanFilterTemplate = (options) => {
+        return (<MultiSelect value={options.value} options={iban} itemTemplate={IbanItemTemplate} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />);
+    };
+
+    const IbanItemTemplate = (option) => {
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>{option}</span>
+            </div>
+        );
+    };
 
     const CustomerBodyTemplate = (rowData) => {
         return (
@@ -488,7 +511,7 @@ const idBodyTemplate = (rowData) => {
             filters={filters} 
             filterDisplay="menu" loading={loading} 
             responsiveLayout="scroll" 
-            globalFilterFields={['date', 'income', 'type','ergo','customer', 'provider','id']}
+            globalFilterFields={['date', 'income', 'type','ergo','customer', 'provider', 'iban', 'id']}
             // onFilter={(e) => handleFilter(e.filteredValue)}
             onFilter={(e)=>setFilters(e.filters)}
             onValueChange = {(comb) => { setFilteredData(comb); handleValueChange(comb); }}            
@@ -501,6 +524,8 @@ const idBodyTemplate = (rowData) => {
                 <Column header="Πελάτης" filterField="customer" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {CustomerBodyTemplate} filter filterElement = {CustomerFilterTemplate}/>
 
                 <Column header="Υποχρέωση" filterField="provider" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body = {ProviderBodyTemplate} filter filterElement = {ProviderFilterTemplate}/>
+
+                <Column header="IBAN" filterField="iban" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} body={IbanBodyTemplate} filter filterElement={IbanFilterTemplate}/>
 
                 <Column field="id" header="Id" body={idBodyTemplate} filter ></Column>
 
@@ -568,6 +593,7 @@ const idBodyTemplate = (rowData) => {
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong>IBAN:</strong> {selectedRowData.ypoxreosei?.iban}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                     </div>

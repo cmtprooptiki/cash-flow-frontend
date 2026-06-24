@@ -46,6 +46,7 @@ const BudgetPage = () => {
     const [customer, setCustomer] = useState([])
 
     const [provider, setProvider] = useState([])
+    const [iban, setIban] = useState([])
 
     const [calendarDate, setCalendarDate] = useState(new Date());
     const[selectedIdType,setSelectedIdType]=useState([])
@@ -153,7 +154,7 @@ const BudgetPage = () => {
             ...paradotea.map(item => ({ date: new Date(item.paradotea.estimate_payment_date), income: Number(item.paradotea.ammount_total), type: 'Paradotea', id: item.paradotea_id, ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, provider: 'N/A', comment: item.paradotea.comments })),
             ...incomeTim.filter(item => item.timologia.status_paid === "no").map(item => ({ date: new Date(item.timologia.actual_payment_date), income: Number(item.timologia.ammount_of_income_tax_incl), type: 'Timologia', ergo: item.paradotea.erga.name, customer: item.paradotea.erga.customer.name, id: item.timologia_id, provider: 'N/A', comment: item.timologia.comments })),
             ...daneia.filter(item=>item.status==="no").map(item=>({ date: new Date(item.payment_date), income: Number(item.ammount), type: 'Daneia', id: item.id, ergo: 'N/A', customer: 'N/A', provider: 'N/A' })),
-                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id, ergo: 'N/A', customer: 'N/A', provider: item.provider, comment: item.comment }))
+                ...doseis.filter(item=>item.status==="no").map(item=>({ date: new Date(item.estimate_payment_date), income: parseFloat((-1)*item.ammount) , type: 'doseis', id: item.doseis_id, ergo: 'N/A', customer: 'N/A', provider: item.provider, iban: item.iban || 'N/A', comment: item.comment }))
             ];
 
         const uniqueErga= [...new Set(combinedData2.map(item => item?.ergo || 'N/A'))];
@@ -163,6 +164,9 @@ const BudgetPage = () => {
 
         const uniqueProviders = [...new Set(combinedData2.map(item => item?.provider || 'N/A'))]
         setProvider(uniqueProviders)
+
+        const uniqueIbans = [...new Set(combinedData2.map(item => item?.iban).filter(v => v && v !== 'N/A'))]
+        setIban(uniqueIbans)
         
         console.log("combinedData 2 eee: ",combinedData2)
 
@@ -433,6 +437,7 @@ const BudgetPage = () => {
                         <p><strong>Κατάσταση:</strong> {selectedRowData.status}</p>
                         <p><strong>id υποχρεωσης:</strong> {selectedRowData.ypoxreoseis_id}</p>
                         <p><strong>Προμηθευτής-έξοδο:</strong> {selectedRowData.ypoxreosei?.provider}</p>
+                        <p><strong>IBAN:</strong> {selectedRowData.ypoxreosei?.iban}</p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/edit/${selectedRowData.id}`}>Επεξεργασία δόσης</a></strong></p>
                         <p><strong><a href = {`${apiBaseFrontUrl}/doseis/profile/${selectedRowData.id}`}>Πληροφορίες δόσης</a></strong></p>
                     </div>
@@ -478,7 +483,7 @@ const BudgetPage = () => {
             </Dialog>
 
                 <br></br>
-            <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData} Ergo = {ergo} Customer = {customer} Provider = {provider}/>
+            <PaidBudgetList key={combinedData.length} budget={validBudget} combinedData3={combinedData} Ergo = {ergo} Customer = {customer} Provider = {provider} Iban = {iban}/>
         </Layout>
     );
 };
