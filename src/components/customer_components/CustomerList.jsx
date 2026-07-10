@@ -611,14 +611,14 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                 >
                     <div className="flex flex-row gap-2">
                         {/* Only show the Profile button for non-admin users */}
-                        {user && user.role !== "admin" && (
+                        {/* {user && user.role !== "admin" && (
                             <Link to={`/customer/profile/${id}`}>
                                 <Button icon="pi pi-eye" severity="info" aria-label="User" />
                             </Link>
-                        )}
+                        )} */}
                         
                         {/* Show all action buttons for admin users */}
-                        {user && user.role === "admin" && (
+                        
                             <>
                                 <Button 
                                 className='action-button'
@@ -642,6 +642,7 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                                         setDialogVisible(true);
                                     }}
                                 />
+                                {user && user.role === "admin" && (
                                 <Button
                                 className='action-button'
                                     icon="pi pi-trash"
@@ -649,8 +650,9 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
                                     aria-label="Delete"
                                     onClick={() => confirm(id)}
                                 />
-                            </>
+                            
                         )}
+                        </>
                     </div>
                 </OverlayPanel>
             </div>
@@ -706,14 +708,11 @@ const buttonLabel = allColumnsFrozen ? 'Unlock All' : 'Lock All';
         
         <h1 className='title'>Πελάτες</h1>
         <div className='d-flex align-items-center gap-4'>
-        {user && user.role === "admin" && (
             <>
                 <Link to={"/customer/add"} className='button is-primary mb-2'><Button label="Προσθήκη Νεου Πελάτη" icon="pi pi-plus-circle" className='rounded'/></Link>
                 <Button label="Import Excel" icon="pi pi-upload" severity="success" className='mb-2 rounded' onClick={handleImportClick} />
                 <input ref={xlsxInputRef} type="file" accept=".xlsx,.xls" style={{ display: 'none' }} onChange={handleFileChange} />
             </>
-        )}
-        
         <br />
 
          {selectedCustomers.length > 0 && (

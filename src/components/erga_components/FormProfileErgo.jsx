@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 import '../../custom.css';
 import { Divider } from 'primereact/divider';
 import { Calendar } from 'primereact/calendar';
@@ -13,6 +14,7 @@ import apiBaseUrl from '../../apiConfig';
 import apiBaseFrontUrl from '../../apiFrontConfig';
 
 const FormProfileErgo= ({id, onHide}) => {
+const {user} = useSelector((state) => state.auth);
 const[logoImage,setLogoImage]=useState(null);
   const[name,setName]=useState("");
   const [color, setColor] = useState("white");
@@ -210,10 +212,12 @@ const[logoImage,setLogoImage]=useState(null);
 
         </ul>
         </div>
+        {user && user.role === "admin" && (
+        <>
         <Divider />
 
         <div className="grid">
-  
+
     <div className="col-12 md:col-6 lg:col-3">
         <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
             <div className="flex justify-content-between mb-3">
@@ -225,7 +229,7 @@ const[logoImage,setLogoImage]=useState(null);
                     <i className="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-        
+
         </div>
     </div>
 
@@ -257,6 +261,8 @@ const[logoImage,setLogoImage]=useState(null);
         </div>
     </div>
         </div>
+        </>
+        )}
         </div>
 	);
 

@@ -23,7 +23,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user && isSuccess) {
-            navigate('/statistics');
+            navigate(user.role === 'admin' ? '/statistics' : '/erga');
         }
         dispatch(reset());
     }, [user, isSuccess, dispatch, navigate]);

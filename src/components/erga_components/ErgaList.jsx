@@ -446,9 +446,13 @@ jsPDF.API.events.push(['addFonts', callAddFont]);
                         />
                     </IconField>
                 </div>
-                <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
-                
+                {user && user.role === "admin" && (
+                    <>
+                        <Button className='action-button' type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
+                        <Button className='action-button' type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                    </>
+                )}
+
             </div>
         );
     };
@@ -835,14 +839,14 @@ const ActionsBodyTemplate = (rowData) => {
             >
                 <div className="flex flex-row gap-2">
                     {/* Only show the Profile button for non-admin users */}
-                    {user && user.role !== "admin" && (
+                    {/* {user && user.role !== "admin" && (
                         <Link to={`/erga/profile/${id}`}>
                             <Button icon="pi pi-eye" severity="info" aria-label="User" />
                         </Link>
-                    )}
+                    )} */}
                     
                     {/* Show all action buttons for admin users */}
-                    {user && user.role === "admin" && (
+                    
                         <>
                             <Button 
                             className='action-button'
@@ -866,6 +870,7 @@ const ActionsBodyTemplate = (rowData) => {
                                     setDialogVisible(true);
                                 }}
                             />
+                            {user && user.role === "admin" && (
                             <Button
                             className='action-button'
                                 icon="pi pi-trash"
@@ -873,8 +878,9 @@ const ActionsBodyTemplate = (rowData) => {
                                 aria-label="Delete"
                                 onClick={() => confirm(id)}
                             />
-                        </>
+                        
                     )}
+                    </>
                 </div>
             </OverlayPanel>
         </div>
@@ -984,9 +990,15 @@ const ActionsBodyTemplate = (rowData) => {
 
         <Column header="Κατάσταση έργου" field="status" filter={true} showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={statusBodyTemplate} filterElement={statusFilterTemplate} />
  
-        <Column header="Ποσό  (καθαρή αξία)" filter={true} filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filterElement={ammountFilterTemplate} />
-        <Column header="Ποσό ΦΠΑ" filter={true} filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filterElement={ammountFilterTemplate} />
-        <Column header="Σύνολο" filter={true} filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate}  filterElement={ammountFilterTemplate} />
+        {user && user.role === "admin" && (
+            <Column header="Ποσό  (καθαρή αξία)" filter={true} filterField="ammount" dataType="numeric" style={{ minWidth: '5rem' }} body={ammountBodyTemplate} filterElement={ammountFilterTemplate} />
+        )}
+        {user && user.role === "admin" && (
+            <Column header="Ποσό ΦΠΑ" filter={true} filterField="ammount_vat" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_vatBodyTemplate} filterElement={ammountFilterTemplate} />
+        )}
+        {user && user.role === "admin" && (
+            <Column header="Σύνολο" filter={true} filterField="ammount_total" dataType="numeric" style={{ minWidth: '5rem' }} body={ammount_totalBodyTemplate}  filterElement={ammountFilterTemplate} />
+        )}
         <Column header="Ημερομηνία έναρξης (εκτίμηση)" filter={true} filterField="estimate_start_date" dataType="date" style={{ minWidth: '5rem' }} body={estimateStartDateBodyTemplate} filterElement={estimateStartDateFilterTemplate} ></Column>
         <Column header="Project Manager" filterField="project_manager" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }}
                     body={projectManagerBodyTemplate} filter={true} filterElement={projectManagerFilterTemplate} />

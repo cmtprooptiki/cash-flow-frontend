@@ -6,10 +6,12 @@ import { getMe } from '../../features/authSlice'
 import ErgaList from '../../components/erga_components/ErgaList'
 import BreadcrumbsEsoda from '../../components/BreadcrumbsEsoda'
 
+
 const Erga = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {isError} = useSelector((state=>state.auth));
+  const {user} = useSelector((state)=>state.auth);
 
   useEffect(()=>{
       dispatch(getMe());
@@ -22,7 +24,9 @@ const Erga = () => {
   },[isError,navigate]);
   return (
     <Layout>
+        {user && user.role === "admin" && (
         <BreadcrumbsEsoda />
+        )}
         <ErgaList/>
     </Layout>
   )

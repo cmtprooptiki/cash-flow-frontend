@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 import apiBaseUrl from '../../apiConfig'
 import { SketchPicker } from 'react-color';
 
@@ -15,6 +16,8 @@ import { Avatar } from 'primereact/avatar';
 import {format} from 'date-fns';
 
 const FormEditErgo= ({id, onHide}) => {
+    const {user} = useSelector((state) => state.auth);
+    const isAdmin = user && user.role === "admin";
     const[erga_code,setErgaCode]=useState("");
     const[name,setName]=useState("");
     const[description,setDescription]=useState("");
@@ -434,8 +437,10 @@ const FormEditErgo= ({id, onHide}) => {
                         </div>
                     <div className="col-12 md:col-6">
                     <div className="card p-fluid">
+                        {isAdmin && (
+                        <>
                         <div className=""><Divider align="center"><span className="p-tag text-lg">Ποσό Πληρωμής</span></Divider></div>
-                                
+
                         <div>
 
                         <div className="field">
@@ -461,14 +466,14 @@ const FormEditErgo= ({id, onHide}) => {
 
                             </div>
                         </div>
+                        </div>
+                        </>
+                        )}
 
-                        
-                       
                         <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Ενημέρωση</Button>
                             </div>
-                        </div>
                         </div>
 
                         </div>
