@@ -2,6 +2,7 @@ import {BrowserRouter,Routes,Route} from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
 
 import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Users from "./pages/user_pages/Users";
 
 
@@ -139,155 +140,153 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>}></Route>
-          <Route path="/dashboard" element={<Dashboard/>}></Route>
+          <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><Dashboard/></ProtectedRoute>}></Route>
           {/* <Route path="/map" element={<MapPolution/>}></Route> */}
 
-          <Route path="/users" element={<Users/>}></Route>
-          <Route path="/users/add" element={<AddUser/>}></Route>
-          <Route path="/users/edit/:id" element={<EditUser/>}></Route>
+          <Route path="/users" element={<ProtectedRoute allowedRoles={['admin']}><Users/></ProtectedRoute>}></Route>
+          <Route path="/users/add" element={<ProtectedRoute allowedRoles={['admin']}><AddUser/></ProtectedRoute>}></Route>
+          <Route path="/users/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditUser/></ProtectedRoute>}></Route>
 
-          <Route path="/erga" element={<Erga/>}></Route>
-          <Route path="/erga/add" element={<AddErga/>}></Route>
-          <Route path="/erga/edit/:id" element={<EditErgo/>}></Route>
-          <Route path="/erga/profile/:id" element={<ProfileErgo/>}></Route>
+          <Route path="/erga" element={<ProtectedRoute><Erga/></ProtectedRoute>}></Route>
+          <Route path="/erga/add" element={<ProtectedRoute allowedRoles={['admin']}><AddErga/></ProtectedRoute>}></Route>
+          <Route path="/erga/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditErgo/></ProtectedRoute>}></Route>
+          <Route path="/erga/profile/:id" element={<ProtectedRoute><ProfileErgo/></ProtectedRoute>}></Route>
 
-          <Route path="/ergacat" element={<ErgaCat/>}></Route>
-          <Route path="/ergacat/add" element={<AddErgaCat/>}></Route>
-          <Route path="/ergacat/edit/:id" element={<EditErgoCat/>}></Route>
-          
-
-          <Route path="/customer" element={<Customer/>}></Route>
-
-          <Route path="/customer/add" element={<AddCustomer/>}></Route>
-          <Route path="/customer/edit/:id" element={<EditCustomer/>}></Route>
-          <Route path="/customer/profile/:id" element={<ProfileCustomer/>}></Route>
+          <Route path="/ergacat" element={<ProtectedRoute allowedRoles={['admin']}><ErgaCat/></ProtectedRoute>}></Route>
+          <Route path="/ergacat/add" element={<ProtectedRoute allowedRoles={['admin']}><AddErgaCat/></ProtectedRoute>}></Route>
+          <Route path="/ergacat/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditErgoCat/></ProtectedRoute>}></Route>
 
 
-          <Route path="/timologia" element={<Timologia/>}></Route>
+          <Route path="/customer" element={<ProtectedRoute><Customer/></ProtectedRoute>}></Route>
 
-          <Route path="/timologia/add" element={<AddTimologio/>}></Route>
-          <Route path="/timologia/edit/:id" element={<EditTimologio/>}></Route>
-
-          <Route path="/timologia/profile/:id" element={<ProfileTimologio/>}></Route>
-
-
-          <Route path="/ek_tim" element={<Ekxorimena_Timologia/>}></Route>
-
-          <Route path="/ek_tim/add" element={<AddEkxorimeno_Timologio/>}></Route>
-          <Route path="/ek_tim/edit/:id" element={<EditEkxorimeno_Timologio/>}></Route>
+          <Route path="/customer/add" element={<ProtectedRoute><AddCustomer/></ProtectedRoute>}></Route>
+          <Route path="/customer/edit/:id" element={<ProtectedRoute><EditCustomer/></ProtectedRoute>}></Route>
+          <Route path="/customer/profile/:id" element={<ProtectedRoute><ProfileCustomer/></ProtectedRoute>}></Route>
 
 
+          <Route path="/timologia" element={<ProtectedRoute allowedRoles={['admin']}><Timologia/></ProtectedRoute>}></Route>
 
-          <Route path="/ek_tim/profile/:id" element={<ProfileEkxorimenoTimologio/>}></Route>
+          <Route path="/timologia/add" element={<ProtectedRoute allowedRoles={['admin']}><AddTimologio/></ProtectedRoute>}></Route>
+          <Route path="/timologia/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditTimologio/></ProtectedRoute>}></Route>
+
+          <Route path="/timologia/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileTimologio/></ProtectedRoute>}></Route>
+
+
+          <Route path="/ek_tim" element={<ProtectedRoute allowedRoles={['admin']}><Ekxorimena_Timologia/></ProtectedRoute>}></Route>
+
+          <Route path="/ek_tim/add" element={<ProtectedRoute allowedRoles={['admin']}><AddEkxorimeno_Timologio/></ProtectedRoute>}></Route>
+          <Route path="/ek_tim/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditEkxorimeno_Timologio/></ProtectedRoute>}></Route>
 
 
 
-          <Route path="/paradotea" element={<Paradotea/>}></Route>
-
-          <Route path="/paradotea/add" element={<AddParadoteo/>}></Route>
-
-          <Route path="/paradotea/edit/:id" element={<EditParadoteo/>}></Route>
-
-          <Route path="/paradotea/profile/:id" element={<ProfileParadoteo/>}></Route>
-          
-          <Route path="/daneia" element={<Daneia/>}></Route>
-
-          <Route path="/daneia/add" element={<AddDaneia/>}></Route>
-
-          <Route path="/daneia/edit/:id" element={<EditDaneia/>}></Route>
-
-          <Route path="/daneia/profile/:id" element={<ProfileDaneia/>}></Route>
-
-          <Route path="/tags" element={<Tags/>}></Route>
-
-          <Route path="/tags/add" element={<AddTag/>}></Route>
-
-          <Route path="/tags/edit/:id" element={<EditTags/>}></Route>
-
-          <Route path="/tags/profile/:id" element={<ProfileTags/>}></Route>
+          <Route path="/ek_tim/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileEkxorimenoTimologio/></ProtectedRoute>}></Route>
 
 
 
-          <Route path="/doseis" element={<Doseis/>}></Route>
+          <Route path="/paradotea" element={<ProtectedRoute allowedRoles={['admin']}><Paradotea/></ProtectedRoute>}></Route>
 
-          <Route path="/doseis/add" element={<AddDoseis/>}></Route>
-          <Route path="/doseis/multiAdd" element={<AddMultiDoseis/>}></Route>
+          <Route path="/paradotea/add" element={<ProtectedRoute allowedRoles={['admin']}><AddParadoteo/></ProtectedRoute>}></Route>
 
-          <Route path="/doseis/edit/:id" element={<EditDoseis/>}></Route>
+          <Route path="/paradotea/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditParadoteo/></ProtectedRoute>}></Route>
 
-          <Route path="/doseis/profile/:id" element={<ProfileDoseis/>}></Route>
+          <Route path="/paradotea/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileParadoteo/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery" element={<Ypoxreoseis/>}></Route>
+          <Route path="/daneia" element={<ProtectedRoute allowedRoles={['admin']}><Daneia/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery/add" element={<AddYpoxreoseis/>}></Route>
+          <Route path="/daneia/add" element={<ProtectedRoute allowedRoles={['admin']}><AddDaneia/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery/profile/:id" element={<ProfileYpoxreoseis/>}></Route>
+          <Route path="/daneia/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditDaneia/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery/edit/:id" element={<EditYpoxreoseis/>}></Route>
+          <Route path="/daneia/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileDaneia/></ProtectedRoute>}></Route>
 
-          <Route path="/paidView" element={<PaidView/>}></Route>
-          
+          <Route path="/tags" element={<ProtectedRoute allowedRoles={['admin']}><Tags/></ProtectedRoute>}></Route>
 
-          <Route path="/tags2" element={<Tags2/>}></Route>
+          <Route path="/tags/add" element={<ProtectedRoute allowedRoles={['admin']}><AddTag/></ProtectedRoute>}></Route>
 
-          <Route path="/tags2/add" element={<AddTag2/>}></Route>
+          <Route path="/tags/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditTags/></ProtectedRoute>}></Route>
+
+          <Route path="/tags/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileTags/></ProtectedRoute>}></Route>
+
+
+
+          <Route path="/doseis" element={<ProtectedRoute allowedRoles={['admin']}><Doseis/></ProtectedRoute>}></Route>
+
+          <Route path="/doseis/add" element={<ProtectedRoute allowedRoles={['admin']}><AddDoseis/></ProtectedRoute>}></Route>
+          <Route path="/doseis/multiAdd" element={<ProtectedRoute allowedRoles={['admin']}><AddMultiDoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/doseis/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditDoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/doseis/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileDoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/ypoquery" element={<ProtectedRoute allowedRoles={['admin']}><Ypoxreoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/ypoquery/add" element={<ProtectedRoute allowedRoles={['admin']}><AddYpoxreoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/ypoquery/profile/:id" element={<ProtectedRoute allowedRoles={['admin']}><ProfileYpoxreoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/ypoquery/edit/:id" element={<ProtectedRoute allowedRoles={['admin']}><EditYpoxreoseis/></ProtectedRoute>}></Route>
+
+          <Route path="/paidView" element={<ProtectedRoute allowedRoles={['admin']}><PaidView/></ProtectedRoute>}></Route>
+
+
+          <Route path="/tags2" element={<ProtectedRoute allowedRoles={['admin']}><Tags2/></ProtectedRoute>}></Route>
+
+          <Route path="/tags2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddTag2/></ProtectedRoute>}></Route>
 
           {/* <Route path="/tags/edit/:id" element={<EditTags/>}></Route>
 
           <Route path="/tags/profile/:id" element={<ProfileTags/>}></Route> */}
 
-          <Route path="/ypoquery2/add" element={<AddYpoxreoseis2/>}></Route>
+          <Route path="/ypoquery2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddYpoxreoseis2/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+          <Route path="/ypoquery2" element={<ProtectedRoute allowedRoles={['admin']}><YpoxreoseisList2/></ProtectedRoute>}></Route>
 
-          <Route path="/doseis2/add" element={<AddDoseis2/>}></Route>
+          <Route path="/doseis2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddDoseis2/></ProtectedRoute>}></Route>
 
-          <Route path="/ypoquery2" element={<YpoxreoseisList2/>}></Route>
+          <Route path="/doseis2" element={<ProtectedRoute allowedRoles={['admin']}><Doseis2/></ProtectedRoute>}></Route>
 
-          <Route path="/doseis2" element={<Doseis2/>}></Route>
+          <Route path="/step1" element={<ProtectedRoute allowedRoles={['admin']}><MyStepper1/></ProtectedRoute>}></Route>
 
-          <Route path="/step1" element={<MyStepper1/>}></Route>
+          <Route path="/step2" element={<ProtectedRoute allowedRoles={['admin']}><MyStepper2/></ProtectedRoute>}></Route>
 
-          <Route path="/step2" element={<MyStepper2/>}></Route>
+          <Route path="/expen" element={<ProtectedRoute allowedRoles={['admin']}><Expenses_Display/></ProtectedRoute>}></Route>
 
-          <Route path="/expen" element={<Expenses_Display/>}></Route>
+          <Route path="/budget" element={<ProtectedRoute allowedRoles={['admin']}><BudgetPage/></ProtectedRoute>}></Route>
 
-          <Route path="/budget" element={<BudgetPage/>}></Route>
+          <Route path="/customer2" element={<ProtectedRoute allowedRoles={['admin']}><Customer2/></ProtectedRoute>}></Route>
 
-          <Route path="/customer2" element={<Customer2/>}></Route>
+          <Route path="/customer2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddCustomer2/></ProtectedRoute>}></Route>
 
-          <Route path="/customer2/add" element={<AddCustomer2/>}></Route>
+          <Route path="/erga2" element={<ProtectedRoute allowedRoles={['admin']}><Erga2/></ProtectedRoute>}></Route>
 
-          <Route path="/erga2" element={<Erga2/>}></Route>
+          <Route path="/erga2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddErga2/></ProtectedRoute>}></Route>
 
-          <Route path="/erga2/add" element={<AddErga2/>}></Route>
+          <Route path="/ergacat2" element={<ProtectedRoute allowedRoles={['admin']}><ErgaCat2/></ProtectedRoute>}></Route>
+          <Route path="/ergacat2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddErgaCat2/></ProtectedRoute>}></Route>
 
-          <Route path="/ergacat2" element={<ErgaCat2/>}></Route>
-          <Route path="/ergacat2/add" element={<AddErgaCat2/>}></Route>
+          <Route path="/paradotea2" element={<ProtectedRoute allowedRoles={['admin']}><Paradotea2/></ProtectedRoute>}></Route>
 
-          <Route path="/paradotea2" element={<Paradotea2/>}></Route>
+          <Route path="/paradotea2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddParadoteo2/></ProtectedRoute>}></Route>
 
-          <Route path="/paradotea2/add" element={<AddParadoteo2/>}></Route>
+          <Route path="/timologia2" element={<ProtectedRoute allowedRoles={['admin']}><Timologia2/></ProtectedRoute>}></Route>
 
-          <Route path="/timologia2" element={<Timologia2/>}></Route>
+          <Route path="/timologia2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddTimologio2/></ProtectedRoute>}></Route>
 
-          <Route path="/timologia2/add" element={<AddTimologio2/>}></Route>
+          <Route path="/ek_tim2" element={<ProtectedRoute allowedRoles={['admin']}><Ekxorimena_Timologia2/></ProtectedRoute>}></Route>
 
-          <Route path="/ek_tim2" element={<Ekxorimena_Timologia2/>}></Route>
+          <Route path="/ek_tim2/add" element={<ProtectedRoute allowedRoles={['admin']}><AddEkxorimeno_Timologio2/></ProtectedRoute>}></Route>
 
-          <Route path="/ek_tim2/add" element={<AddEkxorimeno_Timologio2/>}></Route>
-
-          <Route path="/esoda_step1" element={<Stepper_Esoda1/>}></Route>
-          <Route path="/esoda_step2" element={<Stepper_Esoda2/>}></Route>
-          <Route path="/esoda_step3" element={<Stepper_Esoda3/>}></Route>
+          <Route path="/esoda_step1" element={<ProtectedRoute allowedRoles={['admin']}><Stepper_Esoda1/></ProtectedRoute>}></Route>
+          <Route path="/esoda_step2" element={<ProtectedRoute allowedRoles={['admin']}><Stepper_Esoda2/></ProtectedRoute>}></Route>
+          <Route path="/esoda_step3" element={<ProtectedRoute allowedRoles={['admin']}><Stepper_Esoda3/></ProtectedRoute>}></Route>
           {/* <Route path="/statistics2" element={<KpisDashboard/>}></Route> */}
-          <Route path="/statistics" element={<Statistics/>}></Route>
+          <Route path="/statistics" element={<ProtectedRoute allowedRoles={['admin']}><Statistics/></ProtectedRoute>}></Route>
 
-          <Route path="/budgetForm" element={<BudgetFormPage/>}></Route>
-          <Route path="/reports" element={<Reports/>}></Route>
+          <Route path="/budgetForm" element={<ProtectedRoute allowedRoles={['admin']}><BudgetFormPage/></ProtectedRoute>}></Route>
+          <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports/></ProtectedRoute>}></Route>
 
-          <Route path = "/ypoxreoseisstats" element={<YpoxreoseisStatistics/>}></Route>
-          <Route path="/statistics_test" element={<KpisDashboardTest/>}></Route>
+          <Route path = "/ypoxreoseisstats" element={<ProtectedRoute allowedRoles={['admin']}><YpoxreoseisStatistics/></ProtectedRoute>}></Route>
+          <Route path="/statistics_test" element={<ProtectedRoute allowedRoles={['admin']}><KpisDashboardTest/></ProtectedRoute>}></Route>
 
         </Routes>
       </BrowserRouter>

@@ -70,6 +70,7 @@ const Navbar =()=>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {user} = useSelector((state)=>state.auth)
+    const isAdmin = user && user.role === "admin";
     const logout = ()=>{
         dispatch(LogOut());
         dispatch(reset());
@@ -122,6 +123,7 @@ const Navbar =()=>{
                                     </span>
                                 </div>
                                 <div className="overflow-y-auto " >
+                                    {isAdmin && (
                                     <ul className="list-none p-3 m-0">
                                         <li>
                                             <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
@@ -212,6 +214,7 @@ const Navbar =()=>{
                                             </ul>
                                         </li>
                                     </ul>
+                                    )}
 
 
 
@@ -232,17 +235,19 @@ const Navbar =()=>{
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
 
+                                            {isAdmin && (
                                             <li><Link to="/ergacat"  style={{ color: 'inherit', textDecoration: 'none' }}>
-                                            
+
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                               <div className="mr-2 text-gray-50" >
-                  <ProjectCat style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                  <ProjectCat style={{ width: '3.5em', height: '3.5em' }}  className="" />
               </div>
                                                         <span className="font-medium">Διαχείριση Κατηγοριών Εργων</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
+                                            )}
                                             <li><Link to="/erga"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <div className="mr-2 text-gray-50" >
@@ -254,50 +259,56 @@ const Navbar =()=>{
                                                     </Link>
                                                 </li>
 
+                                                {isAdmin && (
                                                 <li><Link to="/paradotea"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <div className="mr-2 text-gray-50" >
-                                                            <ParSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                            <ParSet style={{ width: '3.5em', height: '3.5em' }}  className="" />
                                                         </div>
                                                         <span className="font-medium">Διαχείριση Παραδοτέων</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
-                                             
+                                                )}
+                                                {isAdmin && (
                                                 <li><Link to="/timologia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <div className="mr-2 text-gray-50" >
-                                                            <InvoSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                            <InvoSet style={{ width: '3.5em', height: '3.5em' }}  className="" />
                                                         </div>
                                                         <span className="font-medium">Διαχείριση Τιμολογίων</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
+                                                )}
+                                                {isAdmin && (
                                                 <li><Link to="/ek_tim"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                     <div className="mr-2 text-gray-50" >
-                                                            <EktimSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
-                                                        </div>                                                        
+                                                            <EktimSet style={{ width: '3.5em', height: '3.5em' }}  className="" />
+                                                        </div>
                                                         <span className="font-medium">Διαχείριση Εκχωριμένων Τιμολογίων</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
-                                      
+                                                )}
+                                                {isAdmin && (
                                                 <li><Link to="/daneia"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         {/* <i className="pi pi-folder mr-2 text-gray-50"></i> */}
                                                         <div className="mr-2 text-gray-50" >
-                                                            <LoanSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
-                                                        </div>   
-                                                        
+                                                            <LoanSet style={{ width: '3.5em', height: '3.5em' }}  className="" />
+                                                        </div>
+
                                                         <span className="font-medium">Διαχείριση Δανείων</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
+                                                )}
 
                                            
 
@@ -314,6 +325,7 @@ const Navbar =()=>{
 
 
 
+                                    {isAdmin && (
                                     <ul className="list-none p-3 m-0">
                                         <li>
                                             <StyleClass nodeRef={btnRef3} selector="@next" enterClassName="hidden" enterActiveClassName="slidedown" leaveToClassName="hidden" leaveActiveClassName="slideup">
@@ -370,12 +382,13 @@ const Navbar =()=>{
                                                     </Link>
                                                 </li>
 
-                                         
-                                             
-                                            
+
+
+
                                             </ul>
                                         </li>
                                     </ul>
+                                    )}
 
 
                                     <ul className="list-none p-3 m-0">
@@ -392,17 +405,19 @@ const Navbar =()=>{
                                             </StyleClass>
                                             <ul className="list-none p-0 m-0 overflow-hidden">
 
+                                            {isAdmin && (
                                             <li><Link to="/users" style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <div className="mr-2 text-gray-50" >
-                                                            <UsersIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                            <UsersIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
                                                         </div>
                                                         <span className="font-medium">Διαχείριση Χρηστών</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
-                                           
+                                            )}
+
 
 
                                             <li><Link to="/customer" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -415,17 +430,18 @@ const Navbar =()=>{
                                                     </div>
                                                     </Link>
                                                 </li>
-                                             
+                                            {isAdmin && (
                                                 <li><Link to="/budgetform"  style={{ color: 'inherit', textDecoration: 'none' }}>
                                                     <div  className="p-ripple flex align-items-center cursor-pointer p-3 border-round text-700  transition-duration-150 transition-colors w-full">
                                                         <div className="mr-2 text-gray-50" >
-                                                            <BudgetIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                                                            <BudgetIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
                                                         </div>
                                                         <span className="font-medium">Διαχείριση Budget</span>
                                                         <Ripple />
                                                     </div>
                                                     </Link>
                                                 </li>
+                                            )}
                                             </ul>
                                         </li>
                                     </ul>
@@ -454,7 +470,7 @@ const Navbar =()=>{
     const op = useRef(null);
     const [selectedCity, setSelectedCity] = useState(null);
     const [filteredCities, setFilteredCities] = useState(null);
-    const groupedCities = [
+    const allGroupedCities = [
         {
             label: 'Customer',
             items: [
@@ -567,6 +583,8 @@ const Navbar =()=>{
         },
     ];
 
+    const groupedCities = isAdmin ? allGroupedCities : allGroupedCities.filter((g) => g.label === 'Customer' || g.label === 'Erga');
+
     const groupedItemTemplate = (item) => {
         return (
             <div className="flex align-items-center">
@@ -601,39 +619,56 @@ const Navbar =()=>{
 
     const centerContent = (
         <div className="flex flex-wrap align-items-center gap-3">
+            {isAdmin && (
             <Link to="/statistics" title="Στατιστικά" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
                 <i className="pi pi-home text-2xl"></i>
                 <Ripple />
             </Link>
+            )}
+            {isAdmin && (
             <Link to="/users" title="Χρήστες" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
                 <i className="pi pi-user text-2xl"></i>
                 <Ripple />
             </Link>
+            )}
 
+            {isAdmin && (
              <Link to="/reports" title="Εικόνα Έργων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                  <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                  <ReportsIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
                 <Ripple />
             </Link>
+            )}
 
+            {isAdmin && (
             <Link to="/ypoxreoseisstats" title="Εικόνα Υποχρεώσεων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                 <YpoxreoseisStatisticsIcon style={{ width: '3.8em', height: '3.8em' }}  className="" /> 
+                 <YpoxreoseisStatisticsIcon style={{ width: '3.8em', height: '3.8em' }}  className="" />
                 <Ripple />
             </Link>
+            )}
 
+            {isAdmin && (
               <Link to="/budget" title="Προυπολογισμός" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                <BudgetEuroIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <BudgetEuroIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
                 <Ripple />
             </Link>
+            )}
 
             <Link to="/erga" title="Διαχείρηση Έργων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                <ProjectSet style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+                <ProjectSet style={{ width: '3.5em', height: '3.5em' }}  className="" />
                 <Ripple />
             </Link>
 
-              <Link to="/ypoquery" title="Διαχείρηση Υποχρεώσεων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
-                 <ObliIcon style={{ width: '3.5em', height: '3.5em' }}  className="" /> 
+            <Link to="/customer" title="Διαχείρηση Πελατών" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <CustoEditIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
                 <Ripple />
             </Link>
+
+            {isAdmin && (
+              <Link to="/ypoquery" title="Διαχείρηση Υποχρεώσεων" style={{ color: 'inherit', textDecoration: 'none' }} className="p-ripple p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                 <ObliIcon style={{ width: '3.5em', height: '3.5em' }}  className="" />
+                <Ripple />
+            </Link>
+            )}
 
 
 
