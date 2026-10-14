@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef } from 'react'
+import React,{useState,useEffect,useRef,useMemo } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -54,8 +54,14 @@ const FormAddTimologia = () => {
         const response = await axios.get(`${apiBaseUrl}/getErgaforTimologia`, {timeout: 5000});
         setErga(response.data);
     }
+    // PrimeReact 10.7 ignores optionValue, so options use the default {label, value} shape
+    const ergaOptions = useMemo(
+        () => erga.map((ergo) => ({ label: ergo.erga.name, value: ergo.erga.id })),
+        [erga]
+    );
+
     const handleErgaChange = async (e) => {
-        const selectedId = e.target.value;
+        const selectedId = e.value ?? "";
         setTempErga(selectedId);
         clearFormFields();
         if (selectedId) {
@@ -178,12 +184,16 @@ const FormAddTimologia = () => {
               <div className="field">
                     <label className="label">Εργα</label>
                 <div className="control">
-                    <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
-                            <option value="" disabled>Επιλέξτε Εργο</option>
-                            {erga.map((ergo, index) => (
-                                <option key={index} value={ergo.erga.id}>{ergo.erga.name}</option>
-                            ))}
-                        </select>
+                    <Dropdown
+                        value={tempErga}
+                        options={ergaOptions}
+                        onChange={(e) => handleErgaChange(e)}
+                        placeholder="Επιλέξτε Εργο"
+                        filter
+                        filterPlaceholder="Αναζήτηση έργου..."
+                        emptyFilterMessage="Δεν βρέθηκε έργο"
+                        resetFilterOnHide
+                    />
                     </div>
               </div>
 
@@ -295,6 +305,7 @@ const FormAddTimologia = () => {
           </div>
 
 
+          {msg && <p className="p-error mb-3">{msg}</p>}
           <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>

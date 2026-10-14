@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useMemo} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import apiBaseUrl from '../../apiConfig'
@@ -91,8 +91,15 @@ const FormAddMultiDoseis = () => {
     
 
 
+    // PrimeReact 10.7 ignores optionValue, so options use the default {label, value} shape
+    const ypoxreoseisOptions = useMemo(
+        () => ypoxreoseis.map((ypoxreosh) => ({ label: ypoxreosh.provider, value: ypoxreosh.id })),
+        [ypoxreoseis]
+    );
+
     const handleYpoxreoseisChange = async (e) => {
-        const selectedId = e.target.value;
+        const selectedId = e.value;
+        if (selectedId === undefined || selectedId === null) return;
         setYpoxreoseisId(selectedId)
         try {
             const response = await axios.get(`${apiBaseUrl}/ypoquery/${selectedId}`, {timeout: 5000});
@@ -159,12 +166,16 @@ const FormAddMultiDoseis = () => {
           <div className="field">
                     <label className="label">Προμηθευτής-έξοδο</label>
                 <div className="control">
-                    <select className="input" onChange={(e) => handleYpoxreoseisChange(e)} defaultValue="">
-                            <option value="" disabled>Επιλέξτε Προμηθευτή</option>
-                            {ypoxreoseis.map((ypoxreosh, index) => (
-                                <option key={index} value={ypoxreosh.id}>{ypoxreosh.provider}</option>
-                            ))}
-                        </select>
+                    <Dropdown
+                        value={ypoxreoseis_id}
+                        options={ypoxreoseisOptions}
+                        onChange={(e) => handleYpoxreoseisChange(e)}
+                        placeholder="Επιλέξτε Προμηθευτή"
+                        filter
+                        filterPlaceholder="Αναζήτηση προμηθευτή..."
+                        emptyFilterMessage="Δεν βρέθηκε προμηθευτής"
+                        resetFilterOnHide
+                    />
                     </div>
               </div>
 
@@ -249,6 +260,7 @@ const FormAddMultiDoseis = () => {
           </div>
 
 
+          {msg && <p className="p-error mb-3">{msg}</p>}
           <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>

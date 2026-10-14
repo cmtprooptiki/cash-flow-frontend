@@ -223,8 +223,9 @@ const FormAddErga = () => {
                                 <div className="field">
                                 <label className="label">Όνομα Πελάτη</label>
                                         <div className="control">
-                                            <Dropdown value={customer_name} onChange={(e) => {handleCustomerChange(e)}} options={customer} optionLabel="name" 
-                                            placeholder="Επιλέξτε ΠΕΛΑΤΗ" className="w-full md:w-14rem" />
+                                            <Dropdown value={customer_name} onChange={(e) => {handleCustomerChange(e)}} options={customer} optionLabel="name"
+                                            placeholder="Επιλέξτε ΠΕΛΑΤΗ" className="w-full md:w-14rem"
+                                            filter filterPlaceholder="Αναζήτηση πελάτη..." emptyFilterMessage="Δεν βρέθηκε πελάτης" resetFilterOnHide />
                                         </div>
                                 </div>
 

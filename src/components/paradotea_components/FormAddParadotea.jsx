@@ -57,8 +57,14 @@ const FormAddParadotea = () => {
         setErga(filtered_response);
     }
 
+    // PrimeReact 10.7 ignores optionValue, so options use the default {label, value} shape
+    const ergaOptions = useMemo(
+        () => erga.map((ergo) => ({ label: ergo.name, value: ergo.id })),
+        [erga]
+    );
+
     const handleErgaChange = async (e) => {
-        const selectedId = e.target.value;
+        const selectedId = e.value ?? "";
         setTempErga(selectedId);
         console.log("Erga id",selectedId)
         setErga_id(selectedId);
@@ -91,6 +97,10 @@ const FormAddParadotea = () => {
 
     const saveParadotea = async (e) => {
         e.preventDefault();
+        if (!erga_id) {
+            setMsg("Επιλέξτε Εργο");
+            return;
+        }
         try
         {
             await axios.post(`${apiBaseUrl}/paradotea`, {
@@ -155,12 +165,16 @@ const FormAddParadotea = () => {
                 <div className="field">
             <label className="label">Εργα</label>
             <div className="control">
-                  <select className="input" onChange={(e) => handleErgaChange(e)} defaultValue="">
-                                    <option value="" disabled>Επιλέξτε Εργο</option>
-                                        {erga.map((ergo, index) => (
-                                            <option key={index} value={ergo.id}>{ergo.name}</option>
-                                        ))}
-                                </select>
+                  <Dropdown
+                      value={erga_id}
+                      options={ergaOptions}
+                      onChange={(e) => handleErgaChange(e)}
+                      placeholder="Επιλέξτε Εργο"
+                      filter
+                      filterPlaceholder="Αναζήτηση έργου..."
+                      emptyFilterMessage="Δεν βρέθηκε έργο"
+                      resetFilterOnHide
+                  />
             </div>
         </div>
                 <div className="field">
@@ -265,6 +279,7 @@ const FormAddParadotea = () => {
 
             <div >
 
+            {msg && <p className="p-error mb-3">{msg}</p>}
             <div className="field">
                             <div className="control">
                                 <Button type="submit" className="button is-success is-fullwidth">Προσθήκη</Button>
